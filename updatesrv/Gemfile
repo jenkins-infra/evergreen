@@ -9,11 +9,13 @@ gem 'nokogiri'
 gem 'puma'
 gem 'sentry-raven'
 gem 'sinatra'
+gem 'sinatra-contrib'
 
 group :test do
   gem 'pry'
   gem 'rspec'
   gem 'rspec-its'
   gem 'rack-test'
+  gem 'timecop'
   gem 'yard'
 end

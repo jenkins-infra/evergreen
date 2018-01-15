@@ -1,3 +1,4 @@
+require 'json'
 require 'net/http'
 require 'openssl'
 require 'time'
@@ -53,7 +54,29 @@ module Updatesrv
         end
 
         def fetch_update_center
-          raise NotImplementedError
+          # TODO
+          {
+            :core => {},
+            :plugins => {
+              :'git-client' => {
+                :version => '2.7.0',
+                :previousVersion => '2.6.0',
+                :url => 'https://updates.jenkins.io/download/plugins/git-client/2.7.0/git-client.hpi',
+              },
+              :git => {
+                :dependencies => [
+                  {
+                    :name => 'git-client',
+                    :version => '2.7.0',
+                    :optional => false,
+                  },
+                ],
+                :version => '3.7.0',
+                :previousVersion => '3.6.4',
+                :url => 'https://updates.jenkins.io/download/plugins/git/3.7.0/git.hpi',
+              },
+            }
+          }
         end
 
         private
@@ -101,6 +124,13 @@ module Updatesrv
           @plugins = []
           @core = {}
         end
+
+        def to_json(*a)
+          {
+            :core => self.core,
+            :plugins => self.plugins,
+          }.to_json(*a)
+        end
       end
 
       # Return an update manifest if the sender of the provided manifest should
@@ -110,7 +140,6 @@ module Updatesrv
       # @return [Jenkins::UpdateManifest]
       def should_update?(manifest)
         return false unless manifest
-        return false unless manifest[:core] or manifest[:plugins]
 
         update = UpdateManifest.new
         current_core = downloader.fetch_core_md5
@@ -166,7 +195,6 @@ module Updatesrv
 
         # Since we're lazily adding dependencies, filter out duplicates
         update.plugins.uniq! { |p| p[:name] }
-
         return update
       end
 
@@ -183,9 +211,6 @@ module Updatesrv
       #
       # @return [Boolean] True if refresh has been successful
       def refresh
-        if @downloader.nil?
-          @downloader = Downloader.new
-        end
         return false
       end
 
@@ -198,6 +223,7 @@ module Updatesrv
       def initialize
         # Clear the internal cache
         self.invalidate!
+        @downloader = Downloader.new
       end
     end
   end

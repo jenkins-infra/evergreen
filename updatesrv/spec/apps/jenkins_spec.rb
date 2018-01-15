@@ -101,6 +101,19 @@ class MockDownloader
   end
 end
 
+describe Updatesrv::Apps::Jenkins::UpdateManifest do
+  describe '#to_json' do
+    let(:buf) { subject.to_json }
+    it 'should encode to a string' do
+      expect(buf).to be_instance_of String
+    end
+
+    it 'should be parseable JSON' do
+      expect(JSON.parse(buf)).to be_instance_of Hash
+    end
+  end
+end
+
 describe Updatesrv::Apps::Jenkins::Downloader, :type => :integration do
   it { should respond_to :fetch_core_md5 }
   describe '#fetch_core_md5' do
