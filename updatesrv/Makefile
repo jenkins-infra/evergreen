@@ -3,7 +3,8 @@ RUBY:=../tools/ruby
 all: check docs
 
 check: depends
-	$(RUBY) bundle exec rspec
+	$(RUBY) bundle exec rspec -t ~type:integration
+	$(RUBY) bundle exec rspec -t type:integration
 
 depends: Gemfile
 	$(RUBY) bundle install

@@ -16,6 +16,7 @@ describe Updatesrv::Apps::Jenkins do
   describe '#refresh' do
     it 'should fetch from the distribution sites' do
       pending 'need to implement download first'
+      fail
     end
   end
 
@@ -98,7 +99,15 @@ class MockDownloader
   end
 end
 
-describe Updatesrv::Apps::Jenkins::Downloader do
+describe Updatesrv::Apps::Jenkins::Downloader, :type => :integration do
   it { should respond_to :fetch_core_md5 }
+  describe '#fetch_core_md5' do
+    let(:md5) { subject.fetch_core_md5 }
+
+    it 'should be a string' do
+      expect(md5).to be_instance_of String
+    end
+  end
+
   it { should respond_to :fetch_update_center }
 end

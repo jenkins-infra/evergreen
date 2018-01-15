@@ -4,6 +4,7 @@ require 'time'
 
 require 'concurrent/hash'
 require 'faraday'
+require 'nokogiri'
 require 'mini_cache'
 
 module Updatesrv
@@ -41,11 +42,28 @@ module Updatesrv
         ].freeze
 
         def fetch_core_md5
-          raise NotImplementedError
+          response = connection.get(CORE_MD5_URL)
+          return nil unless response.success?
+          page = Nokogiri::HTML(response.body)
+          md5 = page.css('.md5sum')
+          return nil unless md5
+          return md5.text.split('MD5: ').last
+        rescue *COMMON_NETWORK_ERRORS
+          # TODO This is an expected error and should be logged under DEBUG
         end
 
         def fetch_update_center
           raise NotImplementedError
+        end
+
+        private
+
+        def connection
+          return Faraday.new(:ssl => { :verify => true }) do |f|
+            f.adapter Faraday.default_adapter
+            f.options.timeout = 4
+            f.options.open_timeout = 3
+          end
         end
       end
 
