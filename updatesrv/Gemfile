@@ -1,13 +1,16 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
-
+gem 'concurrent-ruby'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'puma'
+gem 'sentry-raven'
+gem 'sinatra'
 
 group :test do
   gem 'pry'
   gem 'rspec'
   gem 'rspec-its'
   gem 'rack-test'
+  gem 'yard'
 end

@@ -15,4 +15,9 @@ describe Updatesrv::App do
 
     expect(last_response).to be_ok
   end
+
+  it 'should have a /health endpoint' do
+    get '/health'
+    expect(last_response).to be_ok
+  end
 end

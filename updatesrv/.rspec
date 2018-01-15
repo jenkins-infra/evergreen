@@ -1,0 +1,6 @@
+--color
+--order rand
+--warnings
+--format progress
+--format html
+--out reports/rspec.html
