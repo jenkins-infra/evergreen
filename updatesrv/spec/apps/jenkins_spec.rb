@@ -51,8 +51,10 @@ describe Updatesrv::Apps::Jenkins do
         expect(response).to be_instance_of Updatesrv::Apps::Jenkins::UpdateManifest
       end
 
-      it 'should include a new core md5' do
-        expect(response.core).to eql(mock_core_md5)
+      it 'should include a new core URL' do
+        expect(response.core).to be_instance_of Hash
+        expect(response.core[:md5]).to eql(mock_core_md5)
+        expect(response.core[:url]).to match(/https:\/\/(.*)/)
       end
 
       it 'should include Essential plugins' do

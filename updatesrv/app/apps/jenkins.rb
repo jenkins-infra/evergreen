@@ -21,10 +21,10 @@ module Updatesrv
         :git,
         :junit,
       ].freeze
+      CORE_URL = 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war'.freeze
 
       class Downloader
         UPDATE_CENTER_URL = 'https://updates.jenkins.io/current/update-center.actual.json'.freeze
-        CORE_URL = 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war'.freeze
         CORE_MD5_URL = 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war/*fingerprint*/'.freeze
 
         # Non-fatal network errors
@@ -99,7 +99,7 @@ module Updatesrv
 
         def initialize
           @plugins = []
-          @core = nil
+          @core = {}
         end
       end
 
@@ -117,7 +117,10 @@ module Updatesrv
         current_uc = downloader.fetch_update_center
 
         if manifest[:core] != current_core
-          update.core = current_core
+          update.core = {
+            :md5 => current_core,
+            :url => CORE_URL,
+          }
         end
 
         provided = manifest[:plugins][:essential]
