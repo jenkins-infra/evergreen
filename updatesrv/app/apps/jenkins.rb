@@ -143,6 +143,9 @@ module Updatesrv
           end
         end
 
+        # Since we're lazily adding dependencies, filter out duplicates
+        update.plugins.uniq! { |p| p[:name] }
+
         return update
       end
 
