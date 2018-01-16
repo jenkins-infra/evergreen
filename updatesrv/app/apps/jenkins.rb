@@ -18,10 +18,12 @@ module Updatesrv
     class Jenkins
       attr_accessor :downloader
 
+      CACHE_EXPIRY = 5 * 60
       ESSENTIALS = [
         :git,
         :junit,
       ].freeze
+
       CORE_URL = 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war'.freeze
 
       class Downloader
@@ -54,29 +56,11 @@ module Updatesrv
         end
 
         def fetch_update_center
-          # TODO
-          {
-            :core => {},
-            :plugins => {
-              :'git-client' => {
-                :version => '2.7.0',
-                :previousVersion => '2.6.0',
-                :url => 'https://updates.jenkins.io/download/plugins/git-client/2.7.0/git-client.hpi',
-              },
-              :git => {
-                :dependencies => [
-                  {
-                    :name => 'git-client',
-                    :version => '2.7.0',
-                    :optional => false,
-                  },
-                ],
-                :version => '3.7.0',
-                :previousVersion => '3.6.4',
-                :url => 'https://updates.jenkins.io/download/plugins/git/3.7.0/git.hpi',
-              },
-            }
-          }
+          puts Time.now.utc
+          response = connection.get(UPDATE_CENTER_URL)
+          return nil unless response.success?
+          r = JSON.load(response.body)
+          return Hashie.symbolize_keys(r)
         end
 
         private
@@ -84,7 +68,7 @@ module Updatesrv
         def connection
           return Faraday.new(:ssl => { :verify => true }) do |f|
             f.adapter Faraday.default_adapter
-            f.options.timeout = 4
+            f.options.timeout = 45
             f.options.open_timeout = 3
           end
         end
@@ -142,8 +126,12 @@ module Updatesrv
         return false unless manifest
 
         update = UpdateManifest.new
-        current_core = downloader.fetch_core_md5
-        current_uc = downloader.fetch_update_center
+        current_core = @cache.get_or_set('core', :expires_in => CACHE_EXPIRY) do
+          MiniCache::Data.new(downloader.fetch_core_md5)
+        end
+        current_uc = @cache.get_or_set('uc',  :expires_in => CACHE_EXPIRY) do
+          MiniCache::Data.new(downloader.fetch_update_center)
+        end
 
         if manifest[:core] != current_core
           update.core = {

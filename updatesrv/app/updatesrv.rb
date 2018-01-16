@@ -1,14 +1,19 @@
 require 'hashie'
 require 'sinatra/base'
 require 'sinatra/json'
+require 'thread'
 
 require 'apps/jenkins'
 
 module Updatesrv
   class App < Sinatra::Base
     before do
-      @apps = {}
-      @apps[:jenkins] = Apps::Jenkins.new
+      if Thread.current[:apps].nil?
+        Thread.current[:apps] = {
+          :jenkins => Apps::Jenkins.new
+        }
+      end
+      @apps = Thread.current[:apps]
     end
 
     get '/' do
