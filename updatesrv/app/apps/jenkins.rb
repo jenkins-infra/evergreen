@@ -174,8 +174,8 @@ module Updatesrv
             # if we should update, then that means we should also check
             # dependency versions
             if depends = updated[:dependencies]
-              should_update_depend = true
               depends.each do |dep|
+                should_update_depend = !dep[:optional]
                 dep_name = dep[:name].to_sym
                 if provided && provided[dep_name]
                   should_update_depend = Gem::Version.new(provided[dep_name]) < Gem::Version.new(dep[:version])
