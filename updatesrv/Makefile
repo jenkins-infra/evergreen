@@ -12,6 +12,9 @@ depends: Gemfile
 docs: depends
 	$(RUBY) bundle exec yard
 
+run:
+	PORTS="-p 9292:9292" $(RUBY) bundle exec puma -t 1 -b tcp://0.0.0.0:9292
+
 clean:
 	rm -rf vendor/
 
