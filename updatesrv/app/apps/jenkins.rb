@@ -22,6 +22,7 @@ module Updatesrv
       ESSENTIALS = [
         :git,
         :junit,
+        :'workflow-aggregator',
       ].freeze
 
       CORE_URL = 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war'.freeze
