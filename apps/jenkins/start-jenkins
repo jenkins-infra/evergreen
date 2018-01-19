@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+mkdir -p /usr/share/jenkins/ref/plugins
+
+echo ">> Checking with the Evergreen Update Service.."
+curl -q \
+      -H "Content-Type: json" \
+      -X POST \
+      -d "$(/usr/share/jenkins/prepare-manifest)"  \
+      ${EVERGREEN_UPDATESRV}/check/jenkins | /usr/share/jenkins/perform-updates
+echo ">> Starting Jenkins..."
+exec /usr/local/bin/jenkins.sh
