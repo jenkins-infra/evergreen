@@ -6,7 +6,12 @@ import urllib
 
 def main():
     manifest = json.loads(sys.stdin.read())
-    print manifest
+
+    # If we have a new core .war, then we should download that as well
+    if manifest['core'] and manifest['core']['url']:
+        print 'Updating the core'
+        urllib.urlretrieve(manifest['core']['url'],
+                '/usr/share/jenkins/jenkins.war')
 
     for plugin in manifest["plugins"]:
         print "Need to update %s to %s" % (plugin['name'], plugin['version'])
