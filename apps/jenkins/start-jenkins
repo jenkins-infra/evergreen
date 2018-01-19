@@ -11,4 +11,4 @@ curl -q \
       -d "$(/usr/share/jenkins/prepare-manifest)"  \
       ${EVERGREEN_UPDATESRV}/check/jenkins | /usr/share/jenkins/perform-updates
 echo ">> Starting Jenkins..."
-exec su -c /usr/local/bin/jenkins.sh jenkins
+exec su -p -c /usr/local/bin/jenkins.sh jenkins
