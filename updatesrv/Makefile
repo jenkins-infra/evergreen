@@ -1,6 +1,7 @@
 RUBY:=../tools/ruby
+IMAGE_NAME:=rtyler/evergreen-updatesrv
 
-all: check docs
+all: check docs container
 
 check: depends
 	$(RUBY) bundle exec rspec -t ~type:integration
@@ -15,8 +16,11 @@ docs: depends
 run:
 	PORTS="-p 9292:9292" $(RUBY) bundle exec puma -t 1 -b tcp://0.0.0.0:9292
 
+container: depends check Dockerfile
+	docker build -t $(IMAGE_NAME):latest .
+
 clean:
 	rm -rf vendor/
 
 
-.PHONY: all check clean depends
+.PHONY: all check clean container depends
