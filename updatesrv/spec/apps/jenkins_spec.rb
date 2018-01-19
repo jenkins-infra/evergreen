@@ -66,6 +66,152 @@ describe Updatesrv::Apps::Jenkins do
       end
     end
   end
+
+  context '#resolve_dependencies_for' do
+    let(:response) { subject.resolve_dependencies_for(plugin, manifest, update_center) }
+
+    let(:plugin) { nil }
+    let(:manifest) do
+      {
+        :core => 'md5sum',
+        :plugins => {
+          :essential => {
+          }
+        },
+      }
+    end
+    let(:update_center) do
+      {
+        :plugins => {},
+      }
+    end
+
+    context 'an update_center which lacks the plugin' do
+      let(:update_center) do
+        {
+          :plugins => {},
+        }
+      end
+      it 'should return nil' do
+        expect(response).to be_nil
+      end
+    end
+
+    context 'a plugin with dependencies' do
+      let(:plugin) { :rspec }
+      let(:update_center) do
+        {
+          :plugins => {
+            :tdd => {
+              :url => 'http://example.com/tdd',
+              :version => '0.1.0',
+              :name => 'tdd',
+            },
+            plugin => {
+              :url => 'http://example.com',
+              :version => '0.0.2',
+              :name => 'rspec',
+              :dependencies => [
+                {
+                  :name => 'tdd',
+                  :version => '0.1.0',
+                  :optional => false,
+                }
+              ],
+            },
+          }
+        }
+      end
+
+      context 'with no prior version in the supplied manifest' do
+        it 'should return a list containing just both plugins' do
+          expect(response).to be_kind_of Array
+          expect(response.size).to eql(2)
+        end
+      end
+
+      context 'if those dependencies are optional' do
+        it 'should not include those dependencies' do
+          update_center[:plugins][plugin][:dependencies][0][:optional] = true
+          expect(response).to be_kind_of Array
+          expect(response.size).to eql(1)
+          expect(response.first[:name]).to eql(plugin)
+        end
+      end
+
+      context 'with second level dependencies' do
+        it 'should return a list containing the full depth of dependencies' do
+          depend = {
+            :url => 'http://example.com/cukes',
+            :version => '1.0.0',
+            :name => 'cukes',
+          }
+          depends = [{:name => 'cukes', :optional => false, :version => '1.0.0'}]
+          update_center[:plugins][:cukes] = depend
+          update_center[:plugins][:tdd][:dependencies] = depends
+
+          expect(response).to be_kind_of Array
+          expect(response.size).to eql(3)
+        end
+      end
+
+    end
+
+    context 'a plugin with no dependencies' do
+      let(:plugin) { :rspec }
+      let(:update_center) do
+        {
+          :plugins => {
+            plugin => {
+              :url => 'http://example.com',
+              :version => '0.0.2',
+              :name => 'rspec',
+            },
+          }
+        }
+      end
+
+      context 'with no prior version in the supplied manifest' do
+        it 'should return a list containing just one plugin' do
+          expect(response).to be_kind_of Array
+          expect(response.size).to eql(1)
+        end
+      end
+
+      context 'with a prior, lesser, version in the manifest' do
+        let(:manifest) do
+          {
+            :core => 'md5sum',
+            :plugins => {
+              :essential => {
+                :rspec => '0.0.1'
+              }
+            },
+          }
+        end
+        it 'should return a list containing just one plugin' do
+          expect(response).to be_kind_of Array
+          expect(response.size).to eql(1)
+        end
+      end
+
+      context 'with a prior, greater, version in the manifest' do
+        let(:manifest) do
+          {
+            :core => 'md5sum',
+            :plugins => {
+              :essential => {
+                :rspec => '1.0.0'
+              }
+            },
+          }
+        end
+        it 'should return nil' do
+          expect(response).to be_nil
+        end
+      end
+    end
+  end
 end
 
 class MockDownloader

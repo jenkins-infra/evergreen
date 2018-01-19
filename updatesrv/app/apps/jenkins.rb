@@ -141,49 +141,47 @@ module Updatesrv
         end
 
         provided = manifest[:plugins][:essential]
+        plugins = []
         ESSENTIALS.each do |essential|
-          updated = current_uc[:plugins][essential]
-          # TODO: log this as a warning
-          next unless updated
+          dependencies = resolve_dependencies_for(essential, manifest, current_uc)
+          next if dependencies.nil?
+          plugins = plugins + dependencies
+        end
+        # Since we're lazily adding dependencies, filter out duplicates
+        update.plugins = plugins.uniq { |p| p[:name] }
+        return update
+      end
 
-          should_update = true
-          if provided
-            version = provided[essential]
-            should_update = Gem::Version.new(version) < Gem::Version.new(updated[:version])
-          end
+      def resolve_dependencies_for(plugin, manifest, update_center)
+        latest = update_center[:plugins][plugin]
+        # TODO: Log the lack of a latest version as a warning
+        return nil unless latest
+        response = []
 
-          if should_update
-            update.plugins << {
-              :name => essential,
-              :version => updated[:version],
-              :url => updated[:url],
-            }
-
-            # if we should update, then that means we should also check
-            # dependency versions
-            if depends = updated[:dependencies]
-              depends.each do |dep|
-                should_update_depend = !dep[:optional]
-                dep_name = dep[:name].to_sym
-                if provided && provided[dep_name]
-                  should_update_depend = Gem::Version.new(provided[dep_name]) < Gem::Version.new(dep[:version])
-                end
-
-                if should_update_depend
-                  update.plugins << {
-                    :name => dep_name,
-                    :version => current_uc[:plugins][dep_name][:version],
-                    :url => current_uc[:plugins][dep_name][:url],
-                  }
-                end
-              end
-            end
+        if dependencies = latest[:dependencies]
+          dependencies.each do |depends|
+            next if depends[:optional]
+            tree = resolve_dependencies_for(depends[:name].to_sym,
+                                            manifest,
+                                            update_center)
+            next if tree.nil?
+            response = response + tree
           end
         end
 
-        # Since we're lazily adding dependencies, filter out duplicates
-        update.plugins.uniq! { |p| p[:name] }
-        return update
+        prior = nil
+        if manifest[:plugins] && manifest[:plugins][:essential]
+          prior = manifest[:plugins][:essential][plugin]
+        end
+        if prior.nil? || (Gem::Version.new(prior) < Gem::Version.new(latest[:version]))
+          response << {
+              :name => plugin,
+              :version => latest[:version],
+              :url => latest[:url],
+            }
+        end
+
+        return response unless response.empty?
       end
 
       # Return the time of the last update from the upstream distribution
