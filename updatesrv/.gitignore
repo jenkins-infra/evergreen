@@ -1,3 +1,5 @@
 vendor/
 Gemfile.lock
 reports/
+.yardoc/
+doc/
