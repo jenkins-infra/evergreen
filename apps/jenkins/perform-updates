@@ -15,7 +15,7 @@ def main():
 
     for plugin in manifest["plugins"]:
         print "Need to update %s to %s" % (plugin['name'], plugin['version'])
-        urllib.urlretrieve(plugin['url'], '/usr/share/jenkins/ref/plugins/%s.jpi' % plugin['name'])
+        urllib.urlretrieve(plugin['url'], '/var/jenkins_home/plugins/%s.jpi' % plugin['name'])
 
 
 if __name__ == '__main__':

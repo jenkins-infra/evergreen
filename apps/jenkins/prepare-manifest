@@ -3,6 +3,7 @@
 import glob
 import hashlib
 import json
+import os.path
 import re
 import zipfile
 
@@ -10,13 +11,15 @@ def main():
     core = hashlib.md5(open('/usr/share/jenkins/jenkins.war', 'rb+').read()).hexdigest()
     plugins = {}
 
-    for plugin in glob.glob('/usr/share/jenkins/ref/plugins/*.jpi'):
-        with zipfile.ZipFile(plugin, 'r') as z:
-            with z.open('META-INF/MANIFEST.MF', 'r') as m:
-                mf = m.read()
-                ident = re.search(r'Extension-Name: (?P<ident>.*)\r\n', mf).group(1)
-                version = re.search(r'Plugin-Version: (?P<version>.*)\r\n', mf).group(1)
-                plugins[ident] = version
+    plugin_dir = '/var/jenkins_home/plugins'
+    if os.path.exists(plugin_dir):
+        for plugin in glob.glob('%s/*.jpi' % plugin_dir):
+            with zipfile.ZipFile(plugin, 'r') as z:
+                with z.open('META-INF/MANIFEST.MF', 'r') as m:
+                    mf = m.read()
+                    ident = re.search(r'Extension-Name: (?P<ident>.*)\r\n', mf).group(1)
+                    version = re.search(r'Plugin-Version: (?P<version>.*)\r\n', mf).group(1)
+                    plugins[ident] = version
 
     manifest = {
         'core' : core,

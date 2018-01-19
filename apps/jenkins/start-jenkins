@@ -2,7 +2,7 @@
 
 set -e
 
-mkdir -p /usr/share/jenkins/ref/plugins
+mkdir -p /var/jenkins_home/plugins
 
 echo ">> Checking with the Evergreen Update Service.."
 curl -q \
