@@ -6,7 +6,7 @@ USER root
 RUN apk add --no-cache \
         supervisor
 
-ENV EVERGREEN_UPDATESRV=http://127.0.0.1:9292
+ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 
 COPY prepare-manifest /usr/share/jenkins
 COPY perform-updates /usr/share/jenkins

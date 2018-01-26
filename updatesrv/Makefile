@@ -14,7 +14,7 @@ docs: depends
 	$(RUBY) bundle exec yard
 
 run:
-	PORTS="-p 9292:9292" $(RUBY) bundle exec puma -t 1 -b tcp://0.0.0.0:9292
+	PORTS="-p 9292:9292" $(RUBY) bundle exec rackup -s thin -o 0.0.0.0 -p 9292
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .

@@ -11,7 +11,7 @@ curl -q \
       -H "Content-Type: json" \
       -X POST \
       -d "$(/usr/share/jenkins/prepare-manifest)"  \
-      ${EVERGREEN_UPDATESRV}/check/jenkins | /usr/share/jenkins/perform-updates
+      ${EVERGREEN_ENDPOINT}/check/jenkins | /usr/share/jenkins/perform-updates
 echo ">> Starting Jenkins..."
 export COPY_REFERENCE_FILE_LOG=$JENKINS_HOME/copy_reference_file.log
 chown -R $JENKINS_USER $JENKINS_HOME
