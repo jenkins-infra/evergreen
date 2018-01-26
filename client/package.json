@@ -13,6 +13,7 @@
     "mocha": "^5.0.0"
   },
   "dependencies": {
-    "eventsource": "^1.0.5"
+    "eventsource": "^1.0.5",
+    "xmlrpc": "^1.3.2"
   }
 }

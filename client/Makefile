@@ -8,6 +8,7 @@ check: depends
 depends: package.json
 
 run:
+	$(NODE) npm run client
 
 clean:
 	rm -rf vendor/
