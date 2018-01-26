@@ -4,6 +4,7 @@ require 'sinatra/base'
 require 'sinatra/json'
 require 'thread'
 
+require 'app/pusher'
 require 'app/updates/jenkins'
 
 module Updates
@@ -21,33 +22,15 @@ module Updates
     end
 
     get '/' do
-      settings.connections.each do |conn|
-        m = "data: #{Time.now.utc}\n\n"
-        puts m
-        conn << m
-      end
+      Pusher::Q.push({:data => 'hello world'})
 
       'Evergreen Update Service'
     end
 
     get '/health' do
       content_type :json
-      response = { :updatesrv => :ok, :apps => {} }
-      @apps.each_pair do |name, app|
-        response[:apps][name] = app.last_refreshed?
-      end
+      response = { :status => :ok }
       json response
-    end
-
-    get '/sse', :provides => 'text/event-stream' do
-      stream(:keep_open) do |conn|
-        puts "Received conn: #{conn}"
-        settings.connections.reject! do |c|
-          puts "rejecting #{c}" if c.closed?
-          c.closed?
-        end
-        settings.connections << conn
-      end
     end
 
     post '/check/:app' do |app|

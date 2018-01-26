@@ -1,10 +1,35 @@
 require 'concurrent/array'
 require 'sinatra/base'
 require 'sinatra/json'
+require 'thread'
+
 
 module Pusher
+  class InProcessQueue < Queue
+  end
+
+  Q     = InProcessQueue.new
+  CONNS = Concurrent::Array.new
+
+  PROXY = Thread.new do |t|
+    while item = Q.pop
+      CONNS.each do |c|
+        next if c.closed?
+
+        if item[:id]
+          c << "id: #{item[:id]}\n"
+        end
+
+        if item[:event]
+          c << "event: #{item[:event]}\n"
+        end
+
+        c << "data: #{item[:data]}\n\n"
+      end
+    end
+  end
+
   class App < Sinatra::Base
-    set :connections => Concurrent::Array.new
     set :show_exceptions => true
 
     get '/health' do
@@ -18,11 +43,8 @@ module Pusher
     get '/', :provides => 'text/event-stream' do
       stream(:keep_open) do |conn|
         puts "Received conn: #{conn}"
-        settings.connections.reject! do |c|
-          puts "rejecting #{c}" if c.closed?
-          c.closed?
-        end
-        settings.connections << conn
+        CONNS.reject! { |c| c.closed? }
+        CONNS << conn
       end
     end
   end
