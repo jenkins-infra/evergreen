@@ -21,9 +21,17 @@ module Updates
       @apps = Thread.current[:apps]
     end
 
-    get '/' do
-      Pusher::Q.push({:data => 'hello world'})
+    get '/restart' do
+      content_type :json
+      payload = {
+        :data => Time.now.utc.iso8601,
+        :event => 'restart'
+      }
+      Pusher::Q.push(payload)
+      json payload
+    end
 
+    get '/' do
       'Evergreen Update Service'
     end
 
