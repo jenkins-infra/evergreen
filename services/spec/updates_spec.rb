@@ -22,7 +22,6 @@ describe Updates::App do
 
   it 'should have a /health endpoint' do
     get '/health'
-    puts last_response.body[0 .. 400]
     expect(last_response).to be_ok
   end
 

@@ -10,3 +10,7 @@ use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
 map '/updates' do
   run Updates::App
 end
+
+map '/sse' do
+  run Pusher::App
+end
