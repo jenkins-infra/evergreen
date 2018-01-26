@@ -1,20 +1,20 @@
 require 'concurrent/array'
-require 'concurrent/hash'
 require 'hashie'
 require 'sinatra/base'
 require 'sinatra/json'
 require 'thread'
 
-require 'apps/jenkins'
+require 'app/updates/jenkins'
 
-module Updatesrv
+module Updates
   class App < Sinatra::Base
     set :connections => Concurrent::Array.new
+    set :show_exceptions => true
 
     before do
       if Thread.current[:apps].nil?
         Thread.current[:apps] = {
-          :jenkins => Apps::Jenkins.new
+          :jenkins => Updates::Jenkins.new
         }
       end
       @apps = Thread.current[:apps]

@@ -1,8 +1,8 @@
 JENKINS_CONTAINER:=jenkins/evergreen
 
-all: check
+all: check container
 
-check: container
+check:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 

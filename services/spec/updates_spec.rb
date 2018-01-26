@@ -2,9 +2,9 @@ require 'spec_helper'
 require 'rack/test'
 require 'timecop'
 
-require 'updatesrv'
+require 'app/updates'
 
-describe Updatesrv::App do
+describe Updates::App do
   include Rack::Test::Methods
 
   def app
@@ -22,6 +22,7 @@ describe Updatesrv::App do
 
   it 'should have a /health endpoint' do
     get '/health'
+    puts last_response.body[0 .. 400]
     expect(last_response).to be_ok
   end
 

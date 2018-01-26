@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'apps/jenkins'
+require 'app/updates/jenkins'
 
-describe Updatesrv::Apps::Jenkins do
+describe Updates::Jenkins do
   let(:mock_core_md5) { 'c4ad6cef1b81e8e4dc7a1d66f41f78cd' }
 
   it { should respond_to :last_refreshed? }
@@ -48,7 +48,7 @@ describe Updatesrv::Apps::Jenkins do
       let(:response) { subject.should_update? manifest }
 
       it 'should return a full UpdateManifest' do
-        expect(response).to be_instance_of Updatesrv::Apps::Jenkins::UpdateManifest
+        expect(response).to be_instance_of Updates::Jenkins::UpdateManifest
       end
 
       it 'should include a new core URL' do
@@ -247,7 +247,7 @@ class MockDownloader
   end
 end
 
-describe Updatesrv::Apps::Jenkins::UpdateManifest do
+describe Updates::Jenkins::UpdateManifest do
   describe '#to_json' do
     let(:buf) { subject.to_json }
     it 'should encode to a string' do
@@ -260,7 +260,7 @@ describe Updatesrv::Apps::Jenkins::UpdateManifest do
   end
 end
 
-describe Updatesrv::Apps::Jenkins::Downloader, :type => :integration do
+describe Updates::Jenkins::Downloader, :type => :integration do
   it { should respond_to :fetch_core_md5 }
   describe '#fetch_core_md5' do
     let(:md5) { subject.fetch_core_md5 }
