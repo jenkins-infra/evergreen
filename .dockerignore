@@ -1,4 +1,5 @@
 apps/
+client/test
 jenkins.home/
 tools/
 updatesrv/

@@ -9,5 +9,12 @@ RUN apk add --no-cache \
 
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 
+# Prepare the evergreen-client configuration
+RUN mkdir -p /evergreen
+COPY client /evergreen/client
+
+
+# Ensure the supervisord configuration is copied and executed by default such
+# that the Jenkins and evergreen-client processes both execute properly
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
