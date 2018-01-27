@@ -1,0 +1,287 @@
+---
+core: 
+plugins:
+  essential:
+  - id: blueocean
+  - id: buildtriggerbadge
+  - id: git
+  - id: junit
+  - id: mailer
+  - id: ssh-agent
+  - id: subversion
+  - id: timestamper
+  - id: workflow-aggregator
+  versions:
+  - name: ace-editor
+    version: '1.1'
+    url: https://updates.jenkins.io/download/plugins/ace-editor/1.1/ace-editor.hpi
+  - name: apache-httpcomponents-client-4-api
+    version: 4.5.3-2.1
+    url: https://updates.jenkins.io/download/plugins/apache-httpcomponents-client-4-api/4.5.3-2.1/apache-httpcomponents-client-4-api.hpi
+  - name: authentication-tokens
+    version: '1.3'
+    url: https://updates.jenkins.io/download/plugins/authentication-tokens/1.3/authentication-tokens.hpi
+  - name: blueocean
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean/1.4.0/blueocean.hpi
+  - name: blueocean-autofavorite
+    version: 1.2.1
+    url: https://updates.jenkins.io/download/plugins/blueocean-autofavorite/1.2.1/blueocean-autofavorite.hpi
+  - name: blueocean-bitbucket-pipeline
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-bitbucket-pipeline/1.4.0/blueocean-bitbucket-pipeline.hpi
+  - name: blueocean-commons
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-commons/1.4.0/blueocean-commons.hpi
+  - name: blueocean-config
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-config/1.4.0/blueocean-config.hpi
+  - name: blueocean-core-js
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-core-js/1.4.0/blueocean-core-js.hpi
+  - name: blueocean-dashboard
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-dashboard/1.4.0/blueocean-dashboard.hpi
+  - name: blueocean-display-url
+    version: 2.2.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-display-url/2.2.0/blueocean-display-url.hpi
+  - name: blueocean-events
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-events/1.4.0/blueocean-events.hpi
+  - name: blueocean-git-pipeline
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-git-pipeline/1.4.0/blueocean-git-pipeline.hpi
+  - name: blueocean-github-pipeline
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-github-pipeline/1.4.0/blueocean-github-pipeline.hpi
+  - name: blueocean-i18n
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-i18n/1.4.0/blueocean-i18n.hpi
+  - name: blueocean-jira
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-jira/1.4.0/blueocean-jira.hpi
+  - name: blueocean-jwt
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-jwt/1.4.0/blueocean-jwt.hpi
+  - name: blueocean-personalization
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-personalization/1.4.0/blueocean-personalization.hpi
+  - name: blueocean-pipeline-api-impl
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-api-impl/1.4.0/blueocean-pipeline-api-impl.hpi
+  - name: blueocean-pipeline-editor
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-editor/1.4.0/blueocean-pipeline-editor.hpi
+  - name: blueocean-pipeline-scm-api
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-scm-api/1.4.0/blueocean-pipeline-scm-api.hpi
+  - name: blueocean-rest
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-rest/1.4.0/blueocean-rest.hpi
+  - name: blueocean-rest-impl
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-rest-impl/1.4.0/blueocean-rest-impl.hpi
+  - name: blueocean-web
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/blueocean-web/1.4.0/blueocean-web.hpi
+  - name: bouncycastle-api
+    version: 2.16.2
+    url: https://updates.jenkins.io/download/plugins/bouncycastle-api/2.16.2/bouncycastle-api.hpi
+  - name: branch-api
+    version: 2.0.18
+    url: https://updates.jenkins.io/download/plugins/branch-api/2.0.18/branch-api.hpi
+  - name: buildtriggerbadge
+    version: '2.9'
+    url: https://updates.jenkins.io/download/plugins/buildtriggerbadge/2.9/buildtriggerbadge.hpi
+  - name: cloudbees-bitbucket-branch-source
+    version: 2.2.9
+    url: https://updates.jenkins.io/download/plugins/cloudbees-bitbucket-branch-source/2.2.9/cloudbees-bitbucket-branch-source.hpi
+  - name: cloudbees-folder
+    version: '6.3'
+    url: https://updates.jenkins.io/download/plugins/cloudbees-folder/6.3/cloudbees-folder.hpi
+  - name: credentials
+    version: 2.1.16
+    url: https://updates.jenkins.io/download/plugins/credentials/2.1.16/credentials.hpi
+  - name: credentials-binding
+    version: '1.14'
+    url: https://updates.jenkins.io/download/plugins/credentials-binding/1.14/credentials-binding.hpi
+  - name: display-url-api
+    version: 2.2.0
+    url: https://updates.jenkins.io/download/plugins/display-url-api/2.2.0/display-url-api.hpi
+  - name: docker-commons
+    version: '1.11'
+    url: https://updates.jenkins.io/download/plugins/docker-commons/1.11/docker-commons.hpi
+  - name: docker-workflow
+    version: '1.14'
+    url: https://updates.jenkins.io/download/plugins/docker-workflow/1.14/docker-workflow.hpi
+  - name: durable-task
+    version: '1.17'
+    url: https://updates.jenkins.io/download/plugins/durable-task/1.17/durable-task.hpi
+  - name: favorite
+    version: 2.3.1
+    url: https://updates.jenkins.io/download/plugins/favorite/2.3.1/favorite.hpi
+  - name: git
+    version: 3.7.0
+    url: https://updates.jenkins.io/download/plugins/git/3.7.0/git.hpi
+  - name: git-client
+    version: 2.7.1
+    url: https://updates.jenkins.io/download/plugins/git-client/2.7.1/git-client.hpi
+  - name: git-server
+    version: '1.7'
+    url: https://updates.jenkins.io/download/plugins/git-server/1.7/git-server.hpi
+  - name: github
+    version: 1.29.0
+    url: https://updates.jenkins.io/download/plugins/github/1.29.0/github.hpi
+  - name: github-api
+    version: '1.90'
+    url: https://updates.jenkins.io/download/plugins/github-api/1.90/github-api.hpi
+  - name: github-branch-source
+    version: 2.3.2
+    url: https://updates.jenkins.io/download/plugins/github-branch-source/2.3.2/github-branch-source.hpi
+  - name: handlebars
+    version: 1.1.1
+    url: https://updates.jenkins.io/download/plugins/handlebars/1.1.1/handlebars.hpi
+  - name: handy-uri-templates-2-api
+    version: 2.1.6-1.0
+    url: https://updates.jenkins.io/download/plugins/handy-uri-templates-2-api/2.1.6-1.0/handy-uri-templates-2-api.hpi
+  - name: htmlpublisher
+    version: '1.14'
+    url: https://updates.jenkins.io/download/plugins/htmlpublisher/1.14/htmlpublisher.hpi
+  - name: jackson2-api
+    version: 2.8.10.1
+    url: https://updates.jenkins.io/download/plugins/jackson2-api/2.8.10.1/jackson2-api.hpi
+  - name: jenkins-design-language
+    version: 1.4.0
+    url: https://updates.jenkins.io/download/plugins/jenkins-design-language/1.4.0/jenkins-design-language.hpi
+  - name: jira
+    version: 2.5.1
+    url: https://updates.jenkins.io/download/plugins/jira/2.5.1/jira.hpi
+  - name: jquery-detached
+    version: 1.2.1
+    url: https://updates.jenkins.io/download/plugins/jquery-detached/1.2.1/jquery-detached.hpi
+  - name: jsch
+    version: 0.1.54.1
+    url: https://updates.jenkins.io/download/plugins/jsch/0.1.54.1/jsch.hpi
+  - name: junit
+    version: '1.23'
+    url: https://updates.jenkins.io/download/plugins/junit/1.23/junit.hpi
+  - name: mailer
+    version: '1.20'
+    url: https://updates.jenkins.io/download/plugins/mailer/1.20/mailer.hpi
+  - name: mapdb-api
+    version: 1.0.9.0
+    url: https://updates.jenkins.io/download/plugins/mapdb-api/1.0.9.0/mapdb-api.hpi
+  - name: matrix-project
+    version: '1.12'
+    url: https://updates.jenkins.io/download/plugins/matrix-project/1.12/matrix-project.hpi
+  - name: mercurial
+    version: '2.2'
+    url: https://updates.jenkins.io/download/plugins/mercurial/2.2/mercurial.hpi
+  - name: momentjs
+    version: 1.1.1
+    url: https://updates.jenkins.io/download/plugins/momentjs/1.1.1/momentjs.hpi
+  - name: pipeline-build-step
+    version: '2.7'
+    url: https://updates.jenkins.io/download/plugins/pipeline-build-step/2.7/pipeline-build-step.hpi
+  - name: pipeline-graph-analysis
+    version: '1.6'
+    url: https://updates.jenkins.io/download/plugins/pipeline-graph-analysis/1.6/pipeline-graph-analysis.hpi
+  - name: pipeline-input-step
+    version: '2.8'
+    url: https://updates.jenkins.io/download/plugins/pipeline-input-step/2.8/pipeline-input-step.hpi
+  - name: pipeline-milestone-step
+    version: 1.3.1
+    url: https://updates.jenkins.io/download/plugins/pipeline-milestone-step/1.3.1/pipeline-milestone-step.hpi
+  - name: pipeline-model-api
+    version: 1.2.6
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-api/1.2.6/pipeline-model-api.hpi
+  - name: pipeline-model-declarative-agent
+    version: 1.1.1
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-declarative-agent/1.1.1/pipeline-model-declarative-agent.hpi
+  - name: pipeline-model-definition
+    version: 1.2.6
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-definition/1.2.6/pipeline-model-definition.hpi
+  - name: pipeline-model-extensions
+    version: 1.2.6
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-extensions/1.2.6/pipeline-model-extensions.hpi
+  - name: pipeline-rest-api
+    version: '2.9'
+    url: https://updates.jenkins.io/download/plugins/pipeline-rest-api/2.9/pipeline-rest-api.hpi
+  - name: pipeline-stage-step
+    version: '2.3'
+    url: https://updates.jenkins.io/download/plugins/pipeline-stage-step/2.3/pipeline-stage-step.hpi
+  - name: pipeline-stage-tags-metadata
+    version: 1.2.6
+    url: https://updates.jenkins.io/download/plugins/pipeline-stage-tags-metadata/1.2.6/pipeline-stage-tags-metadata.hpi
+  - name: pipeline-stage-view
+    version: '2.9'
+    url: https://updates.jenkins.io/download/plugins/pipeline-stage-view/2.9/pipeline-stage-view.hpi
+  - name: plain-credentials
+    version: '1.4'
+    url: https://updates.jenkins.io/download/plugins/plain-credentials/1.4/plain-credentials.hpi
+  - name: pubsub-light
+    version: '1.12'
+    url: https://updates.jenkins.io/download/plugins/pubsub-light/1.12/pubsub-light.hpi
+  - name: scm-api
+    version: 2.2.6
+    url: https://updates.jenkins.io/download/plugins/scm-api/2.2.6/scm-api.hpi
+  - name: script-security
+    version: '1.40'
+    url: https://updates.jenkins.io/download/plugins/script-security/1.40/script-security.hpi
+  - name: sse-gateway
+    version: '1.15'
+    url: https://updates.jenkins.io/download/plugins/sse-gateway/1.15/sse-gateway.hpi
+  - name: ssh-agent
+    version: '1.15'
+    url: https://updates.jenkins.io/download/plugins/ssh-agent/1.15/ssh-agent.hpi
+  - name: ssh-credentials
+    version: '1.13'
+    url: https://updates.jenkins.io/download/plugins/ssh-credentials/1.13/ssh-credentials.hpi
+  - name: structs
+    version: '1.10'
+    url: https://updates.jenkins.io/download/plugins/structs/1.10/structs.hpi
+  - name: subversion
+    version: 2.10.2
+    url: https://updates.jenkins.io/download/plugins/subversion/2.10.2/subversion.hpi
+  - name: timestamper
+    version: 1.8.9
+    url: https://updates.jenkins.io/download/plugins/timestamper/1.8.9/timestamper.hpi
+  - name: token-macro
+    version: '2.3'
+    url: https://updates.jenkins.io/download/plugins/token-macro/2.3/token-macro.hpi
+  - name: variant
+    version: '1.1'
+    url: https://updates.jenkins.io/download/plugins/variant/1.1/variant.hpi
+  - name: workflow-aggregator
+    version: '2.5'
+    url: https://updates.jenkins.io/download/plugins/workflow-aggregator/2.5/workflow-aggregator.hpi
+  - name: workflow-api
+    version: '2.25'
+    url: https://updates.jenkins.io/download/plugins/workflow-api/2.25/workflow-api.hpi
+  - name: workflow-basic-steps
+    version: '2.6'
+    url: https://updates.jenkins.io/download/plugins/workflow-basic-steps/2.6/workflow-basic-steps.hpi
+  - name: workflow-cps
+    version: '2.43'
+    url: https://updates.jenkins.io/download/plugins/workflow-cps/2.43/workflow-cps.hpi
+  - name: workflow-cps-global-lib
+    version: '2.9'
+    url: https://updates.jenkins.io/download/plugins/workflow-cps-global-lib/2.9/workflow-cps-global-lib.hpi
+  - name: workflow-durable-task-step
+    version: '2.18'
+    url: https://updates.jenkins.io/download/plugins/workflow-durable-task-step/2.18/workflow-durable-task-step.hpi
+  - name: workflow-job
+    version: '2.17'
+    url: https://updates.jenkins.io/download/plugins/workflow-job/2.17/workflow-job.hpi
+  - name: workflow-multibranch
+    version: '2.17'
+    url: https://updates.jenkins.io/download/plugins/workflow-multibranch/2.17/workflow-multibranch.hpi
+  - name: workflow-scm-step
+    version: '2.6'
+    url: https://updates.jenkins.io/download/plugins/workflow-scm-step/2.6/workflow-scm-step.hpi
+  - name: workflow-step-api
+    version: '2.14'
+    url: https://updates.jenkins.io/download/plugins/workflow-step-api/2.14/workflow-step-api.hpi
+  - name: workflow-support
+    version: '2.17'
+    url: https://updates.jenkins.io/download/plugins/workflow-support/2.17/workflow-support.hpi

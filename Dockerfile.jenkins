@@ -12,6 +12,7 @@ ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 # Prepare the evergreen-client configuration
 RUN mkdir -p /evergreen
 COPY client /evergreen/client
+COPY essentials.yaml /evergreen
 
 
 # Ensure the supervisord configuration is copied and executed by default such
