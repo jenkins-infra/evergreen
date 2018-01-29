@@ -7,7 +7,7 @@ check:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 
-container: Dockerfile.jenkins supervisord.conf
+container: Dockerfile.jenkins supervisord.conf fetch-versions
 	docker build -f Dockerfile.jenkins \
 		-t ${JENKINS_CONTAINER}:latest .
 
