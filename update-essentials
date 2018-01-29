@@ -27,6 +27,7 @@ def resolve_dependencies_for(plugin, update_center)
   response << {
       'name' => plugin,
       'version' => latest['version'],
+      'gav' => latest['gav'],
       'url' => latest['url'].gsub('http://updates.jenkins-ci.org',
                                   'https://updates.jenkins.io')
   }
