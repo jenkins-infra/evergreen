@@ -1,0 +1,27 @@
+= Evergreen
+
+Evergreen is an automatically updating rolling distribution system for
+"<<essentials>>." It consists of server-side, and client-side components to
+support a Chrome-like upgrade experience for Jenkins users.
+
+
+[[essentials]]
+== Jenkins Essentials
+Jenkins Essentials provides the end-user with a
+pre-assembled collection of legos that can be immediately used to implement CI
+footnoteref:[ci, https://en.wikipedia.org/wiki/Continuous_integration]
+and CD
+footnoteref:[cd, https://en.wikipedia.org/wiki/Continuous_delivery] workloads.
+At the same time, this focus on end-users success in these well-defined scenarios
+will help the Jenkins project develop new features, and fix
+bugs, more rapidly than before.
+
+
+== Hacking
+
+Backend services are written in Ruby, while the client-side is a mix of
+standard Jenkins components and Node.js.
+
+Everything should be easily executed via some Docker tooling behind `make`. To
+run tests for example, simply run `make check` in the root directory of this
+repository.
