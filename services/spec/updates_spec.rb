@@ -26,9 +26,9 @@ describe Updates::App do
   end
 
   context 'checking for updates' do
-    context 'HEAD /check/jenkins' do
+    context 'HEAD /validate/jenkins' do
       before :each do
-        head '/check/jenkins'
+        head '/validate/jenkins'
       end
 
       it 'should set Last-Modified to now by default' do
@@ -37,9 +37,9 @@ describe Updates::App do
       end
     end
 
-    context 'POST /check/jenkins' do
+    context 'POST /validate/jenkins' do
       context 'with an empty payload' do
-        before { post '/check/jenkins' }
+        before { post '/validate/jenkins' }
 
         it 'should 400' do
           expect(last_response.status).to eql(400)
@@ -60,7 +60,7 @@ describe Updates::App do
         end
 
         before :each do
-          post('/check/jenkins', JSON.dump(json), {'CONTENT_TYPE' => 'application/json' })
+          post('/validate/jenkins', JSON.dump(json), {'CONTENT_TYPE' => 'application/json' })
         end
 
         it 'should 200' do

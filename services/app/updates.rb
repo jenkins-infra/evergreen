@@ -41,7 +41,7 @@ module Updates
       json response
     end
 
-    post '/check/:app' do |app|
+    post '/validate/:app' do |app|
       content_type :json
 
       if updater = @apps[app.to_sym]
@@ -57,7 +57,7 @@ module Updates
       end
     end
 
-    head '/check/:app' do |app|
+    head '/validate/:app' do |app|
       content_type :json
 
       if updater = @apps[app.to_sym]
