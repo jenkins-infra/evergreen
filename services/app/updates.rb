@@ -9,8 +9,9 @@ require 'app/updates/jenkins'
 
 module Updates
   class App < Sinatra::Base
-    set :connections => Concurrent::Array.new
     set :show_exceptions => true
+    set :views, File.expand_path(File.dirname(__FILE__) + '/../views/updates/')
+    set :haml, :format => :html5
 
     before do
       if Thread.current[:apps].nil?
@@ -21,18 +22,8 @@ module Updates
       @apps = Thread.current[:apps]
     end
 
-    get '/restart' do
-      content_type :json
-      payload = {
-        :data => Time.now.utc.iso8601,
-        :event => 'restart'
-      }
-      Pusher::Q.push(payload)
-      json payload
-    end
-
     get '/' do
-      'Evergreen Update Service'
+      haml :index
     end
 
     get '/health' do

@@ -31,6 +31,9 @@ module Pusher
 
   class App < Sinatra::Base
     set :show_exceptions => true
+    set :show_exceptions => true
+    set :views, File.expand_path(File.dirname(__FILE__) + '/../views/pusher/')
+    set :haml, :format => :html5
 
     get '/health' do
       content_type :json
@@ -40,7 +43,13 @@ module Pusher
       json response
     end
 
-    get '/', :provides => 'text/event-stream' do
+    get '/' do
+      haml :index, :locals => {
+        :connections => CONNS
+      }
+    end
+
+    get '/stream', :provides => 'text/event-stream' do
       stream(:keep_open) do |conn|
         puts "Received conn: #{conn}"
         CONNS.reject! { |c| c.closed? }

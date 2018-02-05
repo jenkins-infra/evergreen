@@ -1,14 +1,26 @@
 source 'https://rubygems.org'
 
 gem 'concurrent-ruby'
+
+# HTTP client for grabbing external resources
 gem 'faraday'
 gem 'faraday_middleware'
+
+# Used for templating HTML pages
+gem 'haml'
 gem 'hashie'
+
 gem 'mini_cache'
+
+# Used for passing some basic HTML pages here and there
 gem 'nokogiri'
-gem 'puma'
+
+# Rack webserver used, necessary to support the Sinatra streaming functionality
+# necessary to support Pusher
 gem 'thin'
+
 gem 'sentry-raven'
+
 gem 'sinatra'
 gem 'sinatra-contrib'
 

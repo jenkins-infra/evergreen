@@ -7,7 +7,7 @@ const supervisor  = require('./lib/supervisor.js')
 const ENDPOINT    = process.env.EVERGREEN_ENDPOINT;
 console.debug('Using the Evergreen endpoint:', ENDPOINT);
 
-const sse = new EventSource(util.format('%s/sse', ENDPOINT));
+const sse = new EventSource(util.format('%s/sse/stream', ENDPOINT));
 console.debug('EventSource created', sse);
 
 /* First set up a generic event handler.

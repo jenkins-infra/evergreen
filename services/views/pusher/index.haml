@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %title
+      Evergreen Pusher Service
+  %body
+    .container
+      .row
+        %center
+          %h1
+            Evergreen Pusher Service
+      .row
+        .col-lg-12
+          %strong
+            Connections
+          %table
+            %tr
+              %th
+                ID
+              %th
+                Closed?
+            - connections.each do |c|
+              %tr
+                %td
+                  = c.object_id
+                %td
+                  = c.closed?
+
