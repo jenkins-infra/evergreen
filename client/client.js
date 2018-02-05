@@ -22,8 +22,13 @@ sse.onmessage = function(ev) {
 
 /* Types of Commands we can process */
 ['ping', 'update', 'flags', 'logs'].map((command) => {
-    console.debug('Adding SSE event listener for', command);
+  sse.addEventListener(command, (ev) => {
+    console.log('-->', command);
+    console.log(ev);
+  });
+  console.debug('Adding SSE event listener for', command);
 });
+
 
 sse.addEventListener('restart', (ev) => {
   console.log(ev);

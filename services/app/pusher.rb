@@ -15,6 +15,7 @@ module Pusher
     while item = Q.pop
       CONNS.each do |c|
         next if c.closed?
+        puts "Sending #{item} to conn #{c}"
 
         if item[:id]
           c << "id: #{item[:id]}\n"
