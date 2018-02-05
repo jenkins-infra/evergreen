@@ -16,13 +16,14 @@
           %table
             %tr
               %th
+
                 ID
               %th
                 Closed?
             - connections.each do |c|
               %tr
                 %td
-                  = c.object_id
+                  = c.id
                 %td
                   = c.closed?
 

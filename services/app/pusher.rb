@@ -8,6 +8,25 @@ module Pusher
   class InProcessQueue < Queue
   end
 
+  class Connection
+    attr_reader :id, :stream
+
+    def initialize(identifier, stream)
+      @id = identifier
+      @stream = stream
+    end
+
+    def closed?
+      return true if stream.nil?
+      return stream.closed?
+    end
+
+    def write(buffer)
+      return false if closed?
+      stream << buffer
+    end
+  end
+
   Q     = InProcessQueue.new
   CONNS = Concurrent::Array.new
 
@@ -18,14 +37,14 @@ module Pusher
         puts "Sending #{item} to conn #{c}"
 
         if item[:id]
-          c << "id: #{item[:id]}\n"
+          c.write("id: #{item[:id]}\n")
         end
 
         if item[:event]
-          c << "event: #{item[:event]}\n"
+          c.write("event: #{item[:event]}\n")
         end
 
-        c << "data: #{item[:data]}\n\n"
+        c.write("data: #{item[:data]}\n\n")
       end
     end
   end
@@ -50,11 +69,11 @@ module Pusher
       }
     end
 
-    get '/stream', :provides => 'text/event-stream' do
+    get '/stream/:ident', :provides => 'text/event-stream' do |ident|
       stream(:keep_open) do |conn|
         puts "Received conn: #{conn}"
         CONNS.reject! { |c| c.closed? }
-        CONNS << conn
+        CONNS << Connection.new(ident, conn)
       end
     end
   end
