@@ -3,11 +3,14 @@
 const EventSource = require('eventsource');
 const util        = require('util');
 const supervisor  = require('./lib/supervisor.js')
+const inspector   = require('./lib/inspector.js');
 
 const ENDPOINT    = process.env.EVERGREEN_ENDPOINT;
 console.debug('Using the Evergreen endpoint:', ENDPOINT);
 
-const sse = new EventSource(util.format('%s/sse/stream', ENDPOINT));
+const ident = inspector.identity();
+console.debug('Using the instance identity of:', ident);
+const sse = new EventSource(util.format('%s/sse/stream/%s', ENDPOINT, ident));
 console.debug('EventSource created', sse);
 
 /* First set up a generic event handler.

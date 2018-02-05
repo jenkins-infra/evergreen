@@ -6,7 +6,9 @@
 
 const crypto = require('crypto');
 const fs     = require('fs');
+const uuid   = require('uuid');
 const unzip  = require('unzip');
+const util   = require('util');
 
 /* shamelessly borrowed from
  * https://blog.tompawlak.org/calculate-checksum-hash-nodejs-javascript
@@ -37,8 +39,12 @@ let self = module.exports = {
     return checksum(fs.readFileSync(self.pathToCore()));
   },
 
+  pathToJenkins: function() {
+    return '/var/jenkins_home';
+  },
+
   pathToPlugins: function() {
-    return '/var/jenkins_home/plugins';
+    return self.pathToJenkins() + '/plugins';
   },
 
   pluginFiles: function() {
@@ -82,5 +88,19 @@ let self = module.exports = {
 
     await waiter;
     return info;
+  },
+
+  /*
+   * Return an md5 hash of the identity.key.enc file, we don't actually need
+   * the identity itself, we just need some unique hash to identify this
+   * instance in our request
+   */
+  identity: function() {
+    let identFile = util.format('%s/identity.key.enc', self.pathToJenkins());
+    if (!fs.existsSync(identFile)) {
+      console.warn('Could not locate an identity.key.enc file to use as an identity');
+      return uuid.v1();
+    }
+    return checksum(fs.readFileSync(identFile));
   }
 };

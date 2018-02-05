@@ -34,6 +34,24 @@ describe('The inspector module', function() {
     });
   });
 
+  context('identity', function() {
+    it('should return a unique identitying string', function() {
+      assert(inspector.identity());
+    });
+
+    context('when a JENKINS_HOME is available', function() {
+      beforeEach(function() {
+        simple.mock(inspector, 'pathToJenkins', () => { return 'test/mock-jenkins-home' });
+      });
+      afterEach(function() { simple.restore(); });
+
+      it('should return a md5 hash of the identity.key.enc file', function() {
+        const expected = '9ff14afbcb2c617b58d04cbb67ab06ff';
+        assert.equal(inspector.identity(), expected);
+      });
+    });
+  });
+
   context('pluginFiles', function() {
     it('should return an empty array when there are no plugins', function() {
       let plugins = inspector.pluginFiles();
