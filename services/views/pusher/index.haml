@@ -13,17 +13,31 @@
         .col-lg-12
           %strong
             Connections
-          %table
+          %table{:border => 1}
             %tr
               %th
-
+                Obiect
+              %th
                 ID
               %th
+                Last Connected
+              %th
                 Closed?
-            - connections.each do |c|
+              %th
+                JSON
+            - connections.each_value do |c|
               %tr
+                %td
+                  = c.object_id
                 %td
                   = c.id
                 %td
+                  = c.last_connected_at?
+                %td
                   = c.closed?
+                %td
+                  %details
+                    %pre
+                      %code
+                        = c.to_json(nil)
 

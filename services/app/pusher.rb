@@ -1,4 +1,4 @@
-require 'concurrent/array'
+require 'concurrent/hash'
 require 'sinatra/base'
 require 'sinatra/json'
 require 'thread'
@@ -14,6 +14,7 @@ module Pusher
     def initialize(identifier, stream)
       @id = identifier
       @stream = stream
+      @last_connected = Time.now.utc
     end
 
     def closed?
@@ -21,18 +22,41 @@ module Pusher
       return stream.closed?
     end
 
+    # Only meant to be used when a Connection which already exists
+    # reconnects
+    def stream=(new_stream)
+      @stream = new_stream
+      connected!
+    end
+
     def write(buffer)
       return false if closed?
       stream << buffer
     end
+
+    def last_connected_at?
+      return @last_connected
+    end
+
+    def connected!
+      @last_connected = Time.now.utc
+    end
+
+    def to_json(*a)
+      return {
+        :id => id,
+        :closed => closed?,
+        :last_connected => @last_connected.iso8601,
+      }.to_json(a)
+    end
   end
 
   Q     = InProcessQueue.new
-  CONNS = Concurrent::Array.new
+  CONNS = Concurrent::Hash.new
 
   PROXY = Thread.new do |t|
     while item = Q.pop
-      CONNS.each do |c|
+      CONNS.each_value do |c|
         next if c.closed?
         puts "Sending #{item} to conn #{c}"
 
@@ -51,16 +75,18 @@ module Pusher
 
   class App < Sinatra::Base
     set :show_exceptions => true
-    set :show_exceptions => true
     set :views, File.expand_path(File.dirname(__FILE__) + '/../views/pusher/')
     set :haml, :format => :html5
 
+    # TODO: require API token
     get '/health' do
       content_type :json
-      response = {
-        :status => :ok,
-      }
-      json response
+      json({
+        :data => {
+        },
+        :meta => {
+        },
+      })
     end
 
     get '/' do
@@ -69,11 +95,27 @@ module Pusher
       }
     end
 
+    # TODO: require API token
+    get '/connections' do
+      content_type :json
+
+      json({
+        :data => CONNS,
+        :meta => {
+        },
+      })
+    end
+
     get '/stream/:ident', :provides => 'text/event-stream' do |ident|
       stream(:keep_open) do |conn|
-        puts "Received conn: #{conn}"
-        CONNS.reject! { |c| c.closed? }
-        CONNS << Connection.new(ident, conn)
+        if CONNS.has_key? ident
+          CONNS[ident].stream = conn
+        else
+          # Flush out old connections. As the connection list grows, this will
+          # likely need to be something handled in a separate thread or process
+          CONNS.reject! { |k, c| c.closed? }
+          CONNS[ident] = Connection.new(ident, conn)
+        end
       end
     end
   end
