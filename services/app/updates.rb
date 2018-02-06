@@ -21,7 +21,7 @@ module Updates
         }
       end
       @apps = Thread.current[:apps]
-      @manifest = YAML.load(File.read('essentials.yaml'))
+      @manifest = YAML.load(File.read(File.expand_path(File.dirname(__FILE__) + '/../essentials.yaml')))
     end
 
     get '/' do
