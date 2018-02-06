@@ -2,14 +2,17 @@
 
 const EventSource = require('eventsource');
 const util        = require('util');
+
 const supervisor  = require('./lib/supervisor.js')
 const inspector   = require('./lib/inspector.js');
+const ping        = require('./lib/ping.js');
 
 const ENDPOINT    = process.env.EVERGREEN_ENDPOINT;
 console.debug('Using the Evergreen endpoint:', ENDPOINT);
 
 const ident = inspector.identity();
 console.debug('Using the instance identity of:', ident);
+
 const sse = new EventSource(util.format('%s/sse/stream/%s', ENDPOINT, ident));
 console.debug('EventSource created', sse);
 
@@ -22,9 +25,9 @@ sse.onmessage = function(ev) {
   console.error('Unhandled message from Evergreen:', ev);
 };
 
+ping.addListenerTo(sse);
 
-/* Types of Commands we can process */
-['ping', 'update', 'flags', 'logs'].map((command) => {
+['update', 'flags', 'logs'].map((command) => {
   sse.addEventListener(command, (ev) => {
     console.log('-->', command);
     console.log(ev);

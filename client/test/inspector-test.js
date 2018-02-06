@@ -35,6 +35,10 @@ describe('The inspector module', function() {
   });
 
   context('identity', function() {
+    beforeEach(function() {
+      inspector.resetIdentity();
+    });
+
     it('should return a unique identitying string', function() {
       assert(inspector.identity());
     });

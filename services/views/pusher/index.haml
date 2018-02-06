@@ -16,6 +16,8 @@
           %table{:border => 1}
             %tr
               %th
+                Actions
+              %th
                 Obiect
               %th
                 ID
@@ -27,6 +29,10 @@
                 JSON
             - connections.each_value do |c|
               %tr
+                %td
+                  %form{:method => :POST, :action => "/sse/ping/#{c.id}"}
+                    %button{:type => :submit}
+                      Ping
                 %td
                   = c.object_id
                 %td

@@ -24,6 +24,7 @@ function InspectorError(message) {
 }
 InspectorError.prototype = new Error();
 
+let clientIdentity = null;
 
 let self = module.exports = {
   InspectorError: InspectorError,
@@ -96,11 +97,17 @@ let self = module.exports = {
    * instance in our request
    */
   identity: function() {
+    if (clientIdentity) { return clientIdentity; }
     let identFile = util.format('%s/identity.key.enc', self.pathToJenkins());
     if (!fs.existsSync(identFile)) {
       console.warn('Could not locate an identity.key.enc file to use as an identity');
-      return uuid.v1();
+      clientIdentity = uuid.v1();
     }
-    return checksum(fs.readFileSync(identFile));
-  }
+    else {
+      clientIdentity = checksum(fs.readFileSync(identFile));
+    }
+    return clientIdentity;
+  },
+
+  resetIdentity: function() { clientIdentity = null; }
 };

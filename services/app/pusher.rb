@@ -7,6 +7,13 @@ require 'thread'
 module Pusher
   class InProcessQueue < Queue
   end
+  class Message
+    attr_accessor :id, :event, :data
+
+    def empty?
+      return data.nil?
+    end
+  end
 
   class Connection
     attr_reader :id, :stream
@@ -40,6 +47,22 @@ module Pusher
 
     def connected!
       @last_connected = Time.now.utc
+    end
+
+    def send(message)
+      return false unless message.kind_of? Pusher::Message
+      return false if message.empty?
+
+      if message.id
+        write("id: #{message.id}\n")
+      end
+
+      if message.event
+        write("event: #{message.event}\n")
+      end
+
+      write("data: #{message.data}\n\n")
+      return true
     end
 
     def to_json(*a)
@@ -104,6 +127,28 @@ module Pusher
         :meta => {
         },
       })
+    end
+
+    post '/ping/:ident' do |ident|
+      halt 404 unless CONNS.has_key? ident
+      message = Message.new
+      message.event = :ping
+      message.data = Time.now.utc.iso8601
+
+      if CONNS[ident].send(message)
+        redirect back
+      else
+        status 400
+        'Failed to send'
+      end
+    end
+
+    post '/pong/:ident' do |ident|
+      puts ident
+      puts CONNS
+      halt 404 unless CONNS.has_key? ident
+      connection = CONNS[ident]
+      connection.connected!
     end
 
     get '/stream/:ident', :provides => 'text/event-stream' do |ident|
