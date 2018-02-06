@@ -6,10 +6,11 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/app/')
 require 'pusher'
 require 'updates'
 
-use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
-
 ENV['UPDATES_ENDPOINT'] = '/updates'
 ENV['PUSHER_ENDPOINT'] = '/sse'
+ENV['ASSETS_ENDPOINT'] = '/assets'
+
+use Rack::Static, :urls => ['/assets']
 
 map '/updates' do
   run Updates::App
