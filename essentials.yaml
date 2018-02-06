@@ -133,9 +133,9 @@ plugins:
     gav: org.jenkins-ci.plugins:credentials:2.1.16
     url: https://updates.jenkins.io/download/plugins/credentials/2.1.16/credentials.hpi
   - name: credentials-binding
-    version: '1.14'
-    gav: org.jenkins-ci.plugins:credentials-binding:1.14
-    url: https://updates.jenkins.io/download/plugins/credentials-binding/1.14/credentials-binding.hpi
+    version: '1.15'
+    gav: org.jenkins-ci.plugins:credentials-binding:1.15
+    url: https://updates.jenkins.io/download/plugins/credentials-binding/1.15/credentials-binding.hpi
   - name: display-url-api
     version: 2.2.0
     gav: org.jenkins-ci.plugins:display-url-api:2.2.0
@@ -145,9 +145,9 @@ plugins:
     gav: org.jenkins-ci.plugins:docker-commons:1.11
     url: https://updates.jenkins.io/download/plugins/docker-commons/1.11/docker-commons.hpi
   - name: docker-workflow
-    version: '1.14'
-    gav: org.jenkins-ci.plugins:docker-workflow:1.14
-    url: https://updates.jenkins.io/download/plugins/docker-workflow/1.14/docker-workflow.hpi
+    version: '1.15'
+    gav: org.jenkins-ci.plugins:docker-workflow:1.15
+    url: https://updates.jenkins.io/download/plugins/docker-workflow/1.15/docker-workflow.hpi
   - name: durable-task
     version: '1.17'
     gav: org.jenkins-ci.plugins:durable-task:1.17
@@ -201,9 +201,9 @@ plugins:
     gav: io.jenkins.blueocean:jenkins-design-language:1.4.0
     url: https://updates.jenkins.io/download/plugins/jenkins-design-language/1.4.0/jenkins-design-language.hpi
   - name: jira
-    version: 2.5.1
-    gav: org.jenkins-ci.plugins:jira:2.5.1
-    url: https://updates.jenkins.io/download/plugins/jira/2.5.1/jira.hpi
+    version: '2.5'
+    gav: org.jenkins-ci.plugins:jira:2.5
+    url: https://updates.jenkins.io/download/plugins/jira/2.5/jira.hpi
   - name: jquery-detached
     version: 1.2.1
     gav: org.jenkins-ci.ui:jquery-detached:1.2.1
@@ -213,9 +213,9 @@ plugins:
     gav: org.jenkins-ci.plugins:jsch:0.1.54.1
     url: https://updates.jenkins.io/download/plugins/jsch/0.1.54.1/jsch.hpi
   - name: junit
-    version: '1.23'
-    gav: org.jenkins-ci.plugins:junit:1.23
-    url: https://updates.jenkins.io/download/plugins/junit/1.23/junit.hpi
+    version: '1.24'
+    gav: org.jenkins-ci.plugins:junit:1.24
+    url: https://updates.jenkins.io/download/plugins/junit/1.24/junit.hpi
   - name: mailer
     version: '1.20'
     gav: org.jenkins-ci.plugins:mailer:1.20
@@ -253,21 +253,21 @@ plugins:
     gav: org.jenkins-ci.plugins:pipeline-milestone-step:1.3.1
     url: https://updates.jenkins.io/download/plugins/pipeline-milestone-step/1.3.1/pipeline-milestone-step.hpi
   - name: pipeline-model-api
-    version: 1.2.6
-    gav: org.jenkinsci.plugins:pipeline-model-api:1.2.6
-    url: https://updates.jenkins.io/download/plugins/pipeline-model-api/1.2.6/pipeline-model-api.hpi
+    version: 1.2.7
+    gav: org.jenkinsci.plugins:pipeline-model-api:1.2.7
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-api/1.2.7/pipeline-model-api.hpi
   - name: pipeline-model-declarative-agent
     version: 1.1.1
     gav: org.jenkinsci.plugins:pipeline-model-declarative-agent:1.1.1
     url: https://updates.jenkins.io/download/plugins/pipeline-model-declarative-agent/1.1.1/pipeline-model-declarative-agent.hpi
   - name: pipeline-model-definition
-    version: 1.2.6
-    gav: org.jenkinsci.plugins:pipeline-model-definition:1.2.6
-    url: https://updates.jenkins.io/download/plugins/pipeline-model-definition/1.2.6/pipeline-model-definition.hpi
+    version: 1.2.7
+    gav: org.jenkinsci.plugins:pipeline-model-definition:1.2.7
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-definition/1.2.7/pipeline-model-definition.hpi
   - name: pipeline-model-extensions
-    version: 1.2.6
-    gav: org.jenkinsci.plugins:pipeline-model-extensions:1.2.6
-    url: https://updates.jenkins.io/download/plugins/pipeline-model-extensions/1.2.6/pipeline-model-extensions.hpi
+    version: 1.2.7
+    gav: org.jenkinsci.plugins:pipeline-model-extensions:1.2.7
+    url: https://updates.jenkins.io/download/plugins/pipeline-model-extensions/1.2.7/pipeline-model-extensions.hpi
   - name: pipeline-rest-api
     version: '2.9'
     gav: org.jenkins-ci.plugins.pipeline-stage-view:pipeline-rest-api:2.9
@@ -277,9 +277,9 @@ plugins:
     gav: org.jenkins-ci.plugins:pipeline-stage-step:2.3
     url: https://updates.jenkins.io/download/plugins/pipeline-stage-step/2.3/pipeline-stage-step.hpi
   - name: pipeline-stage-tags-metadata
-    version: 1.2.6
-    gav: org.jenkinsci.plugins:pipeline-stage-tags-metadata:1.2.6
-    url: https://updates.jenkins.io/download/plugins/pipeline-stage-tags-metadata/1.2.6/pipeline-stage-tags-metadata.hpi
+    version: 1.2.7
+    gav: org.jenkinsci.plugins:pipeline-stage-tags-metadata:1.2.7
+    url: https://updates.jenkins.io/download/plugins/pipeline-stage-tags-metadata/1.2.7/pipeline-stage-tags-metadata.hpi
   - name: pipeline-stage-view
     version: '2.9'
     gav: org.jenkins-ci.plugins.pipeline-stage-view:pipeline-stage-view:2.9
@@ -313,9 +313,9 @@ plugins:
     gav: org.jenkins-ci.plugins:ssh-credentials:1.13
     url: https://updates.jenkins.io/download/plugins/ssh-credentials/1.13/ssh-credentials.hpi
   - name: structs
-    version: '1.10'
-    gav: org.jenkins-ci.plugins:structs:1.10
-    url: https://updates.jenkins.io/download/plugins/structs/1.10/structs.hpi
+    version: '1.13'
+    gav: org.jenkins-ci.plugins:structs:1.13
+    url: https://updates.jenkins.io/download/plugins/structs/1.13/structs.hpi
   - name: subversion
     version: 2.10.2
     gav: org.jenkins-ci.plugins:subversion:2.10.2
@@ -345,9 +345,9 @@ plugins:
     gav: org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.6
     url: https://updates.jenkins.io/download/plugins/workflow-basic-steps/2.6/workflow-basic-steps.hpi
   - name: workflow-cps
-    version: '2.43'
-    gav: org.jenkins-ci.plugins.workflow:workflow-cps:2.43
-    url: https://updates.jenkins.io/download/plugins/workflow-cps/2.43/workflow-cps.hpi
+    version: '2.44'
+    gav: org.jenkins-ci.plugins.workflow:workflow-cps:2.44
+    url: https://updates.jenkins.io/download/plugins/workflow-cps/2.44/workflow-cps.hpi
   - name: workflow-cps-global-lib
     version: '2.9'
     gav: org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.9
@@ -373,6 +373,6 @@ plugins:
     gav: org.jenkins-ci.plugins.workflow:workflow-step-api:2.14
     url: https://updates.jenkins.io/download/plugins/workflow-step-api/2.14/workflow-step-api.hpi
   - name: workflow-support
-    version: '2.17'
-    gav: org.jenkins-ci.plugins.workflow:workflow-support:2.17
-    url: https://updates.jenkins.io/download/plugins/workflow-support/2.17/workflow-support.hpi
+    version: '2.18'
+    gav: org.jenkins-ci.plugins.workflow:workflow-support:2.18
+    url: https://updates.jenkins.io/download/plugins/workflow-support/2.18/workflow-support.hpi
