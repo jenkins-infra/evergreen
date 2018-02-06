@@ -1,0 +1,110 @@
+= Evergreen Services
+
+This directory contains the numerous microservices which work in concert to
+provide functionality for the Evergreen distribution system.
+
+[[dashboard]]
+== Dashboard
+
+The developer Dashboard is the hub of activity for Jenkins developers to manage
+the release life-cycle for Evergreen applications.
+
+
+[[pusher]]
+== Pusher
+
+Pusher is responsible for maintaining
+link:https://en.wikipedia.org/wiki/Server-sent_events[Server-sent Event]
+connections for all the present evergreen-client instances.
+
+[[status]]
+== Status
+
+The Status service is responsible for knowing the current status of Jenkins
+instances in the ecosystem.
+
+This includes:
+
+. The `SHA1` of `essentials.yaml` installed on the instance.
+. Versions of all, essential and other, plugins
+. When the Jenkins process was last listed as online
+. :question: Number of Pipelines.
+. Environment capabilities of the instance (AWS, Azure, Docker, Kubernetes, etc)
+
+
+[[status-data]]
+=== Data Model
+
+This is still a work-in-progress for the data model to back the <<status>>
+service. The goal for this data model is to provide an relatively accurate and
+up-to-date representation of the fleet.
+
+The model below is obviously, and intentionally, relational. Most of the data
+which <<status>> requires is relational, and the service must manage various
+transitions along those relationships. For example, when a new version of the
+"Essentials manifest" (`essentials.yaml`) is created, a new `Update` record
+must be created for each `Instance` to relate to.
+
+Non-relational data is, however, contained in the data model below within the
+`Capabilities` and `Version` record. In both cases, it is expected that the
+service will be receiving semi-arbitrary blobs of JSON from instances.
+
+
+[source]
+----
+    +------------+                           +----------------+
+    | Channel    |                           | Connection     |
+    +------------+                           +----------------+
+    | id         <---+  +------------+       | id             |
+    | name       |   |  | Instance   |  +----+ uuid           |
+    | updated_at |   |  +------------+  |    | last_connected |
+    +------------+   |  | uuid       <--+    +----------------+
+                     |  | timezone   |  |
++----------------+   +--+ channel_id |  |    +--------------------+
+| Update         |   +--+ update_id  |  |    | Capabilities       |
++----------------+   |  | created_at |  |    +--------------------+
+| id             <---+  +------------+  |    | id                 |
+| sha1           |                      +----+ uuid               |
+| manifest (JSON)|                      ^    | capabilities (JSON)|
+| created_at     |                      |    | created_at         |
++----------------+                      |    | updated_at         |
+                                        |    +--------------------+
+                                        |
+                                        |    +-----------------+
+                                        |    | Version         |
+                                        |    +-----------------+
+                                        |    | id              |
+                                        +----+ uuid            |
+                                             | manifest (JSON) |
+                                             | core            |
+                                             | created_at      |
+                                             | updated_at      |
+                                             +-----------------+
+----
+
+==== Storage Considerations
+
+In the model above it is expected that a single `Channel` record is going to
+exist for each channel (alpha, canary, ga). Each change to `essentials.yaml`
+should create a new `Update` record.
+
+Where there is room for non-trivial data growth is with `Instance`,
+`Connection`, `Capabilities`, and `Version` which should all have a single
+record for each Jenkins Essentials instance.
+
+
+
+[[telemetry]]
+== Telemetry
+
+The Telemetry service is responsible for receiving error and user telemetry
+from Jenkins instances for processing in the <<dashboard>> by developers.
+
+This includes:
+
+. Exception/error reports
+.. Uncaught exceptions
+.. Logged errors
+.. Logged warnings
+.. Agent errors
+. :question:
