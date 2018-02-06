@@ -1,6 +1,10 @@
 !!!
 %html
   %head
+    %link{:rel => 'stylesheet', :href => ENV['ASSETS_ENDPOINT'] + '/css/bootstrap.min.css'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/jquery.min.js'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/popper.min.js'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/bootstrap.min.js'}
     %title
       Evergreen Update Service
   %body

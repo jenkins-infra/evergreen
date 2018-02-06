@@ -1,19 +1,23 @@
 !!!
 %html
   %head
+    %link{:rel => 'stylesheet', :href => ENV['ASSETS_ENDPOINT'] + '/css/bootstrap.min.css'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/jquery.min.js'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/popper.min.js'}
+    %script{:src => ENV['ASSETS_ENDPOINT'] + '/js/bootstrap.min.js'}
     %title
       Evergreen Pusher Service
   %body
     .container
       .row
-        %center
+        .col-lg-12
           %h1
             Evergreen Pusher Service
       .row
         .col-lg-12
-          %strong
-            Connections
-          %table{:border => 1}
+          %h4
+            Active Connections
+          %table.table
             %tr
               %th
                 Actions
@@ -25,13 +29,11 @@
                 Last Connected
               %th
                 Closed?
-              %th
-                JSON
             - connections.each_value do |c|
               %tr
                 %td
                   %form{:method => :POST, :action => "/sse/ping/#{c.id}"}
-                    %button{:type => :submit}
+                    %button.btn.btn-info{:type => :submit}
                       Ping
                 %td
                   = c.object_id
@@ -41,9 +43,3 @@
                   = c.last_connected_at?
                 %td
                   = c.closed?
-                %td
-                  %details
-                    %pre
-                      %code
-                        = c.to_json(nil)
-

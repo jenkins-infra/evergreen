@@ -32,16 +32,6 @@ module Updates
       json response
     end
 
-    post '/ping' do
-      content_type :json
-      payload = {
-        :data => Time.now.utc.iso8601,
-        :event => 'ping',
-      }
-      Pusher::Q.push(payload)
-      redirect back
-    end
-
     post '/validate/:app' do |app|
       content_type :json
 
