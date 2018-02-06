@@ -129,6 +129,7 @@ module Pusher
       })
     end
 
+    # TODO: requires API token
     post '/ping/:ident' do |ident|
       halt 404 unless CONNS.has_key? ident
       message = Message.new
@@ -144,7 +145,6 @@ module Pusher
     end
 
     post '/pong/:ident' do |ident|
-      puts ident
       puts CONNS
       halt 404 unless CONNS.has_key? ident
       connection = CONNS[ident]

@@ -8,6 +8,9 @@ require 'updates'
 
 use Rack::Static, :urls => ["/css", "/img", "/js"], :root => "public"
 
+ENV['UPDATES_ENDPOINT'] = '/updates'
+ENV['PUSHER_ENDPOINT'] = '/sse'
+
 map '/updates' do
   run Updates::App
 end
