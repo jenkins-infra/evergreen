@@ -3,6 +3,7 @@ require 'hashie'
 require 'sinatra/base'
 require 'sinatra/json'
 require 'thread'
+require 'yaml'
 
 require 'app/pusher'
 require 'app/updates/jenkins'
@@ -20,10 +21,13 @@ module Updates
         }
       end
       @apps = Thread.current[:apps]
+      @manifest = YAML.load(File.read('essentials.yaml'))
     end
 
     get '/' do
-      haml :index
+      haml :index, :locals => {
+        :manifest => @manifest,
+      }
     end
 
     get '/health' do
