@@ -10,7 +10,7 @@ require 'app/updates/jenkins'
 
 module Updates
   class App < Sinatra::Base
-    set :show_exceptions => true
+    set :show_exceptions => (ENV['RACK_ENV'] == 'development')
     set :views, File.expand_path(File.dirname(__FILE__) + '/../views/updates/')
     set :haml, :format => :html5
 
