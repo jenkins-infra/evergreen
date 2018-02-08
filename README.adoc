@@ -13,10 +13,10 @@ documents:
 | JEP | Title
 
 | JEP-300
-| Jenkins Essentials
+| link:https://github.com/jenkinsci/jep/tree/master/jep/300[Jenkins Essentials]
 
 | JEP-301
-| Evergreen packaging for Jenkins Essentials
+| link:https://github.com/jenkinsci/jep/tree/master/jep/301[Evergreen packaging for Jenkins Essentials]
 
 |===
 
