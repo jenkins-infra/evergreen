@@ -5,9 +5,9 @@ all: check
 check: depends
 	$(NODE) npm test
 
-depends: package-lock.json
+depends: node_modules
 
-package-lock.json: package.json
+node_modules: package-lock.json package.json
 	$(NODE) npm install
 
 run:
