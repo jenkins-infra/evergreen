@@ -4,6 +4,21 @@ Evergreen is an automatically updating rolling distribution system for
 "<<essentials>>." It consists of server-side, and client-side components to
 support a Chrome-like upgrade experience for Jenkins users.
 
+== Design Documents
+
+Evergreen, and Jenkins Essentials, are both captured in the following design
+documents:
+
+|===
+| JEP | Title
+
+| JEP-300
+| Jenkins Essentials
+
+| JEP-301
+| Evergreen packaging for Jenkins Essentials
+
+|===
 
 [[essentials]]
 == Jenkins Essentials
