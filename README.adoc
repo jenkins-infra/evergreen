@@ -6,7 +6,7 @@ support a Chrome-like upgrade experience for Jenkins users.
 
 == Design Documents
 
-Evergreen, and Jenkins Essentials, are both captured in the following design
+Evergreen and Jenkins Essentials are both captured in the following design
 documents:
 
 |===
