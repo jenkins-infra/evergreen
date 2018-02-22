@@ -1,5 +1,7 @@
 = Evergreen
 
+image:https://badges.gitter.im/jenkins-infra/evergreen.svg[link="https://gitter.im/jenkins-infra/evergreen?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
+
 Evergreen is an automatically updating rolling distribution system for
 "<<essentials>>." It consists of server-side, and client-side components to
 support a Chrome-like upgrade experience for Jenkins users.
