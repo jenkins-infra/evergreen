@@ -25,89 +25,89 @@ plugins:
     gav: org.jenkins-ci.plugins:authentication-tokens:1.3
     url: https://updates.jenkins.io/download/plugins/authentication-tokens/1.3/authentication-tokens.hpi
   - name: blueocean
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean/1.4.0/blueocean.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean/1.4.2/blueocean.hpi
   - name: blueocean-autofavorite
-    version: 1.2.1
-    gav: org.jenkins-ci.plugins:blueocean-autofavorite:1.2.1
-    url: https://updates.jenkins.io/download/plugins/blueocean-autofavorite/1.2.1/blueocean-autofavorite.hpi
+    version: 1.2.2
+    gav: org.jenkins-ci.plugins:blueocean-autofavorite:1.2.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-autofavorite/1.2.2/blueocean-autofavorite.hpi
   - name: blueocean-bitbucket-pipeline
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-bitbucket-pipeline:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-bitbucket-pipeline/1.4.0/blueocean-bitbucket-pipeline.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-bitbucket-pipeline:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-bitbucket-pipeline/1.4.2/blueocean-bitbucket-pipeline.hpi
   - name: blueocean-commons
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-commons:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-commons/1.4.0/blueocean-commons.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-commons:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-commons/1.4.2/blueocean-commons.hpi
   - name: blueocean-config
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-config:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-config/1.4.0/blueocean-config.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-config:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-config/1.4.2/blueocean-config.hpi
   - name: blueocean-core-js
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-core-js:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-core-js/1.4.0/blueocean-core-js.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-core-js:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-core-js/1.4.2/blueocean-core-js.hpi
   - name: blueocean-dashboard
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-dashboard:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-dashboard/1.4.0/blueocean-dashboard.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-dashboard:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-dashboard/1.4.2/blueocean-dashboard.hpi
   - name: blueocean-display-url
     version: 2.2.0
     gav: org.jenkins-ci.plugins:blueocean-display-url:2.2.0
     url: https://updates.jenkins.io/download/plugins/blueocean-display-url/2.2.0/blueocean-display-url.hpi
   - name: blueocean-events
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-events:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-events/1.4.0/blueocean-events.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-events:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-events/1.4.2/blueocean-events.hpi
   - name: blueocean-git-pipeline
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-git-pipeline:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-git-pipeline/1.4.0/blueocean-git-pipeline.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-git-pipeline:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-git-pipeline/1.4.2/blueocean-git-pipeline.hpi
   - name: blueocean-github-pipeline
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-github-pipeline:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-github-pipeline/1.4.0/blueocean-github-pipeline.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-github-pipeline:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-github-pipeline/1.4.2/blueocean-github-pipeline.hpi
   - name: blueocean-i18n
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-i18n:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-i18n/1.4.0/blueocean-i18n.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-i18n:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-i18n/1.4.2/blueocean-i18n.hpi
   - name: blueocean-jira
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-jira:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-jira/1.4.0/blueocean-jira.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-jira:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-jira/1.4.2/blueocean-jira.hpi
   - name: blueocean-jwt
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-jwt:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-jwt/1.4.0/blueocean-jwt.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-jwt:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-jwt/1.4.2/blueocean-jwt.hpi
   - name: blueocean-personalization
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-personalization:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-personalization/1.4.0/blueocean-personalization.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-personalization:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-personalization/1.4.2/blueocean-personalization.hpi
   - name: blueocean-pipeline-api-impl
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-pipeline-api-impl:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-api-impl/1.4.0/blueocean-pipeline-api-impl.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-pipeline-api-impl:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-api-impl/1.4.2/blueocean-pipeline-api-impl.hpi
   - name: blueocean-pipeline-editor
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-pipeline-editor:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-editor/1.4.0/blueocean-pipeline-editor.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-pipeline-editor:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-editor/1.4.2/blueocean-pipeline-editor.hpi
   - name: blueocean-pipeline-scm-api
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-pipeline-scm-api:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-scm-api/1.4.0/blueocean-pipeline-scm-api.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-pipeline-scm-api:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-pipeline-scm-api/1.4.2/blueocean-pipeline-scm-api.hpi
   - name: blueocean-rest
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-rest:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-rest/1.4.0/blueocean-rest.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-rest:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-rest/1.4.2/blueocean-rest.hpi
   - name: blueocean-rest-impl
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-rest-impl:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-rest-impl/1.4.0/blueocean-rest-impl.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-rest-impl:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-rest-impl/1.4.2/blueocean-rest-impl.hpi
   - name: blueocean-web
-    version: 1.4.0
-    gav: io.jenkins.blueocean:blueocean-web:1.4.0
-    url: https://updates.jenkins.io/download/plugins/blueocean-web/1.4.0/blueocean-web.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:blueocean-web:1.4.2
+    url: https://updates.jenkins.io/download/plugins/blueocean-web/1.4.2/blueocean-web.hpi
   - name: bouncycastle-api
     version: 2.16.2
     gav: org.jenkins-ci.plugins:bouncycastle-api:2.16.2
@@ -121,9 +121,9 @@ plugins:
     gav: org.jenkins-ci.plugins:buildtriggerbadge:2.9
     url: https://updates.jenkins.io/download/plugins/buildtriggerbadge/2.9/buildtriggerbadge.hpi
   - name: cloudbees-bitbucket-branch-source
-    version: 2.2.9
-    gav: org.jenkins-ci.plugins:cloudbees-bitbucket-branch-source:2.2.9
-    url: https://updates.jenkins.io/download/plugins/cloudbees-bitbucket-branch-source/2.2.9/cloudbees-bitbucket-branch-source.hpi
+    version: 2.2.10
+    gav: org.jenkins-ci.plugins:cloudbees-bitbucket-branch-source:2.2.10
+    url: https://updates.jenkins.io/download/plugins/cloudbees-bitbucket-branch-source/2.2.10/cloudbees-bitbucket-branch-source.hpi
   - name: cloudbees-folder
     version: '6.3'
     gav: org.jenkins-ci.plugins:cloudbees-folder:6.3
@@ -145,21 +145,21 @@ plugins:
     gav: org.jenkins-ci.plugins:docker-commons:1.11
     url: https://updates.jenkins.io/download/plugins/docker-commons/1.11/docker-commons.hpi
   - name: docker-workflow
-    version: '1.15'
-    gav: org.jenkins-ci.plugins:docker-workflow:1.15
-    url: https://updates.jenkins.io/download/plugins/docker-workflow/1.15/docker-workflow.hpi
+    version: 1.15.1
+    gav: org.jenkins-ci.plugins:docker-workflow:1.15.1
+    url: https://updates.jenkins.io/download/plugins/docker-workflow/1.15.1/docker-workflow.hpi
   - name: durable-task
-    version: '1.17'
-    gav: org.jenkins-ci.plugins:durable-task:1.17
-    url: https://updates.jenkins.io/download/plugins/durable-task/1.17/durable-task.hpi
+    version: '1.18'
+    gav: org.jenkins-ci.plugins:durable-task:1.18
+    url: https://updates.jenkins.io/download/plugins/durable-task/1.18/durable-task.hpi
   - name: favorite
     version: 2.3.1
     gav: org.jvnet.hudson.plugins:favorite:2.3.1
     url: https://updates.jenkins.io/download/plugins/favorite/2.3.1/favorite.hpi
   - name: git
-    version: 3.7.0
-    gav: org.jenkins-ci.plugins:git:3.7.0
-    url: https://updates.jenkins.io/download/plugins/git/3.7.0/git.hpi
+    version: 3.8.0
+    gav: org.jenkins-ci.plugins:git:3.8.0
+    url: https://updates.jenkins.io/download/plugins/git/3.8.0/git.hpi
   - name: git-client
     version: 2.7.1
     gav: org.jenkins-ci.plugins:git-client:2.7.1
@@ -193,13 +193,13 @@ plugins:
     gav: org.jenkins-ci.plugins:htmlpublisher:1.14
     url: https://updates.jenkins.io/download/plugins/htmlpublisher/1.14/htmlpublisher.hpi
   - name: jackson2-api
-    version: 2.8.10.1
-    gav: org.jenkins-ci.plugins:jackson2-api:2.8.10.1
-    url: https://updates.jenkins.io/download/plugins/jackson2-api/2.8.10.1/jackson2-api.hpi
+    version: 2.8.11.1
+    gav: org.jenkins-ci.plugins:jackson2-api:2.8.11.1
+    url: https://updates.jenkins.io/download/plugins/jackson2-api/2.8.11.1/jackson2-api.hpi
   - name: jenkins-design-language
-    version: 1.4.0
-    gav: io.jenkins.blueocean:jenkins-design-language:1.4.0
-    url: https://updates.jenkins.io/download/plugins/jenkins-design-language/1.4.0/jenkins-design-language.hpi
+    version: 1.4.2
+    gav: io.jenkins.blueocean:jenkins-design-language:1.4.2
+    url: https://updates.jenkins.io/download/plugins/jenkins-design-language/1.4.2/jenkins-design-language.hpi
   - name: jira
     version: '2.5'
     gav: org.jenkins-ci.plugins:jira:2.5
@@ -209,9 +209,9 @@ plugins:
     gav: org.jenkins-ci.ui:jquery-detached:1.2.1
     url: https://updates.jenkins.io/download/plugins/jquery-detached/1.2.1/jquery-detached.hpi
   - name: jsch
-    version: 0.1.54.1
-    gav: org.jenkins-ci.plugins:jsch:0.1.54.1
-    url: https://updates.jenkins.io/download/plugins/jsch/0.1.54.1/jsch.hpi
+    version: 0.1.54.2
+    gav: org.jenkins-ci.plugins:jsch:0.1.54.2
+    url: https://updates.jenkins.io/download/plugins/jsch/0.1.54.2/jsch.hpi
   - name: junit
     version: '1.24'
     gav: org.jenkins-ci.plugins:junit:1.24
@@ -229,9 +229,9 @@ plugins:
     gav: org.jenkins-ci.plugins:matrix-project:1.12
     url: https://updates.jenkins.io/download/plugins/matrix-project/1.12/matrix-project.hpi
   - name: mercurial
-    version: '2.2'
-    gav: org.jenkins-ci.plugins:mercurial:2.2
-    url: https://updates.jenkins.io/download/plugins/mercurial/2.2/mercurial.hpi
+    version: '2.3'
+    gav: org.jenkins-ci.plugins:mercurial:2.3
+    url: https://updates.jenkins.io/download/plugins/mercurial/2.3/mercurial.hpi
   - name: momentjs
     version: 1.1.1
     gav: org.jenkins-ci.ui:momentjs:1.1.1
@@ -297,9 +297,9 @@ plugins:
     gav: org.jenkins-ci.plugins:scm-api:2.2.6
     url: https://updates.jenkins.io/download/plugins/scm-api/2.2.6/scm-api.hpi
   - name: script-security
-    version: '1.40'
-    gav: org.jenkins-ci.plugins:script-security:1.40
-    url: https://updates.jenkins.io/download/plugins/script-security/1.40/script-security.hpi
+    version: '1.41'
+    gav: org.jenkins-ci.plugins:script-security:1.41
+    url: https://updates.jenkins.io/download/plugins/script-security/1.41/script-security.hpi
   - name: sse-gateway
     version: '1.15'
     gav: org.jenkins-ci.plugins:sse-gateway:1.15
@@ -313,13 +313,13 @@ plugins:
     gav: org.jenkins-ci.plugins:ssh-credentials:1.13
     url: https://updates.jenkins.io/download/plugins/ssh-credentials/1.13/ssh-credentials.hpi
   - name: structs
-    version: '1.13'
-    gav: org.jenkins-ci.plugins:structs:1.13
-    url: https://updates.jenkins.io/download/plugins/structs/1.13/structs.hpi
+    version: '1.14'
+    gav: org.jenkins-ci.plugins:structs:1.14
+    url: https://updates.jenkins.io/download/plugins/structs/1.14/structs.hpi
   - name: subversion
-    version: 2.10.2
-    gav: org.jenkins-ci.plugins:subversion:2.10.2
-    url: https://updates.jenkins.io/download/plugins/subversion/2.10.2/subversion.hpi
+    version: 2.10.3
+    gav: org.jenkins-ci.plugins:subversion:2.10.3
+    url: https://updates.jenkins.io/download/plugins/subversion/2.10.3/subversion.hpi
   - name: timestamper
     version: 1.8.9
     gav: org.jenkins-ci.plugins:timestamper:1.8.9
@@ -337,25 +337,25 @@ plugins:
     gav: org.jenkins-ci.plugins.workflow:workflow-aggregator:2.5
     url: https://updates.jenkins.io/download/plugins/workflow-aggregator/2.5/workflow-aggregator.hpi
   - name: workflow-api
-    version: '2.25'
-    gav: org.jenkins-ci.plugins.workflow:workflow-api:2.25
-    url: https://updates.jenkins.io/download/plugins/workflow-api/2.25/workflow-api.hpi
+    version: '2.26'
+    gav: org.jenkins-ci.plugins.workflow:workflow-api:2.26
+    url: https://updates.jenkins.io/download/plugins/workflow-api/2.26/workflow-api.hpi
   - name: workflow-basic-steps
     version: '2.6'
     gav: org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.6
     url: https://updates.jenkins.io/download/plugins/workflow-basic-steps/2.6/workflow-basic-steps.hpi
   - name: workflow-cps
-    version: '2.44'
-    gav: org.jenkins-ci.plugins.workflow:workflow-cps:2.44
-    url: https://updates.jenkins.io/download/plugins/workflow-cps/2.44/workflow-cps.hpi
+    version: '2.45'
+    gav: org.jenkins-ci.plugins.workflow:workflow-cps:2.45
+    url: https://updates.jenkins.io/download/plugins/workflow-cps/2.45/workflow-cps.hpi
   - name: workflow-cps-global-lib
     version: '2.9'
     gav: org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.9
     url: https://updates.jenkins.io/download/plugins/workflow-cps-global-lib/2.9/workflow-cps-global-lib.hpi
   - name: workflow-durable-task-step
-    version: '2.18'
-    gav: org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.18
-    url: https://updates.jenkins.io/download/plugins/workflow-durable-task-step/2.18/workflow-durable-task-step.hpi
+    version: '2.19'
+    gav: org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.19
+    url: https://updates.jenkins.io/download/plugins/workflow-durable-task-step/2.19/workflow-durable-task-step.hpi
   - name: workflow-job
     version: '2.17'
     gav: org.jenkins-ci.plugins.workflow:workflow-job:2.17
