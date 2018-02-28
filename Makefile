@@ -29,8 +29,15 @@ container: container-prereqs Dockerfile supervisord.conf
 publish: container
 	docker push ${JENKINS_CONTAINER}:latest
 
+update-center.json:
+	curl -sSL https://updates.jenkins.io/current/update-center.actual.json > update-center.json
+
+run: check container
+	docker-compose up
+
 clean:
-	docker rmi $(shell docker images -q -f "reference=$(IMAGE_NAME)") || true
+	docker-compose down || true
+	docker rmi $$(docker images -q -f "reference=$(JENKINS_CONTAINER)") || true
 	rm -f update-center.json
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
