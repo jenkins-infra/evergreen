@@ -34,9 +34,11 @@ update-center.json:
 build/jenkins.sh:
 	mkdir -p build
 	curl -sSL $(SCRIPTS_URL)/jenkins.sh > $@
+	chmod +x $@
 
 build/jenkins-support:
 	mkdir -p build
 	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
+	chmod +x $@
 
 .PHONY: all check clean container container-prereqs fetch-versions
