@@ -25,6 +25,10 @@ EXPOSE ${agent_port}
 ## Construct the image
 #######################
 
+RUN mkdir -p /usr/local/bin
+COPY build/jenkins.sh /usr/local/bin/
+COPY build/jenkins-support /usr/local/bin/
+
 # Add the system dependencies for running Jenkins effectively
 #
 # The only dependencies for Jenkins Essentials are:
