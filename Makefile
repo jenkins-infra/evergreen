@@ -7,9 +7,8 @@ check:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 
-container: Dockerfile.jenkins supervisord.conf fetch-versions
-	docker build -f Dockerfile.jenkins \
-		-t ${JENKINS_CONTAINER}:latest .
+container: Dockerfile supervisord.conf fetch-versions
+	docker build -t ${JENKINS_CONTAINER}:latest .
 
 fetch-versions: essentials.yaml update-essentials update-center.json
 	$(RUBY) ./update-essentials essentials.yaml update-center.json
