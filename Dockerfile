@@ -13,7 +13,7 @@ ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
-VOLUME /var/jenkins_home
+VOLUME ${JENKINS_HOME}
 
 # for main web interface:
 EXPOSE ${http_port}
@@ -24,6 +24,10 @@ EXPOSE ${agent_port}
 #######################
 ## Construct the image
 #######################
+
+RUN mkdir -p /usr/local/bin
+COPY build/jenkins.sh /usr/local/bin/
+COPY build/jenkins-support /usr/local/bin/
 
 # Add the system dependencies for running Jenkins effectively
 #
