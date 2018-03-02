@@ -4,7 +4,7 @@ image:https://badges.gitter.im/jenkins-infra/evergreen.svg[link="https://gitter.
 
 _if you prefer IRC, check out link:https://irc.gitter.im/[irc.gitter.im]_
 
-link:https://issues.jenkins-ci.org/secure/RapidBoard.jspa?rapidView=396[*Issue Tracker*]
+link:https://issues.jenkins-ci.org/secure/RapidBoard.jspa?rapidView=406[*Issue Tracker*]
 
 Evergreen is an automatically updating rolling distribution system for
 "<<essentials>>." It consists of server-side, and client-side components to
