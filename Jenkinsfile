@@ -25,6 +25,13 @@ pipeline {
                 sh 'make container'
             }
         }
+
+        stage('Test container') {
+            steps {
+                sh './test-container.sh'
+            }
+        }
+
     }
 }
 
