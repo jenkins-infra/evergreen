@@ -27,7 +27,6 @@ find_free_port() {
 }
 
 ### HERE STARTS THE REAL MEAT
-docker
 TEST_PORT=$(find_free_port)
 echo "Using the port $TEST_PORT"
 

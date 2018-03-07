@@ -54,8 +54,7 @@ RUN addgroup -g ${gid} ${group} \
 RUN mkdir -p /usr/local/bin
 COPY build/jenkins.sh /usr/local/bin/
 COPY build/jenkins-support /usr/local/bin/
-COPY shim-startup-wrapper.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/shim-startup-wrapper.sh
+COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
 # Prepare the evergreen-client configuration
 RUN mkdir -p /evergreen
