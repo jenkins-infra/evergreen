@@ -27,4 +27,4 @@ else
   download_war
 fi
 
-jenkins.sh $@
+exec jenkins.sh $@
