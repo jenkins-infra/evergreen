@@ -11,6 +11,7 @@ all: check container
 check:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
+	./test-container.sh
 
 container-prereqs: build/jenkins-support build/jenkins.sh
 
@@ -26,7 +27,6 @@ clean:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 #################
-
 
 update-center.json:
 	curl -sSL https://updates.jenkins.io/current/update-center.actual.json > update-center.json
