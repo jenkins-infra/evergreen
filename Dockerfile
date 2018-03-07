@@ -11,6 +11,7 @@ ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 
+ENV JAVA_OPTS -Djava.awt.headless=true
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 VOLUME ${JENKINS_HOME}
@@ -41,7 +42,8 @@ RUN apk add --no-cache git \
                         unzip \
                         bash \
                         supervisor \
-                        nodejs
+                        nodejs \
+                        ttf-dejavu \
                         curl # FIXME curl is added for shim-startup-wrapper.sh, remove it when the client downloads the WAR
 
 # Jenkins is run with user `jenkins`, uid = 1000
