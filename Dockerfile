@@ -10,6 +10,7 @@ ARG agent_port=50000
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
+ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 
 ENV JAVA_OPTS -Djava.awt.headless=true
 # Jenkins home directory is a volume, so configuration and build history
@@ -21,6 +22,7 @@ EXPOSE ${http_port}
 # will be used by attached agents:
 EXPOSE ${agent_port}
 
+RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 #######################
 ## Construct the image
