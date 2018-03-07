@@ -11,15 +11,18 @@ all: check container
 check:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
-	./test-container.sh
+	$(MAKE) container-check
 
-container-prereqs: build/jenkins-support build/jenkins.sh
+container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh
+
+container-check: ./scripts/test-container.sh container
+	./scripts/test-container.sh
 
 container: container-prereqs Dockerfile supervisord.conf fetch-versions
 	docker build -t ${JENKINS_CONTAINER}:latest .
 
-fetch-versions: essentials.yaml update-essentials update-center.json
-	$(RUBY) ./update-essentials essentials.yaml update-center.json
+fetch-versions: essentials.yaml ./scripts/update-essentials update-center.json
+	$(RUBY) ./scripts/update-essentials essentials.yaml update-center.json
 
 clean:
 	docker rmi $(shell docker images -q -f "reference=$(IMAGE_NAME)") || true
@@ -41,4 +44,4 @@ build/jenkins-support:
 	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 
-.PHONY: all check clean container container-prereqs fetch-versions
+.PHONY: all check clean container container-check container-prereqs fetch-versions

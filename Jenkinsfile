@@ -20,15 +20,15 @@ pipeline {
             }
         }
 
-        stage('Build container') {
+        stage('Build jenkins/evergreen') {
             steps {
                 sh 'make container'
             }
         }
 
-        stage('Test container') {
+        stage('Test jenkins/evergreen') {
             steps {
-                sh './test-container.sh'
+                sh 'make container-check'
             }
         }
 
