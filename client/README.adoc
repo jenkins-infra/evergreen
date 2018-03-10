@@ -1,0 +1,49 @@
+= evergreen-client
+
+This directory contains the `evergreen-client` application which provides the
+client-side functionality necessary for the Evergreen distribution system.
+
+The purpose of `evergreen-client` is to facilitate the following:
+
+* Maintain <<status>> with the Evergreen hosted services layer.
+* Orchestrate <<upgrades>> of the `jenkins.war` and plugin `.jpi` files when
+  instructed by the Evergreen hosted services layer.
+* Collect and deliver telemetry as necessary to the Evergreen hosted services
+  layer.
+* Additional capabilities as the needs by Jenkins Essentials evolve.
+
+
+== Design
+
+Generally speaking, `evergreen-client` is designed to act as a lightweight
+"sidecar" process, running alongside `jenkins.war`, and should conceptually
+implement various "commands" to be sent from the Evergreen hosted services
+layer. Commands such as `ping`, `flags`, `logs`, etc are intended to be
+delivered by a long-lived Server-sent Events channel initiated by
+`evergreen-client` to the "Status" service.
+
+While `evergreen-client` can and may be required to run other executables in
+the system, most of the "core" functionality should be implemented in
+JavaScript and incorporated into `evergreen-client`.
+
+`evergreen-client` will also be responsible for managing process lifecycle of
+Jenkins via communication with `supervisord`.
+
+
+[[status]]
+=== Status
+
+NOTE: This is still a work in progress
+
+[[upgrades]]
+=== Upgrading
+
+NOTE: This is still a work in progress
+
+Types of upgrades `evergreen-client` should be responsible for:
+
+* An evergreen manifest (i.e. Jenkins core and plugins), including adding and
+  removing plugins as the needs of Jenkins Essentials changes
+* Configuration as Code to manage the "automatic sane defaults" aspect of
+  Jenkins Essentials.
+* `evergreen-client` releases itself.
