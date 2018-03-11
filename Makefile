@@ -15,8 +15,8 @@ check:
 
 container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh
 
-container-check: ./scripts/test-container.sh container
-	./scripts/test-container.sh
+container-check: shunit2 ./tests/tests.sh container
+	./tests/tests.sh
 
 container: container-prereqs Dockerfile supervisord.conf fetch-versions
 	docker build -t ${JENKINS_CONTAINER}:latest .
@@ -43,5 +43,8 @@ build/jenkins-support:
 	mkdir -p build
 	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
+
+shunit2:
+	git clone https://github.com/kward/shunit2
 
 .PHONY: all check clean container container-check container-prereqs fetch-versions

@@ -1,0 +1,45 @@
+container_under_test_prefix=evergreen-testing
+container_under_test=$container_under_test_prefix-$RANDOM
+
+cleanup () {
+  echo
+  echo -n "Cleaning up... "
+  for container in $( docker ps -aq --filter "name=$container_under_test_prefix" )
+  do
+    docker kill $container 2>/dev/null >/dev/null || echo "Already dead."
+  done
+  echo "G'day!"
+}
+
+# Utilities
+find_free_port() {
+  candidate_port=$(( ( $RANDOM % ( 65535 - 1024 ) )  + 1024 ))
+  used_ports=$( netstat -ntap 2> /dev/null | tr -s ' ' | cut -d ' ' -f4 | grep ':' | awk -F ":" '{print $NF}' )
+  echo $candidate_port
+}
+
+# Test functions
+setup_container_under_test() {
+  TEST_PORT=$(find_free_port)
+
+  # TODO use docker-compose to use network and avoid all this?
+  echo "Start container under test (port=$TEST_PORT) and wait a bit for its startup:"
+  docker run --rm --name $container_under_test -p $TEST_PORT:8080 -d jenkins/evergreen:latest
+  sleep 5
+
+  max_attempts=10
+  while true
+  do
+    if ( docker logs $container_under_test | grep "Jenkins is fully up and running" ); then
+      echo "Jenkins has started."
+      break;
+    elif (( $max_attempts < 1 )); then
+      echo "Jenkins did not start before timeout. Tests are expected to fail."
+      break;
+    else
+      echo "Waiting for Jenkins startup a bit more..."
+    fi
+    sleep 3
+    max_attempts=$(( max_attempts -1 ))
+  done
+}
