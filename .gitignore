@@ -1,3 +1,4 @@
 *.sw*
 build/
 update-center.json
+shunit2
