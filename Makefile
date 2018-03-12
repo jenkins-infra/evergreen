@@ -21,6 +21,9 @@ container-check: shunit2 ./tests/tests.sh container
 container: container-prereqs Dockerfile supervisord.conf fetch-versions
 	docker build -t ${JENKINS_CONTAINER}:latest .
 
+publish: container
+	docker push ${JENKINS_CONTAINER}:latest
+
 fetch-versions: essentials.yaml ./scripts/update-essentials update-center.json
 	$(RUBY) ./scripts/update-essentials essentials.yaml update-center.json
 

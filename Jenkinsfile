@@ -32,6 +32,20 @@ pipeline {
             }
         }
 
+        stage('Publish jenkins/evergreen') {
+            when {
+                expression { infra.isTrusted() }
+            }
+
+            steps {
+                withCredentials([[$class: 'ZipFileBinding',
+                           credentialsId: 'jenkins-dockerhub',
+                                variable: 'DOCKER_CONFIG']]) {
+                    sh 'make publish'
+                }
+            }
+        }
+
     }
 }
 
