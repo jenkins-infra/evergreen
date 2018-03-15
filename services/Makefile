@@ -27,6 +27,7 @@ essentials.yaml:
 
 clean:
 	rm -rf vendor/
+	rm -f essentials.yaml
 
 
 .PHONY: all check clean container depends

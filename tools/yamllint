@@ -1,0 +1,6 @@
+#!/bin/sh -xe
+
+exec docker run --rm \
+    -w ${PWD} \
+    -v ${PWD}:${PWD} \
+    boiyaa/yamllint $@

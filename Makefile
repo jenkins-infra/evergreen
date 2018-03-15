@@ -8,7 +8,10 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 #################
 all: check container
 
-check:
+lint: essentials.yaml
+	./tools/yamllint -s ./essentials.yaml
+
+check: lint
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 	$(MAKE) container-check
@@ -18,14 +21,11 @@ container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-w
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
 
-container: container-prereqs Dockerfile supervisord.conf fetch-versions
+container: container-prereqs Dockerfile supervisord.conf
 	docker build -t ${JENKINS_CONTAINER}:latest .
 
 publish: container
 	docker push ${JENKINS_CONTAINER}:latest
-
-fetch-versions: essentials.yaml ./scripts/update-essentials update-center.json
-	$(RUBY) ./scripts/update-essentials essentials.yaml update-center.json
 
 clean:
 	docker rmi $(shell docker images -q -f "reference=$(IMAGE_NAME)") || true
@@ -33,9 +33,6 @@ clean:
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 #################
-
-update-center.json:
-	curl -sSL https://updates.jenkins.io/current/update-center.actual.json > update-center.json
 
 build/jenkins.sh:
 	mkdir -p build
@@ -50,4 +47,4 @@ build/jenkins-support:
 shunit2:
 	git clone https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs fetch-versions
+.PHONY: all check clean container container-check container-prereqs
