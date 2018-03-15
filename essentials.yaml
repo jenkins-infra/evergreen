@@ -1,4 +1,5 @@
 ---
+# other sections can be added and ignored by default
 metadata:
   labels:
     name: 'jenkins-essentials'
@@ -11,53 +12,52 @@ spec:
   plugins:
     - groupId: 'io.jenkins.blueocean'
       artifactId: 'blueocean'
-      #ref: 'master'
+      # ref: 'master'
       version: '1.4.2'
 
     - groupId: 'org.jenkins-ci.plugins'
-      artifactId; 'git'
+      artifactId: 'git'
       version: '3.8.0'
 
     - groupId: 'org.jenkins-ci.plugins'
-      artifactId; 'buildtriggerbadge'
+      artifactId: 'buildtriggerbadge'
       version: '2.9'
 
     - groupId: 'org.jenkins-ci.plugins'
-      artifactId; 'junit'
+      artifactId: 'junit'
       version: '1.24'
 
     - groupId: 'org.jenkins-ci.plugins'
-      artifactId; 'mailer'
+      artifactId: 'mailer'
       version: '1.20'
 
     - groupId: 'org.jenkins-ci.plugins'
-      artifactId; 'ssh-agent'
+      artifactId: 'ssh-agent'
       version: '1.15'
 
     - groupId: 'org.jenkins-ci.plugins.workflow'
-      artifactId; 'workflow-aggregator'
+      artifactId: 'workflow-aggregator'
       version: '2.5'
 
   environments:
     # environments get added to the other section when enabled
     - name: aws
       plugins:
-  # other sections can be added and ignored by default
 
 # the realized BoM after refs are resolved
-#status:
-#  core:
-#    ref: aaabbb
-#    # version: 1.0
-#  plugins:
-#    - groupId: org.acme
-#      artifactId: acme-plugin
-#      ref: bbbccc
-#      # version: 1.0
-#  environments:
-#    - name: aws
-#      plugins:
-#        - groupId: org.acme
-#          artifactId: acme2-plugin
-#          ref: cccddd
-#          # version: 1.0
+# status:
+#   core:
+#     ref: aaabbb
+#     # version: 1.0
+#   plugins:
+#     - groupId: org.acme
+#       artifactId: acme-plugin
+#       ref: bbbccc
+#       # version: 1.0
+#   environments:
+#     - name: aws
+#       plugins:
+#         - groupId: org.acme
+#           artifactId: acme2-plugin
+#           ref: cccddd
+#           # version: 1.0
