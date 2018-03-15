@@ -8,7 +8,10 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 #################
 all: check container
 
-check:
+lint: essentials.yaml
+	./tools/yamllint -s ./essentials.yaml
+
+check: lint
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 	$(MAKE) container-check
