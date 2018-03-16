@@ -1,0 +1,69 @@
+= [2018-03-18] How to test the data snapshotting system (JENKINS-49406)
+
+We wanted to discuss testing link:https://issues.jenkins-ci.org/browse/JENKINS-49406[https://issues.jenkins-ci.org/browse/JENKINS-49406] itself, but also possibly the  overall quality bar footnote:[the different quality requirements we make sure to test, generally defining them *before* the software is developed, and met before it goes to production :-)] for Jenkins Essentials.
+
+
+== Attendees
+
+* Raul Arabaolaza
+* Baptiste Mathus
+
+== Notes
+
+RAUL: This is intended for development time, not deployment like
+synthetic transactions
+
+Idea is Try an upgrade, test all works properly perform a rollback and
+test again all is working
+
+BAPTISTE: We are likely to be able to reuse the “health check” logic
+that will have to be developed for evergreen-client itself in
+production, to check if Jenkins is running fine.
+
+RAUL: To read and check the jep part related to testing, also to tell
+Isa about it
+
+RAUL: critical: we need to test the health check :)
+
+QUESTION: Should we try to implement synthetic transactions as they were
+discussed in seville meeting for this or go with ATH which already
+exists?
+
+PROPOSALS for Rollback testing:
+
+* Make sure there is enough coverage that all possible rollback paths are covered
+** Create a quality bar for rollbacks
+*** Make sure you are including some failing scenarios in the quality bar
+**** Not only test the happy path, for example:
+***** Made a failed upgrade, test that we are able to detect the upgrade as
+a failure, rollback and test that the instance is working perfectly
+*****  Made a failed upgrade, test that we are able to detect the upgrade as
+a failure, made a failed rollback and test that we are able to detect
+the rollback failed
+***** Make sure that in case of different chained rollback strategies we
+test each and every one of them
+
+* Create a healthcheck url to be invoked via CURL for example
+
+** We can create a plugin that provides that healthcheck url and
+integrate with ST
+** Maybe some work from metrics plugin can be reused
+
+* Some possible testing flows:
+
+** Upgrade run health check (ST), rollback, ST again ¿and ATH?
+
+*** No work yet on ST that I am aware of, but ST can be later reused for
+deployment testing
+
+** Run ATH, rollback, ATH again
+
+*** Some work already done, but ATH is maybe too heavy and coverage is
+pretty poor and based on individual plugins not in coherent sets of them
+
+* This should be done in the “pre canary, staging, or whatever is named”
+instances because we want to catch any possible degradation or problems
+in long running instances
+
+SIDE NOTE: Make sure that jenkins is not going to run any job when
+upgrading or rolling back to minimize the number of files to worry about
