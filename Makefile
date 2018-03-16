@@ -10,6 +10,8 @@ all: check container
 
 lint: essentials.yaml
 	./tools/yamllint -s ./essentials.yaml
+	./tools/shellcheck -x tests/tests.sh
+	./tools/shellcheck -x scripts/shim-startup-wrapper.sh
 
 check: lint
 	$(MAKE) -C client $@

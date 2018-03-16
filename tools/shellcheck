@@ -1,0 +1,6 @@
+#!/bin/sh -xe
+
+exec docker run --rm \
+    -w ${PWD} \
+    -v ${PWD}:${PWD} \
+    koalaman/shellcheck@sha256:6dfafef2730b851e7a8bceda7f2dbef93efb709932865924cb497423b60be582 $@
