@@ -13,7 +13,7 @@ download_war() {
 
 if test -f $TARGET; then
   echo "$TARGET already exists, checking checksum."
-  cd $( dirname $TARGET)
+  cd "$( dirname $TARGET )"
   curl -s $SHA_SOURCE > /tmp/checksum_file
   if sha256sum /tmp/checksum_file > /dev/null ; then
     echo "File has the right checksum, no download."
@@ -33,4 +33,4 @@ fi
 # anyway the whole file is a *shim* :P
 install-plugins.sh configuration-as-code:experimental
 
-exec jenkins.sh $@
+exec jenkins.sh "$@"
