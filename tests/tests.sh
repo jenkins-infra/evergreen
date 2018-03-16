@@ -30,4 +30,10 @@ test_docker_CLI_available() {
   assertEquals "expected message about daemon unavailable" 0 $?
 }
 
+test_no_executor() {
+  numExecutors=$( docker exec $container_under_test cat /var/jenkins_home/config.xml | \
+      grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
+  assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
+}
+
 . ./shunit2/shunit2
