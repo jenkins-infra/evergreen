@@ -8,6 +8,12 @@ pipeline {
             }
         }
 
+        stage('Lint code') {
+          steps {
+              sh 'make lint'
+          }
+        }
+
         stage('Verify Client') {
             steps {
                 sh 'make -C client check'
