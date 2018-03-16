@@ -10,9 +10,12 @@ spec:
     # version: 1.0
 
   plugins:
+    - groupId: 'org.jenkins-ci.plugins'
+      artifactId: 'configuration-as-code'
+      version: '0.1-alpha'
+
     - groupId: 'io.jenkins.blueocean'
       artifactId: 'blueocean'
-      # ref: 'master'
       version: '1.4.2'
 
     - groupId: 'org.jenkins-ci.plugins'
