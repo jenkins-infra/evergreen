@@ -1,0 +1,3 @@
+jenkins:
+  systemMessage: "Welcome to Jenkins Essentials!"
+  numExecutors: 0

@@ -12,6 +12,9 @@ ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
+ENV JENKINS_UC https://updates.jenkins.io
+ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
+
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 # Jenkins home directory is a volume, so configuration and build history
@@ -25,7 +28,7 @@ EXPOSE ${agent_port}
 
 
 # FIXME REMOVE (to ease iteration/speed just for now), see also shim-startup-wrapper.sh
-RUN wget --quiet http://mirrors.jenkins.io/war-stable/latest/jenkins.war -O /usr/share/jenkins/jenkins.war
+RUN wget --quiet https://updates.jenkins.io/download/war/2.107.1/jenkins.war -O /usr/share/jenkins/jenkins.war
 RUN apk add --no-cache curl # used by shim-startup-wrapper.sh
 
 # Add the system dependencies for running Jenkins effectively
@@ -64,12 +67,18 @@ RUN addgroup -g ${gid} ${group} \
 RUN mkdir -p /usr/local/bin
 COPY build/jenkins.sh /usr/local/bin/
 COPY build/jenkins-support /usr/local/bin/
+COPY build/install-plugins.sh /usr/local/bin/
 COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
 # Prepare the evergreen-client configuration
 RUN mkdir -p /evergreen
 COPY client /evergreen/client
 COPY essentials.yaml /evergreen
+
+# FIXME (?): what if the end users touches the config value?
+# as is, we'll override it.
+COPY jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
+ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
 # Ensure the supervisord configuration is copied and executed by default such
 # that the Jenkins and evergreen-client processes both execute properly

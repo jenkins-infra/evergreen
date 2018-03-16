@@ -16,7 +16,7 @@ check: lint
 	$(MAKE) -C services $@
 	$(MAKE) container-check
 
-container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh
+container-prereqs: build/jenkins-support build/jenkins.sh build/install-plugins.sh scripts/shim-startup-wrapper.sh
 
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
@@ -42,6 +42,11 @@ build/jenkins.sh:
 build/jenkins-support:
 	mkdir -p build
 	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
+	chmod +x $@
+
+build/install-plugins.sh:
+	mkdir -p build
+	curl -sSL $(SCRIPTS_URL)/install-plugins.sh > $@
 	chmod +x $@
 
 shunit2:

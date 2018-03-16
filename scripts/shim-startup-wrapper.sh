@@ -27,4 +27,10 @@ else
   download_war
 fi
 
+# FIXME: Only hardcoded to install casc,
+# not following essentials.yaml declaration
+# On purpose to make the startup faster
+# anyway the whole file is a *shim* :P
+install-plugins.sh configuration-as-code:experimental
+
 exec jenkins.sh $@

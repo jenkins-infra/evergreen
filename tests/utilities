@@ -1,6 +1,17 @@
 container_under_test_prefix=evergreen-testing
 container_under_test=$container_under_test_prefix-$RANDOM
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+warn() {
+  echo -e "$RED**** $@ ****$NC"
+}
+
+info() {
+  echo "$@"
+}
+
 cleanup () {
   echo
   echo -n "Cleaning up... "
@@ -23,23 +34,27 @@ setup_container_under_test() {
   TEST_PORT=$(find_free_port)
 
   # TODO use docker-compose to use network and avoid all this?
-  echo "Start container under test (port=$TEST_PORT) and wait a bit for its startup:"
+  info "Start container under test (port=$TEST_PORT) and wait a bit for its startup:"
   docker run --rm --name $container_under_test -p $TEST_PORT:8080 -d jenkins/evergreen:latest
   sleep 5
 
-  max_attempts=10
+  # FIXME: have to wait pretty long because plugin installations
+  # Possibly we'll want a special mode to accelerate testing, maybe by downloading plugins
+  # from a local cache by overriding JENKINS_UC?
+  max_attempts=20
+  cur_attempts=0
   while true
   do
+    cur_attempts=$(( cur_attempts + 1 ))
     if ( docker logs $container_under_test | grep "Jenkins is fully up and running" ); then
-      echo "Jenkins has started."
+      info "Jenkins has started."
       break;
-    elif (( $max_attempts < 1 )); then
-      echo "Jenkins did not start before timeout. Tests are expected to fail."
+    elif (( $cur_attempts > $max_attempts )); then
+      warn "Jenkins did not start before timeout. Tests are expected to fail."
       break;
     else
-      echo "Waiting for Jenkins startup a bit more..."
+      info "Waiting for Jenkins startup a bit more... ($cur_attempts/$max_attempts attempts) "
     fi
     sleep 3
-    max_attempts=$(( max_attempts -1 ))
   done
 }
