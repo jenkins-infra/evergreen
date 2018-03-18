@@ -77,6 +77,7 @@ COPY essentials.yaml /evergreen
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.
+COPY build/configuration-as-code/target/configuration-as-code.hpi /usr/share/jenkins/ref/plugins/configuration-as-code.hpi
 COPY jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
 ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
@@ -84,5 +85,3 @@ ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 # that the Jenkins and evergreen-client processes both execute properly
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-
-COPY configuration-as-code.hpi /usr/share/jenkins/ref/plugins/configuration-as-code.hpi
