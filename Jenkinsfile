@@ -1,5 +1,9 @@
 pipeline {
     agent { label 'linux' }
+    tools {
+      maven 'mvn'
+      jdk 'jdk8'
+    }
 
     stages {
         stage('Prepare Workspace') {
@@ -28,7 +32,7 @@ pipeline {
 
         stage('Build jenkins/evergreen') {
             steps {
-                sh 'make container'
+              sh 'make container'
             }
         }
 
