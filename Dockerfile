@@ -84,3 +84,5 @@ ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 # that the Jenkins and evergreen-client processes both execute properly
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
+COPY configuration-as-code.hpi /usr/share/jenkins/ref/plugins/configuration-as-code.hpi
