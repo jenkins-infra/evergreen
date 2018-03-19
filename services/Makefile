@@ -1,35 +1,28 @@
-RUBY:=../tools/ruby
+NODE:=../tools/node
 IMAGE_NAME:=jenkinsciinfra/evergreen
 
 all: check docs container
 
-check: depends essentials.yaml
-	# First run all the non-integration tests (speed)
-	$(RUBY) bundle exec rspec -t ~type:integration
-	# Then run all the slower integration tests
-	$(RUBY) bundle exec rspec -t type:integration
+check: depends
+	$(NODE) npm test
 
-depends: Gemfile
-	$(RUBY) bundle install
+depends: package.json
+	# Checking to see if the directory exists because npm install updates the
+	# directory every time it runs, busting the GNU/Make cache causing rebuilds
+	if [ ! -d node_modules ]; then \
+		$(NODE) npm install; \
+	fi;
 
 docs: depends
-	$(RUBY) bundle exec yard
 
-run: essentials.yaml
-	PORTS="-p 9292:9292" $(RUBY) bundle exec rackup -s thin -o 0.0.0.0 -p 9292
-
-update: Gemfile
-	$(RUBY) bundle update
+run:
+	$(NODE) npm run services
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
 
-essentials.yaml:
-	cp ../essentials.yaml .
-
 clean:
-	rm -rf vendor/
-	rm -f essentials.yaml
+	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends update
+.PHONY: all check clean container depends
