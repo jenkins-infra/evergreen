@@ -16,7 +16,7 @@ oneTimeTearDown() {
 }
 
 test_smoke() {
-  curl --silent "http://localhost:$TEST_PORT > /dev/null"
+  curl --silent "http://localhost:$TEST_PORT" > /dev/null
   assertEquals "Bad exit" 0 $?
 }
 

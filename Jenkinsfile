@@ -28,7 +28,7 @@ pipeline {
 
         stage('Build jenkins/evergreen') {
             steps {
-                sh 'make container'
+              sh 'make container'
             }
         }
 

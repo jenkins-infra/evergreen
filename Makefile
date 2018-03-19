@@ -18,7 +18,7 @@ check: lint
 	$(MAKE) -C services $@
 	$(MAKE) container-check
 
-container-prereqs: build/jenkins-support build/jenkins.sh build/install-plugins.sh scripts/shim-startup-wrapper.sh
+container-prereqs: build/jenkins-support build/jenkins.sh build/install-plugins.sh scripts/shim-startup-wrapper.sh build/configuration-as-code/target/configuration-as-code.hpi
 
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
@@ -34,6 +34,8 @@ clean:
 	rm -f update-center.json
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
+	rm -rf build/configuration-as-code/target
+
 #################
 
 build/jenkins.sh:
@@ -50,6 +52,12 @@ build/install-plugins.sh:
 	mkdir -p build
 	curl -sSL $(SCRIPTS_URL)/install-plugins.sh > $@
 	chmod +x $@
+
+build/configuration-as-code:
+	git clone https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
+
+build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
+	./tools/mvn --file build/configuration-as-code clean package -DskipTests
 
 shunit2:
 	git clone https://github.com/kward/shunit2
