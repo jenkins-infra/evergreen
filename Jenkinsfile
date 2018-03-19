@@ -1,9 +1,5 @@
 pipeline {
     agent { label 'linux' }
-    tools {
-      maven 'mvn'
-      jdk 'jdk8'
-    }
 
     stages {
         stage('Prepare Workspace') {

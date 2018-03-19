@@ -57,7 +57,7 @@ build/configuration-as-code:
 	git clone https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
 
 build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
-	cd build/configuration-as-code && mvn clean package -DskipTests
+	./tools/mvn --file build/configuration-as-code clean package -DskipTests
 
 shunit2:
 	git clone https://github.com/kward/shunit2
