@@ -8,7 +8,7 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const instance = sequelizeClient.define('Instance', {
-    uuid: DataTypes.UUIDV4,
+    uuid: DataTypes.UUID,
     timezone: DataTypes.STRING,
     channelId: DataTypes.BIGINT,
     updateId: DataTypes.BIGINT,

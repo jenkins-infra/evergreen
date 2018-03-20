@@ -1,0 +1,18 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "grassisevergreener",
+    "database": "evergreen_development",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "grassisevergreener",
+    "database": "evergreen_test",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgresql"
+  }
+}

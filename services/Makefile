@@ -15,14 +15,20 @@ depends: package.json
 
 docs: depends
 
-run:
-	$(NODE) npm run services
+migrate: depends
+	docker-compose up -d db
+	sleep 3
+	docker-compose run --rm node sequelize db:migrate
+
+run: migrate
+	docker-compose up node
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
 
 clean:
+	docker-compose down
 	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends
+.PHONY: all check clean container depends migrate
