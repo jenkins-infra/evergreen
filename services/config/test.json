@@ -1,0 +1,11 @@
+{
+  "host": "0.0.0.0",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "postgres": "postgres://postgres:grassisevergreener@db:5432/evergreen_development"
+}
+
