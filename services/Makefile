@@ -27,7 +27,7 @@ container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
 
 clean:
-	docker-compose down
+	docker-compose down || true
 	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 

@@ -5,8 +5,6 @@ services:
     environment:
       - 'POSTGRES_PASSWORD=grassisevergreener'
       - 'POSTGRES_DB=evergreen_development'
-    ports:
-      - '5432:5432'
 
   node:
     image: node:9-alpine
