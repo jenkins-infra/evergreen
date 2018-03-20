@@ -3,13 +3,17 @@ IMAGE_NAME:=jenkinsciinfra/evergreen
 
 all: check docs container
 
-check: depends
-	$(NODE) npm test
+check: depends lint
+	$(MAKE) migrate
+	docker-compose run -e NODE_ENV=test --rm node npm run mocha
+
+lint: depends
+	$(NODE) npm run eslint
 
 depends: package.json
 	# Checking to see if the directory exists because npm install updates the
 	# directory every time it runs, busting the GNU/Make cache causing rebuilds
-	if [ ! -d node_modules ]; then \
+	@if [ ! -d node_modules ]; then \
 		$(NODE) npm install; \
 	fi;
 
@@ -17,7 +21,6 @@ docs: depends
 
 migrate: depends
 	docker-compose up -d db
-	sleep 3
 	docker-compose run --rm node sequelize db:migrate
 
 run: migrate
