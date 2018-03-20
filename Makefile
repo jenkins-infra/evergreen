@@ -1,5 +1,6 @@
 JENKINS_CONTAINER:=jenkins/evergreen
 RUBY=./tools/ruby
+DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
 SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
@@ -30,7 +31,7 @@ publish: container
 	docker push ${JENKINS_CONTAINER}:latest
 
 update-center.json:
-	curl -sSL https://updates.jenkins.io/current/update-center.actual.json > update-center.json
+	$(DOWNLOAD) https://updates.jenkins.io/current/update-center.actual.json > update-center.json
 
 run: check container
 	docker-compose up
@@ -47,26 +48,26 @@ clean:
 
 build/jenkins.sh:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/jenkins.sh > $@
+	$(DOWNLOAD)  $(SCRIPTS_URL)/jenkins.sh > $@
 	chmod +x $@
 
 build/jenkins-support:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
+	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 
 build/install-plugins.sh:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/install-plugins.sh > $@
+	$(DOWNLOAD)  $(SCRIPTS_URL)/install-plugins.sh > $@
 	chmod +x $@
 
 build/configuration-as-code:
-	git clone https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
+	git clone --depth 1 https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
 
 build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
 	./tools/mvn --file build/configuration-as-code clean package -DskipTests
 
 shunit2:
-	git clone https://github.com/kward/shunit2
+	git clone --depth 1 https://github.com/kward/shunit2
 
 .PHONY: all check clean container container-check container-prereqs
