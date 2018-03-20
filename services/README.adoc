@@ -93,6 +93,23 @@ Where there is room for non-trivial data growth is with `Instance`,
 record for each Jenkins Essentials instance.
 
 
+==== Models
+
+Migrations for the database can be found in `migrations/` and are based on the
+link:http://docs.sequelizejs.com/[Sequelize] library.
+
+In order to create a new Model, execute the following from this directory:
+
+[source,bash]
+----
+../tools/node sequelize model:generate --help
+----
+
+And then follow the help text. The
+link:http://docs.sequelizejs.com/manual/tutorial/migrations.html[Sequelize Models and Migrations]
+documentation has more information, as does the
+link:http://docs.sequelizejs.com/variable/index.html[Variable/Data Types reference].
+
 
 [[telemetry]]
 == Telemetry

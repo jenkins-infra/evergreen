@@ -7,20 +7,16 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const instance = sequelizeClient.define('instance', {
+  const connection = sequelizeClient.define('connection', {
     uuid: DataTypes.UUID,
-    timezone: DataTypes.STRING,
-    channelId: DataTypes.BIGINT,
-    updateId: DataTypes.BIGINT,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    lastConnectedAt: DataTypes.DATE
   });
 
   // eslint-disable-next-line no-unused-vars
-  instance.associate = function (models) {
+  connection.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
 
-  return instance;
+  return connection;
 };

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('instances', {
+    return queryInterface.createTable('connections', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,19 +11,7 @@ module.exports = {
       uuid: {
         type: Sequelize.UUID
       },
-      timezone: {
-        type: Sequelize.STRING
-      },
-      channelId: {
-        type: Sequelize.BIGINT
-      },
-      updateId: {
-        type: Sequelize.BIGINT
-      },
-      createdAt: {
-        type: Sequelize.DATE
-      },
-      updatedAt: {
+      lastConnectedAt: {
         type: Sequelize.DATE
       },
       createdAt: {
@@ -37,6 +25,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('instances');
+    return queryInterface.dropTable('connections');
   }
 };
