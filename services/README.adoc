@@ -59,22 +59,22 @@ service will be receiving semi-arbitrary blobs of JSON from instances.
     | name       |   |  | Instance   |  +----+ uuid           |
     | updated_at |   |  +------------+  |    | last_connected |
     +------------+   |  | uuid       <--+    +----------------+
-                     |  | timezone   |  |
-+----------------+   +--+ channel_id |  |    +--------------------+
-| Update         |   +--+ update_id  |  |    | Capabilities       |
-+----------------+   |  | created_at |  |    +--------------------+
-| id             <---+  +------------+  |    | id                 |
-| sha1           |                      +----+ uuid               |
-| manifest (JSON)|                      ^    | capabilities (JSON)|
-| created_at     |                      |    | created_at         |
-+----------------+                      |    | updated_at         |
-                                        |    +--------------------+
-                                        |
-                                        |    +-----------------+
-                                        |    | Version         |
-                                        |    +-----------------+
-                                        |    | id              |
-                                        +----+ uuid            |
+                     |  | timezone   | ^^
++----------------+   +--+ channel_id | ||    +--------------------+
+| Update         |   +--+ update_id  | ||    | Capabilities       |
++----------------+   |  | created_at | ||    +--------------------+
+| id             <---+  +------------+ ||    | id                 |
+| sha1           |                     |+----+ uuid               |
+| manifest (JSON)|                     |     | capabilities (JSON)|
+| created_at     |                     |     | created_at         |
++----------------+                     |     | updated_at         |
+                                       |     +--------------------+
+                                       |
+                                       |     +-----------------+
+                                       |     | Version         |
+                                       |     +-----------------+
+                                       |     | id              |
+                                       +-----+ uuid            |
                                              | manifest (JSON) |
                                              | core            |
                                              | created_at      |
