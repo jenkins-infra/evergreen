@@ -8,7 +8,7 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 #################
 all: check container
 
-lint: essentials.yaml
+lint: essentials.yaml shunit2
 	./tools/yamllint -s ./essentials.yaml
 	./tools/shellcheck -x tests/tests.sh
 	./tools/shellcheck -x scripts/shim-startup-wrapper.sh
