@@ -4,33 +4,54 @@
 ====
 The project is under active development.
 
-So though we have automated tests to keep things working, do never hesitate to come to us on our link:https://gitter.im/jenkins-infra/evergreen[Gitter channel] if you have any question.
-We do heartily welcome people willing to contribute \o/ :-).
+So though we have automated tests to keep things working, do never hesitate to
+come to us on our
+link:https://gitter.im/jenkins-infra/evergreen[Gitter channel]
+if you have any questions.
+
+We welcome people willing to contribute! :fireworks:
+
 ====
 
 == Getting started
 
-NOTE: we heavily depend on Docker.
-You will need to have it set up to play with this project.
-Things are developed and tested using Linux mostly.
-If you are using another platform, and something does not work as expected, again we welcome any help to make it better.
+This repository _heavily_ depends on link:https://docker.io[Docker] and
+link:https://docs.docker.com/compose/[Docker Compose]. These tools should be
+installed and be found via your shell's `$PATH` environment variable.
+
+Much of this project is developed and testing using Linux, users of another
+platform may not find everything works "out of the box." Please feel free to
+submit pull requests to improve support for other development environments.
+
 
 The `Makefile` at the project root should help you getting started.
 
-`make check` or the more specific `make container-check` is likely where you want to start to understand how things work, and be able to modify them and see the impact.
+`make check` or the more specific `make container-check` is likely where you
+want to start to understand how things work, and be able to modify them and see
+the impact.
 
 === Tests
+
+Automated testing is exceptionally important for the Jenkins Essentials effort.
+Code should not be introduced without some form of automated testing to ensure
+that it it works as specified, and continues to do so.
+
+We use link:https://ci.jenkins.io/blue[Jenkins] to execute our continuous
+integration and continuous delivery processes, which are defined in the
+`Jenkinsfile` in the root of this repository.
+
+==== Client
+
+The `evergreen-client` is written in JavaScript and have tests written primarily in
+link:https://mochajs.org/[Mocha], which can be run via `make check`.
+
+==== Container
 
 We use link:https://github.com/kward/shunit2[shUnit2] for tests.
 
 See the `tests/tests.sh` file to see how this works, and if you want to check additional things.
 
-You can also have a look at the `Jenkinsfile`.
-This file is run in CI/CD environment, so commands called there are expected to always work.
+=== Backend
 
-== Backend services
-
-Backend services are written in Ruby, while the client-side is a mix of standard Jenkins components and Node.js.
-
-Everything should be easily executed via some Docker tooling behind `make`.
-To run tests for example, simply run `make check` in the root directory of this repository.
+The backend services are written in JavaScript and have tests written primarily
+in link:https://mochajs.org/[Mocha], which can be run via `make check`.
