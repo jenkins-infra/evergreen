@@ -1,6 +1,7 @@
 #!/bin/bash
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
+JENKINS_HOME=/var/jenkins/home
 # shellcheck source=tests/utilities
 . "$(dirname $0)/utilities"
 
@@ -36,7 +37,7 @@ test_docker_CLI_available() {
 }
 
 test_no_executor() {
-  numExecutors=$( docker exec $container_under_test cat /var/jenkins_home/config.xml | \
+  numExecutors=$( docker exec $container_under_test cat $JENKINS_HOME/config.xml | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
   assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
 }
