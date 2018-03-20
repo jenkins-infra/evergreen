@@ -1,6 +1,6 @@
 // Initializes the `status` service on path `/status`
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/status.model');
+const createModel = require('../../models/instance');
 const hooks = require('./status.hooks');
 
 module.exports = function (app) {

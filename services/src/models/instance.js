@@ -1,3 +1,5 @@
+'use strict';
+
 // See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
 const Sequelize = require('sequelize');
@@ -5,24 +7,20 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const status = sequelizeClient.define('status', {
-    text: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {
-    hooks: {
-      beforeCount(options) {
-        options.raw = true;
-      }
-    }
+  const instance = sequelizeClient.define('Instance', {
+    uuid: DataTypes.UUIDV4,
+    timezone: DataTypes.STRING,
+    channelId: DataTypes.BIGINT,
+    updateId: DataTypes.BIGINT,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   });
 
   // eslint-disable-next-line no-unused-vars
-  status.associate = function (models) {
+  instance.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
 
-  return status;
+  return instance;
 };
