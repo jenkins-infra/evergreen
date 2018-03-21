@@ -1,8 +1,11 @@
 #!/bin/sh -xe
 
+MAVEN_REPO=~/.m2/
+mkdir -p $MAVEN_REPO/repository
+
 exec docker run --rm \
     -v "$(pwd)":/usr/src/mymaven \
     -w /usr/src/mymaven \
-    -v ~/.m2:/var/maven/.m2 \
+    -v $MAVEN_REPO:/var/maven/.m2 \
     --user $( id -u ) -e MAVEN_CONFIG=/var/maven/.m2 \
     maven:3.5.3-jdk-8 mvn -Duser.home=/var/maven $@
