@@ -46,7 +46,7 @@ RUN apk add --no-cache git \
 
 # TODO: add a checksum check?
 RUN cd /tmp && \
-    wget https://download.docker.com/linux/static/stable/x86_64/docker-17.12.1-ce.tgz --output-document /tmp/docker.tar.gz && \
+    wget --quiet https://download.docker.com/linux/static/stable/x86_64/docker-17.12.1-ce.tgz --output-document /tmp/docker.tar.gz && \
     tar xvzf docker.tar.gz && \
     mv docker/* /usr/local/bin && \
     rmdir docker && \
