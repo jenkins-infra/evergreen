@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+# This script is largely intended ensure that the database is up for services
+# before continuing.
+#
+# If we cannot find some basic tables we expect in a few tries, exit non-zero
+
+
+REPO_ROOT=$(dirname "${BASH_SOURCE[0]}")/../
+
+for i in $(seq 1 5); do
+    ${REPO_ROOT}/tools/compose run --rm db psql -h db -U postgres \
+        -d evergreen_development \
+        -c "SELECT * FROM instances"
+
+    if [ $? -eq 0 ]; then
+        exit 0;
+    fi;
+
+    echo ">> Waiting for the database to sync.."
+
+    sleep $i
+done;
+
+echo ">> Could not find an \`instances\` table, assuming the database is unprepared"
+exit 1

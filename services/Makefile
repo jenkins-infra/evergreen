@@ -6,6 +6,7 @@ all: check docs container
 
 check: depends lint
 	$(MAKE) migrate
+	../scripts/check-psql
 	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
 
 lint: depends
