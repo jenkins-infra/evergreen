@@ -20,4 +20,4 @@ if [ ! -f "${LOCAL_COMPOSE}" ]; then
     chmod +x ${LOCAL_COMPOSE}
 fi;
 
-exec ${LOCAL_COMPOSE} ${@}
+exec ${LOCAL_COMPOSE} "${@}"
