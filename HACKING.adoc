@@ -16,8 +16,8 @@ We welcome people willing to contribute! :fireworks:
 == Getting started
 
 This repository _heavily_ depends on link:https://docker.io[Docker] and
-link:https://docs.docker.com/compose/[Docker Compose]. These tools should be
-installed and be found via your shell's `$PATH` environment variable.
+GNU/Make.  These tools should be installed and be found via your shell's
+`$PATH` environment variable.
 
 Much of this project is developed and testing using Linux, users of another
 platform may not find everything works "out of the box." Please feel free to
