@@ -1,11 +1,12 @@
 NODE:=../tools/node
+COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen
 
 all: check docs container
 
 check: depends lint
 	$(MAKE) migrate
-	docker-compose run -e NODE_ENV=test --rm node npm run mocha
+	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
 
 lint: depends
 	$(NODE) npm run eslint
@@ -20,17 +21,17 @@ depends: package.json
 docs: depends
 
 migrate: depends
-	docker-compose up -d db
-	docker-compose run --rm node sequelize db:migrate
+	$(COMPOSE) up -d db
+	$(COMPOSE) run --rm node sequelize db:migrate
 
 run: migrate
-	docker-compose up node
+	$(COMPOSE) up node
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
 
 clean:
-	docker-compose down || true
+	$(COMPOSE) down || true
 	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 

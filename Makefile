@@ -1,5 +1,5 @@
 JENKINS_CONTAINER:=jenkins/evergreen
-RUBY=./tools/ruby
+COMPOSE:=./tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
@@ -34,14 +34,15 @@ update-center.json:
 	$(DOWNLOAD) https://updates.jenkins.io/current/update-center.actual.json > update-center.json
 
 run: check container
-	docker-compose up
+	$(COMPOSE) up
 
 clean:
-	docker-compose down || true
+	$(COMPOSE) down || true
 	docker rmi $$(docker images -q -f "reference=$(JENKINS_CONTAINER)") || true
 	rm -f update-center.json
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
+	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
 
 #################
