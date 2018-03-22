@@ -6,7 +6,6 @@ all: check docs container
 
 check: depends lint
 	$(MAKE) migrate
-	../scripts/check-psql
 	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
 
 lint: depends
@@ -23,6 +22,7 @@ docs: depends
 
 migrate: depends
 	$(COMPOSE) up -d db
+	../scripts/check-psql
 	$(COMPOSE) run --rm node sequelize db:migrate
 
 run: migrate
