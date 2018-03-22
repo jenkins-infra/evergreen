@@ -14,15 +14,18 @@ pipeline {
           }
         }
 
-        stage('Verify Client') {
-            steps {
-                sh 'make -C client check'
-            }
-        }
-
-        stage('Verify Services') {
-            steps {
-                sh 'make -C services check'
+        stage('Verifications') {
+            parallel {
+                stage('Client') {
+                    steps {
+                        sh 'make -C client check'
+                    }
+                }
+                stage('Services') {
+                    steps {
+                        sh 'make -C services check'
+                    }
+                }
             }
         }
 
