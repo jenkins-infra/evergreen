@@ -11,7 +11,8 @@ export container_under_test=${container_under_test:?}
 
 oneTimeSetUp() {
   setup_container_under_test
-  JENKINS_HOME=$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )
+  # shellcheck disable=SC2016
+  JENKINS_HOME="$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )"
 }
 
 oneTimeTearDown() {
@@ -39,7 +40,7 @@ test_docker_CLI_available() {
 }
 
 test_no_executor() {
-  numExecutors=$( docker exec $container_under_test cat $JENKINS_HOME/config.xml | \
+  numExecutors=$( docker exec $container_under_test cat "$JENKINS_HOME/config.xml" | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
   assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
 }
