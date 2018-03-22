@@ -24,6 +24,9 @@ documents:
 | JEP-301
 | link:https://github.com/jenkinsci/jep/tree/master/jep/301[Evergreen packaging for Jenkins Essentials]
 
+| JEP-302
+| link:https://github.com/jenkinsci/jep/tree/master/jep/302[Evergreen snapshotting data safety system]
+
 |===
 
 [[essentials]]
