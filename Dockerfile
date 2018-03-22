@@ -7,29 +7,26 @@ ARG gid=1000
 ARG http_port=8080
 ARG agent_port=50000
 
-# Note: new env var, specific to Essentials. Not strictly necessary, but will help avoid
-# hardcode this path everywhere
-# *NOT* /var/jenkins_home on purpose, because we probably want people to ack the structure is
-# not the same as the jenkins/jenkins image
-ENV JENKINS_DIR /var/jenkins
-ENV JENKINS_HOME ${JENKINS_DIR}/home
+ENV EVERGREEN_HOME /evergreen
+ENV JENKINS_HOME ${EVERGREEN_HOME}/jenkins/home
+ENV JENKINS_VAR ${EVERGREEN_HOME}/jenkins/var
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
 
-ENV JAVA_OPTS="-Djava.awt.headless=true -Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_DIR}/var/\${ITEM_FULL_NAME}/workspace -Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_DIR/var/\${ITEM_FULL_NAME}/builds"
-ENV JENKINS_OPTS="--webroot=${JENKINS_DIR}/var/war --pluginroot=${JENKINS_DIR}/var/plugins"
+ENV JAVA_OPTS="-Djava.awt.headless=true -Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_VAR}/\${ITEM_FULL_NAME}/workspace -Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_VAR/\${ITEM_FULL_NAME}/builds"
+ENV JENKINS_OPTS="--webroot=${JENKINS_VAR}/war --pluginroot=${JENKINS_VAR}/plugins"
 
 RUN mkdir -p /usr/share/jenkins/ref/ && \
-    mkdir ${JENKINS_DIR} && \
+    mkdir ${EVERGREEN_HOME} && \
+    mkdir ${EVERGREEN_HOME}/jenkins/ && \
     mkdir ${JENKINS_HOME}
-
 
 # Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
-VOLUME ${JENKINS_DIR}
+VOLUME ${EVERGREEN_HOME}
 
 # for main web interface:
 EXPOSE ${http_port}
@@ -62,8 +59,6 @@ RUN cd /tmp && \
     rmdir docker && \
     rm docker.tar.gz
 
-
-
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
@@ -81,9 +76,8 @@ COPY build/install-plugins.sh /usr/local/bin/
 COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
 # Prepare the evergreen-client configuration
-RUN mkdir -p /evergreen
-COPY client /evergreen/client
-COPY essentials.yaml /evergreen
+COPY client ${EVERGREEN_HOME}/client
+COPY essentials.yaml ${EVERGREEN_HOME}
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.

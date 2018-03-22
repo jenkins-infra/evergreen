@@ -1,15 +1,17 @@
 #!/bin/bash
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
-JENKINS_HOME=/var/jenkins/home
+
 # shellcheck source=tests/utilities
 . "$(dirname $0)/utilities"
+JENKINS_HOME=to_override
 
 # trick to silence shellcheck which does not handle very well variables coming from sourced file
 export container_under_test=${container_under_test:?}
 
 oneTimeSetUp() {
   setup_container_under_test
+  JENKINS_HOME=$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )
 }
 
 oneTimeTearDown() {
