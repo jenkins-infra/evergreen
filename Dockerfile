@@ -7,19 +7,26 @@ ARG gid=1000
 ARG http_port=8080
 ARG agent_port=50000
 
-ENV JAVA_OPTS -Djava.awt.headless=true
-ENV JENKINS_HOME /var/jenkins_home
+ENV EVERGREEN_HOME /evergreen
+ENV JENKINS_HOME ${EVERGREEN_HOME}/jenkins/home
+ENV JENKINS_VAR ${EVERGREEN_HOME}/jenkins/var
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
 
-RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
+ENV JAVA_OPTS="-Djava.awt.headless=true -Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_VAR}/\${ITEM_FULL_NAME}/workspace -Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_VAR/\${ITEM_FULL_NAME}/builds"
+ENV JENKINS_OPTS="--webroot=${JENKINS_VAR}/war --pluginroot=${JENKINS_VAR}/plugins"
 
-# Jenkins home directory is a volume, so configuration and build history
+RUN mkdir -p /usr/share/jenkins/ref/ && \
+    mkdir ${EVERGREEN_HOME} && \
+    mkdir ${EVERGREEN_HOME}/jenkins/ && \
+    mkdir ${JENKINS_HOME}
+
+# Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
-VOLUME ${JENKINS_HOME}
+VOLUME ${EVERGREEN_HOME}
 
 # for main web interface:
 EXPOSE ${http_port}
@@ -52,8 +59,6 @@ RUN cd /tmp && \
     rmdir docker && \
     rm docker.tar.gz
 
-
-
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
@@ -71,9 +76,8 @@ COPY build/install-plugins.sh /usr/local/bin/
 COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
 # Prepare the evergreen-client configuration
-RUN mkdir -p /evergreen
-COPY client /evergreen/client
-COPY essentials.yaml /evergreen
+COPY client ${EVERGREEN_HOME}/client
+COPY essentials.yaml ${EVERGREEN_HOME}
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.

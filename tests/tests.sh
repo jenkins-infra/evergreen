@@ -1,14 +1,18 @@
 #!/bin/bash
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
+
 # shellcheck source=tests/utilities
 . "$(dirname $0)/utilities"
+JENKINS_HOME=to_override
 
 # trick to silence shellcheck which does not handle very well variables coming from sourced file
 export container_under_test=${container_under_test:?}
 
 oneTimeSetUp() {
   setup_container_under_test
+  # shellcheck disable=SC2016
+  JENKINS_HOME="$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )"
 }
 
 oneTimeTearDown() {
@@ -36,7 +40,7 @@ test_docker_CLI_available() {
 }
 
 test_no_executor() {
-  numExecutors=$( docker exec $container_under_test cat /var/jenkins_home/config.xml | \
+  numExecutors=$( docker exec $container_under_test cat "$JENKINS_HOME/config.xml" | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
   assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
 }
