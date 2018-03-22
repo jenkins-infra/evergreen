@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# This file is a simple shim script to ensure that wherever we are building, we
+# have a docker-compose that we can use
+
+VERSION="1.20.0"
+REPO_ROOT=$(dirname "${BASH_SOURCE[0]}")/../
+BUILD_DIR="${REPO_ROOT}/build"
+LOCAL_COMPOSE=${REPO_ROOT}/build/docker-compose
+
+mkdir -p ${BUILD_DIR}
+
+if [ ! -f "${LOCAL_COMPOSE}" ]; then
+    echo ">> No local docker-compose, downloading ${VERSION}"
+    OS=$(uname -s)
+    ARCH=$(uname -m)
+    curl -SL \
+        https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-${OS}-${ARCH} \
+        -o ${LOCAL_COMPOSE}
+    chmod +x ${LOCAL_COMPOSE}
+fi;
+
+exec ${LOCAL_COMPOSE} "${@}"

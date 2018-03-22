@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      - 'POSTGRES_PASSWORD=grassisevergreener'
+      - 'POSTGRES_DB=evergreen_development'
+
+  backend:
+    image: jenkinsciinfra/evergreen-backend
+    build: ./services
+    ports:
+      - '3030:3030'
+    depends_on:
+      - db
+

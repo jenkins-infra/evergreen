@@ -1,5 +1,6 @@
 JENKINS_CONTAINER:=jenkins/evergreen
-RUBY=./tools/ruby
+COMPOSE:=./tools/compose
+DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
 SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
@@ -29,37 +30,45 @@ container: container-prereqs Dockerfile supervisord.conf
 publish: container
 	docker push ${JENKINS_CONTAINER}:latest
 
+update-center.json:
+	$(DOWNLOAD) https://updates.jenkins.io/current/update-center.actual.json > update-center.json
+
+run: check container
+	$(COMPOSE) up
+
 clean:
-	docker rmi $(shell docker images -q -f "reference=$(IMAGE_NAME)") || true
+	$(COMPOSE) down || true
+	docker rmi $$(docker images -q -f "reference=$(JENKINS_CONTAINER)") || true
 	rm -f update-center.json
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
+	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
 
 #################
 
 build/jenkins.sh:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/jenkins.sh > $@
+	$(DOWNLOAD)  $(SCRIPTS_URL)/jenkins.sh > $@
 	chmod +x $@
 
 build/jenkins-support:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/jenkins-support > $@
+	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 
 build/install-plugins.sh:
 	mkdir -p build
-	curl -sSL $(SCRIPTS_URL)/install-plugins.sh > $@
+	$(DOWNLOAD)  $(SCRIPTS_URL)/install-plugins.sh > $@
 	chmod +x $@
 
 build/configuration-as-code:
-	git clone https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
+	git clone --depth 1 https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
 
 build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
 	./tools/mvn --file build/configuration-as-code clean package -DskipTests
 
 shunit2:
-	git clone https://github.com/kward/shunit2
+	git clone --depth 1 https://github.com/kward/shunit2
 
 .PHONY: all check clean container container-check container-prereqs

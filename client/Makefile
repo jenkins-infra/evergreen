@@ -8,7 +8,11 @@ check: depends
 depends: node_modules
 
 node_modules: package-lock.json package.json
-	$(NODE) npm install
+	# Checking to see if the directory exists because npm install updates the
+	# directory every time it runs, busting the GNU/Make cache causing rebuilds
+	if [ ! -d node_modules ]; then \
+		$(NODE) npm install; \
+	fi;
 
 run:
 	$(NODE) npm run client

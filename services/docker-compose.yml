@@ -1,0 +1,23 @@
+version: '3'
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      - 'POSTGRES_PASSWORD=grassisevergreener'
+      # Used for psql non-interactive scripting
+      - 'PGPASSWORD=grassisevergreener'
+      - 'POSTGRES_DB=evergreen_development'
+
+  node:
+    image: node:9-alpine
+    command: 'npm run start'
+    working_dir: $PWD
+    environment:
+      - 'PATH=$PWD/node_modules/.bin:$PATH'
+    volumes:
+      - $PWD:$PWD
+    ports:
+      - '3030:3030'
+    depends_on:
+      - db
+

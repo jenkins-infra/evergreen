@@ -11,6 +11,7 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -u $(id -u):$(id -g) \
     -w ${PWD} \
     -v ${PWD}:${PWD} \
+    -e PATH=$PWD/node_modules/.bin:$PATH \
     -e LANG=C.UTF-8 \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
-    ${PORTS} node:9-alpine $@
+    ${PORTS} node:9 $@
