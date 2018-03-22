@@ -1,6 +1,6 @@
 NODE:=../tools/node
 COMPOSE:=../tools/compose
-IMAGE_NAME:=jenkinsciinfra/evergreen
+IMAGE_NAME:=jenkinsciinfra/evergreen-backend
 
 all: check docs container
 

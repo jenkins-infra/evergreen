@@ -7,7 +7,7 @@ services:
       - 'POSTGRES_DB=evergreen_development'
 
   backend:
-    image: jenkinsciinfra/evergreen
+    image: jenkinsciinfra/evergreen-backend
     build: ./services
     ports:
       - '3030:3030'
