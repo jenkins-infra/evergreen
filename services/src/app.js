@@ -47,7 +47,11 @@ app.configure(channels);
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
-app.use(express.errorHandler({ logger }));
+
+/* Avoid cluttering the test logs with expected errors and exceptions */
+if (process.env.NODE_ENV != 'test') {
+  app.use(express.errorHandler({ logger }));
+}
 
 app.hooks(appHooks);
 
