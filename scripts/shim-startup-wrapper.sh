@@ -31,6 +31,13 @@ fi
 # not following essentials.yaml declaration
 # On purpose to make the startup faster
 # anyway the whole file is a *shim* :P
-install-plugins.sh configuration-as-code:experimental
+download_tmp=/tmp/download-casc-plugins$RANDOM
+mkdir "$download_tmp"
+cd $download_tmp
+aria2c -x 4 -i /casc-dependencies.aria
+mkdir -p "$JENKINS_HOME/plugins/"
+mv ./*.hpi "$JENKINS_HOME/plugins/"
+rm -rf $download_tmp
+cd "$JENKINS_HOME"
 
 exec jenkins.sh "$@"

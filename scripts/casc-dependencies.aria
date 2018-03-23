@@ -1,0 +1,16 @@
+# https://updates.jenkins.io/experimental/latest/configuration-as-code.hpi # built by us
+https://updates.jenkins.io/2.107/latest/workflow-multibranch.hpi
+https://updates.jenkins.io/2.107/latest/job-dsl.hpi
+https://updates.jenkins.io/2.107/latest/workflow-api.hpi
+https://updates.jenkins.io/2.107/latest/workflow-cps.hpi
+https://updates.jenkins.io/2.107/latest/workflow-job.hpi
+https://updates.jenkins.io/2.107/latest/workflow-scm-step.hpi
+https://updates.jenkins.io/2.107/latest/workflow-step-api.hpi
+https://updates.jenkins.io/2.107/latest/workflow-support.hpi
+https://updates.jenkins.io/2.107/latest/branch-api.hpi
+https://updates.jenkins.io/2.107/latest/cloudbees-folder.hpi
+https://updates.jenkins.io/2.107/latest/scm-api.hpi
+https://updates.jenkins.io/2.107/latest/script-security.hpi
+https://updates.jenkins.io/2.107/latest/structs.hpi
+https://updates.jenkins.io/2.107/latest/ace-editor.hpi
+https://updates.jenkins.io/2.107/latest/jquery-detached.hpi
