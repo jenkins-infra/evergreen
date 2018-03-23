@@ -3,7 +3,7 @@ const createService = require('./pusher.class.js');
 const hooks = require('./pusher.hooks');
 
 module.exports = function (app) {
-
+  
   const paginate = app.get('paginate');
 
   const options = {
