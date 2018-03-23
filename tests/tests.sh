@@ -39,10 +39,22 @@ test_docker_CLI_available() {
   assertEquals "expected message about daemon unavailable" 0 $?
 }
 
+# JENKINS-49861
 test_no_executor() {
   numExecutors=$( docker exec $container_under_test cat "$JENKINS_HOME/config.xml" | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
   assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
+}
+
+# JENKINS-50195
+test_not_root() {
+  username=$( docker exec $container_under_test whoami )
+  assertEquals "jenkins" "$username"
+
+  for process_user in $( docker exec $container_under_test ps -o user | grep -v USER)
+  do
+    assertEquals "jenkins" "$process_user"
+  done
 }
 
 . ./shunit2/shunit2
