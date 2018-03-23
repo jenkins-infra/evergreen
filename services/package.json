@@ -41,6 +41,7 @@
     "sequelize": "^4.37.2",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "^2.4.5",
+    "ursa": "^0.9.4",
     "uuid": "^3.2.1",
     "winston": "^2.4.1"
   },
