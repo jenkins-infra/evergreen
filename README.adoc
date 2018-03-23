@@ -1,6 +1,7 @@
 = Evergreen
 
 image:https://badges.gitter.im/jenkins-infra/evergreen.svg[link="https://gitter.im/jenkins-infra/evergreen?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
+image:https://ci.jenkins.io/job/Infra/job/evergreen/job/master/badge/icon[link="https://ci.jenkins.io/blue/organizations/jenkins/Infra%2Fevergreen/activity",title="CI Status"]
 
 _if you prefer IRC, check out link:https://irc.gitter.im/[irc.gitter.im]_
 
