@@ -6,10 +6,14 @@ all: check docs container
 
 check: depends lint
 	$(MAKE) migrate
-	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
+	$(MAKE) unit
 
 lint: depends
 	$(NODE) npm run eslint
+
+unit:
+	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
+
 
 depends: package.json
 	# Checking to see if the directory exists because npm install updates the
@@ -36,4 +40,4 @@ clean:
 	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends migrate
+.PHONY: all check clean container depends migrate unit
