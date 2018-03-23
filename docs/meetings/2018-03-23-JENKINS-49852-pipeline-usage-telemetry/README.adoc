@@ -1,0 +1,27 @@
+= 2018-03-23 Initial Pipeline Usage Telemetry Discussion
+
+The purpose of this meeting was to discuss some of the initial feedback on
+link:https://issues.jenkins-ci.org/browse/JENKINS-49852[JENKINS-49852]
+in link:https://groups.google.com/d/msg/jenkinsci-dev/F7XjrFx_kC8/L4huCc9TAwAJ[this mailing list thread].
+
+   
+
+*    Concerns about privacy of the telemetry and metrics
+**    Need some review before publicly exposing stats
+*    Related development work for error telemetry: https://issues.jenkins-ci.org/browse/JENKINS-49805
+*    Ideal situation (from Sam):
+**    Setting up plugin which depends on Pipeline itself and the hooks for metrics
+**    "Pipeline Metrics plugin"
+*    GraphListener and RunListener hooks already exist
+*    New hooks will be necessary
+*    "Probably more design and thinking work, than actual coding to get those stats out" -- Sam
+**    Should there then be a JEP?
+**    Point: the Data Science (the analysis) is in some ways harder than adding metrics collections -- problem that we face with Metrics in general is that it reports a bajillion numbers, maybe a couple dozen of which are generally meaningful/useful
+*    Sam's concern is that collection has some filtering embedding in it so the "collection data science" and "design" should be thought about of more ahead of time
+*    Jesse's previous suggestions on hooking loggers is not really valid for numerical metrics/events we would want to collect
+*    Vivek: It should also be interesting for declarative to collect how many of those use 'script' block
+**    Andrew: Since script {} is actually a step, we get that for free with any step invocation per job or aggregate data
+*    Jesse: two different kinds of telemetry
+**    Metrics plugin type data, oriented towards performance over time
+**    Unrelated stuff, closer to what we collect in support bundles. Summaries of features being used by the system. Number of configured libraries, etc. Measurements of the feature use and complexity of the system. Not things you want to sample every 5s for example
+*    One of the hardest things, wip even in hydra, is to find a way to make judging the state of a number of running Pipelines automated, not needing human like it does now -- Sam
