@@ -7,4 +7,15 @@ describe('\'registration\' service', () => {
 
     assert.ok(service, 'Registered the service');
   });
+
+  describe('creating a registration', () => {
+    it('should generate a new ECDSA keypair', async () => {
+      const service = app.service('registration');
+      const item = await service.create({
+        ident: 'somerandomgarbage'
+      });
+
+      assert.ok(item, 'Registration created');
+    });
+  });
 });
