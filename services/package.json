@@ -36,6 +36,7 @@
     "cors": "^2.8.4",
     "feathers-sequelize": "^3.0.1",
     "helmet": "^3.12.0",
+    "jsrsasign": "^8.0.6",
     "pg": "^7.4.1",
     "sequelize": "^4.37.2",
     "sequelize-cli": "^4.0.0",
