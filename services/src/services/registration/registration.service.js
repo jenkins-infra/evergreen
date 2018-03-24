@@ -1,15 +1,14 @@
 // Initializes the `registration` service on path `/registration`
-const createService = require('feathers-sequelize');
-const createModel = require('../../models/registration.model');
+const createService = require('./registration.class.js');
 const hooks = require('./registration.hooks');
 
 module.exports = function (app) {
-  const Model = createModel(app);
+
   const paginate = app.get('paginate');
 
   const options = {
     name: 'registration',
-    Model,
+    sequelize: app.get('sequelizeClient'),
     paginate
   };
 
