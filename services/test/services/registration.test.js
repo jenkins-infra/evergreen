@@ -28,11 +28,14 @@ describe('\'registration\' service', () => {
       assert.ok(reg.uuid, 'Expected a uuid to be generated on registration');
     });
 
-    it('should persist a uuid and pubKey on registration', () => {
+    it('should persist a uuid and pubKey on registration', async () => {
       const service = app.service('registration');
-      return service.create({
+      const reg = await service.create({
         pubKey: 'ImagineThisIsAnECDHPublicKeyHex'
       });
+
+      assert.ok(reg);
+      assert.ok(reg.createdAt);
     });
   });
 });

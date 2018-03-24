@@ -15,12 +15,11 @@ class Service {
     }
 
     /* TODO: Persist to the database, duh */
-    const record = {
-      uuid: uuid(),
-      pubKey: data.pubKey
-    };
+    Object.assign(data, {
+      uuid: uuid()
+    });
 
-    return record;
+    return data;
   }
 }
 

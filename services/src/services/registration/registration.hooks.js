@@ -1,11 +1,11 @@
-
+const dbtimestamp = require('../../hooks/dbtimestamp');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [dbtimestamp('createdAt')],
     update: [],
     patch: [],
     remove: []
