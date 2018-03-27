@@ -1,55 +1,26 @@
 //!/usr/bin/env node
 
-const EventSource = require('eventsource');
-const util        = require('util');
+const EventSource  = require('eventsource');
+const util         = require('util');
 
-const supervisor  = require('./lib/supervisor.js')
-const inspector   = require('./lib/inspector.js');
-const ping        = require('./lib/ping.js');
+const registration = require('./lib/registration');
 
-const ENDPOINT    = process.env.EVERGREEN_ENDPOINT;
-console.debug('Using the Evergreen endpoint:', ENDPOINT);
+module.exports = {
+  homeDirectory: function() {
+    /* The default home directory is /evergreen, see the Dockerfile in the root
+     * directory of th repository
+     */
+    if (!process.env.EVERGREEN_HOME) {
+      return '/evergreen';
+    }
+    return process.env.EVERGREEN_HOME;
+  },
 
-const ident = inspector.identity();
-console.debug('Using the instance identity of:', ident);
+  main: function() {
+  },
 
-const sse = new EventSource(util.format('%s/sse/stream/%s', ENDPOINT, ident));
-console.debug('EventSource created', sse);
-
-/* First set up a generic event handler.
- *
- * This function will be called whenever an unnamed SSE is received, an that
- * should typically never happen.
- */
-sse.onmessage = function(ev) {
-  console.error('Unhandled message from Evergreen:', ev);
 };
 
-ping.addListenerTo(sse);
-
-['update', 'flags', 'logs'].map((command) => {
-  sse.addEventListener(command, (ev) => {
-    console.log('-->', command);
-    console.log(ev);
-  });
-  console.debug('Adding SSE event listener for', command);
-});
-
-
-sse.addEventListener('restart', (ev) => {
-  console.log(ev);
-  return;
-
-  supervisor.isRunning().then((running) => {
-      if (!running) { return; }
-      console.log('Supervisord can be accessed..');
-
-      supervisor.restartProcess('jenkins').then(() => {
-          console.log('restarted....');
-      });
-  });
-}, false);
-
-/* Currently not exporting any symbols */
-module.exports = () => {
-};
+if (require.main === module) {
+  /* Main entrypoint for module */
+}
