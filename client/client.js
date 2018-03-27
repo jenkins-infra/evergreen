@@ -3,6 +3,7 @@
 const EventSource  = require('eventsource');
 const util         = require('util');
 
+const auth         = require('./lib/auth');
 const registration = require('./lib/registration');
 
 module.exports = {
