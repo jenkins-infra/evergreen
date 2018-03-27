@@ -1,6 +1,15 @@
 pipeline {
     agent { label 'linux' }
 
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(logRotator(daysToKeepStr: '10'))
+    }
+
+    triggers {
+        pollSCM('H * * * *')
+    }
+
     stages {
         stage('Prepare Workspace') {
             steps {
