@@ -16,9 +16,30 @@ module.exports = {
     return process.env.EVERGREEN_HOME;
   },
 
-  main: function() {
+  runloop: function(jwt) {
   },
 
+  main: function() {
+    /* If we already have keys then all we need to do is log in */
+    if (registration.hasKeys()) {
+      auth.login(registration.identity()).then((err, jwt) => {
+        /* Check error for login, if fail, then we need to update the status
+         */
+        if (!err) { runloop(jwt); }
+      });
+    }
+    else {
+      registration.register().then((err) => {
+        /* Check error on registration, then we need to update the status.
+         */
+        if (!err) {
+          auth.login(registration.identity()).then((lerr, jwt) => {
+            if (!lerr) { runloop(jwt); }
+          });
+        }
+      });
+    }
+  },
 };
 
 if (require.main === module) {
