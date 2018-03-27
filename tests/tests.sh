@@ -57,4 +57,17 @@ test_not_root() {
   done
 }
 
+# JENKINS-49406 check data segregation
+test_plugins_are_not_exploded_under_jenkins_home() {
+  # shellcheck disable=SC2016
+  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_HOME/plugins | grep -v hpi' )
+  assertEquals "" "$result"
+}
+test_war_is_not_exploded_under_jenkins_home() {
+  # shellcheck disable=SC2016
+  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_HOME/war' 2>&1 )
+  assertNotEquals "0" "?"
+  assertEquals "ls: /evergreen/jenkins/home/war: No such file or directory" "$result"
+}
+
 . ./shunit2/shunit2
