@@ -5,11 +5,12 @@
   "main": "client.js",
   "scripts": {
     "client": "node client.js",
-    "test": "mocha"
+    "test": "jest"
   },
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
   "devDependencies": {
+    "jest": "^22.4.3",
     "mocha": "^5.0.0",
     "simple-mock": "0.8.0"
   },

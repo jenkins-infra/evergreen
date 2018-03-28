@@ -11,7 +11,7 @@ describe('The inspector module', function() {
     assert.equal(inspector.pathToPlugins(), '/var/jenkins_home/plugins');
   });
 
-  context('md5OfCore', function() {
+  describe('md5OfCore', function() {
     it('should throw an error if it cannot find a core', function() {
       /* assuming that in our test environment, the jenkins.war cannot be
         * found in the expected location
@@ -19,7 +19,7 @@ describe('The inspector module', function() {
       assert.throws(() => { inspector.md5OfCore() }, inspector.InspectorError );
     });
 
-    context('with mock-jenkins.war', function() {
+    describe('with mock-jenkins.war', function() {
       const mockHex = '87e290faf1b1b5a61101d31f85d4eb2f';
 
       beforeEach(function() {
@@ -34,7 +34,7 @@ describe('The inspector module', function() {
     });
   });
 
-  context('identity', function() {
+  describe('identity', function() {
     beforeEach(function() {
       inspector.resetIdentity();
     });
@@ -43,7 +43,7 @@ describe('The inspector module', function() {
       assert(inspector.identity());
     });
 
-    context('when a JENKINS_HOME is available', function() {
+    describe('when a JENKINS_HOME is available', function() {
       beforeEach(function() {
         simple.mock(inspector, 'pathToJenkins', () => { return 'test/mock-jenkins-home' });
       });
@@ -56,14 +56,14 @@ describe('The inspector module', function() {
     });
   });
 
-  context('pluginFiles', function() {
+  describe('pluginFiles', function() {
     it('should return an empty array when there are no plugins', function() {
       let plugins = inspector.pluginFiles();
 
       assert.equal(plugins.length, 0);
     });
 
-    context('with mock-plugins/', function() {
+    describe('with mock-plugins/', function() {
       beforeEach(function() {
         simple.mock(inspector, 'pathToPlugins', () => { return 'test/mock-plugins' });
       });
@@ -76,8 +76,8 @@ describe('The inspector module', function() {
     });
   });
 
-  context('infoFromZip', function() {
-    context('with mock-plugins/', function() {
+  describe('infoFromZip', function() {
+    describe('with mock-plugins/', function() {
       beforeEach(function() {
         simple.mock(inspector, 'pathToPlugins', () => { return 'test/mock-plugins' });
       });
