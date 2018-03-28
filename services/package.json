@@ -19,10 +19,10 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run eslint && npm run mocha",
+    "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "jest": "jest"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.3",
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "eslint": "^4.19.0",
+    "jest": "^22.4.3",
     "mocha": "^5.0.4",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"

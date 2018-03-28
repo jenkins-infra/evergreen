@@ -12,7 +12,7 @@ lint: depends
 	$(NODE) npm run eslint
 
 unit:
-	$(COMPOSE) run -e NODE_ENV=test --rm node npm run mocha
+	$(COMPOSE) run -e NODE_ENV=test --rm node npm run jest
 
 
 depends: package.json
