@@ -1,5 +1,4 @@
 const assert = require('assert');
-const mocha  = require('mocha');
 const auth   = require('../lib/auth');
 
 describe('The auth module', () => {
