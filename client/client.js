@@ -2,12 +2,15 @@
  * This is the main entryooint for the evergreen-client
  */
 
+const logger       = require('winston');
+
 const auth         = require('./lib/auth');
 const registration = require('./lib/registration');
 
 module.exports = {
 
   runloop: function(jwt) {
+    logger.info('..starting runloop');
   },
 
   main: function() {
@@ -35,4 +38,6 @@ module.exports = {
 
 if (require.main === module) {
   /* Main entrypoint for module */
+  logger.info('Starting the evergreen-client..');
+  module.exports.runloop();
 }
