@@ -16,8 +16,15 @@ ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
 
-ENV JAVA_OPTS="-Djava.awt.headless=true -Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_VAR}/\${ITEM_FULL_NAME}/workspace -Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_VAR/\${ITEM_FULL_NAME}/builds"
-ENV JENKINS_OPTS="--webroot=${JENKINS_VAR}/war --pluginroot=${JENKINS_VAR}/plugins"
+ENV JAVA_OPTS=\
+"-Djava.awt.headless=true "\
+"-Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_VAR}/\${ITEM_FULL_NAME}/workspace "\
+"-Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_VAR/\${ITEM_FULL_NAME}/builds "\
+"-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs"
+
+ENV JENKINS_OPTS=\
+"--webroot=${JENKINS_VAR}/war "\
+"--pluginroot=${JENKINS_VAR}/plugins"
 
 RUN mkdir -p /usr/share/jenkins/ref/ && \
     mkdir ${EVERGREEN_HOME} && \
