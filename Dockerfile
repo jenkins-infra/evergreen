@@ -31,7 +31,7 @@ EXPOSE ${agent_port}
 
 
 # FIXME REMOVE (to ease iteration/speed just for now), see also shim-startup-wrapper.sh
-RUN wget --quiet https://updates.jenkins.io/download/war/2.107.1/jenkins.war -O /usr/share/jenkins/jenkins.war
+RUN wget --quiet https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war -O ${EVERGREEN_HOME}/jenkins.war
 RUN apk add --no-cache curl aria2 # used by shim-startup-wrapper.sh
 COPY scripts/casc-dependencies.aria /casc-dependencies.aria
 
