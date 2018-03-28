@@ -49,7 +49,6 @@
   "devDependencies": {
     "eslint": "^4.19.0",
     "jest": "^22.4.3",
-    "mocha": "^5.0.4",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
   }
