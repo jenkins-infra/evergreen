@@ -14,8 +14,7 @@ module.exports = {
   },
 
   main: function() {
-    /* If we already have keys then all we need to do is log in */
-    if (registration.hasKeys()) {
+    if (registration.isRegistered()) {
       auth.login(registration.identity()).then((err, jwt) => {
         /* Check error for login, if fail, then we need to update the status
          */
