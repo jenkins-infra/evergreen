@@ -31,6 +31,36 @@ describe('The registration module', () => {
     });
   });
 
+  describe('saveUUIDSync()', () => {
+    beforeEach(() => {
+      this.reg = new Registration();
+    });
+    it('should not write anything by default', () => {
+      assert.equal(this.reg.saveUUIDSync(), false);
+    });
+
+    describe('with a uuid', () => {
+      beforeEach(() => {
+        this.reg.uuid = 'foobar-uuid';
+      });
+
+      it('should write a uuid.json', () => {
+        assert(this.reg.saveUUIDSync());
+        try {
+          fs.statSync(this.reg.uuidPath());
+        }
+        catch (err) {
+          if (err.code == 'ENOENT') {
+            assert.fail('Could not find the uuid saved on disk');
+          }
+          else {
+            throw err;
+          }
+        }
+      });
+    });
+  });
+
   describe('saveKeysSync()', () => {
     it('should return false if there are not keys', () => {
       const r = new Registration();
@@ -137,6 +167,13 @@ describe('The registration module', () => {
   describe('homeDirectory()', () => {
     it('should return a path', () => {
       const p = (new Registration()).homeDirectory();
+      assert(p != path.basename(p), 'This doesn\'t look like a path');
+    });
+  });
+
+  describe('uuidPath()', () => {
+    it('should return a path', () => {
+      const p = (new Registration()).uuidPath();
       assert(p != path.basename(p), 'This doesn\'t look like a path');
     });
   });

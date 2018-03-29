@@ -30,15 +30,8 @@ module.exports = {
     }
     else {
       logger.info('Registering..');
-      reg.register().then((err) => {
-        /* Check error on registration, then we need to update the status.
-         */
-        logger.info('err', err);
-        if (!err) {
-          auth.login(reg.identity()).then((lerr, jwt) => {
-            if (!lerr) { runloop(app, jwt); }
-          });
-        }
+      reg.register().then((res) => {
+        /* successfully created registration */
       }).catch((err) => {
         logger.error('Failed to complete a registration, what do we do!', err);
       });;
