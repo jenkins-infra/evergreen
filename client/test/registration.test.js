@@ -64,9 +64,37 @@ describe('The registration module', () => {
     });
   });
 
+  describe('loadKeysSync()', () => {
+    beforeEach(() => {
+      this.reg = new Registration();
+    });
+
+    it('should return false by default when there are no keys', () => {
+      assert.equal(this.reg.loadKeysSync(), false);
+    });
+
+    it('should return false if keys have already been generated', () => {
+      this.reg.generateKeys();
+      assert.equal(this.reg.loadKeysSync(), false);
+    });
+
+    describe('when keys are already on disk', () => {
+      beforeEach(() => {
+        const preflight = new Registration();
+        preflight.generateKeys();
+        preflight.saveKeysSync();
+      });
+
+      it('should return true and have keys loaded if they are on disk', () => {
+        assert(this.reg.loadKeysSync());
+        assert.equal(typeof this.reg.getPublicKey(), 'string');
+      });
+    });
+  });
+
   describe('hasKeys()', () => {
     it('should return false by default', () => {
-      assert.equal(false, (new Registration()).hasKeys());
+      assert.equal((new Registration()).hasKeys(), false);
     });
   });
 

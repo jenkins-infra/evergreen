@@ -14,8 +14,7 @@ class Registration {
     this.options = options || {};
     this.publicKey = null;
     this.privateKey = null;
-
-    this.privateKeyFilename = 'evergreen-private-key';
+    this.fileOptions = { encoding: 'utf8' };
   }
 
   /*
@@ -79,20 +78,39 @@ class Registration {
    */
   saveKeysSync() {
     if ((!this.publicKey) || (!this.privateKey)) {
-      logger.debug('saveKeysSync() called without a private or public key on Registration');
+      logger.warn('saveKeysSync() called without a private or public key on Registration');
       return false;
     }
 
     const keyPath = this.keyPath();
     const publicKeyPath = this.publicKeyPath();
-    const privateKeyPath = [keyPath, this.privateKeyFilename].join(path.sep);
+    const privateKeyPath = this.privateKeyPath();
 
     logger.debug('Writing public key to', publicKeyPath);
-    fs.writeFileSync(publicKeyPath, this.publicKey);
+    fs.writeFileSync(publicKeyPath, this.publicKey, this.fileOptions);
 
     logger.debug('Writing private key to', privateKeyPath);
-    fs.writeFileSync(privateKeyPath, this.privateKey);
+    fs.writeFileSync(privateKeyPath, this.privateKey, this.fileOptions);
 
+    return true;
+  }
+
+  /*
+   * Load generated keys from disk assuming they are present
+   *
+   * @return Boolean on successful load of keys
+   */
+  loadKeysSync() {
+    if ((this.publicKey != null) || (this.privateKey != null)) {
+      logger.warn('loadKeysSync() called despite public/private keys already having been loaded', this.publicKey);
+      return false;
+    }
+
+    if (!this.hasKeys()) {
+      return false;
+    }
+    this.publicKey = fs.readFileSync(this.publicKeyPath(), this.fileOptions);
+    this.privateKey = fs.readFileSync(this.privateKeyPath(), this.fileOptions);
     return true;
   }
 
@@ -116,6 +134,18 @@ class Registration {
    * @return Boolean
    */
   hasKeys() {
+    try {
+      let r = fs.statSync(this.publicKeyPath());
+      return true;
+    }
+    catch (err) {
+      if (err.code == 'ENOENT') {
+        return false;
+      }
+      else {
+        throw err;
+      }
+    }
     return false;
   }
 
@@ -150,6 +180,10 @@ class Registration {
    */
   publicKeyPath() {
     return [this.keyPath(), 'evergreen.pub'].join(path.sep)
+  }
+
+  privateKeyPath() {
+    return [this.keyPath(), 'evergreen-private-key'].join(path.sep)
   }
 }
 
