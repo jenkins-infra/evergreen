@@ -2,35 +2,46 @@
  * This is the main entryooint for the evergreen-client
  */
 
+const feathers     = require('@feathersjs/feathers');
+const fetch        = require('node-fetch');
 const logger       = require('winston');
+const rest         = require('@feathersjs/rest-client');
 
 const auth         = require('./lib/auth');
-const registration = require('./lib/registration');
+const Registration = require('./lib/registration');
 
 module.exports = {
-
-  runloop: function(jwt) {
+  runloop: function(app, jwt) {
     logger.info('..starting runloop');
   },
 
-  main: function() {
-    if (registration.isRegistered()) {
-      auth.login(registration.identity()).then((err, jwt) => {
+  main: async function() {
+    const app = feathers();
+    const reg = new Registration(app);
+    const restClient = rest(process.env.EVERGREEN_ENDPOINT);
+    app.configure(restClient.fetch(fetch));
+
+    if (reg.isRegistered()) {
+      auth.login(reg.identity()).then((err, jwt) => {
         /* Check error for login, if fail, then we need to update the status
          */
-        if (!err) { runloop(jwt); }
+        if (!err) { runloop(app, jwt); }
       });
     }
     else {
-      registration.register().then((err) => {
+      logger.info('Registering..');
+      reg.register().then((err) => {
         /* Check error on registration, then we need to update the status.
          */
+        logger.info('err', err);
         if (!err) {
-          auth.login(registration.identity()).then((lerr, jwt) => {
-            if (!lerr) { runloop(jwt); }
+          auth.login(reg.identity()).then((lerr, jwt) => {
+            if (!lerr) { runloop(app, jwt); }
           });
         }
-      });
+      }).catch((err) => {
+        logger.error('Failed to complete a registration, what do we do!', err);
+      });;
     }
   },
 };
@@ -38,5 +49,8 @@ module.exports = {
 if (require.main === module) {
   /* Main entrypoint for module */
   logger.info('Starting the evergreen-client..');
-  module.exports.runloop();
+  module.exports.main();
+  setInterval(function() {
+    /* no-op to keep this process alive */
+  }, 10);
 }

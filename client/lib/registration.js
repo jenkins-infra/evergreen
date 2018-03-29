@@ -10,11 +10,17 @@ const path   = require('path');
 const mkdirp = require('mkdirp');
 
 class Registration {
-  constructor (options) {
+  constructor (app, options) {
+    this.app = app;
     this.options = options || {};
     this.publicKey = null;
     this.privateKey = null;
     this.fileOptions = { encoding: 'utf8' };
+  }
+
+  isRegistered() {
+    // TODO: implement
+    return false;
   }
 
   /*
@@ -23,27 +29,36 @@ class Registration {
    *
    * @return Promise
    */
-  register() {
+  async register() {
+    let self = this;
     return new Promise(function(resolve, reject) {
-      if (this.hasKeys()) {
+      let api = self.app.service('registration');
+      logger.info('Checking registration status..');
+      if (self.hasKeys()) {
         /*
          *   - locate uuid on disk
          *   - sign uuid with private key
          *   - send login request
          */
+        logger.info('We have keys already');
       }
       else {
-        if (!this.generateKeys()) {
+        if (!self.generateKeys()) {
           return reject('Failed to generate keys');
         }
-        if (!this.saveKeysSync()) {
+        if (!self.saveKeysSync()) {
           return reject('Failed to save keys to disk');
         }
-        /*
-         *   - generate keys
-         *   - save to disk
-         *   - send registration request
-         */
+        logger.info('Creating registration..');
+        api.create({
+          pubKey: self.getPublicKey(),
+        }).then((res) => {
+          logger.info('Registration create:', res);
+          resolve(res);
+        }).catch((res) => {
+          logger.error('Failed to register:', res);
+          reject(res);
+        });
       }
     });
   }
