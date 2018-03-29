@@ -7,16 +7,18 @@
     "client": "node client.js",
     "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
-    "jest": "jest"
+    "jest": "jest -w 1"
   },
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "jest": "^22.4.3"
+    "jest": "^22.4.3",
+    "memfs": "^2.8.0"
   },
   "dependencies": {
     "eventsource": "^1.0.5",
+    "mkdirp": "^0.5.1",
     "node-fetch": "^2.0.0",
     "unzip": "^0.1.11",
     "uuid": "^3.2.1",
