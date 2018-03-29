@@ -16,7 +16,7 @@ node_modules: package-lock.json package.json
 
 run:
 	EVERGREEN_HOME=/tmp/evergreen-home \
-		EVERGREEN_ENDPOINT=http://127.0.0.1:3030/ \
+		EVERGREEN_ENDPOINT=http://127.0.0.1:3030 \
 		$(NODE) npm run client
 
 clean:
