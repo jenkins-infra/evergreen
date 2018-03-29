@@ -20,8 +20,19 @@ class Registration {
   }
 
   isRegistered() {
-    // TODO: implement
-    return false;
+    if (!this.hasKeys()) {
+      return false;
+    }
+    try {
+      fs.statSync(this.uuidPath());
+      return true;
+    }
+    catch(err) {
+      if (err.code == 'ENOENT') {
+        return false;
+      }
+      throw err;
+    }
   }
 
   /*
