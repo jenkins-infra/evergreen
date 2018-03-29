@@ -1,5 +1,10 @@
 'use strict';
 
-console.log('MOCKED FILESYSTEM');
+console.log('Using a memfs filesystem...');
 
-module.exports = require('memfs');
+const memfs = require('memfs');
+const vol = new memfs.Volume();
+const fs = memfs.createFsFromVolume(vol);
+
+module.exports = fs;
+module.exports.volume = vol;

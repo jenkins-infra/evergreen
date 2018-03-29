@@ -1,10 +1,16 @@
 jest.mock('fs');
 
 const assert       = require('assert');
+const fs           = require('fs');
 const path         = require('path');
 const Registration = require('../lib/registration');
 
 describe('The registration module', () => {
+  beforeEach(() => {
+    /* Make sure memfs is flushed every time */
+    fs.volume.reset();
+  });
+
   describe('register()', () => {
     it('should return a Promise', () => {
       const response = (new Registration()).register();
@@ -26,10 +32,6 @@ describe('The registration module', () => {
   });
 
   describe('saveKeysSync()', () => {
-    beforeEach(() => {
-      this.fs = require('memfs');
-    });
-
     it('should return false if there are not keys', () => {
       const r = new Registration();
       assert(!r.saveKeysSync());
@@ -43,7 +45,7 @@ describe('The registration module', () => {
       it('should return true if the public key has been written', () => {
         assert(this.reg.saveKeysSync());
         try {
-          this.fs.statSync(this.reg.publicKeyPath());
+          fs.statSync(this.reg.publicKeyPath());
         }
         catch (err) {
           assert.fail('The public key was not written properly');
@@ -53,7 +55,7 @@ describe('The registration module', () => {
           const privateKeyPath = [this.reg.keyPath(),
             'evergreen-private-key'].join(path.sep);
 
-          this.fs.statSync(privateKeyPath);
+          fs.statSync(privateKeyPath);
         }
         catch (err) {
           assert.fail('The private key was not written properly');
@@ -82,10 +84,6 @@ describe('The registration module', () => {
   });
 
   describe('keyPath()', () => {
-    beforeEach(() => {
-      this.fs = require('memfs');
-    });
-
     it('should return a path', () => {
       const keys = (new Registration()).keyPath();
       assert(keys != path.basename(keys), 'This doesn\'t look like a path');
@@ -93,14 +91,14 @@ describe('The registration module', () => {
 
     it('should create a directory if one does not exist', () => {
       const keyPath = (new Registration()).keyPath();
-      const stats = this.fs.statSync(keyPath);
+      const stats = fs.statSync(keyPath);
       assert(stats.isDirectory());
     });
 
     it('should not exist by default', () => {
       /* this is really a test to make sure memfs is behaving appropriately */
       try {
-        this.fs.statSync('/evergreen/keys');
+        fs.statSync('/evergreen/keys');
       }
       catch (err) {
         assert.equal(err.code, 'ENOENT');
