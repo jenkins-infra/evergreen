@@ -25,16 +25,26 @@ class Registration {
    */
   register() {
     return new Promise(function(resolve, reject) {
-      /*
-       * If keys do not exist:
-       *   - generate keys
-       *   - save to disk
-       *   - send registration request
-       * else:
-       *   - locate uuid on disk
-       *   - sign uuid with private key
-       *   - send login request
-       */
+      if (this.hasKeys()) {
+        /*
+         *   - locate uuid on disk
+         *   - sign uuid with private key
+         *   - send login request
+         */
+      }
+      else {
+        if (!this.generateKeys()) {
+          return reject('Failed to generate keys');
+        }
+        if (!this.saveKeysSync()) {
+          return reject('Failed to save keys to disk');
+        }
+        /*
+         *   - generate keys
+         *   - save to disk
+         *   - send registration request
+         */
+      }
     });
   }
 
