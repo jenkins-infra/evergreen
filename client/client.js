@@ -1,5 +1,5 @@
 /*
- * This is the main entryooint for the evergreen-client
+ * This is the main entrypoint for the evergreen-client
  */
 
 const feathers     = require('@feathersjs/feathers');
