@@ -1,55 +1,49 @@
-//!/usr/bin/env node
-
-const EventSource = require('eventsource');
-const util        = require('util');
-
-const supervisor  = require('./lib/supervisor.js')
-const inspector   = require('./lib/inspector.js');
-const ping        = require('./lib/ping.js');
-
-const ENDPOINT    = process.env.EVERGREEN_ENDPOINT;
-console.debug('Using the Evergreen endpoint:', ENDPOINT);
-
-const ident = inspector.identity();
-console.debug('Using the instance identity of:', ident);
-
-const sse = new EventSource(util.format('%s/sse/stream/%s', ENDPOINT, ident));
-console.debug('EventSource created', sse);
-
-/* First set up a generic event handler.
- *
- * This function will be called whenever an unnamed SSE is received, an that
- * should typically never happen.
+/*
+ * This is the main entryooint for the evergreen-client
  */
-sse.onmessage = function(ev) {
-  console.error('Unhandled message from Evergreen:', ev);
-};
 
-ping.addListenerTo(sse);
+const feathers     = require('@feathersjs/feathers');
+const fetch        = require('node-fetch');
+const logger       = require('winston');
+const rest         = require('@feathersjs/rest-client');
 
-['update', 'flags', 'logs'].map((command) => {
-  sse.addEventListener(command, (ev) => {
-    console.log('-->', command);
-    console.log(ev);
-  });
-  console.debug('Adding SSE event listener for', command);
-});
+const auth         = require('./lib/auth');
+const Registration = require('./lib/registration');
 
+module.exports = {
+  runloop: function(app, jwt) {
+    logger.info('..starting runloop');
+  },
 
-sse.addEventListener('restart', (ev) => {
-  console.log(ev);
-  return;
+  main: async function() {
+    const app = feathers();
+    const reg = new Registration(app);
+    const restClient = rest(process.env.EVERGREEN_ENDPOINT);
+    app.configure(restClient.fetch(fetch));
 
-  supervisor.isRunning().then((running) => {
-      if (!running) { return; }
-      console.log('Supervisord can be accessed..');
-
-      supervisor.restartProcess('jenkins').then(() => {
-          console.log('restarted....');
+    if (reg.isRegistered()) {
+      auth.login(reg.identity()).then((err, jwt) => {
+        /* Check error for login, if fail, then we need to update the status
+         */
+        if (!err) { runloop(app, jwt); }
       });
-  });
-}, false);
-
-/* Currently not exporting any symbols */
-module.exports = () => {
+    }
+    else {
+      logger.info('Registering..');
+      reg.register().then((res) => {
+        /* successfully created registration */
+      }).catch((err) => {
+        logger.error('Failed to complete a registration, what do we do!', err);
+      });;
+    }
+  },
 };
+
+if (require.main === module) {
+  /* Main entrypoint for module */
+  logger.info('Starting the evergreen-client..');
+  module.exports.main();
+  setInterval(function() {
+    /* no-op to keep this process alive */
+  }, 10);
+}

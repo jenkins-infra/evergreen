@@ -7,11 +7,12 @@ ARG gid=1000
 ARG http_port=8080
 ARG agent_port=50000
 
+ENV EVERGREEN_ENDPOINT=http://127.0.0.1:3030/
 ENV EVERGREEN_HOME /evergreen
+
 ENV JENKINS_HOME ${EVERGREEN_HOME}/jenkins/home
 ENV JENKINS_VAR ${EVERGREEN_HOME}/jenkins/var
 ENV JENKINS_AGENT_PORT ${agent_port}
-ENV EVERGREEN_ENDPOINT=http://127.0.0.1:9292
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 ENV JENKINS_UC https://updates.jenkins.io
 ENV JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental

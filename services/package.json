@@ -19,12 +19,14 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run eslint && npm run mocha",
+    "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "jest": "jest"
   },
   "dependencies": {
+    "@feathersjs/authentication": "^2.1.3",
+    "@feathersjs/authentication-jwt": "^2.0.0",
     "@feathersjs/cli": "^3.6.1",
     "@feathersjs/configuration": "^1.0.2",
     "@feathersjs/errors": "^3.3.0",
@@ -36,6 +38,7 @@
     "cors": "^2.8.4",
     "feathers-sequelize": "^3.0.1",
     "helmet": "^3.12.0",
+    "jsonwebtoken": "^8.2.0",
     "pg": "^7.4.1",
     "sequelize": "^4.37.2",
     "sequelize-cli": "^4.0.0",
@@ -45,7 +48,7 @@
   },
   "devDependencies": {
     "eslint": "^4.19.0",
-    "mocha": "^5.0.4",
+    "jest": "^22.4.3",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
   }

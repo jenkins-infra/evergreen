@@ -5,19 +5,26 @@
   "main": "client.js",
   "scripts": {
     "client": "node client.js",
-    "test": "mocha"
+    "test": "npm run eslint && npm run jest",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "jest": "jest -w 1"
   },
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
   "devDependencies": {
-    "mocha": "^5.0.0",
-    "simple-mock": "0.8.0"
+    "eslint": "^4.19.1",
+    "jest": "^22.4.3",
+    "memfs": "^2.8.0"
   },
   "dependencies": {
+    "@feathersjs/feathers": "^3.1.4",
+    "@feathersjs/rest-client": "^1.3.4",
     "eventsource": "^1.0.5",
-    "node-fetch": "^2.0.0",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.1.2",
     "unzip": "^0.1.11",
     "uuid": "^3.2.1",
+    "winston": "^2.4.1",
     "xmlrpc": "^1.3.2"
   }
 }
