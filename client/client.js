@@ -34,7 +34,7 @@ module.exports = {
         /* successfully created registration */
       }).catch((err) => {
         logger.error('Failed to complete a registration, what do we do!', err);
-      });;
+      });
     }
   },
 };
