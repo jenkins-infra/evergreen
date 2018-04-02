@@ -14,6 +14,9 @@ lint: depends
 unit:
 	$(COMPOSE) run -e NODE_ENV=test --rm node npm run jest
 
+watch:
+	$(COMPOSE) run -e NODE_ENV=test --rm node jest --watchAll
+
 
 depends: package.json
 	# Checking to see if the directory exists because npm install updates the
