@@ -7,7 +7,7 @@
     "client": "node client.js",
     "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
-    "jest": "jest -w 1"
+    "jest": "jest"
   },
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
