@@ -76,4 +76,11 @@ test_logs_are_not_under_jenkins_home() {
   assertEquals "ls: /evergreen/jenkins/home/logs: No such file or directory" "$result"
 }
 
+test_jenkins_logs_is_found_on_disk() {
+  # shellcheck disable=SC2016
+  result=$( docker exec $container_under_test bash -c 'cat $JENKINS_VAR/logs/jenkins.log.0' | \
+            grep 'Jenkins is fully up and running' )
+  assertEquals "0" "$?"
+}
+
 . ./shunit2/shunit2
