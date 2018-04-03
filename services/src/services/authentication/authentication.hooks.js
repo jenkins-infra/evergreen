@@ -1,3 +1,4 @@
+const errors      = require('@feathersjs/errors');
 const dbtimestamp = require('../../hooks/dbtimestamp');
 
 module.exports = {
@@ -5,7 +6,15 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [dbtimestamp('createdAt')],
+    create: [
+      dbtimestamp('createdAt'),
+      (hook) => {
+        if ((!hook.data.uuid) ||
+          (!hook.data.signature)) {
+          throw new errors.BadRequest('Missing uuid and/or signature from request');
+        }
+      }
+    ],
     update: [],
     patch: [],
     remove: []

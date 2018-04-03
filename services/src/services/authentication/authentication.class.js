@@ -10,7 +10,8 @@ class Authentication {
   }
 
   async create(data, params) {
-    logger.info('Authentication.create()', data, params);
+    logger.info('Authentication.create()', data);
+    return Promise.resolve([]);
   }
 
   async find(params) {
