@@ -1,11 +1,16 @@
 const dbtimestamp = require('../../hooks/dbtimestamp');
+const internalOnly = require('../../hooks/internalonly');
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [
+      internalOnly()
+    ],
     get: [],
-    create: [dbtimestamp('createdAt')],
+    create: [
+      dbtimestamp('createdAt')
+    ],
     update: [],
     patch: [],
     remove: []
