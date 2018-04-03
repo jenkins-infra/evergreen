@@ -7,7 +7,6 @@ const internalOnly = require('../../hooks/internalonly');
 module.exports = {
   before: {
     all: [
-      internalOnly()
     ],
     find: [
       internalOnly()

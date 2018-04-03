@@ -11,6 +11,15 @@ const getUrl = pathname => url.format({
   pathname
 });
 
+const assertStatus = function(response, code) {
+  if (response.statusCode) {
+    assert.equal(response.statusCode, code);
+  }
+  else {
+    throw response;
+  }
+};
+
 describe('Authentication service acceptance tests', () => {
   beforeAll(function(done) {
     this.server = app.listen(port);
@@ -28,17 +37,21 @@ describe('Authentication service acceptance tests', () => {
         method: 'POST'
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch((res) => {
-          if (res.statusCode) {
-            assert.equal(res.statusCode, 400);
-          }
-          else {
-            throw res;
-          }
-        });
+        .catch(res => assertStatus(res, 400));
     });
 
     it('should return a 404 if the client has not registered', () => {
+      return rp({
+        url: getUrl('/authentication'),
+        method: 'POST',
+        json: true,
+        body: {
+          uuid: 'non-existent',
+          signature: 'malarkey'
+        }
+      })
+        .then(() => assert.fail('Got a 200 response'))
+        .catch(res => assertStatus(res, 404));
     });
   });
 });
