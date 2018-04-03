@@ -28,6 +28,9 @@ documents:
 | JEP-302
 | link:https://github.com/jenkinsci/jep/tree/master/jep/302[Evergreen snapshotting data safety system]
 
+| JEP-303
+| link:https://github.com/jenkinsci/jep/blob/master/jep/303[Evergreen Client Registration and Authentication]
+
 |===
 
 [[essentials]]
