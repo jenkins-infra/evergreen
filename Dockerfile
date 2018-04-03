@@ -21,7 +21,8 @@ ENV JAVA_OPTS=\
 "-Djava.awt.headless=true "\
 "-Djenkins.model.Jenkins.WORKSPACES_DIR=${JENKINS_VAR}/\${ITEM_FULL_NAME}/workspace "\
 "-Djenkins.model.Jenkins.BUILDS_DIR=$JENKINS_VAR/\${ITEM_FULL_NAME}/builds "\
-"-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs"
+"-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs "\
+"-Djava.util.logging.config.file=$EVERGREEN_HOME/logging.properties "
 
 ENV JENKINS_OPTS=\
 "--webroot=${JENKINS_VAR}/war "\
@@ -30,7 +31,9 @@ ENV JENKINS_OPTS=\
 RUN mkdir -p /usr/share/jenkins/ref/ && \
     mkdir ${EVERGREEN_HOME} && \
     mkdir ${EVERGREEN_HOME}/jenkins/ && \
-    mkdir ${JENKINS_HOME}
+    mkdir ${JENKINS_HOME} && \
+    mkdir ${JENKINS_VAR} && \
+    mkdir ${JENKINS_VAR}/logs
 
 # for main web interface:
 EXPOSE ${http_port}
@@ -63,6 +66,8 @@ RUN cd /tmp && \
     mv docker/* /usr/local/bin && \
     rmdir docker && \
     rm docker.tar.gz
+
+COPY logging.properties $EVERGREEN_HOME/logging.properties
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
