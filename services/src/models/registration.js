@@ -4,7 +4,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const reg = sequelizeClient.define('registration', {
+  const reg = sequelizeClient.define('registrations', {
     uuid: DataTypes.UUID,
     pubKey: DataTypes.STRING,
     createdAt: DataTypes.DATE

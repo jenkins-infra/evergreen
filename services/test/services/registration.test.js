@@ -38,4 +38,21 @@ describe('\'registration\' service', () => {
       assert.ok(reg.createdAt);
     });
   });
+
+  describe('looking up a registration', () => {
+    beforeEach(async () => {
+      this.reg = await app.service('registration').create({
+        pubKey: 'a-hex-key'
+      });
+    });
+
+    it('should be able to look up by uuid', async () => {
+      assert.ok(this.reg.uuid, 'Setup did not create the registration properly');
+      const service = app.service('registration');
+
+      const rows = await service.find({ query: { uuid: this.reg.uuid }});
+      assert.equal(rows.total, 1, 'Should only have one record per uuid');
+      assert.equal(rows.data[0].uuid, this.reg.uuid);
+    });
+  });
 });
