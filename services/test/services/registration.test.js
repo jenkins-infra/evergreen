@@ -19,6 +19,15 @@ describe('\'registration\' service', () => {
         .catch((err) => assert.ok(err.message.match('^A data object must be provided')));
     });
 
+    it('should fail without a curve', () => {
+      const service = app.service('registration');
+      return service.create({
+        pubKey: 'ImagineThisIsAnECDHPublicKeyHex'
+      })
+        .then()
+        .catch((err) =>  assert.ok(err.message.match('^Client must provide a curve')));
+    });
+
     it('should return a uuid for successful registration', async () => {
       const service = app.service('registration');
       const reg = await service.create({

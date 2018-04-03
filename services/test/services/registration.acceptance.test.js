@@ -1,7 +1,7 @@
-const assert = require('assert');
-const rp = require('request-promise');
-const url = require('url');
-const app = require('../../src/app');
+const assert  = require('assert');
+const request = require('request-promise');
+const url     = require('url');
+const app     = require('../../src/app');
 
 const port = app.get('port') || 3030;
 const getUrl = pathname => url.format({
@@ -32,7 +32,7 @@ describe('Registration service acceptance tests', () => {
   describe('create()', () => {
     it('should create a UUID', async () => {
       const pubKey = 'pretend-public-key';
-      return rp({
+      return request({
         url: getUrl('/registration'),
         method: 'POST',
         json: true,
@@ -46,7 +46,7 @@ describe('Registration service acceptance tests', () => {
   });
 
   it('should not support lookups', () => {
-    return rp({
+    return request({
       url: getUrl('/registration/some-uuid'),
     })
       .then(() => assert.fail('Got a 200 response'))
@@ -54,7 +54,7 @@ describe('Registration service acceptance tests', () => {
   });
 
   it('should not support updates', () => {
-    return rp({
+    return request({
       url: getUrl('/registration/some-uuid'),
       method: 'PUT',
     })
@@ -63,7 +63,7 @@ describe('Registration service acceptance tests', () => {
   });
 
   it('should not support patches', () => {
-    return rp({
+    return request({
       url: getUrl('/registration/some-uuid'),
       method: 'PATCH',
     })
@@ -72,7 +72,7 @@ describe('Registration service acceptance tests', () => {
   });
 
   it('should not support deletes', () => {
-    return rp({
+    return request({
       url: getUrl('/registration/some-uuid'),
       method: 'DELETE',
     })
@@ -81,7 +81,7 @@ describe('Registration service acceptance tests', () => {
   });
 
   it('should not support finds', () => {
-    return rp({
+    return request({
       url: getUrl('/registration'),
     })
       .then(() => assert.fail('Got a 200 response'))
