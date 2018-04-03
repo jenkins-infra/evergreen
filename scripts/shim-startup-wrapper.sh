@@ -19,6 +19,12 @@ download_war() {
   wget $SOURCE -O "$TARGET"
 }
 
+dump_war_metadata() {
+  echo "*** WAR metadata"
+  md5sum "$JENKINS_WAR"
+  unzip -c "$JENKINS_WAR" META-INF/MANIFEST.MF | grep Version
+}
+
 if test -f "$TARGET"; then
   echo "$TARGET already exists, checking checksum."
   # shellcheck disable=SC2086
@@ -51,4 +57,5 @@ mv ./*.hpi "$JENKINS_HOME/plugins/"
 rm -rf $download_tmp
 cd "$JENKINS_HOME"
 
+dump_war_metadata
 exec jenkins.sh "$@"
