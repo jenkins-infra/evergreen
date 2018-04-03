@@ -57,6 +57,9 @@ app.use(express.notFound());
 if (process.env.NODE_ENV != 'test') {
   app.use(express.errorHandler({ logger }));
 }
+else {
+  app.use(express.errorHandler());
+}
 
 app.hooks(appHooks);
 
