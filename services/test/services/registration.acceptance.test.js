@@ -11,12 +11,12 @@ const getUrl = pathname => url.format({
   pathname
 });
 
-const assertNotImplemented = function(response) {
+const assertStatus = function(response, code) {
   /* If there isn't a statusCode, this is likely an Error */
   if (!response.statusCode) {
     throw response;
   }
-  assert.equal(response.statusCode, 405);
+  assert.equal(response.statusCode, code);
 };
 
 describe('Registration service acceptance tests', () => {
@@ -29,12 +29,28 @@ describe('Registration service acceptance tests', () => {
     this.server.close(done);
   });
 
+  describe('create()', () => {
+    it('should create a UUID', async () => {
+      const pubKey = 'pretend-public-key';
+      return rp({
+        url: getUrl('/registration'),
+        method: 'POST',
+        json: true,
+        body: {
+          pubKey: pubKey
+        }
+      })
+        .then(res => assert.ok(res.uuid, 'Missing a uuid'))
+        .catch(res => assert.equal(res.statusCode, 201));
+    });
+  });
+
   it('should not support lookups', () => {
     return rp({
       url: getUrl('/registration/some-uuid'),
     })
       .then(() => assert.fail('Got a 200 response'))
-      .catch(res => assertNotImplemented(res));
+      .catch(res => assertStatus(res, 405));
   });
 
   it('should not support updates', () => {
@@ -43,7 +59,7 @@ describe('Registration service acceptance tests', () => {
       method: 'PUT',
     })
       .then(() => assert.fail('Got a 200 response'))
-      .catch(res => assertNotImplemented(res));
+      .catch(res => assertStatus(res, 405));
   });
 
   it('should not support patches', () => {
@@ -52,7 +68,7 @@ describe('Registration service acceptance tests', () => {
       method: 'PATCH',
     })
       .then(() => assert.fail('Got a 200 response'))
-      .catch(res => assertNotImplemented(res));
+      .catch(res => assertStatus(res, 405));
   });
 
   it('should not support deletes', () => {
@@ -61,7 +77,7 @@ describe('Registration service acceptance tests', () => {
       method: 'DELETE',
     })
       .then(() => assert.fail('Got a 200 response'))
-      .catch(res => assertNotImplemented(res));
+      .catch(res => assertStatus(res, 405));
   });
 
   it('should not support finds', () => {
@@ -69,6 +85,6 @@ describe('Registration service acceptance tests', () => {
       url: getUrl('/registration'),
     })
       .then(() => assert.fail('Got a 200 response'))
-      .catch(res => assertNotImplemented(res));
+      .catch(res => assertStatus(res, 405));
   });
 });
