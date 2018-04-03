@@ -10,7 +10,12 @@ class Instance {
   }
 
   async create(data, params) {
-    logger.info('Instance.create()');
+    logger.info('Instance.create()', data, params);
+  }
+
+  async find(params) {
+    logger.info('Instance.find()', params);
+    return {};
   }
 }
 
