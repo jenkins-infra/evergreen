@@ -15,7 +15,7 @@ unit:
 	$(COMPOSE) run -e NODE_ENV=test --rm node npm run jest
 
 watch:
-	$(COMPOSE) run -e NODE_ENV=test --rm node jest --watchAll
+	$(COMPOSE) run -e NODE_ENV=test --rm node jest --bail --watchAll
 
 
 depends: package.json
