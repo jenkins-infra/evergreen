@@ -65,8 +65,8 @@ app.hooks(appHooks);
  */
 app.configure(authentication({
   name: 'evergreen-jwt',
-  entity: 'instance',
-  service: 'instance',
+  entity: 'authentication',
+  service: 'authentication',
   secret: 'hello'
 }));
 app.configure(jwt());
