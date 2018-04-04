@@ -62,13 +62,13 @@ build/configuration-as-code:
 	git clone --depth 1 https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
 
 build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
-	./tools/mvn --file build/configuration-as-code clean package -DskipTests
+	./tools/mvn --batch-mode --file build/configuration-as-code clean package -DskipTests
 
 build/essentials:
 	git clone --depth 1 https://github.com/batmat/essentials-plugin.git build/essentials
 
 build/essentials/target/essentials.hpi: build/essentials
-	./tools/mvn --file build/essentials clean package
+	./tools/mvn --batch-mode --file build/essentials clean package
 
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
