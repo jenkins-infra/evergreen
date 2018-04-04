@@ -4,10 +4,13 @@
  */
 
 const crypto = require('crypto');
+const ecc    = require('elliptic');
 const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
+
+const rand   = require('./rand-patch');
 
 class Registration {
   constructor (app, options) {
@@ -17,6 +20,7 @@ class Registration {
     this.publicKey = null;
     this.privateKey = null;
     this.fileOptions = { encoding: 'utf8' };
+    this.curve = 'secp256k1';
   }
 
   isRegistered() {
@@ -64,6 +68,7 @@ class Registration {
         logger.info('Creating registration..');
         api.create({
           pubKey: self.getPublicKey(),
+          curve: self.curve
         }).then((res) => {
           logger.info('Registration create:', res);
           self.uuid = res.uuid;
@@ -87,12 +92,10 @@ class Registration {
    * @return Boolean
    */
   generateKeys() {
-    let ecdh = crypto.createECDH('secp521r1');
-    let pubKey = ecdh.generateKeys('base64');
-    logger.info('Generated public key:', pubKey);
-
-    this.publicKey = pubKey;
-    this.privateKey = ecdh.getPrivateKey('base64');
+    let ec = new ecc.ec(this.curve);
+    let privkey = ec.genKeyPair();
+    this.publicKey = privkey.getPublic('hex');
+    this.privateKey = privkey.getPrivate('hex');
 
     /* If we have a private key, that's good enough! */
     if (this.privateKey) {
