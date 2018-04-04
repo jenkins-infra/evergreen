@@ -19,7 +19,7 @@ check: lint
 	$(MAKE) -C services $@
 	$(MAKE) container-check
 
-container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh build/configuration-as-code/target/configuration-as-code.hpi
+container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh build/configuration-as-code/target/configuration-as-code.hpi build/essentials/target/essentials.hpi
 
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
@@ -44,6 +44,7 @@ clean:
 	$(MAKE) -C services $@
 	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
+	rm -rf build/essentials/target
 
 #################
 
@@ -62,6 +63,12 @@ build/configuration-as-code:
 
 build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
 	./tools/mvn --file build/configuration-as-code clean package -DskipTests
+
+build/essentials:
+	git clone --depth 1 https://github.com/batmat/essentials-plugin.git build/essentials
+
+build/essentials/target/essentials.hpi: build/essentials
+	./tools/mvn --file build/essentials clean package
 
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
