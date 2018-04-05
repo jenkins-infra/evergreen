@@ -9,9 +9,17 @@ class Authentication {
     this.options = options || {};
   }
 
+  /*
+   * Generate a JWT authentication for the requester
+   *
+   * This method assumes the validation of the information has already happened
+   * in a hook
+   */
   async create(data, params) {
-    logger.info('Authentication.create()', data);
-    return Promise.resolve([]);
+    const app = this.options.app;
+    return await app.passport.createJWT({
+      uuid: data.uuid
+    }, app.get('authentication'));
   }
 
   async find(params) {

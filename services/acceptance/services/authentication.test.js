@@ -2,6 +2,7 @@ const assert  = require('assert');
 const ecc     = require('elliptic');
 const request = require('request-promise');
 const url     = require('url');
+const logger  = require('winston');
 
 const app     = require('../../src/app');
 require('../rand-patch');
@@ -63,18 +64,49 @@ describe('Authentication service acceptance tests', () => {
         .catch(res => assertStatus(res, 404));
     });
 
-    it('should create a JWT token if the client has registered', async () => {
-      const keys = generateKeys();
-      const reg = await request({
-        url: getUrl('/registration'),
-        method: 'POST',
-        json: true,
-        body: {
-          pubKey: keys.getPublic('hex'),
-          curve: 'secp256k1'
-        }
+    describe('with a pre-existing registration', () => {
+      beforeEach(async () => {
+        this.keys = generateKeys();
+        this.reg = await request({
+          url: getUrl('/registration'),
+          method: 'POST',
+          json: true,
+          body: {
+            pubKey: this.keys.getPublic('hex'),
+            curve: 'secp256k1'
+          }
+        });
       });
-      assert.ok(reg);
+
+      it('should fail to create a JWT token with an invalid signature', () => {
+        return request({
+          url: getUrl('/authentication'),
+          method: 'POST',
+          json: true,
+          body: {
+            uuid: this.reg.uuid,
+            signature: 'malarkey'
+          }
+        })
+          .then(() => assert.fail('Should not have succeeded'))
+          .catch((err) => assert.equal(err.statusCode, 400));
+      });
+
+      it('should create a JWT token if the client has registered', async () => {
+        assert.ok(this.reg.uuid, 'Failed to register a valid UUID which we can use');
+        /* Make a signature of our registered UUID */
+        const signature = this.keys.sign(this.reg.uuid);
+        const auth = await request({
+          url: getUrl('/authentication'),
+          method: 'POST',
+          json: true,
+          body: {
+            uuid: this.reg.uuid,
+            signature: signature
+          }
+        });
+        logger.error('auth response:', auth);
+      });
     });
   });
 });

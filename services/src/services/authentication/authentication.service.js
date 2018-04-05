@@ -6,6 +6,7 @@ const hooks = require('./authentication.hooks');
 module.exports = function(app) {
   const options = {
     name: 'authentication',
+    app: app,
     sequelize: app.get('sequelizeClient')
   };
 
