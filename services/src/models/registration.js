@@ -7,6 +7,7 @@ module.exports = function (app) {
   const reg = sequelizeClient.define('registrations', {
     uuid: DataTypes.UUID,
     pubKey: DataTypes.STRING,
+    curve: DataTypes.STRING,
     createdAt: DataTypes.DATE
   });
 

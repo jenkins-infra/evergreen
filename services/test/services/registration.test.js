@@ -24,14 +24,15 @@ describe('\'registration\' service', () => {
       return service.create({
         pubKey: 'ImagineThisIsAnECDHPublicKeyHex'
       })
-        .then()
+        .then(() => assert.fail('Should have failed'))
         .catch((err) =>  assert.ok(err.message.match('^Client must provide a curve')));
     });
 
     it('should return a uuid for successful registration', async () => {
       const service = app.service('registration');
       const reg = await service.create({
-        pubKey: 'ImagineThisIsAnECDHPublicKeyHex'
+        pubKey: 'ImagineThisIsAnECDHPublicKeyHex',
+        curve: 'secp256k1'
       });
 
       assert.ok(reg.uuid, 'Expected a uuid to be generated on registration');
@@ -40,10 +41,12 @@ describe('\'registration\' service', () => {
     it('should persist a uuid and pubKey on registration', async () => {
       const service = app.service('registration');
       const reg = await service.create({
-        pubKey: 'ImagineThisIsAnECDHPublicKeyHex'
+        pubKey: 'ImagineThisIsAnECDHPublicKeyHex',
+        curve: 'secp256k1'
       });
 
       assert.ok(reg);
+      assert.ok(reg.curve);
       assert.ok(reg.createdAt);
     });
   });
@@ -51,7 +54,8 @@ describe('\'registration\' service', () => {
   describe('looking up a registration', () => {
     beforeEach(async () => {
       this.reg = await app.service('registration').create({
-        pubKey: 'a-hex-key'
+        pubKey: 'a-hex-key',
+        curve: 'secp256k1'
       });
     });
 
@@ -61,7 +65,10 @@ describe('\'registration\' service', () => {
 
       const rows = await service.find({ query: { uuid: this.reg.uuid }});
       assert.equal(rows.total, 1, 'Should only have one record per uuid');
-      assert.equal(rows.data[0].uuid, this.reg.uuid);
+      const record = rows.data[0];
+
+      assert.equal(record.uuid, this.reg.uuid);
+      assert.equal(record.curve, this.reg.curve);
     });
   });
 });

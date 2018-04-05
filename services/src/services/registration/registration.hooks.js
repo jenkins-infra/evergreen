@@ -1,3 +1,4 @@
+const errors       = require('@feathersjs/errors');
 const uuid         = require('uuid/v4');
 const logger       = require('winston');
 
@@ -15,6 +16,14 @@ module.exports = {
       internalOnly()
     ],
     create: [
+      /* We must have a curve in order to handle the public key
+       */
+      (hook) => {
+        if (!hook.data.curve) {
+          throw new errors.BadRequest('Client must provide a curve with the request');
+        }
+      },
+
       dbtimestamp('createdAt'),
 
       (hook) => {

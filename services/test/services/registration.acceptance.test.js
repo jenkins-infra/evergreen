@@ -31,17 +31,30 @@ describe('Registration service acceptance tests', () => {
 
   describe('create()', () => {
     it('should create a UUID', async () => {
-      const pubKey = 'pretend-public-key';
       return request({
         url: getUrl('/registration'),
         method: 'POST',
         json: true,
         body: {
-          pubKey: pubKey
+          pubKey: 'pretend-pubkey',
+          curve: 'secp256k1'
         }
       })
         .then(res => assert.ok(res.uuid, 'Missing a uuid'))
         .catch(res => assert.equal(res.statusCode, 201));
+    });
+
+    it('should fail when there is no curve', async () => {
+      return request({
+        url: getUrl('/registration'),
+        method: 'POST',
+        json: true,
+        body: {
+          pubKey: 'pretend-pubkey'
+        }
+      })
+        .then(() => assert.fail('Should have failed'))
+        .catch(res => assert.equal(res.statusCode, 400));
     });
   });
 

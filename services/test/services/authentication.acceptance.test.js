@@ -69,7 +69,10 @@ describe('Authentication service acceptance tests', () => {
         url: getUrl('/registration'),
         method: 'POST',
         json: true,
-        body: { pubKey: keys.getPublic('hex') }
+        body: {
+          pubKey: keys.getPublic('hex'),
+          curve: 'secp256k1'
+        }
       });
       assert.ok(reg);
     });
