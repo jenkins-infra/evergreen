@@ -5,12 +5,6 @@ const logger  = require('winston');
 
 const h       = require('../helpers');
 
-/* Generate a simple elliptic ECDSA keypair for testing */
-const generateKeys = function() {
-  let ec = new ecc.ec('secp256k1');
-  return ec.genKeyPair();
-};
-
 describe('Authentication service acceptance tests', () => {
   beforeAll(done => h.startApp(done));
   afterAll(done => h.stopApp(done));
@@ -41,16 +35,8 @@ describe('Authentication service acceptance tests', () => {
 
     describe('with a pre-existing registration', () => {
       beforeEach(async () => {
-        this.keys = generateKeys();
-        this.reg = await request({
-          url: h.getUrl('/registration'),
-          method: 'POST',
-          json: true,
-          body: {
-            pubKey: this.keys.getPublic('hex'),
-            curve: 'secp256k1'
-          }
-        });
+        this.keys = h.generateKeys();
+        this.reg = await h.register(this.keys);
       });
 
       it('should fail to create a JWT token with an invalid signature', () => {

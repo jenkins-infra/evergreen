@@ -27,16 +27,11 @@ module.exports = {
             throw new errors.NotFound('Unknown instance');
           }
           else {
-            /* Since we've already looked up the UUID, let's pass it along for
+            /*
+             * Since we've already looked up the UUID, let's pass it along for
              * future hook use
              */
-            let record = records.data[0];
-            if (!hook.result) {
-              hook.result = record;
-            }
-            else {
-              hook.result = Object.assign(hook.result, record);
-            }
+            hook.data.record = records.data[0];
           }
         }).catch((err) => {
           /* Expected that malformed uuids will throw a
@@ -52,7 +47,7 @@ module.exports = {
        * signature of the UUID matches appropriately
        */
       (hook) => {
-        let record = hook.result;
+        let record = hook.data.record;
         let ec = new ecc.ec(record.curve);
         let key = ec.keyFromPublic(record.pubKey, 'hex');
 
