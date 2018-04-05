@@ -1,28 +1,9 @@
 const assert  = require('assert');
 const ecc     = require('elliptic');
 const request = require('request-promise');
-const url     = require('url');
 const logger  = require('winston');
 
-const app     = require('../../src/app');
-require('../rand-patch');
-
-const port = app.get('port') || 3030;
-const getUrl = pathname => url.format({
-  hostname: app.get('host') || 'localhost',
-  protocol: 'http',
-  port,
-  pathname
-});
-
-const assertStatus = function(response, code) {
-  if (response.statusCode) {
-    assert.equal(response.statusCode, code);
-  }
-  else {
-    throw response;
-  }
-};
+const h       = require('../helpers');
 
 /* Generate a simple elliptic ECDSA keypair for testing */
 const generateKeys = function() {
@@ -31,28 +12,22 @@ const generateKeys = function() {
 };
 
 describe('Authentication service acceptance tests', () => {
-  beforeAll(function(done) {
-    this.server = app.listen(port);
-    this.server.once('listening', () => done());
-  });
-
-  afterAll(function(done) {
-    this.server.close(done);
-  });
+  beforeAll(done => h.startApp(done));
+  afterAll(done => h.stopApp(done));
 
   describe('create()', () => {
     it('should return a 400 for a malformed request', () => {
       return request({
-        url: getUrl('/authentication'),
+        url: h.getUrl('/authentication'),
         method: 'POST'
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch(res => assertStatus(res, 400));
+        .catch(res => h.assertStatus(res, 400));
     });
 
     it('should return a 404 if the client has not registered', () => {
       return request({
-        url: getUrl('/authentication'),
+        url: h.getUrl('/authentication'),
         method: 'POST',
         json: true,
         body: {
@@ -61,14 +36,14 @@ describe('Authentication service acceptance tests', () => {
         }
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch(res => assertStatus(res, 404));
+        .catch(res => h.assertStatus(res, 404));
     });
 
     describe('with a pre-existing registration', () => {
       beforeEach(async () => {
         this.keys = generateKeys();
         this.reg = await request({
-          url: getUrl('/registration'),
+          url: h.getUrl('/registration'),
           method: 'POST',
           json: true,
           body: {
@@ -80,7 +55,7 @@ describe('Authentication service acceptance tests', () => {
 
       it('should fail to create a JWT token with an invalid signature', () => {
         return request({
-          url: getUrl('/authentication'),
+          url: h.getUrl('/authentication'),
           method: 'POST',
           json: true,
           body: {
@@ -97,7 +72,7 @@ describe('Authentication service acceptance tests', () => {
         /* Make a signature of our registered UUID */
         const signature = this.keys.sign(this.reg.uuid);
         const auth = await request({
-          url: getUrl('/authentication'),
+          url: h.getUrl('/authentication'),
           method: 'POST',
           json: true,
           body: {
@@ -105,7 +80,8 @@ describe('Authentication service acceptance tests', () => {
             signature: signature
           }
         });
-        logger.error('auth response:', auth);
+        /* ensure this response looks somewhat tokeny? */
+        assert.ok(auth);
       });
     });
   });
