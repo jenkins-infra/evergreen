@@ -94,6 +94,8 @@ COPY build/configuration-as-code/target/configuration-as-code.hpi /usr/share/jen
 COPY jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
 ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
+COPY build/essentials/target/essentials.hpi /usr/share/jenkins/ref/plugins/essentials.hpi
+
 RUN chown -R $user:$group $EVERGREEN_HOME
 
 # Jenkins directory is a volume, so configuration and build history

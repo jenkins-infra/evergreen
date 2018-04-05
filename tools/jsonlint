@@ -1,0 +1,7 @@
+#!/bin/sh -xe
+
+exec docker run --rm \
+    -w ${PWD} \
+    -v ${PWD}:${PWD} \
+    -i \
+    sahsu/docker-jsonlint jsonlint $@
