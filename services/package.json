@@ -22,7 +22,8 @@
     "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "start": "node src/",
-    "jest": "jest -i --bail --forceExit"
+    "jest": "jest --bail --forceExit ./test",
+    "acceptance": "jest -i --bail --forceExit ./acceptance"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.3",

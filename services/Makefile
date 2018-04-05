@@ -7,12 +7,16 @@ all: check docs container
 check: depends lint
 	$(MAKE) migrate
 	$(MAKE) unit
+	$(MAKE) acceptance
 
 lint: depends
 	$(NODE) npm run eslint
 
 unit:
 	$(COMPOSE) run -e NODE_ENV=test --rm node npm run jest
+
+acceptance:
+	$(COMPOSE) run -e NODE_ENV=test --rm node npm run acceptance
 
 watch:
 	$(COMPOSE) run -e NODE_ENV=test --rm node jest --bail --watchAll
@@ -43,4 +47,4 @@ clean:
 	rm -rf node_modules
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends migrate unit
+.PHONY: all check clean container depends migrate unit acceptance
