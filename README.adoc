@@ -31,6 +31,9 @@ documents:
 | JEP-303
 | link:https://github.com/jenkinsci/jep/blob/master/jep/303[Evergreen Client Registration and Authentication]
 
+| JEP-304
+| link:https://github.com/jenkinsci/jep/tree/master/jep/304[Essentials Client Error Telemetry Logging]
+
 |===
 
 [[essentials]]
