@@ -117,8 +117,9 @@ test_metrics_health_check() {
   jsonlint < $output > /dev/null
   assertEquals "0" "$?"
 
-  grep '"healthy":false' $output
-  assertNotEquals "0" "$?"
+  # Check things are all healthy 
+  result=$( jq '.[].healthy' < $output | sort -u )
+  assertEquals "true" "$result"
 }
 
 . ./shunit2/shunit2

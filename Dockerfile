@@ -44,7 +44,7 @@ EXPOSE ${agent_port}
 # FIXME REMOVE (to ease iteration/speed just for now), see also shim-startup-wrapper.sh
 RUN wget --quiet https://ci.jenkins.io/job/Core/job/jenkins/job/master/lastSuccessfulBuild/artifact/war/target/linux-jenkins.war -O ${EVERGREEN_HOME}/jenkins.war
 RUN apk add --no-cache curl aria2 # used by shim-startup-wrapper.sh
-COPY scripts/casc-dependencies.aria /casc-dependencies.aria
+COPY scripts/plugins.aria /plugins.aria
 
 # Add the system dependencies for running Jenkins effectively
 #
@@ -106,5 +106,6 @@ VOLUME ${EVERGREEN_HOME}
 COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
+COPY configuration/metrics-config.xml $JENKINS_HOME/jenkins.metrics.api.MetricsAccessKey.xml
 WORKDIR $EVERGREEN_HOME
 USER $user
