@@ -4,10 +4,13 @@
  */
 
 const crypto = require('crypto');
+const ecc    = require('elliptic');
 const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
+
+const rand   = require('./rand-patch');
 
 class Registration {
   constructor (app, options) {
@@ -17,6 +20,7 @@ class Registration {
     this.publicKey = null;
     this.privateKey = null;
     this.fileOptions = { encoding: 'utf8' };
+    this.curve = 'secp256k1';
   }
 
   isRegistered() {
@@ -47,12 +51,10 @@ class Registration {
       let api = self.app.service('registration');
       logger.info('Checking registration status..');
       if (self.hasKeys()) {
-        /*
-         *   - locate uuid on disk
-         *   - sign uuid with private key
-         *   - send login request
-         */
-        logger.info('We have keys already');
+        logger.info('We have keys and a UUID already');
+        this.loadKeysSync();
+        this.loadUUIDSync();
+        self.login();
       }
       else {
         if (!self.generateKeys()) {
@@ -64,6 +66,7 @@ class Registration {
         logger.info('Creating registration..');
         api.create({
           pubKey: self.getPublicKey(),
+          curve: self.curve
         }).then((res) => {
           logger.info('Registration create:', res);
           self.uuid = res.uuid;
@@ -71,6 +74,7 @@ class Registration {
             reject('Failed to save UUID!');
           }
           else {
+            self.login();
             resolve(res);
           }
         }).catch((res) => {
@@ -82,17 +86,32 @@ class Registration {
   }
 
   /*
+   * Execute the login process once the registration has completed.
+   *
+   * @return Promise
+   */
+  async login() {
+    let api = this.app.service('authentication');
+    let ec = new ecc.ec(this.curve);
+    let key = ec.keyFromPrivate(this.privateKey, 'hex');
+    let signature = key.sign(this.uuid);
+    this.token = await api.create({
+      uuid: this.uuid,
+      signature: signature
+    });
+    logger.info('Logged in and received JWT:', this.token);
+  }
+
+  /*
    * Generate the keys necessary for this instance
    *
    * @return Boolean
    */
   generateKeys() {
-    let ecdh = crypto.createECDH('secp521r1');
-    let pubKey = ecdh.generateKeys('base64');
-    logger.info('Generated public key:', pubKey);
-
-    this.publicKey = pubKey;
-    this.privateKey = ecdh.getPrivateKey('base64');
+    let ec = new ecc.ec(this.curve);
+    let privkey = ec.genKeyPair();
+    this.publicKey = privkey.getPublic('hex');
+    this.privateKey = privkey.getPrivate('hex');
 
     /* If we have a private key, that's good enough! */
     if (this.privateKey) {
@@ -132,6 +151,12 @@ class Registration {
       return true;
     }
     return false;
+  }
+
+  loadUUIDSync() {
+    let config = fs.readFileSync(this.uuidPath(), this.fileOptions);
+    this.uuid = config.uuid;
+    return (!!this.uuid);
   }
 
   /*

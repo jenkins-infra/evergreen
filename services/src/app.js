@@ -1,27 +1,32 @@
-const path = require('path');
-const favicon = require('serve-favicon');
-const compress = require('compression');
-const cors = require('cors');
-const helmet = require('helmet');
-const logger = require('winston');
+/*
+ * Main feathersjs application entrypoint
+ */
+const path           = require('path');
+const favicon        = require('serve-favicon');
+const compress       = require('compression');
+const cors           = require('cors');
+const helmet         = require('helmet');
+const logger         = require('winston');
 
-const feathers = require('@feathersjs/feathers');
-const configuration = require('@feathersjs/configuration');
-const express = require('@feathersjs/express');
-const socketio = require('@feathersjs/socketio');
+const feathers       = require('@feathersjs/feathers');
+const configuration  = require('@feathersjs/configuration');
+const express        = require('@feathersjs/express');
+const socketio       = require('@feathersjs/socketio');
+const authentication = require('@feathersjs/authentication');
+const jwt            = require('@feathersjs/authentication-jwt');
+
+const middleware     = require('./middleware');
+const services       = require('./services');
+const appHooks       = require('./app.hooks');
+const channels       = require('./channels');
+const sequelize      = require('./sequelize');
 
 
-const middleware = require('./middleware');
-const services = require('./services');
-const appHooks = require('./app.hooks');
-const channels = require('./channels');
-
-const sequelize = require('./sequelize');
-
+const settings = configuration();
 const app = express(feathers());
 
 // Load app configuration
-app.configure(configuration());
+app.configure(settings);
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());
@@ -35,8 +40,8 @@ app.use('/', express.static(app.get('public')));
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());
-
 app.configure(sequelize);
+
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
@@ -52,7 +57,26 @@ app.use(express.notFound());
 if (process.env.NODE_ENV != 'test') {
   app.use(express.errorHandler({ logger }));
 }
+else {
+  app.use(express.errorHandler());
+}
 
 app.hooks(appHooks);
+
+/* Configure the authentication provider via @feathersjs/authentication-jwt and
+ * passport-jwt (https://github.com/themikenicholson/passport-jwt)
+ */
+app.configure(authentication({
+  name: 'evergreen-jwt',
+  entity: 'authentication',
+  service: 'authentication',
+  secret: 'hello'
+}));
+
+app.configure(jwt({
+  jsonWebTokenOptions: {
+    expiresIn: '14d'
+  }
+}));
 
 module.exports = app;
