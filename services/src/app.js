@@ -72,6 +72,11 @@ app.configure(authentication({
   service: 'authentication',
   secret: 'hello'
 }));
-app.configure(jwt());
+
+app.configure(jwt({
+  jsonWebTokenOptions: {
+    expiresIn: '14d'
+  }
+}));
 
 module.exports = app;
