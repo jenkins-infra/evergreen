@@ -90,11 +90,10 @@ COPY essentials.yaml ${EVERGREEN_HOME}
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.
-COPY build/configuration-as-code/target/configuration-as-code.hpi /usr/share/jenkins/ref/plugins/configuration-as-code.hpi
 COPY jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
 ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
-COPY build/essentials/target/essentials.hpi /usr/share/jenkins/ref/plugins/essentials.hpi
+COPY build/*.hpi /usr/share/jenkins/ref/plugins/
 
 RUN chown -R $user:$group $EVERGREEN_HOME
 

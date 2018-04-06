@@ -12,14 +12,17 @@ all: check container
 lint: essentials.yaml shunit2
 	./tools/yamllint -s ./essentials.yaml
 	./tools/shellcheck -x tests/tests.sh
-	./tools/shellcheck -x scripts/shim-startup-wrapper.sh
+	./tools/shellcheck -x scripts/*.sh
 
 check: lint
 	$(MAKE) -C client $@
 	$(MAKE) -C services $@
 	$(MAKE) container-check
 
-container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh build/configuration-as-code/target/configuration-as-code.hpi build/essentials/target/essentials.hpi
+container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh build-plugins
+
+build-plugins:
+	./scripts/build-plugins.sh
 
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
@@ -58,19 +61,7 @@ build/jenkins-support:
 	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 
-build/configuration-as-code:
-	git clone --depth 1 https://github.com/jenkinsci/configuration-as-code-plugin.git build/configuration-as-code
-
-build/configuration-as-code/target/configuration-as-code.hpi: build/configuration-as-code
-	./tools/mvn --batch-mode --file build/configuration-as-code clean package -DskipTests
-
-build/essentials:
-	git clone --depth 1 https://github.com/batmat/essentials-plugin.git build/essentials
-
-build/essentials/target/essentials.hpi: build/essentials
-	./tools/mvn --batch-mode --file build/essentials clean package
-
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs
+.PHONY: all check clean container container-check container-prereqs build-plugins

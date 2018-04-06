@@ -43,7 +43,6 @@ else
   download_war
 fi
 
-
 # FIXME: Only hardcoded to install casc,
 # not following essentials.yaml declaration
 # On purpose to make the startup faster
@@ -53,7 +52,18 @@ mkdir "$download_tmp"
 cd $download_tmp
 aria2c -x 4 -i /casc-dependencies.aria
 mkdir -p "$JENKINS_HOME/plugins/"
-mv ./*.hpi "$JENKINS_HOME/plugins/"
+
+custom_plugins=$( find /usr/share/jenkins/ref/plugins/ )
+for downloaded_plugin in *.hpi
+do
+  if echo "$custom_plugins" | grep "$downloaded_plugin" > /dev/null ; then
+    echo "NOT clobbering the preinstalled $downloaded_plugin with the downloaded one"
+  else
+    echo "Moving $downloaded_plugin to $JENKINS_HOME/plugins/"
+    mv "$downloaded_plugin" "$JENKINS_HOME/plugins/"
+  fi
+done
+
 rm -rf $download_tmp
 cd "$JENKINS_HOME"
 
