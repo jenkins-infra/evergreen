@@ -21,6 +21,6 @@ run:
 
 clean:
 	rm -rf vendor/
-
+	rm -rf node_modules/
 
 .PHONY: all check clean container depends
