@@ -64,4 +64,4 @@ build/jenkins-support:
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs
+.PHONY: all check clean container container-check container-prereqs build-plugins
