@@ -51,12 +51,10 @@ class Registration {
       let api = self.app.service('registration');
       logger.info('Checking registration status..');
       if (self.hasKeys()) {
-        /*
-         *   - locate uuid on disk
-         *   - sign uuid with private key
-         *   - send login request
-         */
-        logger.info('We have keys already');
+        logger.info('We have keys and a UUID already');
+        this.loadKeysSync();
+        this.loadUUIDSync();
+        self.login();
       }
       else {
         if (!self.generateKeys()) {
@@ -76,6 +74,7 @@ class Registration {
             reject('Failed to save UUID!');
           }
           else {
+            self.login();
             resolve(res);
           }
         }).catch((res) => {
@@ -84,6 +83,23 @@ class Registration {
         });
       }
     });
+  }
+
+  /*
+   * Execute the login process once the registration has completed.
+   *
+   * @return Promise
+   */
+  async login() {
+    let api = this.app.service('authentication');
+    let ec = new ecc.ec(this.curve);
+    let key = ec.keyFromPrivate(this.privateKey, 'hex');
+    let signature = key.sign(this.uuid);
+    this.token = await api.create({
+      uuid: this.uuid,
+      signature: signature
+    });
+    logger.info('Logged in and received JWT:', this.token);
   }
 
   /*
@@ -135,6 +151,12 @@ class Registration {
       return true;
     }
     return false;
+  }
+
+  loadUUIDSync() {
+    let config = fs.readFileSync(this.uuidPath(), this.fileOptions);
+    this.uuid = config.uuid;
+    return (!!this.uuid);
   }
 
   /*
