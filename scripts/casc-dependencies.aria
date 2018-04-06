@@ -1,16 +1,25 @@
-# https://updates.jenkins.io/experimental/latest/configuration-as-code.hpi # built by us
-https://updates.jenkins.io/2.107/latest/workflow-multibranch.hpi
-https://updates.jenkins.io/2.107/latest/job-dsl.hpi
-https://updates.jenkins.io/2.107/latest/workflow-api.hpi
-https://updates.jenkins.io/2.107/latest/workflow-cps.hpi
-https://updates.jenkins.io/2.107/latest/workflow-job.hpi
-https://updates.jenkins.io/2.107/latest/workflow-scm-step.hpi
-https://updates.jenkins.io/2.107/latest/workflow-step-api.hpi
-https://updates.jenkins.io/2.107/latest/workflow-support.hpi
-https://updates.jenkins.io/2.107/latest/branch-api.hpi
-https://updates.jenkins.io/2.107/latest/cloudbees-folder.hpi
-https://updates.jenkins.io/2.107/latest/scm-api.hpi
-https://updates.jenkins.io/2.107/latest/script-security.hpi
-https://updates.jenkins.io/2.107/latest/structs.hpi
-https://updates.jenkins.io/2.107/latest/ace-editor.hpi
-https://updates.jenkins.io/2.107/latest/jquery-detached.hpi
+# CasC dependencies
+https://updates.jenkins.io/experimental/latest/configuration-as-code.hpi
+https://updates.jenkins.io/latest/workflow-multibranch.hpi
+https://updates.jenkins.io/latest/job-dsl.hpi
+https://updates.jenkins.io/latest/workflow-api.hpi
+https://updates.jenkins.io/latest/workflow-cps.hpi
+https://updates.jenkins.io/latest/workflow-job.hpi
+https://updates.jenkins.io/latest/workflow-scm-step.hpi
+https://updates.jenkins.io/latest/workflow-step-api.hpi
+https://updates.jenkins.io/latest/workflow-support.hpi
+https://updates.jenkins.io/latest/branch-api.hpi
+https://updates.jenkins.io/latest/cloudbees-folder.hpi
+https://updates.jenkins.io/latest/scm-api.hpi
+https://updates.jenkins.io/latest/script-security.hpi
+https://updates.jenkins.io/latest/structs.hpi
+https://updates.jenkins.io/latest/ace-editor.hpi
+https://updates.jenkins.io/latest/jquery-detached.hpi
+
+# Metrics plugin and dependencies
+https://updates.jenkins.io/latest/metrics.hpi
+https://updates.jenkins.io/latest/bouncycastle-api.hpi
+https://updates.jenkins.io/latest/jdk-tool.hpi
+https://updates.jenkins.io/latest/script-security.hpi
+https://updates.jenkins.io/latest/command-launcher.hpi
+https://updates.jenkins.io/latest/jackson2-api.hpi
