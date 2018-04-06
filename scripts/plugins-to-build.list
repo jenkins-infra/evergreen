@@ -1,4 +1,4 @@
 # org:repo:branch
 jenkinsci:metrics-plugin:master
 jenkinsci:configuration-as-code-plugin:master
-batmat:essentials-plugin:master
+jenkinsci:essentials-plugin:master
