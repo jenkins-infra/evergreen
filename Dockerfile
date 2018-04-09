@@ -67,7 +67,7 @@ RUN cd /tmp && \
     rmdir docker && \
     rm docker.tar.gz
 
-COPY logging.properties $EVERGREEN_HOME/logging.properties
+COPY configuration/logging.properties $EVERGREEN_HOME/logging.properties
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
@@ -86,11 +86,11 @@ COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
 # Prepare the evergreen-client configuration
 COPY client ${EVERGREEN_HOME}/client
-COPY essentials.yaml ${EVERGREEN_HOME}
+COPY configuration/essentials.yaml ${EVERGREEN_HOME}
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.
-COPY jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
+COPY configuration/jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
 ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
 COPY build/*.hpi /usr/share/jenkins/ref/plugins/
@@ -103,7 +103,7 @@ VOLUME ${EVERGREEN_HOME}
 
 # Ensure the supervisord configuration is copied and executed by default such
 # that the Jenkins and evergreen-client processes both execute properly
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR $EVERGREEN_HOME

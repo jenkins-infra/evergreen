@@ -9,8 +9,9 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 #################
 all: check container
 
-lint: essentials.yaml shunit2
-	./tools/yamllint -s ./essentials.yaml
+lint: configuration/essentials.yaml configuration/jenkins-configuration.yaml shunit2
+	./tools/yamllint -s configuration/essentials.yaml
+	./tools/yamllint -s configuration/jenkins-configuration.yaml
 	./tools/shellcheck -x tests/tests.sh
 	./tools/shellcheck -x scripts/*.sh
 
@@ -27,7 +28,7 @@ build-plugins:
 container-check: shunit2 ./tests/tests.sh container
 	./tests/tests.sh
 
-container: container-prereqs Dockerfile supervisord.conf
+container: container-prereqs Dockerfile configuration/supervisord.conf
 	docker build -t ${JENKINS_CONTAINER}:latest .
 
 publish: container
