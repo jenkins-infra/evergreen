@@ -50,7 +50,7 @@ fi
 download_tmp=/tmp/download-casc-plugins$RANDOM
 mkdir "$download_tmp"
 cd $download_tmp
-aria2c -x 4 -i /casc-dependencies.aria
+aria2c -x 4 -i /plugins.aria
 mkdir -p "$JENKINS_HOME/plugins/"
 
 custom_plugins=$( find /usr/share/jenkins/ref/plugins/ )

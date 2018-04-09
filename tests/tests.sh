@@ -101,4 +101,25 @@ test_essentials_telemetry_logging_is_found_on_disk() {
   assertEquals "0" "$?"
 }
 
+# JENKINS-50294 Health checking
+test_login_http_200() {
+  status_code=$( curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:$TEST_PORT/login" )
+  assertEquals "0" "$?"
+  assertEquals "200" "$status_code"
+}
+test_metrics_health_check() {
+  output=/tmp/output$RANDOM.json
+  status_code=$( curl --silent --output $output --write-out "%{http_code}" "http://localhost:$TEST_PORT/metrics/evergreen/healthcheck" )
+  assertEquals "0" "$?"
+  assertEquals "200" "$status_code"
+
+  # Check output is json
+  jsonlint < $output > /dev/null
+  assertEquals "0" "$?"
+
+  # Check things are all healthy 
+  result=$( jq '.[].healthy' < $output | sort -u )
+  assertEquals "true" "$result"
+}
+
 . ./shunit2/shunit2
