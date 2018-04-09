@@ -2,6 +2,8 @@
 <jenkins.metrics.api.MetricsAccessKey_-DescriptorImpl plugin="metrics@3.1.2.11">
   <!-- TODO: check with Stephen if forcing "evergreen" as key is a bad bad idea
   FIXME: seems like the "origins" field cannot be saved using the config UI, bug?
+
+  FIXME: JENKINS-50672: delete this file when this can be done through CasC
   -->
   <accessKeys>
     <jenkins.metrics.api.MetricsAccessKey>
