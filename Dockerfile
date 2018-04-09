@@ -106,6 +106,5 @@ VOLUME ${EVERGREEN_HOME}
 COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
-COPY configuration/metrics-config.xml $JENKINS_HOME/jenkins.metrics.api.MetricsAccessKey.xml
 WORKDIR $EVERGREEN_HOME
 USER $user
