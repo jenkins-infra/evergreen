@@ -111,6 +111,17 @@ documentation has more information, as does the
 link:http://docs.sequelizejs.com/variable/index.html[Variable/Data Types reference].
 
 
+===== Database Debugging
+
+Debugging database queries can be done by enabling the
+link:http://sequelizejs.com[Sequelize]
+logging by setting the `DB_TRACING` environment variable, for example:
+
+[source,base]
+----
+DB_TRACING=true make check
+----
+
 [[telemetry]]
 == Telemetry
 
