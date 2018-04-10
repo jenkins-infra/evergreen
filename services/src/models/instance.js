@@ -3,6 +3,7 @@ const Sequelize     = require('sequelize');
 const DataTypes     = Sequelize.DataTypes;
 
 const createChannel = require('./channel');
+const createUpdate  = require('./update');
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
@@ -18,6 +19,7 @@ module.exports = function (app) {
   // eslint-disable-next-line no-unused-vars
   instance.associate = function (models) {
     instance.belongsTo(createChannel(app));
+    instance.belongsTo(createUpdate(app));
   };
 
   return instance;
