@@ -16,6 +16,7 @@ const authentication = require('@feathersjs/authentication');
 const jwt            = require('@feathersjs/authentication-jwt');
 
 const middleware     = require('./middleware');
+const models         = require('./models');
 const services       = require('./services');
 const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
@@ -45,6 +46,7 @@ app.configure(sequelize);
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
+app.configure(models);
 // Set up our services (see `services/index.js`)
 app.configure(services);
 // Set up event channels (see channels.js)
