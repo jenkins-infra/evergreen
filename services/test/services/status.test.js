@@ -38,20 +38,5 @@ describe('\'status\' service', () => {
 
       assert.ok(response, 'Response looks acceptable');
     });
-
-    it('should new Instances should have a channel', async () => {
-      const service = app.service('status');
-      const instanceId = uuid();
-
-      const response = await service.create({
-        uuid: instanceId
-      }, {});
-      assert.ok(response);
-
-      const record = await service.get(instanceId);
-      assert.equal(record.uuid, instanceId);
-      assert.ok(record.channelId, 'The record should have a channelId!');
-    });
   });
-
 });
