@@ -12,5 +12,6 @@ module.exports = function(app) {
       models[name] = require(path.resolve(file))(app);
     }
   });
+  app.set('models', models);
   return models;
 };

@@ -4,7 +4,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const channel = sequelizeClient.define('channel', {
+  const channel = sequelizeClient.define('channels', {
     name: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
@@ -12,8 +12,6 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   channel.associate = function (models) {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
 
   return channel;

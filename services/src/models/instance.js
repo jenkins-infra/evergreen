@@ -2,9 +2,6 @@
 const Sequelize     = require('sequelize');
 const DataTypes     = Sequelize.DataTypes;
 
-const createChannel = require('./channel');
-const createUpdate  = require('./update');
-
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const instance = sequelizeClient.define('instances', {
@@ -16,10 +13,9 @@ module.exports = function (app) {
     updatedAt: DataTypes.DATE
   });
 
-  // eslint-disable-next-line no-unused-vars
   instance.associate = function (models) {
-    instance.belongsTo(createChannel(app));
-    instance.belongsTo(createUpdate(app));
+    instance.belongsTo(models.channels);
+    instance.belongsTo(models.updates);
   };
 
   return instance;

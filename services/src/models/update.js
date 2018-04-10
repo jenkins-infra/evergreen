@@ -4,7 +4,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const update = sequelizeClient.define('update', {
+  const update = sequelizeClient.define('updates', {
     commit: DataTypes.STRING,
     manifest: DataTypes.JSON,
     createdAt: DataTypes.DATE
@@ -12,8 +12,6 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   update.associate = function (models) {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
 
   return update;
