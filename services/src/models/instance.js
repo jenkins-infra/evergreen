@@ -1,6 +1,8 @@
 'use strict';
-const Sequelize = require('sequelize');
-const DataTypes = Sequelize.DataTypes;
+const Sequelize     = require('sequelize');
+const DataTypes     = Sequelize.DataTypes;
+
+const createChannel = require('./channel');
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
@@ -15,8 +17,7 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   instance.associate = function (models) {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    instance.belongsTo(createChannel(app));
   };
 
   return instance;
