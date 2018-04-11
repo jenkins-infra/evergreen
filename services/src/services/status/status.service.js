@@ -15,5 +15,13 @@ module.exports = function (app) {
   };
 
   app.use('/status', createService(options));
-  app.service('status').hooks(hooks);
+
+  /* Since status.hooks is putting moer than just before/after/error onto
+   * module.exports, we need to make sure that we're not pushing things which
+   * feathersjs doesn't consider hooks into the hooks registration
+   */
+  app.service('status').hooks({
+    before: hooks.before,
+    after: hooks.after,
+    error: hooks.error});
 };
