@@ -101,9 +101,15 @@ test_essentials_telemetry_logging_is_found_on_disk() {
   assertEquals "0" "$?"
 }
 
-# JENKINS-50294 Health checking
+# not used for health-checking anymore, but kept for smoke testing
 test_login_http_200() {
   status_code=$( curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:$TEST_PORT/login" )
+  assertEquals "0" "$?"
+  assertEquals "200" "$status_code"
+}
+# JENKINS-50294 Health checking
+test_instance_identity_http_200() {
+  status_code=$( curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:$TEST_PORT/instance-identity/" )
   assertEquals "0" "$?"
   assertEquals "200" "$status_code"
 }
@@ -117,7 +123,7 @@ test_metrics_health_check() {
   jsonlint < $output > /dev/null
   assertEquals "0" "$?"
 
-  # Check things are all healthy 
+  # Check things are all healthy
   result=$( jq '.[].healthy' < $output | sort -u )
   assertEquals "true" "$result"
 }
