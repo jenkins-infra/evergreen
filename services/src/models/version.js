@@ -7,6 +7,7 @@ module.exports = function (app) {
   const version = sequelizeClient.define('versions', {
     uuid: DataTypes.STRING,
     createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
     core: DataTypes.STRING,
     manifest: DataTypes.JSON,
     manifestSchemaVersion: DataTypes.INTEGER
