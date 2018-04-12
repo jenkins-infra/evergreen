@@ -8,11 +8,17 @@ const logger       = require('winston');
 const rest         = require('@feathersjs/rest-client');
 
 const auth         = require('./lib/auth');
+const createCron   = require('./lib/periodic');
 const Registration = require('./lib/registration');
 
 module.exports = {
   runloop: function(app, jwt) {
     logger.info('..starting runloop');
+    /*
+     * Only setting on the cron once we have registered and logged in,
+     * otherwise it's not really useful to have anything running periodically
+     */
+    let cron = createCron(app);
   },
 
   main: async function() {
