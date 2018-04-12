@@ -83,7 +83,7 @@ Object.assign(module.exports, {
       module.exports.ensureMatchUUID,
     ],
     remove: [
-      internalOnly()
+      internalOnly
     ]
   },
 

@@ -10,10 +10,10 @@ module.exports = {
     all: [
     ],
     find: [
-      internalOnly()
+      internalOnly
     ],
     get: [
-      internalOnly()
+      internalOnly
     ],
     create: [
       /* We must have a curve in order to handle the public key
@@ -33,13 +33,13 @@ module.exports = {
       }
     ],
     update: [
-      internalOnly()
+      internalOnly
     ],
     patch: [
-      internalOnly()
+      internalOnly
     ],
     remove: [
-      internalOnly()
+      internalOnly
     ],
   },
 
