@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 exec docker run --rm \
     -w ${PWD} \

@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh -e
 
 MAVEN_REPO=~/.m2/
 mkdir -p $MAVEN_REPO/repository
