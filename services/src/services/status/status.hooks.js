@@ -6,6 +6,8 @@ const authentication = require('@feathersjs/authentication');
 const errors         = require('@feathersjs/errors');
 const logger         = require('winston');
 
+const internalOnly   = require('../../hooks/internalonly');
+
 module.exports = {};
 
 /*
@@ -74,9 +76,15 @@ Object.assign(module.exports, {
       module.exports.pruneQueryParams
     ],
 
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      module.exports.ensureMatchUUID,
+    ],
+    patch: [
+      module.exports.ensureMatchUUID,
+    ],
+    remove: [
+      internalOnly()
+    ]
   },
 
   after: {
