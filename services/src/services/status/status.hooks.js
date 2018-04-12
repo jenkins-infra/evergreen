@@ -35,7 +35,6 @@ module.exports.ensureMatchUUID = function(context) {
     throw new errors.BadRequest('Invalid UUID');
   }
 
-  logger.error('payload', context.params.payload);
   if (context.data.uuid != context.params.payload.uuid) {
     logger.error('Receiving a request with to modify a UUID not matching the token (%s/%s)',
       context.data.uuid,

@@ -137,6 +137,19 @@ logging by setting the `DB_TRACING` environment variable, for example:
 DB_TRACING=true make check
 ----
 
+In order to poke around in the development database being used for testing,
+after running `make migrate` you can inspect the docker-compose `db` instance
+with:
+
+[source,bash]
+----
+../tools/compose run --rm db psql -h db -U postgres -d evergreen_development
+----
+
+This will open up the `psql` command line client for PostgreSQL and should
+allow you to inspect and query the tables being used a development instance of
+the backend services.
+
 [[telemetry]]
 == Telemetry
 

@@ -106,6 +106,20 @@ describe('Status service acceptance tests', () => {
             assert.equal(this.response.channel.name, 'general');
           });
         });
+
+        describe('re-POSTing that Instance', () => {
+          it('should update the updatedAt time', async () => {
+            const res = await request({
+              url: h.getUrl('/status'),
+              method: 'POST',
+              headers: { Authorization: this.token },
+              json: true,
+              body: { uuid: this.instanceId }
+            });
+
+            assert.notEqual(this.response.updatedAt, res.updatedAt);
+          });
+        });
       });
     });
   });
