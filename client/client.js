@@ -7,7 +7,6 @@ const fetch        = require('node-fetch');
 const logger       = require('winston');
 const rest         = require('@feathersjs/rest-client');
 
-const auth         = require('./lib/auth');
 const createCron   = require('./lib/periodic');
 const Registration = require('./lib/registration');
 
