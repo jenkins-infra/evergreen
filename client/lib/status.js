@@ -37,7 +37,16 @@ class Status {
         logger.info('Created a Status record with server side ID %d', res.id);
       })
       .catch((err) => {
-        logger.error('Failed to create a Status record', err);
+        /* 400 errors are most likely attempts to recreate the same Status for
+         * this instance.
+         *
+         * We need a better way to run a HEAD request to check before POSTing a
+         * new status, but it's unclear whether that's supported in feathersjs
+         * or not
+         */
+        if (err.code != 400) {
+          logger.error('Failed to create a Status record', err);
+        }
       });
   }
 }
