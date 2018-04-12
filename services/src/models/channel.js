@@ -4,16 +4,15 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const reg = sequelizeClient.define('registrations', {
-    uuid: DataTypes.UUID,
-    pubKey: DataTypes.STRING,
-    curve: DataTypes.STRING,
-    createdAt: DataTypes.DATE
+  const channel = sequelizeClient.define('channels', {
+    name: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   });
 
   // eslint-disable-next-line no-unused-vars
-  reg.associate = function (models) {
+  channel.associate = function (models) {
   };
 
-  return reg;
+  return channel;
 };

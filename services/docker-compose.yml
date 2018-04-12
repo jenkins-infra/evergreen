@@ -14,6 +14,7 @@ services:
     working_dir: $PWD
     environment:
       - 'PATH=$PWD/node_modules/.bin:$PATH'
+      - 'DB_TRACING=$DB_TRACING'
     volumes:
       - $PWD:$PWD
     ports:

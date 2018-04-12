@@ -1,23 +1,27 @@
 // Initializes the `status` service on path `/status`
 const createService = require('feathers-sequelize');
-const createModel   = require('../../models/instance');
 const hooks         = require('./status.hooks');
 
 module.exports = function (app) {
-  const Model = createModel(app);
-  const paginate = app.get('paginate');
-
   const options = {
-    name: 'status',
-    Model,
-    paginate
+    id: 'uuid',
+    /* We need to set raw to false here otherwise feathers-sequelize assumes
+     * that raw should be turned to true, which changes the output of the
+     * associations from nested JSON objections, to association.value=
+     * attributes on the root of the JSON object
+     */
+    raw: false,
+    Model: app.get('models').instance
   };
 
-  // Initialize our service with any options it requires
   app.use('/status', createService(options));
 
-  // Get our initialized service so that we can register hooks and filters
-  const service = app.service('status');
-
-  service.hooks(hooks);
+  /* Since status.hooks is putting moer than just before/after/error onto
+   * module.exports, we need to make sure that we're not pushing things which
+   * feathersjs doesn't consider hooks into the hooks registration
+   */
+  app.service('status').hooks({
+    before: hooks.before,
+    after: hooks.after,
+    error: hooks.error});
 };

@@ -35,6 +35,7 @@ migrate: depends
 	$(COMPOSE) up -d db
 	../scripts/check-psql
 	$(COMPOSE) run --rm node sequelize db:migrate
+	$(COMPOSE) run --rm node sequelize db:seed:all
 
 run: migrate
 	$(COMPOSE) up node

@@ -11,6 +11,13 @@ const logger = require('winston');
 const app = require('../../src/app');
 
 describe('\'status\' service', () => {
+  beforeEach(async () => {
+    /* Need to forcefully await to ensure that we don't execute any other
+      * tests
+      */
+    await app.service('status').remove(null, { query: { $limit: 1000 } });
+  });
+
   it('registered the service', () => {
     const service = app.service('status');
 
@@ -19,7 +26,7 @@ describe('\'status\' service', () => {
 
   it('has no status by default', async () => {
     const items = await app.service('status').find();
-    assert.equal(items.total, 0, 'Status records were found');
+    assert.equal(items.length, 0);
   });
 
   describe('creating Status', () => {
@@ -30,15 +37,6 @@ describe('\'status\' service', () => {
       }, {});
 
       assert.ok(response, 'Response looks acceptable');
-
-    });
-    afterEach(async () => {
-      /* Need to forcefully await to ensure that we don't execute any other
-       * tests
-       */
-      logger.debug('Removing entries from the `status` service');
-      await app.service('status').remove(null, { query: { $limit: 1000 } });
     });
   });
-
 });
