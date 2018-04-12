@@ -55,6 +55,25 @@ describe('Versions service acceptance tests', () => {
           .then(res => assert.fail('Should have failed'))
           .catch(err => h.assertStatus(err, 401));
       });
+
+      it('should disallow creating redundant versions records', async () => {
+        let req = {
+          url: h.getUrl('/versions'),
+          method: 'POST',
+          headers: { 'Authorization': this.token },
+          json: true,
+          body: Object.assign({ uuid: this.reg.uuid }, version)
+        };
+        let response = await request(req);
+
+        try {
+          await request(req);
+          assert.fail('Should not have succeeded');
+        }
+        catch (err) {
+          h.assertStatus(err, 400);
+        }
+      });
     });
   });
 });
