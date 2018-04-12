@@ -9,6 +9,7 @@ const rest         = require('@feathersjs/rest-client');
 
 const createCron   = require('./lib/periodic');
 const Registration = require('./lib/registration');
+const Status       = require('./lib/status');
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
@@ -19,6 +20,7 @@ class Client {
     this.options || {};
     this.app = feathers();
     this.reg = new Registration(this.app);
+    this.status = new Status(this.app);
   }
 
   runloop(app, token) {
@@ -28,6 +30,8 @@ class Client {
      * otherwise it's not really useful to have anything running periodically
      */
     let cron = createCron(app);
+    this.status.authenticate(this.reg.token);
+    this.status.create(this.reg.uuid);
     setInterval(function() {
       /* no-op to keep this process alive */
     }, 10);

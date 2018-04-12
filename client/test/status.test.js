@@ -15,4 +15,7 @@ describe('The status module', () => {
       assert.equal(typeof s.getTimezone(), 'string');
     });
   });
+
+  describe('create()', () => {
+  });
 });
