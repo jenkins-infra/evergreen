@@ -84,10 +84,6 @@ COPY build/jenkins.sh /usr/local/bin/
 COPY build/jenkins-support /usr/local/bin/
 COPY scripts/shim-startup-wrapper.sh /usr/local/bin
 
-# Prepare the evergreen-client configuration
-COPY client ${EVERGREEN_HOME}/client
-COPY configuration/essentials.yaml ${EVERGREEN_HOME}
-
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.
 COPY configuration/jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
@@ -95,16 +91,22 @@ ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
 
 COPY build/*.hpi /usr/share/jenkins/ref/plugins/
 
-RUN chown -R $user:$group $EVERGREEN_HOME
-
-# Jenkins directory is a volume, so configuration and build history
-# can be persisted and survive image upgrades
-VOLUME ${EVERGREEN_HOME}
-
 # Ensure the supervisord configuration is copied and executed by default such
 # that the Jenkins and evergreen-client processes both execute properly
 COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR $EVERGREEN_HOME
+
+RUN time chown -R $user:$group $EVERGREEN_HOME
+
 USER $user
+
+# Prepare the evergreen-client configuration
+COPY client ${EVERGREEN_HOME}/client
+COPY configuration/essentials.yaml ${EVERGREEN_HOME}
+
+# Jenkins directory is a volume, so configuration and build history
+# can be persisted and survive image upgrades
+# Important: this must be done *after* the chown above
+VOLUME ${EVERGREEN_HOME}
