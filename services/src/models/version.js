@@ -9,6 +9,7 @@ module.exports = function (app) {
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     core: DataTypes.STRING,
+    checksum: DataTypes.STRING,
     manifest: DataTypes.JSON,
     manifestSchemaVersion: DataTypes.INTEGER
   });
