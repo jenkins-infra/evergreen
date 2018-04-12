@@ -28,15 +28,4 @@ describe('\'status\' service', () => {
     const items = await app.service('status').find();
     assert.equal(items.length, 0);
   });
-
-  describe('creating Status', () => {
-    it('should allow a new Status to be created', async () => {
-      const service = app.service('status');
-      const response = await service.create({
-        uuid: uuid()
-      }, {});
-
-      assert.ok(response, 'Response looks acceptable');
-    });
-  });
 });

@@ -3,6 +3,8 @@
  */
 
 const authentication = require('@feathersjs/authentication');
+const errors         = require('@feathersjs/errors');
+const logger         = require('winston');
 
 module.exports = {};
 
@@ -22,6 +24,25 @@ module.exports.includeAssociations = function(context) {
   Object.assign(context.params.sequelize, {
     include: [ context.app.get('models').channel ]
   });
+  return context;
+};
+
+/* Ensure that the given UUID matches the UUID inside of the JWT
+ */
+module.exports.ensureMatchUUID = function(context) {
+  if (!context.data.uuid) {
+    logger.error('Receiving a request without a valid UUID', context.data);
+    throw new errors.BadRequest('Invalid UUID');
+  }
+
+  logger.error('payload', context.params.payload);
+  if (context.data.uuid != context.params.payload.uuid) {
+    logger.error('Receiving a request with to modify a UUID not matching the token (%s/%s)',
+      context.data.uuid,
+      context.params.payload.uuid);
+    throw new errors.NotAuthenticated('Invalid UUID');
+  }
+
   return context;
 };
 
@@ -49,6 +70,7 @@ Object.assign(module.exports, {
     ],
 
     create: [
+      module.exports.ensureMatchUUID,
       module.exports.defaultChannel,
       module.exports.pruneQueryParams
     ],
