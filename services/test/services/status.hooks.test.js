@@ -1,6 +1,5 @@
 const assert   = require('assert');
 const feathers = require('@feathersjs/feathers');
-const errors   = require('@feathersjs/errors');
 const hooks    = require('../../src/services/status/status.hooks');
 
 describe('status service hooks', () => {
@@ -33,36 +32,6 @@ describe('status service hooks', () => {
        * seeds, will be the 'general' channelId
        */
       assert.equal(context.data.channelId, 3);
-    });
-
-    it('should fail if the request does not include a UUID', () => {
-      context = { data: { } };
-      try {
-        assert.fail(hooks.ensureMatchUUID(context));
-      }
-      catch (err) {
-        assert.equal(err.name, errors.BadRequest.name);
-      }
-    });
-
-    it('should fail if the JWT uuid and the given UUID are identical', () => {
-      context = {
-        data: {
-          uuid: 'who I want to be'
-        },
-        params: {
-          payload: {
-            uuid: 'who i am allowed to be',
-          }
-        }
-      };
-
-      try {
-        assert.fail(hooks.ensureMatchUUID(context));
-      }
-      catch (err) {
-        assert.equal(err.name, errors.NotAuthenticated.name);
-      }
     });
   });
 

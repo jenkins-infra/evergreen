@@ -1,4 +1,5 @@
-const authentication = require('@feathersjs/authentication');
+const authentication     = require('@feathersjs/authentication');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
 module.exports = {
   before: {
@@ -7,7 +8,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      ensureMatchingUUID,
+    ],
     update: [],
     patch: [],
     remove: []
