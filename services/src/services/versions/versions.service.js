@@ -1,23 +1,22 @@
-// Initializes the `versions` service on path `/versions`
+/*
+ * The `versions` service is responsible for handling the "audit trail" of
+ * Jenkins instance version information.
+ *
+ * The `version` information for a given instance should be considered append
+ * only to the backend data store, and retrieval of the "current" version will
+ * simply be taking the last of version records associated with the instance.
+ */
+
 const createService = require('feathers-sequelize');
 const createModel = require('../../models/version');
 const hooks = require('./versions.hooks');
 
 module.exports = function (app) {
-  const Model = createModel(app);
-  const paginate = app.get('paginate');
-
   const options = {
     name: 'versions',
-    Model,
-    paginate
+    Model: createModel(app)
   };
 
-  // Initialize our service with any options it requires
   app.use('/versions', createService(options));
-
-  // Get our initialized service so that we can register hooks and filters
-  const service = app.service('versions');
-
-  service.hooks(hooks);
+  app.service('versions').hooks(hooks);
 };
