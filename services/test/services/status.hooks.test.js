@@ -42,7 +42,7 @@ describe('status service hooks', () => {
       }
       catch (err) {
         assert.equal(err.name, errors.BadRequest.name);
-      };
+      }
     });
 
     it('should fail if the JWT uuid and the given UUID are identical', () => {

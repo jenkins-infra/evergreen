@@ -4,9 +4,6 @@
  */
 
 const assert = require('assert');
-const uuid = require('uuid/v4');
-// eslint-disable-next-line no-unused-vars
-const logger = require('winston');
 
 const app = require('../../src/app');
 
