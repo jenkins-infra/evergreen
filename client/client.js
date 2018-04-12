@@ -10,45 +10,52 @@ const rest         = require('@feathersjs/rest-client');
 const createCron   = require('./lib/periodic');
 const Registration = require('./lib/registration');
 
-module.exports = {
-  runloop: function(app, jwt) {
+/*
+ * The Client class is a simple wrapper meant to start the basics of the client
+ * and then run a simple runloop to block the client from ever exiting
+ */
+class Client {
+  constructor (options) {
+    this.options || {};
+    this.app = feathers();
+    this.reg = new Registration(this.app);
+  }
+
+  runloop(app, token) {
     logger.info('..starting runloop');
     /*
      * Only setting on the cron once we have registered and logged in,
      * otherwise it's not really useful to have anything running periodically
      */
     let cron = createCron(app);
-  },
+    setInterval(function() {
+      /* no-op to keep this process alive */
+    }, 10);
+  }
 
-  main: async function() {
-    const app = feathers();
-    const reg = new Registration(app);
-    const restClient = rest(process.env.EVERGREEN_ENDPOINT);
-    app.configure(restClient.fetch(fetch));
+  bootstrap() {
+    const endpoint = process.env.EVERGREEN_ENDPOINT;
+    const restClient = rest(endpoint);
 
-    if (reg.isRegistered()) {
-      auth.login(reg.identity()).then((err, jwt) => {
-        /* Check error for login, if fail, then we need to update the status
-         */
-        if (!err) { runloop(app, jwt); }
-      });
-    }
-    else {
-      logger.info('Registering..');
-      reg.register().then((res) => {
-        /* successfully created registration */
-      }).catch((err) => {
-        logger.error('Failed to complete a registration, what do we do!', err);
-      });
-    }
-  },
-};
+    logger.info('Configuring the client to use the endpoint %s', endpoint);
+    this.app.configure(restClient.fetch(fetch));
+
+    this.reg.register().then((res) => {
+      /*
+       * It is only valid to start the runloop assuming we have been able to
+       * register and log in successfully, otherwise the client will exit and
+       * supervisord should try again :/
+       */
+      this.runloop(this.app, this.reg.token);
+    });
+  }
+}
+
+module.exports = Client;
 
 if (require.main === module) {
   /* Main entrypoint for module */
   logger.info('Starting the evergreen-client..');
-  module.exports.main();
-  setInterval(function() {
-    /* no-op to keep this process alive */
-  }, 10);
+  let client = new Client();
+  client.bootstrap();
 }
