@@ -1,5 +1,5 @@
-const assert = require('assert');
-const feathers = require('@feathersjs/feathers');
+const assert      = require('assert');
+const feathers    = require('@feathersjs/feathers');
 const dbtimestamp = require('../../src/hooks/dbtimestamp');
 
 describe('\'dbtimestamp\' hook', () => {

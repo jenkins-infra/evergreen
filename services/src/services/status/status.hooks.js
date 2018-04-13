@@ -2,7 +2,9 @@
  * Status service hooks
  */
 
-const authentication = require('@feathersjs/authentication');
+const authentication     = require('@feathersjs/authentication');
+const internalOnly       = require('../../hooks/internalonly');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
 module.exports = {};
 
@@ -49,13 +51,20 @@ Object.assign(module.exports, {
     ],
 
     create: [
+      ensureMatchingUUID,
       module.exports.defaultChannel,
       module.exports.pruneQueryParams
     ],
 
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      ensureMatchingUUID,
+    ],
+    patch: [
+      ensureMatchingUUID,
+    ],
+    remove: [
+      internalOnly
+    ]
   },
 
   after: {

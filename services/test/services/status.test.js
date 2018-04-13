@@ -4,9 +4,6 @@
  */
 
 const assert = require('assert');
-const uuid = require('uuid/v4');
-// eslint-disable-next-line no-unused-vars
-const logger = require('winston');
 
 const app = require('../../src/app');
 
@@ -27,16 +24,5 @@ describe('\'status\' service', () => {
   it('has no status by default', async () => {
     const items = await app.service('status').find();
     assert.equal(items.length, 0);
-  });
-
-  describe('creating Status', () => {
-    it('should allow a new Status to be created', async () => {
-      const service = app.service('status');
-      const response = await service.create({
-        uuid: uuid()
-      }, {});
-
-      assert.ok(response, 'Response looks acceptable');
-    });
   });
 });
