@@ -20,6 +20,21 @@ describe('The status module', () => {
   });
 
   describe('manifestFromZip', () => {
+    let s = new Status(app);
+
+    describe('with mock-jenkins.war', () => {
+      it('should parse out the Jenkins-Version', async () => {
+        const results = await s.manifestFromZip('test/mock-jenkins.war');
+        assert.equal(results['Jenkins-Version'], '2.116');
+      });
+    });
+
+    describe('with a mock plugin', () => {
+      it('should parse out the Plugin-Version', async () => {
+        const results = await s.manifestFromZip('test/mock-plugins/workflow-aggregator.hpi');
+        assert.equal(results['Plugin-Version'], '2.5');
+      });
+    });
   });
 
   describe('parseRawManifest', () => {

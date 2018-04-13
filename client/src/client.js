@@ -32,9 +32,6 @@ class Client {
     this.status.authenticate(token);
     this.status.create(this.reg.uuid);
 
-    this.status.manifestFromZip('./jenkins.war').then((manifest) => {
-      logger.info('Found Jenkins version: %s', manifest['Jenkins-Version']);
-    });
     setInterval(function() {
       /* no-op to keep this process alive */
     }, 10);
