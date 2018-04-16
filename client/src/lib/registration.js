@@ -3,14 +3,13 @@
  * of the evergreen-client with the backend services layer
  */
 
-const crypto = require('crypto');
 const ecc    = require('elliptic');
 const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
 
-const rand   = require('./rand-patch');
+require('./rand-patch');
 
 class Registration {
   constructor (app, options) {
@@ -169,7 +168,6 @@ class Registration {
       return false;
     }
 
-    const keyPath = this.keyPath();
     const publicKeyPath = this.publicKeyPath();
     const privateKeyPath = this.privateKeyPath();
 
@@ -222,7 +220,7 @@ class Registration {
    */
   hasKeys() {
     try {
-      let r = fs.statSync(this.publicKeyPath());
+      fs.statSync(this.publicKeyPath());
       return true;
     }
     catch (err) {
@@ -233,7 +231,6 @@ class Registration {
         throw err;
       }
     }
-    return false;
   }
 
   /* Return the directory where registration keys should be stored
@@ -245,7 +242,7 @@ class Registration {
 
     /* Only bother making the directory if it doesn't already exist */
     try {
-      const dirStat = fs.statSync(keys);
+      fs.statSync(keys);
     }
     catch (err) {
       if (err.code == 'ENOENT') {
@@ -266,16 +263,16 @@ class Registration {
    * @return String
    */
   publicKeyPath() {
-    return [this.keyPath(), 'evergreen.pub'].join(path.sep)
+    return [this.keyPath(), 'evergreen.pub'].join(path.sep);
   }
 
   privateKeyPath() {
-    return [this.keyPath(), 'evergreen-private-key'].join(path.sep)
+    return [this.keyPath(), 'evergreen-private-key'].join(path.sep);
   }
 
   uuidPath() {
-    return [this.keyPath(), 'uuid.json'].join(path.sep)
+    return [this.keyPath(), 'uuid.json'].join(path.sep);
   }
 }
 
-module.exports = Registration
+module.exports = Registration;

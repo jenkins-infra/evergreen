@@ -2,9 +2,9 @@
   "name": "evergreen-client",
   "version": "1.0.0",
   "description": "",
-  "main": "client.js",
+  "main": "src/client.js",
   "scripts": {
-    "client": "node client.js",
+    "client": "node src/client.js",
     "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "jest": "jest"

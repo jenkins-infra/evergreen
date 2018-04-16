@@ -1,5 +1,5 @@
 const assert   = require('assert');
-const periodic = require('../lib/periodic');
+const periodic = require('../src/lib/periodic');
 
 describe('The periodic module', () => {
   /* Just a simple fake app for unit test

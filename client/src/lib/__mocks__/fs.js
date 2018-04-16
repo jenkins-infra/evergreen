@@ -1,5 +1,6 @@
 'use strict';
 
+// eslint-disable-next-line no-console
 console.log('Using a memfs filesystem...');
 
 const memfs = require('memfs');

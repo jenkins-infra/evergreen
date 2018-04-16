@@ -1,6 +1,6 @@
 const assert   = require('assert');
 const feathers = require('@feathersjs/feathers');
-const Status   = require('../lib/status');
+const Status   = require('../src/lib/status');
 
 describe('The status module', () => {
   let app = feathers();

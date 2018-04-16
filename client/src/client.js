@@ -16,8 +16,7 @@ const Status       = require('./lib/status');
  * and then run a simple runloop to block the client from ever exiting
  */
 class Client {
-  constructor (options) {
-    this.options || {};
+  constructor() {
     this.app = feathers();
     this.reg = new Registration(this.app);
     this.status = new Status(this.app);
@@ -29,8 +28,8 @@ class Client {
      * Only setting on the cron once we have registered and logged in,
      * otherwise it's not really useful to have anything running periodically
      */
-    let cron = createCron(app);
-    this.status.authenticate(this.reg.token);
+    createCron(app);
+    this.status.authenticate(token);
     this.status.create(this.reg.uuid);
     setInterval(function() {
       /* no-op to keep this process alive */
@@ -45,6 +44,7 @@ class Client {
     this.app.configure(restClient.fetch(fetch));
 
     this.reg.register().then((res) => {
+      logger.debug('Registration returned', res);
       /*
        * It is only valid to start the runloop assuming we have been able to
        * register and log in successfully, otherwise the client will exit and
