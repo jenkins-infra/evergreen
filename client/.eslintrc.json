@@ -24,6 +24,10 @@
     "semi": [
       "error",
       "always"
+    ],
+    "prefer-arrow-callback": [
+      "error",
+      { "allowNamedFunctions": true }
     ]
   }
 }
