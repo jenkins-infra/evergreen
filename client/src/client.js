@@ -31,7 +31,7 @@ class Client {
     createCron(app);
     this.status.authenticate(token);
     this.status.create(this.reg.uuid);
-    setInterval(function() {
+    setInterval( () => {
       /* no-op to keep this process alive */
     }, 10);
   }

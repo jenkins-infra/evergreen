@@ -9,7 +9,7 @@ describe('The periodic module', () => {
   describe('runHourly()', () => {
     it('allow registration of an hourly callback', () => {
       let p = periodic(app);
-      assert.ok(p.runHourly('jest-fun', function() { }));
+      assert.ok(p.runHourly('jest-fun', () => { }));
     });
   });
 
