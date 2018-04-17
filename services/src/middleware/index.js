@@ -6,7 +6,7 @@ module.exports = function (app) {
    * This seems to be required in order to make bearer tokens with
    * @feathersjs/authentication-jwt work
    */
-  app.all('*', function(request, response, next) {
+  app.all('*', (request, response, next) => {
     if (request.headers) {
       request.feathers.headers = request.headers;
     }
