@@ -28,7 +28,7 @@ class ErrorTelemetry {
     // basically nothing should never make the client crash I think
     // (if a connection is established, sure)
     if(!fs.existsSync(loggingFile)) {
-      throw new Error('logging file ' + loggingFile + ' not found. ');
+      throw new Error(`logging file ${loggingFile} not found.`);
     }
 
     const tail = new Tail(loggingFile, {
@@ -38,8 +38,8 @@ class ErrorTelemetry {
     tail.on('line', data => {
       const json = JSON.parse(data);
 
-      const text = 'MESSAGE='+json.message; //, date="+new Date(json.timestamp) +'\n';
-      fs.appendFile(TARGET, text+'\n', err => {
+      const text = `MESSAGE=${json.message}`;
+      fs.appendFile(TARGET, `${text}\n`, err => {
         if(err) {
           return logger.error(err);
         }
@@ -48,7 +48,7 @@ class ErrorTelemetry {
     });
 
     tail.on('error', error => {
-      logger.error('ERROR: ' + error);
+      logger.error(`ERROR: ${error}`);
     });
   }
 
@@ -60,7 +60,7 @@ class ErrorTelemetry {
     } else {
       path = process.env.ESSENTIALS_LOG_FILE;
     }
-    logger.info('Watching file: '+ path);
+    logger.info(`Watching file: ${path}`);
     return path;
   }
 }
