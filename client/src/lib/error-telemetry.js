@@ -19,7 +19,7 @@ class ErrorTelemetry {
 
   setup() {
     logger.info('Setting up error logging...');
-    var loggingFile = this.fileToWatch();
+    const loggingFile = this.fileToWatch();
 
 
     // FIXME: this is wrong, we should probably /just/ retry, but handling this an error
@@ -53,7 +53,7 @@ class ErrorTelemetry {
   }
 
   fileToWatch() {
-    var path = '';
+    let path = '';
     if(!process.env.ESSENTIALS_LOG_FILE) {
       logger.debug('Defaulting to essentials.log.0');
       path = '/evergreen/jenkins/var/logs/essentials.log.0';
