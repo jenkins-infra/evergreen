@@ -7,7 +7,9 @@ module.exports = function (app) {
   const update = sequelizeClient.define('updates', {
     commit: DataTypes.STRING,
     manifest: DataTypes.JSON,
-    createdAt: DataTypes.DATE
+    tainted: DataTypes.BOOLEAN,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   });
 
   // eslint-disable-next-line no-unused-vars

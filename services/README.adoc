@@ -69,9 +69,10 @@ service will be receiving semi-arbitrary blobs of JSON from instances.
 | id             <---+  | updatedAt  | ||    | id                 |
 | sha1           |      +------------+ |+----+ uuid               |
 | manifest (JSON)|                     |     | capabilities (JSON)|
-| createdAt      |                     |     | createdAt          |
+| tainted        |                     |     | createdAt          |
 | updatedAt      |                     |     | updatedAt          |
-+----------------+                     |     +--------------------+
+| updatedAt      |                     |     +--------------------+
++----------------+                     |
                                        |
                                        |     +-----------------------+
                                        |     | versions              |
