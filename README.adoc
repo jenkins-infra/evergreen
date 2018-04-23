@@ -97,6 +97,9 @@ documents:
 | JEP-305
 | link:https://github.com/jenkinsci/jep/tree/master/jep/305[Publishing incremental commits as Maven releases]
 
+| JEP-306
+| link:https://github.com/jenkinsci/jep/tree/master/jep/306[Essentials Instance Client Health Checking]
+
 |===
 
 [[deployment]]
