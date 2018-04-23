@@ -24,6 +24,7 @@
     "eventsource": "^1.0.5",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.1.2",
+    "node-stream-zip": "^1.6.0",
     "unzip": "^0.1.11",
     "uuid": "^3.2.1",
     "winston": "^2.4.1",

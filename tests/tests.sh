@@ -137,4 +137,11 @@ test_logs_are_propagated() {
   assertNotEquals "" "$result"
 }
 
+# Check NPM is 5+ to make sure we do check the integrity values
+# https://github.com/jenkins-infra/evergreen/pull/60#discussion_r182666012
+test_npm_5_plus() {
+  result=$( docker exec $container_under_test npm --version )
+  assertEquals "5." "${result:0:2}"
+}
+
 . ./shunit2/shunit2

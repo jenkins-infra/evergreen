@@ -3,7 +3,8 @@
  * state of this instance to the Evergreen backend `Status` service
  */
 
-const logger = require('winston');
+const logger    = require('winston');
+const StreamZip = require('node-stream-zip');
 
 class Status {
   constructor(app, options) {
@@ -48,6 +49,47 @@ class Status {
           logger.error('Failed to create a Status record', err);
         }
       });
+  }
+
+  async manifestFromZip(zipArchive, options) {
+    options = options || {};
+    let manifestName = options.manifestName || 'META-INF/MANIFEST.MF';
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      const zip = new StreamZip({ file: zipArchive });
+
+      zip.on('ready', () => {
+        zip.stream(manifestName, (err, stream) => {
+          if (err) { reject(err); }
+          let buffer = '';
+          stream.on('data', chunk => buffer += chunk );
+          stream.on('end', () => {
+            zip.close();
+            resolve(self.parseRawManifest(buffer));
+          });
+        });
+      });
+    });
+  }
+
+  /*
+   * Convert a MANIFEST.MF type file into an object with keys and values
+   *
+   * The MANIFEST.MF string is expected to be \r\n separated like a real
+   * MANIFEST.MF file
+   *
+   * @return Object
+   */
+  parseRawManifest(manifest) {
+    let result = {};
+    manifest.split('\r\n').forEach((line) => {
+      if (line) {
+        let parts = line.split(': ');
+        result[parts[0]] = parts[1];
+      }
+    });
+    return result;
   }
 }
 
