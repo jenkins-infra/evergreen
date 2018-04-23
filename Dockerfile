@@ -106,6 +106,10 @@ USER $user
 COPY client ${EVERGREEN_HOME}/client
 COPY configuration/essentials.yaml ${EVERGREEN_HOME}
 
+# Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
+# which immediately crashes if the file is missing, even if we use the `follow` switch
+RUN touch ${JENKINS_VAR}/logs/essentials.log.0
+
 # Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 # Important: this must be done *after* the chown above

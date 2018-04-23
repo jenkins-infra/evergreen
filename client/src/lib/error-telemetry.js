@@ -21,35 +21,34 @@ class ErrorTelemetry {
     logger.info('Setting up error logging...');
     const loggingFile = this.fileToWatch();
 
-
-    // FIXME: this is wrong, we should probably /just/ retry, but handling this an error
-    // BTW, we should define a way to also report critical errors like those to the backend
-    // The logging file being absent, or some critical parts being wrong on the Jenkins instance,
-    // basically nothing should never make the client crash I think
-    // (if a connection is established, sure)
     if(!fs.existsSync(loggingFile)) {
-      throw new Error(`logging file ${loggingFile} not found.`);
+      logger.warn(`Logging file ${loggingFile} not found. Still watching the path in case the file gets created later. Can be normal when starting up.`);
+    } else {
+      logger.info(`Watching ${loggingFile} and output to ${TARGET}`);
     }
 
     const tail = new Tail(loggingFile, {
+      follow: true,
       fromBeginning: true
     });
 
     tail.on('line', data => {
       const json = JSON.parse(data);
 
-      const text = `MESSAGE=${json.message}`;
-      fs.appendFile(TARGET, `${text}\n`, err => {
+      const text = `MESSAGE=${json.message}\n`;
+      fs.appendFile(TARGET, text, err => {
         if(err) {
-          return logger.error(err);
+          return logger.error(`Error writing file! ${err}`);
         }
-        logger.debug('The file was written!' + data);
+        logger.info('The file was written!' + data);
       });
     });
 
     tail.on('error', error => {
-      logger.error(`ERROR: ${error}`);
+      logger.error(`ERROR watching file: ${error}`);
     });
+
+    logger.info('Error Telemetry Logging file watching configured');
   }
 
   fileToWatch() {
@@ -60,7 +59,6 @@ class ErrorTelemetry {
     } else {
       path = process.env.ESSENTIALS_LOG_FILE;
     }
-    logger.info(`Watching file: ${path}`);
     return path;
   }
 }
