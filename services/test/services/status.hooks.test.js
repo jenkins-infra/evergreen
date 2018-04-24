@@ -23,25 +23,13 @@ describe('status service hooks', () => {
     });
   });
 
-  describe('create hooks', () => {
-    let context = { data: {} };
-
-    it('should set the default channel', () => {
-      assert.equal(context, hooks.defaultChannel(context));
-      /* we're assuming the channelId of three, which is hard-coded in our
-       * seeds, will be the 'general' channelId
-       */
-      assert.equal(context.data.channelId, 3);
-    });
-  });
-
   describe('get hooks', () => {
     let context = { data: {}, params: {} };
-    let channelModel = new Object();
+    let updateModel = new Object();
 
     beforeEach(() => {
       context.app = app;
-      app.set('models', { channel: channelModel });
+      app.set('models', { update: updateModel });
     });
 
     it('should include the Instance model associations', () => {
@@ -49,7 +37,7 @@ describe('status service hooks', () => {
       assert.ok(context.params.sequelize, 'context.params.sequelize is supposed to exist now');
       let includes = context.params.sequelize.include;
       assert.ok(includes);
-      assert.equal(includes[0], channelModel);
+      assert.equal(includes[0], updateModel);
     });
 
     it('should prune user-supplied query parameters', () => {

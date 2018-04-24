@@ -11,12 +11,6 @@ module.exports = {
       uuid: {
         type: Sequelize.STRING
       },
-      createdAt: {
-        type: Sequelize.DATE
-      },
-      core: {
-        type: Sequelize.STRING
-      },
       manifest: {
         type: Sequelize.JSON
       },

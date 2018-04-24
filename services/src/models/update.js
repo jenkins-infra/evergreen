@@ -6,6 +6,7 @@ module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const update = sequelizeClient.define('updates', {
     commit: DataTypes.STRING,
+    channel: DataTypes.STRING,
     manifest: DataTypes.JSON,
     tainted: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,

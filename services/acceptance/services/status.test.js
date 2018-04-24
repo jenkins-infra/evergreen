@@ -57,7 +57,7 @@ describe('Status service acceptance tests', () => {
           });
 
           assert.ok(response);
-          assert.ok(response.channelId);
+          assert.ok(response.updateId);
         });
 
         it('should not allow creating a status for a uuid not in the JWT', () => {
@@ -101,9 +101,9 @@ describe('Status service acceptance tests', () => {
 
           it('should return the proper `channel` relationship', () => {
             assert.ok(this.response);
-            assert.ok(this.response.channel);
+            assert.ok(this.response.update);
             /* we expect everybody to be in the general channel by default */
-            assert.equal(this.response.channel.name, 'general');
+            assert.equal(this.response.update.channel, 'general');
           });
         });
 
