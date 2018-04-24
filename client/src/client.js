@@ -7,9 +7,10 @@ const fetch        = require('node-fetch');
 const logger       = require('winston');
 const rest         = require('@feathersjs/rest-client');
 
-const createCron   = require('./lib/periodic');
-const Registration = require('./lib/registration');
-const Status       = require('./lib/status');
+const createCron     = require('./lib/periodic');
+const Registration   = require('./lib/registration');
+const Status         = require('./lib/status');
+const ErrorTelemetry = require('./lib/error-telemetry');
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
@@ -20,6 +21,7 @@ class Client {
     this.app = feathers();
     this.reg = new Registration(this.app);
     this.status = new Status(this.app);
+    this.errorTelemetry = new ErrorTelemetry(this.app);
   }
 
   runloop(app, token) {
@@ -42,6 +44,10 @@ class Client {
 
     logger.info('Configuring the client to use the endpoint %s', endpoint);
     this.app.configure(restClient.fetch(fetch));
+
+    // FIXME: move this into runloop once we figure out how to run it locally during testing
+    this.errorTelemetry.setup();
+    // END FIXME
 
     this.reg.register().then((res) => {
       logger.debug('Registration returned', res);

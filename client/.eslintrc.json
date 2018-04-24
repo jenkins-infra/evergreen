@@ -28,6 +28,7 @@
     "prefer-arrow-callback": [
       "error",
       { "allowNamedFunctions": true }
-    ]
+    ],
+    "no-var": "error"
   }
 }

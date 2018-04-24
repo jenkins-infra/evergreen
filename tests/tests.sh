@@ -1,7 +1,6 @@
 #!/bin/bash
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
-
 current_directory=$(dirname "$0")
 export PATH="$current_directory/../tools:$PATH"
 
@@ -126,6 +125,16 @@ test_metrics_health_check() {
   # Check things are all healthy
   result=$( jq '.[].healthy' < $output | sort -u )
   assertEquals "true" "$result"
+}
+
+# JENKINS-49811
+test_logs_are_propagated() {
+  result=$( docker exec $container_under_test ls /tmp/test )
+  assertEquals "0" "$?"
+
+  result=$( docker exec $container_under_test cat /tmp/test | head -1 | grep MESSAGE= )
+  assertEquals "0" "$?"
+  assertNotEquals "" "$result"
 }
 
 # Check NPM is 5+ to make sure we do check the integrity values
