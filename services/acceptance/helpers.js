@@ -11,7 +11,7 @@ const app     = require('../src/app');
 require('./rand-patch');
 
 class Helpers {
-  constructor (options) {
+  constructor () {
     this.curve = 'secp256k1';
   }
 

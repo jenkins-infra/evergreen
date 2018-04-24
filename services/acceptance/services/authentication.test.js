@@ -1,7 +1,5 @@
 const assert  = require('assert');
-const ecc     = require('elliptic');
 const request = require('request-promise');
-const logger  = require('winston');
 
 const h       = require('../helpers');
 

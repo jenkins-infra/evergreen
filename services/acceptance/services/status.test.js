@@ -1,5 +1,4 @@
 const assert  = require('assert');
-const logger  = require('winston');
 const request = require('request-promise');
 const h       = require('../helpers');
 
@@ -68,7 +67,7 @@ describe('Status service acceptance tests', () => {
             json: true,
             body: { uuid: 'fake out!' }
           })
-            .then(r => assert.fail('Should have failed'))
+            .then(() => assert.fail('Should have failed'))
             .catch(err => h.assertStatus(err, 401));
         });
       });
@@ -116,7 +115,7 @@ describe('Status service acceptance tests', () => {
               json: true,
               body: { uuid: this.instanceId }
             })
-              .then(res => assert.fail('This should fail'))
+              .then(() => assert.fail('This should fail'))
               .catch(err => h.assertStatus(err, 400));
           });
         });

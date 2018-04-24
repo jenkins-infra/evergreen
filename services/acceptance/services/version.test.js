@@ -52,7 +52,7 @@ describe('Versions service acceptance tests', () => {
           json: true,
           body: Object.assign({ uuid: 'phony' }, version)
         })
-          .then(res => assert.fail('Should have failed'))
+          .then(() => assert.fail('Should have failed'))
           .catch(err => h.assertStatus(err, 401));
       });
 
@@ -64,7 +64,7 @@ describe('Versions service acceptance tests', () => {
           json: true,
           body: Object.assign({ uuid: this.reg.uuid }, version)
         };
-        let response = await request(req);
+        await request(req);
 
         try {
           await request(req);
