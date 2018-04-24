@@ -7,6 +7,7 @@ module.exports = function (app) {
   const instance = sequelizeClient.define('instances', {
     uuid: DataTypes.UUID,
     timezone: DataTypes.STRING,
+    flavor: DataTypes.STRING,
     updateId: DataTypes.BIGINT,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE

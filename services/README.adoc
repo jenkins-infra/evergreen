@@ -67,6 +67,7 @@ service will be receiving semi-arbitrary blobs of JSON from instances.
                            |  id        |    |  |  updatedAt             |
                            | *uuid      <---++  +------------------------+
                            |  timezone  |   ^^
+                           |  flavor    |   ||
   +----------------+   +---+  updateId  |   ||
   | updates        |   |   |  createdAt |   ||
   +----------------+   |   |  updatedAt |   ||
