@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+OUTPUT=/etc/ca-certificates.conf
+
+# Clear out the old file
+echo "# Only trusted certificates by Jenkins Essentials allowed" > $OUTPUT
+
+for cert in $(ls /usr/share/ca-certificates/mozilla); do
+    if [ "${cert}" = "DST_Root_CA_X3.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "IdenTrust_Public_Sector_Root_CA_1.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "IdenTrust_Commercial_Root_CA_1.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    else
+        echo "!mozilla/${cert}" >> $OUTPUT;
+    fi;
+done;
+
+exec /usr/sbin/update-ca-certificates

@@ -144,4 +144,14 @@ test_npm_5_plus() {
   assertEquals "5." "${result:0:2}"
 }
 
+# Ensure that we can successfully connect to only Let's Encrypt authorized
+# sites. See JEP-307
+test_jep_307() {
+  result=$( docker exec $container_under_test curl -s https://jenkins.io/ )
+  assertEquals "0" "$?"
+
+  result=$( docker exec $container_under_test curl -s https://sonic.com/ )
+  assertEquals "60" "$?"
+}
+
 . ./shunit2/shunit2
