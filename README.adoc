@@ -100,6 +100,9 @@ documents:
 | JEP-306
 | link:https://github.com/jenkinsci/jep/tree/master/jep/306[Essentials Instance Client Health Checking]
 
+| JEP-307
+| link:https://github.com/jenkinsci/jep/blob/master/jep/307[Evergreen Update Client/Server Lifecycle]
+
 |===
 
 [[deployment]]
