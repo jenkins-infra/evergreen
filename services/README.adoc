@@ -175,3 +175,17 @@ This includes:
 .. Logged warnings
 .. Agent errors
 . :question:
+
+
+== Environment Variables
+
+|===
+| Name | Description
+
+| `DB_TRACING`
+| Set with any value to turn on Sequelize database query tracing
+
+| `EVERGREEN_JWT_SECRET`
+| Set with the secret to use for creating JSON Web Tokens for authentication
+
+|===
