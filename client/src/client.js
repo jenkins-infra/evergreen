@@ -46,7 +46,12 @@ class Client {
     this.app.configure(restClient.fetch(fetch));
 
     // FIXME: move this into runloop once we figure out how to run it locally during testing
-    this.errorTelemetry.setup();
+    try {
+      this.errorTelemetry.setup();
+    }
+    catch (err) {
+      logger.error('Failed to set up Error Telemetry', err);
+    }
     // END FIXME
 
     this.reg.register().then((res) => {
