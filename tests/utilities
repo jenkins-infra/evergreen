@@ -55,6 +55,6 @@ setup_container_under_test() {
     else
       info "Waiting for Jenkins startup a bit more... ($cur_attempts/$max_attempts attempts) "
     fi
-    sleep 3
+    sleep $cur_attempts
   done
 }

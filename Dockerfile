@@ -52,6 +52,7 @@ COPY scripts/plugins.aria /plugins.aria
 #   * supervisor
 #   * nodejs
 RUN apk add --no-cache git \
+                        ca-certificates \
                         openssh-client \
                         unzip \
                         bash \
@@ -74,6 +75,12 @@ COPY configuration/logging.properties $EVERGREEN_HOME/logging.properties
 # ensure you use the same uid
 RUN addgroup -g ${gid} ${group} \
     && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
+
+
+# Ensure that only the right CA root certificates are present on the system
+# See JEP-307
+COPY scripts/generate-ca-certificates /usr/local/sbin/
+RUN /usr/local/sbin/generate-ca-certificates
 
 #######################
 ## Construct the image

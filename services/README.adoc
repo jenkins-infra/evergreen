@@ -54,38 +54,49 @@ service will be receiving semi-arbitrary blobs of JSON from instances.
 
 [source]
 ----
-    +------------+                           +----------------+
-    | channels   |                           | connections    |
-    +------------+                           +----------------+
-    | id         <---+  +------------+       | id             |
-    | name       |   |  | instances  |  +----+ uuid           |
-    | createdAt  |   |  +------------+  |    | last_connected |
-    | updatedAt  |   |  | id         |  |    | createdAt      |
-    +------------+   |  | uuid*      <--+    | updatedAt      |
-                     |  | timezone   | ^^    +----------------+
-+----------------+   +--+ channelId  | ||    +--------------------+
-| updates        |   +--+ updateId   | ||    | capabilities       |
-+----------------+   |  | createdAt  | ||    +-------------------- +
-| id             <---+  | updatedAt  | ||    | id                 |
-| sha1           |      +------------+ |+----+ uuid               |
-| manifest (JSON)|                     |     | capabilities (JSON)|
-| createdAt      |                     |     | createdAt          |
-| updatedAt      |                     |     | updatedAt          |
-+----------------+                     |     +--------------------+
-                                       |
-                                       |     +-----------------------+
-                                       |     | versions              |
-                                       |     +-----------------------+
-                                       |     | id                    |
-                                       +-----+ uuid                  |
-                                             | manifest (JSON)       |
-                                             | manifestSchemaVersion |
-                                             | core                  |
-                                             | createdAt             |
-                                             | updatedAt             |
-                                             +-----------------------+
+
+                                                +------------------------+
+                                                | versions               |
+                                                +------------------------+
+                                                |  id                    |
+                                             +--+ *uuid                  |
+                                             |  |  manifest (JSON)       |
+                           +------------+    |  |  manifestSchemaVersion |
+                           | instances  |    |  |  checksum (unique)     |
+                           +------------+    |  |  createdAt             |
+                           |  id        |    |  |  updatedAt             |
+                           | *uuid      <---++  +------------------------+
+                           |  timezone  |   ^^
+                           |  flavor    |   ||
+  +----------------+   +---+  updateId  |   ||
+  | updates        |   |   |  createdAt |   ||
+  +----------------+   |   |  updatedAt |   ||
+  | id             <---+   +------------+   ||
+  | commit         |                        ||
+  | channel        |                        ||  +---------------------+
+  | manifest (JSON)|                        ||  | capabilities        |
+  | tainted        |                        ||  +---------------------+
+  | createdAt      |                        ||  |  id                 |
+  | updatedAt      |                        |+--+ *uuid               |
+  +----------------+                        |   |  capabilities (JSON)|
+                                            |   |  createdAt          |
+                                            |   |  updatedAt          |
+                                            |   +---------------------+
+                                            |
+                                            |
+                                            |
+                                            |   +-----------------+
+                                            |   | connections     |
+                                            |   +-----------------+
+                                            |   |  id             |
+                                            +---+ *uuid           |
+                                                |  lastConnected  |
+                                                |  createdAt      |
+                                                |  updatedAt      |
+                                                +-----------------+
 
 * denotes an index
+`id` fields are always considered primary keys
 ----
 
 ==== Versions

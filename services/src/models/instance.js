@@ -7,14 +7,13 @@ module.exports = function (app) {
   const instance = sequelizeClient.define('instances', {
     uuid: DataTypes.UUID,
     timezone: DataTypes.STRING,
-    channelId: DataTypes.BIGINT,
+    flavor: DataTypes.STRING,
     updateId: DataTypes.BIGINT,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   });
 
   instance.associate = function (models) {
-    instance.belongsTo(models.channels);
     instance.belongsTo(models.updates);
   };
 

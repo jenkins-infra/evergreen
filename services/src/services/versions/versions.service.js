@@ -18,5 +18,5 @@ module.exports = function (app) {
   };
 
   app.use('/versions', createService(options));
-  app.service('versions').hooks(hooks);
+  app.service('versions').hooks(hooks.getHooks());
 };

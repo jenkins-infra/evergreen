@@ -20,8 +20,6 @@ module.exports = function (app) {
    * module.exports, we need to make sure that we're not pushing things which
    * feathersjs doesn't consider hooks into the hooks registration
    */
-  app.service('status').hooks({
-    before: hooks.before,
-    after: hooks.after,
-    error: hooks.error});
+
+  app.service('status').hooks(hooks.getHooks());
 };

@@ -6,84 +6,94 @@ const authentication     = require('@feathersjs/authentication');
 const internalOnly       = require('../../hooks/internalonly');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
-module.exports = {};
-
 /*
- * Augment the inbound data to include the default channel, presumed to be
- * `general`
+ * StatusHooks are all the hooks necessary to run the status service properly
  */
-module.exports.defaultChannel = function(context) {
-  context.data.channelId = 3;
-  return context;
-};
-
-module.exports.includeAssociations = function(context) {
-  if (!context.params.sequelize) {
-    context.params.sequelize = {};
+class StatusHooks {
+  constructor () {
   }
-  Object.assign(context.params.sequelize, {
-    include: [ context.app.get('models').channel ]
-  });
-  return context;
-};
 
-module.exports.pruneQueryParams = function(context) {
+  getHooks() {
+    return {
+      before: {
+        all: [
+          authentication.hooks.authenticate(['jwt'])
+        ],
+        get: [
+          this.includeAssociations,
+        ],
+        create: [
+          ensureMatchingUUID,
+          module.exports.defaultUpdateLevel,
+          module.exports.pruneQueryParams,
+        ],
+
+        update: [
+          ensureMatchingUUID,
+        ],
+        patch: [
+          ensureMatchingUUID,
+        ],
+        remove: [
+          internalOnly
+        ]
+      },
+      after: {},
+      error: {}
+    };
+  }
+
+  /*
+   * Include the model's associations in the output from the hook
+   */
+  includeAssociations(context) {
+    if (!context.params.sequelize) {
+      context.params.sequelize = {};
+    }
+    Object.assign(context.params.sequelize, {
+      include: [ context.app.get('models').update ]
+    });
+    return context;
+  }
+
   /*
    * delete extra parameters included in the query string
    */
-  if (context.params.query) {
-    delete context.params.query.include;
+  pruneQueryParams(context) {
+    if (context.params.query) {
+      delete context.params.query.include;
+    }
+    return context;
   }
-  return context;
-};
 
+  /*
+   * Default new instances into the latest update record in the `general` channel.
+   */
+  async defaultUpdateLevel(context) {
+    const updates = context.app.service('update');
+    const result = await updates.find({
+      query: {
+        tainted: false,
+        channel: 'general',
+        $limit: 1,
+        $sort: {
+          createdAt: -1,
+        }
+      },
+    });
 
-
-Object.assign(module.exports, {
-  before: {
-    all: [
-      authentication.hooks.authenticate(['jwt'])
-    ],
-    find: [
-    ],
-    get: [
-      module.exports.includeAssociations,
-    ],
-
-    create: [
-      ensureMatchingUUID,
-      module.exports.defaultChannel,
-      module.exports.pruneQueryParams
-    ],
-
-    update: [
-      ensureMatchingUUID,
-    ],
-    patch: [
-      ensureMatchingUUID,
-    ],
-    remove: [
-      internalOnly
-    ]
-  },
-
-  after: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  },
-
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    if (result.total == 0) {
+      throw new Error('Failed to find the latest `general` updates for instance creation');
+    }
+    /*
+      * The result returned is a paginated object
+      */
+    context.data.updateId = result.data[0].id;
+    return context;
   }
-});
+}
+
+/*
+ * To make things easier to unit test, these hook functions are being exported
+ */
+module.exports = new StatusHooks();
