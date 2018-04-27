@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "eslint": "^4.19.0",
+    "hoek": "^5.0.3",
     "jest": "^22.4.3",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
