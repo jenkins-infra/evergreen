@@ -68,16 +68,17 @@ app.hooks(appHooks);
 /* Configure the authentication provider via @feathersjs/authentication-jwt and
  * passport-jwt (https://github.com/themikenicholson/passport-jwt)
  */
+const authConfig = app.get('jwt');
 app.configure(authentication({
-  name: 'evergreen-jwt',
+  name: authConfig.name,
   entity: 'authentication',
   service: 'authentication',
-  secret: 'hello'
+  secret: process.env.EVERGREEN_JWT_SECRET || authConfig.secret,
 }));
 
 app.configure(jwt({
   jsonWebTokenOptions: {
-    expiresIn: '14d'
+    expiresIn: authConfig.expiresIn,
   }
 }));
 
