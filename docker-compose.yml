@@ -4,6 +4,8 @@ services:
     image: postgres:alpine
     environment:
       - 'POSTGRES_PASSWORD=grassisevergreener'
+      # Used for psql non-interactive scripting
+      - 'PGPASSWORD=grassisevergreener'
       - 'POSTGRES_DB=evergreen_development'
 
   backend:
@@ -14,3 +16,8 @@ services:
     depends_on:
       - db
 
+  client:
+    image: jenkins/evergreen
+    build: ./
+    depends_on:
+      - backend
