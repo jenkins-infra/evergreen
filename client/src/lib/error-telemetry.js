@@ -9,23 +9,6 @@ const Tail   = require('tail').Tail;
 const fs     = require('fs');
 const logger = require('winston');
 
-/**
- * Default behaviour for the output where to send data to when the watched logging file has
- * a modification detected.
- */
-function callErrorTelemetryService(app, text) {
-
-  const api = app.service('errorTelemetry');
-
-  api.create({
-    log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
-  }).then((res) => {
-    logger.info('pushed as '+ res.id);
-  }).catch((res) => {
-    logger.error('Failed to push log:', res);
-  });
-}
-
 class ErrorTelemetry {
   constructor(app, options) {
     this.app = app;
@@ -33,10 +16,27 @@ class ErrorTelemetry {
   }
 
   /**
+   * (Private) default behaviour for the output where to send data to when the watched logging file
+   * has a modification detected.
+   */
+  callErrorTelemetryService(app, text) {
+
+    const api = app.service('errorTelemetry');
+
+    return api.create({
+      log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
+    }).then((res) => {
+      logger.info('pushed as '+ res.id);
+    }).catch((res) => {
+      logger.error('Failed to push log:', res);
+    });
+  }
+
+  /**
    * monitoredFile: path to the log file to watch
    * outputFunction(app,line): the function that will be called on each new line detected
    */
-  setup(monitoredFile, outputFunction=callErrorTelemetryService) {
+  setup(monitoredFile, outputFunction=this.callErrorTelemetryService) {
     logger.info('Setting up error logging...');
 
     let loggingFile = '';
