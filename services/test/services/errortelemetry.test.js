@@ -1,7 +1,7 @@
 const assert = require('assert');
 const app = require('../../src/app');
 
-describe('\'pusher\' service', () => {
+describe('\'ErrorTelemetry\' service', () => {
   it('registered the service', () => {
     const service = app.service('errorTelemetry');
 
@@ -9,7 +9,7 @@ describe('\'pusher\' service', () => {
   });
 });
 
-describe('error logging', () => {
+describe('Error Telemetry', () => {
   it('should fail with empty parameters', () => {
     const service = app.service('errorTelemetry');
     return service.create()
