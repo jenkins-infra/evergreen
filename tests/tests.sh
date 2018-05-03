@@ -44,17 +44,17 @@ test_docker_CLI_available() {
 
 # JENKINS-49861
 test_no_executor() {
-  numExecutors=$( docker exec $container_under_test cat "$JENKINS_HOME/config.xml" | \
+  numExecutors=$( docker exec "$container_under_test" cat "$JENKINS_HOME/config.xml" | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
   assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
 }
 
 # JENKINS-50195
 test_not_root() {
-  username=$( docker exec $container_under_test whoami )
+  username=$( docker exec "$container_under_test" whoami )
   assertEquals "jenkins" "$username"
 
-  for process_user in $( docker exec $container_under_test ps -o user | grep -v USER)
+  for process_user in $( docker exec "$container_under_test" ps -o user | grep -v USER)
   do
     assertEquals "jenkins" "$process_user"
   done
@@ -63,36 +63,36 @@ test_not_root() {
 # JENKINS-49406 check data segregation
 test_plugins_are_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_HOME/plugins | grep -v hpi' )
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins | grep -v hpi' )
   assertEquals "" "$result"
 }
 test_war_is_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_HOME/war' 2>&1 )
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/war' 2>&1 )
   assertNotEquals "0" "$?"
   assertEquals "ls: /evergreen/jenkins/home/war: No such file or directory" "$result"
 }
 test_logs_are_not_under_jenkins_home() {
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_HOME/logs' 2>&1 )
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/logs' 2>&1 )
   assertNotEquals "0" "$?"
   assertEquals "ls: /evergreen/jenkins/home/logs: No such file or directory" "$result"
 }
 
 test_jenkins_logs_is_found_on_disk() {
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'cat $JENKINS_VAR/logs/jenkins.log.0' | \
+  result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/jenkins.log.0' | \
             grep 'Jenkins is fully up and running' )
   assertEquals "0" "$?"
 }
 
 test_essentials_telemetry_logging_is_found_on_disk() {
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'ls $JENKINS_VAR/logs/essentials.log.0' )
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_VAR/logs/essentials.log.0' )
   assertEquals "0" "$?"
 
   # shellcheck disable=SC2016
-  result=$( docker exec $container_under_test bash -c 'cat $JENKINS_VAR/logs/essentials.log.0 | tail -1' )
+  result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/essentials.log.0 | tail -1' )
   assertEquals "0" "$?"
   assertNotEquals "" "$result"
 
@@ -129,10 +129,10 @@ test_metrics_health_check() {
 
 # JENKINS-49811
 test_logs_are_propagated() {
-  result=$( docker exec $container_under_test ls /tmp/test )
+  result=$( docker exec "$container_under_test" ls /tmp/test )
   assertEquals "0" "$?"
 
-  result=$( docker exec $container_under_test cat /tmp/test | head -1 | grep MESSAGE= )
+  result=$( docker exec "$container_under_test" cat /tmp/test | head -1 | grep MESSAGE= )
   assertEquals "0" "$?"
   assertNotEquals "" "$result"
 }
@@ -140,21 +140,21 @@ test_logs_are_propagated() {
 # Check NPM is 5+ to make sure we do check the integrity values
 # https://github.com/jenkins-infra/evergreen/pull/60#discussion_r182666012
 test_npm_5_plus() {
-  result=$( docker exec $container_under_test npm --version )
+  result=$( docker exec "$container_under_test" npm --version )
   assertEquals "5." "${result:0:2}"
 }
 
 # Ensure that we can successfully connect to only Let's Encrypt authorized
 # sites. See JEP-307
 test_jep_307() {
-  result=$( docker exec $container_under_test curl -s https://jenkins.io/ )
+  result=$( docker exec "$container_under_test" curl -s https://jenkins.io/ )
   assertEquals "jenkins.io should be OK" "0" "$?"
 
   # Incrementals, like https://repo.jenkins-ci.org/incrementals/org/jenkins-ci/main/jenkins-war/maven-metadata.xml
-  result=$( docker exec $container_under_test curl -s https://repo.jenkins-ci.org )
+  result=$( docker exec "$container_under_test" curl -s https://repo.jenkins-ci.org )
   assertEquals "Incrementals repo should be OK" "0" "$?"
 
-  result=$( docker exec $container_under_test curl -s https://sonic.com/ )
+  result=$( docker exec "$container_under_test" curl -s https://sonic.com/ )
   assertEquals "everything else should be KO" "60" "$?"
 }
 

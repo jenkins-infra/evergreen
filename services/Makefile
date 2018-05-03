@@ -21,7 +21,6 @@ acceptance:
 watch:
 	$(COMPOSE) run -e NODE_ENV=test --rm node jest --bail --watchAll
 
-
 depends: package.json
 	# Checking to see if the directory exists because npm install updates the
 	# directory every time it runs, busting the GNU/Make cache causing rebuilds
@@ -40,8 +39,10 @@ migrate: depends
 run: migrate
 	$(COMPOSE) up node
 
-container: depends check Dockerfile
+container: depends Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
+
+container-check: container check
 
 clean:
 	$(COMPOSE) down || true

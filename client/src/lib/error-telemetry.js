@@ -9,7 +9,22 @@ const Tail   = require('tail').Tail;
 const fs     = require('fs');
 const logger = require('winston');
 
-const TARGET = '/tmp/test';
+/**
+ * Default behaviour for the output where to send data to when the watched logging file has
+ * a modification detected.
+ */
+function callErrorTelemetryService(app, text) {
+
+  const api = app.service('errorTelemetry');
+
+  api.create({
+    log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
+  }).then((res) => {
+    logger.info('pushed as '+ res.id);
+  }).catch((res) => {
+    logger.error('Failed to push log:', res);
+  });
+}
 
 class ErrorTelemetry {
   constructor(app, options) {
@@ -17,14 +32,24 @@ class ErrorTelemetry {
     this.options = options;
   }
 
-  setup() {
+  /**
+   * monitoredFile: path to the log file to watch
+   * outputFunction(app,line): the function that will be called on each new line detected
+   */
+  setup(monitoredFile, outputFunction=callErrorTelemetryService) {
     logger.info('Setting up error logging...');
-    const loggingFile = this.fileToWatch();
+
+    let loggingFile = '';
+    if(monitoredFile) {
+      loggingFile = monitoredFile;
+    } else {
+      loggingFile = this.fileToWatch();
+    }
 
     if(!fs.existsSync(loggingFile)) {
       logger.warn(`Logging file ${loggingFile} not found. Still watching the path in case the file gets created later. Can be normal when starting up.`);
     } else {
-      logger.info(`Watching ${loggingFile} and output to ${TARGET}`);
+      logger.info(`Watching ${loggingFile}`);
     }
 
     const tail = new Tail(loggingFile, {
@@ -33,19 +58,11 @@ class ErrorTelemetry {
     });
 
     tail.on('line', data => {
-      const json = JSON.parse(data);
-
-      const text = `MESSAGE=${json.message}\n`;
-      fs.appendFile(TARGET, text, err => {
-        if(err) {
-          return logger.error(`Error writing file! ${err}`);
-        }
-        logger.info('The file was written!' + data);
-      });
+      outputFunction(this.app, data);
     });
 
     tail.on('error', error => {
-      logger.error(`ERROR watching file: ${error}`);
+      logger.error('Error while setting up file watching:', error);
     });
 
     logger.info('Error Telemetry Logging file watching configured');

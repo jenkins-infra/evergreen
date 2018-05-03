@@ -31,6 +31,9 @@ container-check: shunit2 ./tests/tests.sh container
 container: container-prereqs Dockerfile configuration/supervisord.conf
 	docker build -t ${JENKINS_CONTAINER}:latest .
 
+containers: container
+	$(MAKE) -C services container
+
 publish: container
 	docker push ${JENKINS_CONTAINER}:latest
 

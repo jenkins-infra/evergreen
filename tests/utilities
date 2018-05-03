@@ -1,5 +1,6 @@
 container_under_test_prefix=evergreen-testing
 container_under_test=$container_under_test_prefix-$RANDOM
+COMPOSE="../tools/compose"
 
 RED='\033[0;31m'
 NC='\033[0m' # No Color
@@ -15,6 +16,7 @@ info() {
 cleanup () {
   echo
   echo -n "Cleaning up... "
+  $COMPOSE down
   for container in $( docker ps -aq --filter "name=$container_under_test_prefix" )
   do
     docker kill $container 2>/dev/null >/dev/null || echo "Already dead."
@@ -31,11 +33,17 @@ find_free_port() {
 
 # Test functions
 setup_container_under_test() {
-  TEST_PORT=$(find_free_port)
+ # FIXME $(find_free_port)
+  TEST_PORT=8080
 
   # TODO use docker-compose to use network and avoid all this?
-  info "Start container under test (port=$TEST_PORT) and wait a bit for its startup:"
-  docker run --rm --name $container_under_test -p $TEST_PORT:8080 -d jenkins/evergreen:latest
+  info "Start containers under test (port=$TEST_PORT) and wait a bit for its startup:"
+  #docker run --rm --name $container_under_test -p $TEST_PORT:8080 -d jenkins/evergreen:latest
+  $COMPOSE up -d
+
+  # FIXME: FLAKY matching
+  # evergreen_instance_1 could be not the only one, also what do we do if preexisting containers are running?
+  container_under_test=$( docker ps --filter "name=evergreen_instance_1" --format='{{.Names}}' )
   sleep 5
 
   # FIXME: have to wait pretty long because plugin installations
