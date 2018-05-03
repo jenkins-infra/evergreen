@@ -4,7 +4,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const error_log = sequelizeClient.define('error_logs', {
+  const error_log = sequelizeClient.define('errorLogs', {
     log: DataTypes.STRING
   });
   // eslint-disable-next-line no-unused-vars
