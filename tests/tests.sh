@@ -129,12 +129,20 @@ test_metrics_health_check() {
 
 # JENKINS-49811
 test_logs_are_propagated() {
-  result=$( docker exec "$container_under_test" ls /tmp/test )
+
+  result=$( $COMPOSE exec instance curl -s http://backend:3030/errorTelemetry | \
+              jq -r '.[0].log' )
   assertEquals "0" "$?"
 
-  result=$( docker exec "$container_under_test" cat /tmp/test | head -1 | grep MESSAGE= )
+  # Check output is json
+  echo "$result" | jsonlint > /dev/null
   assertEquals "0" "$?"
-  assertNotEquals "" "$result"
+
+  # Likely going to be pretty flaky
+  # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
+  echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
+  assertEquals "0" "$?"
+
 }
 
 # Check NPM is 5+ to make sure we do check the integrity values
