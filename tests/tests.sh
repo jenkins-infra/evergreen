@@ -23,8 +23,18 @@ oneTimeTearDown() {
 }
 
 test_smoke() {
+  docker exec "$container_under_test" ps aux | grep npm > /dev/null
+  assertEquals "npm should be running" 0 "$?"
+
+  docker exec "$container_under_test" ps aux | grep java > /dev/null
+  assertEquals "a java VM should be running" 0 "$?"
+
   curl --silent "http://localhost:$TEST_PORT" > /dev/null
-  assertEquals "Bad exit" 0 $?
+  assertEquals "Jenkins port should be available" 0 "$?"
+
+  curl --silent "http://localhost:3030" > /dev/null
+  assertEquals "Backend port should be available" 0 "$?"
+
 }
 
 # JENKINS-49864
