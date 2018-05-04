@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 TARGET=${EVERGREEN_HOME}/jenkins.war
 SOURCE=""
