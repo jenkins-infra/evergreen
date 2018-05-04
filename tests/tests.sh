@@ -148,10 +148,14 @@ test_npm_5_plus() {
 # sites. See JEP-307
 test_jep_307() {
   result=$( docker exec $container_under_test curl -s https://jenkins.io/ )
-  assertEquals "0" "$?"
+  assertEquals "jenkins.io should be OK" "0" "$?"
+
+  # Incrementals, like http://repo.jenkins-ci.org/incrementals/org/jenkins-ci/main/jenkins-war/maven-metadata.xml
+  result=$( docker exec $container_under_test curl -s https://repo.jenkins-ci.org )
+  assertEquals "Incrementals repo should be OK" "0" "$?"
 
   result=$( docker exec $container_under_test curl -s https://sonic.com/ )
-  assertEquals "60" "$?"
+  assertEquals "everything else should be KO" "60" "$?"
 }
 
 . ./shunit2/shunit2
