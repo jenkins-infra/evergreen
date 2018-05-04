@@ -44,7 +44,10 @@ setup_container_under_test() {
 
   # FIXME: FLAKY matching
   # evergreen_instance_1 could be not the only one, also what do we do if preexisting containers are running?
-  container_under_test=$( docker ps --filter "name=evergreen_instance_1" --format='{{.Names}}' )
+  echo "Running containers (beware, ideally there should be none to avoid issues)"
+  docker ps
+
+  container_under_test=$( docker ps --filter "name=instance" --format='{{.Names}}' )
   sleep 5
 
   # FIXME: have to wait pretty long because plugin installations
