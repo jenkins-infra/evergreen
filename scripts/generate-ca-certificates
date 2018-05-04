@@ -11,6 +11,9 @@ for cert in $(ls /usr/share/ca-certificates/mozilla); do
         echo "mozilla/${cert}" >> $OUTPUT;
     elif  [ "${cert}" = "IdenTrust_Commercial_Root_CA_1.crt" ]; then
         echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "Go_Daddy_Root_Certificate_Authority_-_G2.crt" ]; then
+        # Incrementals https://repo.jenkins-ci.org/incrementals/
+        echo "mozilla/${cert}" >> $OUTPUT;
     else
         echo "!mozilla/${cert}" >> $OUTPUT;
     fi;
