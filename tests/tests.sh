@@ -142,16 +142,16 @@ test_logs_are_propagated() {
 
   result=$( $COMPOSE exec instance curl -s http://backend:3030/errorTelemetry | \
               jq -r '.[0].log' )
-  assertEquals "0" "$?"
+  assertEquals "$result should be not empty and JSON" "0" "$?"
 
   # Check output is json
   echo "$result" | jsonlint > /dev/null
-  assertEquals "0" "$?"
+  assertEquals "$result should be JSON" "0" "$?"
 
   # Likely going to be pretty flaky
   # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
   echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
-  assertEquals "0" "$?"
+  assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
 
 }
 
