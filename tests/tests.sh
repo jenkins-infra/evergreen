@@ -140,7 +140,7 @@ test_metrics_health_check() {
 # JENKINS-49811
 test_logs_are_propagated() {
 
-  result=$( $COMPOSE exec instance curl -s http://backend:3030/errorTelemetry | \
+  result=$( $COMPOSE exec -T instance curl -s http://backend:3030/errorTelemetry | \
               jq -r '.[0].log' )
   assertEquals "$result should be not empty and JSON" "0" "$?"
 
