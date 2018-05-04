@@ -7,6 +7,8 @@ const versions = require('./versions/versions.service.js');
 
 const update = require('./update/update.service.js');
 
+const errorTelemetry = require('./errorTelemetry/errorTelemetry.service.js');
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(auth);
@@ -15,4 +17,5 @@ module.exports = function (app) {
   app.configure(registration);
   app.configure(versions);
   app.configure(update);
+  app.configure(errorTelemetry);
 };

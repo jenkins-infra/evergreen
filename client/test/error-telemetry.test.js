@@ -16,24 +16,27 @@ describe('Error Telemetry Logging', () => {
     // FIXME: only hackish, the end goal is definitely not to forward to another file
     it('writing to essentials logging file should forward to another', done => {
 
-      // Write before setup to make sure the file is already present
+      // Given: the file is watched
+      //Write before setup to make sure the file is already present
       const logsDir = '/evergreen/jenkins/var/logs/';
       const logFile = logsDir + 'essentials.log.0';
       mkdirp.sync(logsDir);
       fs.writeFileSync(logFile, '{"timestamp":1523451065975,"level":"SEVERE","message":"WAT"}\n');
-
       assert(fs.existsSync(logFile));
 
       mkdirp.sync('/tmp');
-      const response = new ErrorTelemetry().setup();
+      const response = new ErrorTelemetry().setup(logFile, (app,data) => {
+        const json = JSON.parse(data);
+        fs.appendFileSync('/tmp/test', `MESSAGE=${json.message}\n`);
+      });
       assert(!(response instanceof Promise));
 
       assert(!fs.existsSync('/tmp/test'));
 
-      setTimeout( () => {
-        fs.appendFileSync(logFile, '{"timestamp":1523451065975,"level":"SEVERE","message":"WAT2"}\n');
-      }, 1000);
+      // when: we write to the file
+      fs.appendFileSync(logFile, '{"timestamp":1523451065975,"level":"SEVERE","message":"WAT2"}\n');
 
+      // then: the output function is called, and the mocked file contains what we expect
       setTimeout( () => {
         assert(fs.existsSync('/tmp/test'));
         const actual = fs.readFileSync('/tmp/test','utf8');

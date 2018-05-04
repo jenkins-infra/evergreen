@@ -15,10 +15,10 @@ services:
     environment:
       - 'PATH=$PWD/node_modules/.bin:$PATH'
       - 'DB_TRACING=$DB_TRACING'
+      - 'DEBUG=$DEBUG'
     volumes:
       - $PWD:$PWD
     ports:
       - '3030:3030'
     depends_on:
       - db
-

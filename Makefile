@@ -21,15 +21,20 @@ check: lint
 	$(MAKE) container-check
 
 container-prereqs: build/jenkins-support build/jenkins.sh scripts/shim-startup-wrapper.sh build-plugins
+	$(MAKE) -C client depends
+	$(MAKE) -C services depends
 
 build-plugins:
 	./scripts/build-plugins.sh
 
-container-check: shunit2 ./tests/tests.sh container
+container-check: shunit2 ./tests/tests.sh containers
 	./tests/tests.sh
 
 container: container-prereqs Dockerfile configuration/supervisord.conf
 	docker build -t ${JENKINS_CONTAINER}:latest .
+
+containers: container
+	$(MAKE) -C services container
 
 publish: container
 	docker push ${JENKINS_CONTAINER}:latest

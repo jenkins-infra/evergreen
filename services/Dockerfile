@@ -23,4 +23,8 @@ COPY public ${APP_DIR}/public
 
 EXPOSE 3030
 
-CMD npm run start
+COPY wait-for-postgres.sh /wait-for-postgres.sh
+RUN chmod a+x /wait-for-postgres.sh
+
+RUN apk add --update-cache postgresql-client
+CMD ["/wait-for-postgres.sh", "db", "5432", "/usr/local/bin/npm", "run", "start"]
