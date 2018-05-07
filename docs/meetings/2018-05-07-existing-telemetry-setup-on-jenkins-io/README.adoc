@@ -1,12 +1,12 @@
-= 2018-05-07 - Insights from jenkins.io
+= 2018-05-07 - Insights from Olivier about Logging in the Jenkins Infrastructure
 :toc:
 
 == Notes
 
 === Context
 
-Now we have link:https://issues.jenkins-ci.org/browse/JENKINS-49811[prototyped the error logging for Jenkins Essentials], we are reaching a point where we need to think what we will put on the server side, and how this will integrate with the existing services inside jenkins.io.
-Baptiste met Olivier, who was heavily involved in setting up the Kubernetes cluster used behind jenkins.io, to discuss this.
+Now we have link:https://issues.jenkins-ci.org/browse/JENKINS-49811[prototyped the error logging for Jenkins Essentials], we are reaching a point where we need to think what we will put on the server side, and how this will integrate with the existing services inside Jenkins Infrastructure.
+Baptiste met Olivier, who was heavily involved in setting up the Kubernetes cluster used behind Jenkins Infrastructure, to discuss this.
 
 
 === Attendees
