@@ -1,0 +1,34 @@
+= YYYY-MM-DD - Subject
+:toc:
+
+== Notes
+
+=== Context
+
+////
+Reminder: we follow the _Four Open_ approach.
+So we must try to give the necessary context to a newcomer here.
+Roughtly, 5 lines or so to make the content here reasonably approachable by an external contributor.
+
+////
+
+=== Attendees
+
+* Jenkins Butler
+* ...
+
+== Summary
+
+/// Summarize here
+
+== Actions
+
+////
+Summarize the actions that ought to be done.
+Explain why none are listed if none.
+////
+
+|===
+| ACTION | Person
+| Build quicker | Butler
+|===
