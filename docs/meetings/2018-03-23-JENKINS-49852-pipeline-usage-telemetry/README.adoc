@@ -1,10 +1,10 @@
-= 2018-03-23 Initial Pipeline Usage Telemetry Discussion
+= 2018-03-23 - Initial Pipeline Usage Telemetry Discussion
 
 The purpose of this meeting was to discuss some of the initial feedback on
 link:https://issues.jenkins-ci.org/browse/JENKINS-49852[JENKINS-49852]
 in link:https://groups.google.com/d/msg/jenkinsci-dev/F7XjrFx_kC8/L4huCc9TAwAJ[this mailing list thread].
 
-   
+
 
 *    Concerns about privacy of the telemetry and metrics
 **    Need some review before publicly exposing stats

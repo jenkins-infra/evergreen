@@ -1,0 +1,49 @@
+= 2018-05-07 - Insights from Olivier about Logging in the K8S Jenkins Infrastructure
+:toc:
+
+== Notes
+
+=== Context
+
+Now we have link:https://issues.jenkins-ci.org/browse/JENKINS-49811[prototyped the error logging for Jenkins Essentials], we are reaching a point where we need to think what we will put on the server side, and how this will integrate with the existing services inside Jenkins Infrastructure.
+Baptiste met Olivier, who was heavily involved in setting up the Kubernetes cluster used behind Jenkins Infrastructure, to discuss this.
+
+
+=== Attendees
+
+* Olivier Vernin
+* Baptiste Mathus
+
+== Summary
+
+==== Existing setup from 10k feet
+
+The existing infrastructure uses FluentD to handle logs events (which are then sent to Azure Log Analytics).
+There are currently two types of logs, stream or archive.
+The stream ones are sent to Log Analytics and typically have a retention of 2 weeks.
+The archive ones are stored using Blob Storage for longer.
+The logs for applications running in the Kubernetes cluster are sent using FluentD, for now only from a file source.
+
+==== Envisioned setup for Essentials Error Logging
+
+With our setup, we probably want to send logs from the NodeJS ErrorTelemetry service to the FluentD socket.
+Though right now FluentD only has a _file_ input, Olivier says this shouldn't be an issue if we want/need to enable a socket input.
+
+We will for instance create the right new labels to differentiate between current and new log types.
+
+Olivier recommends that we are very careful with the logging format, to avoid changing it too often.
+He thinks using JSON (like we did) is a sensible choice.
+
+=== More references
+
+* link:https://github.com/jenkins-infra/iep/tree/master/iep-004#logging[IEP-4: Kubernetes for hosting project applications:
+ Logging]
+* link:https://github.com/olblak/fluentd-k8s-azure[Sample FluentD configs for Azure by Olivier]
+* link:https://github.com/jenkinsci/jep/tree/master/jep/304#logging-format[The Essentials Error Logging format, as per JEP 304]
+
+== Actions
+
+|===
+| ACTION | Person
+| Prototype sending logs to a FluentD socket from the ErrorTelemetry service (link:https://issues.jenkins-ci.org/browse/JENKINS-51175[tracked as JENKINS-51175])| Baptiste Mathus
+|===

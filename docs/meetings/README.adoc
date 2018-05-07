@@ -1,0 +1,10 @@
+= Meetings recap
+
+
+.Meetings
+|===
+| Date | Subject
+| 2018-03-23 | Initial Pipeline Usage Telemetry Discussion
+| 2018-03-18 | How to test the data snapshotting system (JENKINS-49406)
+| 2018-05-07 | How to test the data snapshotting system (JENKINS-49406)
+|===
