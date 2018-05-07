@@ -1,4 +1,4 @@
-= 2018-05-07 - Insights from Olivier about Logging in the Jenkins Infrastructure
+= 2018-05-07 - Insights from Olivier about Logging in the K8S Jenkins Infrastructure
 :toc:
 
 == Notes
@@ -18,9 +18,11 @@ Baptiste met Olivier, who was heavily involved in setting up the Kubernetes clus
 
 ==== Existing setup from 10k feet
 
-The existing infrastructure uses Azure Log Analytics.
-There are currently two types of logs, stream or archive. The stream ones are sent to Log Analytics and typically have a retention of 2 weeks. The archive ones are stored using Blob Storage for longer.
-The logs are sent using FluentD, for now only from a file source.
+The existing infrastructure uses FluentD to handle logs events (which are then sent to Azure Log Analytics).
+There are currently two types of logs, stream or archive.
+The stream ones are sent to Log Analytics and typically have a retention of 2 weeks.
+The archive ones are stored using Blob Storage for longer.
+The logs for applications running in the Kubernetes cluster are sent using FluentD, for now only from a file source.
 
 ==== Envisioned setup for Essentials Error Logging
 
@@ -32,7 +34,7 @@ We will for instance create the right new labels to differentiate between curren
 Olivier recommends that we are very careful with the logging format, to avoid changing it too often.
 He thinks using JSON (like we did) is a sensible choice.
 
-=== More refences
+=== More references
 
 * link:https://github.com/jenkins-infra/iep/tree/master/iep-004#logging[IEP-4: Kubernetes for hosting project applications:
  Logging]
