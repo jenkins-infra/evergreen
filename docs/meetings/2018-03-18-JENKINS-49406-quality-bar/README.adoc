@@ -1,4 +1,4 @@
-= [2018-03-18] How to test the data snapshotting system (JENKINS-49406)
+= 2018-03-18 - How to test the data snapshotting system (JENKINS-49406)
 
 We wanted to discuss testing link:https://issues.jenkins-ci.org/browse/JENKINS-49406[https://issues.jenkins-ci.org/browse/JENKINS-49406] itself, but also possibly the  overall quality bar footnote:[the different quality requirements we make sure to test, generally defining them *before* the software is developed, and met before it goes to production :-)] for Jenkins Essentials.
 
