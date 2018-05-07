@@ -38,8 +38,7 @@ He thinks using JSON (like we did) is a sensible choice.
 
 * link:https://github.com/jenkins-infra/iep/tree/master/iep-004#logging[IEP-4: Kubernetes for hosting project applications:
  Logging]
-* link:https://github.com/olblak/fluentd-k8s-azure
-[Sample FluentD configs for Azure by Olivier]
+* link:https://github.com/olblak/fluentd-k8s-azure[Sample FluentD configs for Azure by Olivier]
 * link:https://github.com/jenkinsci/jep/tree/master/jep/304#logging-format[The Essentials Error Logging format, as per JEP 304]
 
 == Actions
