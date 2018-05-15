@@ -39,7 +39,7 @@ class Client {
   }
 
   bootstrap() {
-    const endpoint = this.removeTrailingSlashes(process.env.EVERGREEN_ENDPOINT);
+    const endpoint = process.env.EVERGREEN_ENDPOINT;
     const restClient = rest(endpoint);
 
     logger.info('Configuring the client to use the endpoint %s', endpoint);
@@ -64,14 +64,6 @@ class Client {
       this.runloop(this.app, this.reg.token);
     });
   }
-
-  removeTrailingSlashes(string) {
-    while(string.endsWith('/')) {
-      string = string.substring(0, string.length-1);
-    }
-    return string;
-  }
-
 }
 
 module.exports = Client;
