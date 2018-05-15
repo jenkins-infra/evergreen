@@ -183,4 +183,10 @@ test_jep_307() {
   assertEquals "everything else should be KO" "60" "$?"
 }
 
+# Test everything under /evergreen is owned by the jenkins user
+test_evergreen_home_is_fully_owned_by_jenkins_user() {
+  result=$( docker exec "$container_under_test" find . \! -user jenkins -print )
+  assertEquals "Some files are not owned by 'jenkins', should not happen!" "" "$result"
+}
+
 . ./shunit2/shunit2
