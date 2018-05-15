@@ -37,6 +37,13 @@ test_smoke() {
 
 }
 
+test_no_node_error_in_logs() {
+    result=$( docker logs "$container_under_test" |
+                grep -e '^error:' | \
+                grep -v 'Failed to register: Unavailable: request to http://backend:3030/registration failed, reason: connect ECONNREFUSED' ) # FIXME JENKINS-51328: this grep must be removed!
+    assertNotEquals "Node errors were found in the instance, check logs: $result" 0 $?
+}
+
 # JENKINS-49864
 test_docker_CLI_available() {
   docker exec "$container_under_test" which docker > /dev/null
