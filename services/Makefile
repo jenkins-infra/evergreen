@@ -34,8 +34,14 @@ docs: depends
 migrate: depends
 	$(COMPOSE) up -d db
 	../scripts/check-psql
-	$(COMPOSE) run --rm node sequelize db:migrate
-	$(COMPOSE) run --rm node sequelize db:seed:all
+	for env in "test" "development"; do \
+		echo ">> Preparing $$env database"; \
+		$(COMPOSE) run --rm db \
+			psql -v ON_ERROR_STOP=1 \
+				-U postgres -h db -c "CREATE DATABASE evergreen_test;"; \
+		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:migrate; \
+		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:seed:all; \
+	done;
 
 run: migrate
 	$(COMPOSE) up node
