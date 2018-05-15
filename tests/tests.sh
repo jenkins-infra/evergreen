@@ -142,10 +142,12 @@ test_logs_are_propagated() {
   echo "$result" | jsonlint > /dev/null
   assertEquals "$result should be JSON" "0" "$?"
 
+  # XXX: Disabled because this assertion doesn't work if plugins provide any
+  # other errors
   # Likely going to be pretty flaky
   # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
-  echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
-  assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
+  #echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
+  #assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
 }
 
 # Test everything under /evergreen is owned by the jenkins user
