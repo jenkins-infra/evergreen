@@ -19,15 +19,39 @@ describe('Error Telemetry', () => {
       .catch((err) => assert.ok(err.message.match('^A data object must be provided')));
   });
 
+  it('missing fields should be rejected', async () => {
+    const service = app.service(errorTelemetryService);
+
+    const badQueries = [
+      'blah',
+      {'log':{'version': 1 }},
+      {'log':{'timestamp': 1526387942 }}
+    ];
+    for ( const badQuery in badQueries ) {
+      try {
+        await service.create(badQuery);
+        assert.fail('Should have failed above');
+      } catch (err) {
+        // expected
+      }
+    }
+
+  });
+
   it('should create a log', async () => {
     const service = app.service(errorTelemetryService);
-    const errorLog = await service.create({
-      log: '{"blah":true}'
+    const response = await service.create({
+      log: {
+        version: 1,
+        timestamp: 1522840762769,
+        name: 'io.jenkins.plugins.SomeTypicalClass',
+        level: 'WARNING',
+        message: 'the message\nand another line',
+      }
     });
 
-    assert.ok(errorLog.log, 'A log should have been stored');
-    assert.equal(errorLog.log, '{"blah":true}', 'The log should have been stored');
-    assert.ok(errorLog.createdAt, 'Expected a timestamp to be generated on call');
+    assert.ok(response, 'A log should have been stored');
+    assert.equal(response.status, 'OK', 'The log should have been stored');
   });
 
 });
