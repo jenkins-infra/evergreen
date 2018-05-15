@@ -40,7 +40,8 @@ test_smoke() {
 test_no_node_error_in_logs() {
     result=$( docker logs "$container_under_test" |
                 grep -e '^error:' | \
-                grep -v 'Failed to register: Unavailable: request to http://backend:3030/registration failed, reason: connect ECONNREFUSED' ) # FIXME JENKINS-51328: this grep must be removed!
+                grep -v 'Failed to register: Unavailable: request to http://backend:3030/registration failed, reason: connect ECONNREFUSED' | \
+                grep -v 'relation "registrations" does not exist' ) # FIXME JENKINS-51328: these two grep -v must be removed!
     assertNotEquals "Node errors were found in the instance, check logs: $result" 0 $?
 }
 
