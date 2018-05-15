@@ -17,6 +17,6 @@ module.exports = function (app) {
     Model: createModel(app)
   };
 
-  app.use('/errorTelemetry', createService(options));
-  app.service('errorTelemetry').hooks(hooks.getHooks());
+  app.use('/telemetry/error', createService(options));
+  app.service('telemetry/error').hooks(hooks.getHooks());
 };

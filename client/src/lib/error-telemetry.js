@@ -21,7 +21,7 @@ class ErrorTelemetry {
    */
   callErrorTelemetryService(app, text) {
 
-    const api = app.service('errorTelemetry');
+    const api = app.service('telemetry/error');
 
     return api.create({
       log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
