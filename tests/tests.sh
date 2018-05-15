@@ -37,6 +37,18 @@ test_smoke() {
 
 }
 
+# FIXME JENKINS-51328 to re-enable
+test_no_node_error_in_logs() {
+
+    startSkipping
+
+    result=$( docker logs "$container_under_test" |
+                grep -e '^error:' )
+    assertNotEquals "Node errors were found in the instance, check logs: $result" 0 $?
+
+    endSkipping
+}
+
 # JENKINS-49864
 test_docker_CLI_available() {
   docker exec "$container_under_test" which docker > /dev/null
@@ -174,6 +186,12 @@ test_jep_307() {
 
   result=$( docker exec "$container_under_test" curl -s https://sonic.com/ )
   assertEquals "everything else should be KO" "60" "$?"
+}
+
+# Test everything under /evergreen is owned by the jenkins user
+test_evergreen_home_is_fully_owned_by_jenkins_user() {
+  result=$( docker exec "$container_under_test" find . \! -user jenkins -print )
+  assertEquals "Some files are not owned by 'jenkins', should not happen!" "" "$result"
 }
 
 . ./shunit2/shunit2
