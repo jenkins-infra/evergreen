@@ -48,6 +48,11 @@ pipeline {
             steps {
                 sh 'make container-check'
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                }
+            }
         }
 
         stage('Publish jenkins/evergreen') {

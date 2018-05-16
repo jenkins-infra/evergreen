@@ -13,6 +13,13 @@ describe('The periodic module', () => {
     });
   });
 
+  describe('runDaily()', () => {
+    it('allows registration of a daily callback', () => {
+      let p = periodic(app);
+      assert.ok(p.runDaily('jest-fun', () => { }));
+    });
+  });
+
   describe('computeOffset()', () => {
     let p = periodic(app);
 
@@ -21,12 +28,6 @@ describe('The periodic module', () => {
       assert.equal(typeof offset, 'number');
       assert.ok(offset <= 59);
       assert.ok(offset >= 0);
-    });
-
-    it('should return a different number between invocations', () => {
-      let first = p.computeOffset();
-      let second = p.computeOffset();
-      assert.notEqual(first, second);
     });
   });
 });

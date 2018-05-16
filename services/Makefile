@@ -1,6 +1,7 @@
 NODE:=../tools/node
 COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen-backend
+DB_DUMP=initdb.d/db.sql
 
 all: check docs container
 
@@ -33,13 +34,31 @@ docs: depends
 migrate: depends
 	$(COMPOSE) up -d db
 	../scripts/check-psql
-	$(COMPOSE) run --rm node sequelize db:migrate
-	$(COMPOSE) run --rm node sequelize db:seed:all
+	for env in "test" "development"; do \
+		echo ">> Preparing $$env database"; \
+		$(COMPOSE) run --rm db \
+			psql -v ON_ERROR_STOP=1 \
+				-U postgres -h db -c "CREATE DATABASE evergreen_test;"; \
+		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:migrate; \
+		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:seed:all; \
+	done;
 
 run: migrate
 	$(COMPOSE) up node
 
-container: depends Dockerfile
+run-detach: migrate
+	$(COMPOSE) up -d node
+
+stop:
+	$(COMPOSE) stop
+
+dump: stop migrate
+	$(COMPOSE) run --rm db pg_dump \
+		--inserts \
+		-h db -U postgres -d evergreen_development > $(DB_DUMP)
+
+
+container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
 
 container-check: container check
@@ -47,6 +66,7 @@ container-check: container check
 clean:
 	$(COMPOSE) down || true
 	rm -rf node_modules
+	rm -f $(DB_DUMP)
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends migrate unit acceptance
+.PHONY: all check clean container depends migrate unit acceptance run run-detach dump
