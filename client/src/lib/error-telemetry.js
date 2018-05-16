@@ -19,12 +19,12 @@ class ErrorTelemetry {
    * (Private) default behaviour for the output where to send data to when the watched logging file
    * has a modification detected.
    */
-  callErrorTelemetryService(app, text) {
+  callErrorTelemetryService(app, logData) {
 
     const api = app.service('telemetry/error');
 
     return api.create({
-      log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
+      log: logData
     }).then((res) => {
       logger.info('pushed as '+ res.id);
     }).catch((res) => {
@@ -58,7 +58,8 @@ class ErrorTelemetry {
     });
 
     tail.on('line', data => {
-      outputFunction(this.app, data);
+      const parsedLogData = JSON.parse(data);
+      outputFunction(this.app, parsedLogData);
     });
 
     tail.on('error', error => {

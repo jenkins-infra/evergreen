@@ -134,20 +134,15 @@ test_metrics_health_check() {
 
 # JENKINS-49811
 test_logs_are_propagated() {
-  result=$( $COMPOSE exec -T instance curl -s http://backend:3030/errorTelemetry | \
-              jq -r '.[0].log' )
-  assertEquals "$result should be not empty and JSON" "0" "$?"
 
-  # Check output is json
-  echo "$result" | jsonlint > /dev/null
-  assertEquals "$result should be JSON" "0" "$?"
+  result=$( $COMPOSE exec -T backend cat /tmp/blah )
 
-  # XXX: Disabled because this assertion doesn't work if plugins provide any
-  # other errors
-  # Likely going to be pretty flaky
+  assertEquals "/tmp/blah should exist" "0" "$?"
+  assertNotEquals "File should not be empty" "" "$result"
+
   # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
-  #echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
-  #assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
+  echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
+  assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
 }
 
 # Test everything under /evergreen is owned by the jenkins user

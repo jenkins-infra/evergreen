@@ -1,4 +1,5 @@
 const errors      = require('@feathersjs/errors');
+const logger = require('winston');
 
 const errorTelemetryApiRequiredFields = [
   'version',
@@ -21,13 +22,9 @@ class ErrorTelemetryHooks {
         create: [
           // JEP XXX Error Telemetry API
           (hook) => {
-            /* eslint-disable no-console */
-            //console.log('HOOK => ', hook);
+            logger.debug('HOOK DATA => ', hook.data);
             if(!(hook.data.log)) {
               throw new errors.BadRequest('Missing log field');
-            }
-            if(!(hook.data.log instanceof Object)) {
-              throw new errors.BadRequest('log should be an object');
             }
             errorTelemetryApiRequiredFields.forEach( field => {
               if(!hook.data.log[field]) {

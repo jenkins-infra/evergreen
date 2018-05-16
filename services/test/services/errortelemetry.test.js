@@ -1,4 +1,6 @@
-const assert = require('assert');
+const fs             = require('fs');
+const assert         = require('assert');
+
 const app = require('../../src/app');
 
 const errorTelemetryService = 'telemetry/error';
@@ -52,6 +54,10 @@ describe('Error Telemetry', () => {
 
     assert.ok(response, 'A log should have been stored');
     assert.equal(response.status, 'OK', 'The log should have been stored');
+
+    const fileContent = fs.readFileSync('/tmp/blah');
+    assert.notEqual(fileContent, '', 'Log file should not be empty');
+
   });
 
 });

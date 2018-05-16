@@ -7,6 +7,8 @@
  * simply be taking the last of version records associated with the instance.
  */
 
+const fs             = require('fs');
+
 const hooks = require('./errorTelemetry.hooks');
 
 module.exports = function (app) {
@@ -14,12 +16,22 @@ module.exports = function (app) {
     constructor() {
     }
     create(data) {
+      // Should be impossible because it passed the hooks step
       if(!data) {
         return Promise.reject({status:'KO'});
       }
-      // TODO: store the data passed in /somewhere/.
+
+      this.storeData(data);
+
       return Promise.resolve({status:'OK'});
       // Called
+    }
+
+
+    storeData(data) {
+      // FIXME: TBD where, what and how to actually send data
+      const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
+      fs.appendFileSync('/tmp/blah', toWrite);
     }
   }
 
