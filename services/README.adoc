@@ -176,6 +176,13 @@ This includes:
 .. Agent errors
 . :question:
 
+=== How to generate a log into Jenkins manually for testing
+
+If you need to force a log to be sent to the backend, a possible hack is to open the `/script` URL, then paste and run the following code:
+
+[source,groovy]
+java.util.logging.Logger.getLogger('some.logger.name').warning('Warning log for testing');
+
 
 == Environment Variables
 
