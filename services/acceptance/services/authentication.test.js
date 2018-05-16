@@ -17,6 +17,15 @@ describe('Authentication service acceptance tests', () => {
         .catch(res => h.assertStatus(res, 400));
     });
 
+    it('should handle redundant slashes correctly', () => {
+      return request({
+        url: h.getUrl('//authentication'),
+        method: 'POST'
+      })
+        .then(() => assert.fail('Got a 200 response'))
+        .catch(res => h.assertStatus(res, 400));
+    });
+
     it('should return a 404 if the client has not registered', () => {
       return request({
         url: h.getUrl('/authentication'),
