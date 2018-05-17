@@ -102,8 +102,9 @@ RUN time chown -R $user:$group $EVERGREEN_HOME
 USER $user
 
 # Prepare the evergreen-client configuration
-COPY client ${EVERGREEN_HOME}/client
-COPY configuration/essentials.yaml ${EVERGREEN_HOME}
+# Sigh https://github.com/moby/moby/issues/35018, cannot use $user below
+COPY --chown=jenkins:jenkins client ${EVERGREEN_HOME}/client
+COPY --chown=jenkins:jenkins configuration/essentials.yaml ${EVERGREEN_HOME}
 
 # Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
 # which immediately crashes if the file is missing, even if we use the `follow` switch
@@ -113,9 +114,4 @@ RUN touch ${JENKINS_VAR}/logs/essentials.log.0
 # can be persisted and survive image upgrades
 # Important: this must be done *after* the chown
 
-# a mess-checker to accomodate https://stackoverflow.com/questions/44766665/how-do-i-docker-copy-as-non-root
-# Use COPY --chown? Not doing it yet because
-USER root
-RUN time find ${EVERGREEN_HOME} \! -user jenkins -print0 | xargs -0 chown $user:$group
-USER $user
 VOLUME ${EVERGREEN_HOME}
