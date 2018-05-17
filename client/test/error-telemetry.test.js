@@ -25,9 +25,8 @@ describe('Error Telemetry Logging', () => {
       assert(fs.existsSync(logFile));
 
       mkdirp.sync('/tmp');
-      const response = new ErrorTelemetry().setup(logFile, (app,data) => {
-        const json = JSON.parse(data);
-        fs.appendFileSync('/tmp/test', `MESSAGE=${json.message}\n`);
+      const response = new ErrorTelemetry().setup(logFile, (app,jsonObject) => {
+        fs.appendFileSync('/tmp/test', `MESSAGE=${jsonObject.message}\n`);
       });
       assert(!(response instanceof Promise));
 
