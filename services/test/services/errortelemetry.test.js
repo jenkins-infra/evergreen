@@ -1,5 +1,7 @@
 const fs             = require('fs');
 const assert         = require('assert');
+const errors         = require('@feathersjs/errors');
+
 
 const app = require('../../src/app');
 
@@ -25,16 +27,17 @@ describe('Error Telemetry', () => {
     const service = app.service(errorTelemetryService);
 
     const badQueries = [
-      'blah',
+      {},
       {'log':{'version': 1 }},
       {'log':{'timestamp': 1526387942 }}
     ];
-    for ( const badQuery in badQueries ) {
+    for ( let i=0; i<badQueries.length;i++ ) {
       try {
-        await service.create(badQuery);
+        await service.create(badQueries[i]);
         assert.fail('Should have failed above');
       } catch (err) {
         // expected
+        assert.ok( err instanceof errors.BadRequest  );
       }
     }
 
