@@ -21,18 +21,13 @@ module.exports = function (app) {
         return Promise.reject({status:'KO'});
       }
 
-      this.storeData(data);
-
-      return Promise.resolve({status:'OK'});
-      // Called
-    }
-
-
-    storeData(data) {
       // FIXME: TBD where, what and how to actually send data
       const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
       fs.appendFileSync('/tmp/blah', toWrite);
+
+      return Promise.resolve({status:'OK'});
     }
+
   }
 
   app.use('/telemetry/error', new MyService());
