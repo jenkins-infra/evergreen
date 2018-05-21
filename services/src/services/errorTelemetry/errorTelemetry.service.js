@@ -7,7 +7,7 @@
  * simply be taking the last of version records associated with the instance.
  */
 
-const fs             = require('fs');
+const fs    = require('fs');
 
 const hooks = require('./errorTelemetry.hooks');
 
