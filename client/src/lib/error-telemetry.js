@@ -61,9 +61,7 @@ class ErrorTelemetry {
       logger.debug('Reading line:', data);
 
       try {
-        const parsedLogData = JSON.parse(data);
-
-        outputFunction(this.app, parsedLogData);
+        outputFunction(this.app, JSON.parse(data));
       } catch(err) {
         logger.error(`Unable to parse as JSON, corrupt log line? ***${data}***`);
       }
