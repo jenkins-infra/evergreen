@@ -7,29 +7,10 @@
  * simply be taking the last of version records associated with the instance.
  */
 
-const fs    = require('fs');
-
-const hooks = require('./errorTelemetry.hooks');
+const hooks                 = require('./errorTelemetry.hooks');
+const createErrorTelemetry = require('./errorTelemetry.class');
 
 module.exports = function (app) {
-  class MyService {
-    constructor() {
-    }
-    create(data) {
-      // Should be impossible because it passed the hooks step
-      if(!data) {
-        return Promise.reject({status:'KO'});
-      }
-
-      // FIXME: TBD where, what and how to actually send data
-      const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
-      fs.appendFileSync('/tmp/blah', toWrite);
-
-      return Promise.resolve({status:'OK'});
-    }
-
-  }
-
-  app.use('/telemetry/error', new MyService());
+  app.use('/telemetry/error', createErrorTelemetry());
   app.service('telemetry/error').hooks(hooks.getHooks());
 };
