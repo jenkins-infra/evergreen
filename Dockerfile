@@ -104,7 +104,6 @@ USER $user
 # Prepare the evergreen-client configuration
 # Sigh https://github.com/moby/moby/issues/35018, cannot use $user below
 COPY --chown=jenkins:jenkins client ${EVERGREEN_HOME}/client
-COPY --chown=jenkins:jenkins configuration/essentials.yaml ${EVERGREEN_HOME}
 
 # Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
 # which immediately crashes if the file is missing, even if we use the `follow` switch

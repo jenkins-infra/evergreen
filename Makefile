@@ -9,8 +9,8 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 #################
 all: check container
 
-lint: configuration/essentials.yaml configuration/jenkins-configuration.yaml shunit2
-	./tools/yamllint -s configuration/essentials.yaml
+lint: essentials.yaml configuration/jenkins-configuration.yaml shunit2
+	./tools/yamllint -s essentials.yaml
 	./tools/yamllint -s configuration/jenkins-configuration.yaml
 	./tools/shellcheck -x tests/tests.sh
 
