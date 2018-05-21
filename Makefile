@@ -47,9 +47,6 @@ clean:
 	rm -rf build/configuration-as-code/target
 	rm -rf build/essentials/target
 
-mrproper: clean
-	rm -rf build/
-
 #################
 
 build/jenkins.sh:
