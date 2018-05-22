@@ -29,6 +29,11 @@ pipeline {
                     steps {
                         sh 'make -C client check'
                     }
+                    post {
+                        success {
+                            archiveArtifacts 'client/coverage/lcov-report'
+                        }
+                    }
                 }
                 stage('Services') {
                     steps {
