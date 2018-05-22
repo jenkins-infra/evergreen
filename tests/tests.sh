@@ -135,10 +135,15 @@ test_metrics_health_check() {
 # JENKINS-49811
 test_logs_are_propagated() {
 
-  result=$( $COMPOSE exec -T backend cat /tmp/blah )
+  # shellcheck disable=SC2016
+  error_logging_filename=$( $COMPOSE exec -T backend sh -c 'echo $ERROR_LOGGING_FILE' )
+  assertEquals "ERROR_LOGGING_FILE env variable should be defined" "0" "$?"
+  assertNotEquals "Env var value should not not be empty" "" "$error_logging_filename"
 
-  assertEquals "/tmp/blah should exist" "0" "$?"
-  assertNotEquals "File should not be empty" "" "$result"
+  result=$( $COMPOSE exec -T backend cat "$error_logging_filename" )
+
+  assertEquals "File $error_logging_filename should exist" "0" "$?"
+  assertNotEquals "File $error_logging_filename should not be empty" "" "$result"
 
   # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
   echo "$result" | grep EssentialsLoggingConfigurer > /dev/null

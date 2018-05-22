@@ -14,13 +14,13 @@ lint: depends
 	$(NODE) npm run eslint
 
 unit:
-	$(COMPOSE) run -e NODE_ENV=test --rm node npm run jest
+	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run jest
 
 acceptance:
-	$(COMPOSE) run -e NODE_ENV=test --rm node npm run acceptance
+	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run acceptance
 
 watch:
-	$(COMPOSE) run -e NODE_ENV=test --rm node jest --bail --watchAll
+	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node jest --bail --watchAll
 
 depends: package.json
 	# Checking to see if the directory exists because npm install updates the
