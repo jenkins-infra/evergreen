@@ -85,6 +85,8 @@ class Client {
       this.runUpdates();
     });
 
+    this.errorTelemetry.setup();
+
     setInterval( () => {
       /* no-op to keep this process alive */
     }, 10);
@@ -97,19 +99,12 @@ class Client {
     logger.info('Configuring the client to use the endpoint %s', endpoint);
     this.app.configure(restClient.fetch(fetch));
 
-    // FIXME: move this into runloop once we figure out how to run it locally during testing
-    try {
-      this.errorTelemetry.setup();
-    }
-    catch (err) {
-      logger.error('Failed to set up Error Telemetry', err);
-    }
-    // END FIXME
-
     this.reg.register().then((res, newRegistration) => {
       logger.debug('Registration returned', res);
       this.status.authenticate(this.reg.uuid, this.reg.token);
       this.update.authenticate(this.reg.uuid, this.reg.token);
+      this.errorTelemetry.authenticate(this.reg.uuid, this.reg.token);
+
       /*
        * It is only valid to start the runloop assuming we have been able to
        * register and log in successfully, otherwise the client will exit and

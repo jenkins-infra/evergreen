@@ -1,5 +1,7 @@
 const errors      = require('@feathersjs/errors');
 const logger = require('winston');
+const authentication     = require('@feathersjs/authentication');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
 const errorTelemetryApiRequiredFields = [
   'version',
@@ -16,7 +18,9 @@ class ErrorTelemetryHooks {
   getHooks() {
     return {
       before: {
-        all: [],
+        all: [
+          authentication.hooks.authenticate(['jwt'])
+        ],
         find: [],
         get: [],
         create: [
@@ -31,7 +35,8 @@ class ErrorTelemetryHooks {
                 throw new errors.BadRequest(`Missing required field '${field}'`);
               }
             });
-          }
+          },
+          ensureMatchingUUID
         ],
         update: [],
         patch: [],
