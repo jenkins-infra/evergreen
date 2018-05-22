@@ -84,7 +84,7 @@ class UpdateHooks {
             }
           },
           {
-            'url' : 'http://updates.jenkins.io/experimental/latest/configuration-as-code.hpi',
+            'url' : 'http://mirrors.jenkins-ci.org/plugins/configuration-as-code/0.5-alpha/configuration-as-code.hpi',
             'checksum' : {
               'type' : 'sha256',
               'signature' : '703f04ad2820a39e131ec66de6872c13556f6a7345e3f50471c2ff7bf3d19f2c'
