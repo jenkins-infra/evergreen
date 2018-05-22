@@ -23,7 +23,7 @@
     "eslint": "eslint src/. test/. acceptance/. --config .eslintrc.json",
     "start": "node src/",
     "jest": "jest --bail --forceExit ./test",
-    "acceptance": "jest -i --bail --forceExit ./acceptance"
+    "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.5",
@@ -55,5 +55,21 @@
     "jest": "^22.4.3",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
+  },
+  "jest" : {
+    "collectCoverage": true,
+    "coverageReporters": [
+        "json",
+        "lcov",
+        "text-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 38,
+        "functions": 59,
+        "lines": 77,
+        "statements": 77
+      }
+    }
   }
 }

@@ -31,13 +31,18 @@ pipeline {
                     }
                     post {
                         success {
-                            archiveArtifacts 'client/coverage/lcov-report'
+                            archiveArtifacts 'client/coverage/**'
                         }
                     }
                 }
                 stage('Services') {
                     steps {
                         sh 'make -C services check'
+                    }
+                    post {
+                        success {
+                            archiveArtifacts 'services/coverage/**'
+                        }
                     }
                 }
             }
