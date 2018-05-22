@@ -1,3 +1,0 @@
-= configuration
-
-This folder contains various configuration files used to build the _Jenkins Essentials_ distribution.

@@ -1,0 +1,23 @@
+= Jenkins Essentials instance configuration
+
+This folder contains various configuration files used to build the _Jenkins Essentials_ distribution.
+
+
+== `supervisord.conf`
+
+Configures the container's entrypoint process:
+link:http://supervisord.org/[supervisord]
+to properly run the services necessary in the container for Jenkins Essentials
+including `evergreen-client` and Jenkins itself.
+
+== `logging.properties`
+
+A Log4J configuration file to customize the logging output from Jenkins in
+conjunction with the
+link:https://github.com/jenkinsci/essentials-plugin[Essentials plugin].
+
+== `jenkins-configuration.yaml`
+
+Root-level static configuration for use by the Jenkins instance, utilizing the
+link:https://github.com/jenkinsci/configuration-as-code-plugin[Configuration as Code plugin]
+
