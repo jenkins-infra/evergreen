@@ -29,10 +29,20 @@ pipeline {
                     steps {
                         sh 'make -C client check'
                     }
+                    post {
+                        success {
+                            archiveArtifacts 'client/coverage/**'
+                        }
+                    }
                 }
                 stage('Services') {
                     steps {
                         sh 'make -C services check'
+                    }
+                    post {
+                        success {
+                            archiveArtifacts 'services/coverage/**'
+                        }
                     }
                 }
             }

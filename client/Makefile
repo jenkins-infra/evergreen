@@ -25,7 +25,6 @@ run: run-services
 		EVERGREEN_ENDPOINT=http://127.0.0.1:3030 \
 		$(NODE) npm run client
 
-
 run-services:
 	$(MAKE) -C ../services run-detach
 
