@@ -2,6 +2,8 @@
 jenkins:
   systemMessage: "Welcome to Jenkins Essentials!"
   numExecutors: 0
+
+unclassified:
   metricsaccesskey:
     accessKeys:
       - key: "evergreen"
