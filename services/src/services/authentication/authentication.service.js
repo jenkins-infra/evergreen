@@ -11,6 +11,5 @@ module.exports = function(app) {
   };
 
   app.use('/authentication', createAuth(options));
-
-  app.service('authentication').hooks(hooks);
+  app.service('authentication').hooks(hooks.getHooks());
 };

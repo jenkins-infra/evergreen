@@ -21,11 +21,6 @@ class Authentication {
       uuid: data.uuid
     }, app.get('authentication'));
   }
-
-  async find(params) {
-    logger.info('Authentication.find()', params);
-    return {};
-  }
 }
 
 module.exports = function(options) { return new Authentication(options); };
