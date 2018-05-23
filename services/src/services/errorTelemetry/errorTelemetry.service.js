@@ -7,16 +7,10 @@
  * simply be taking the last of version records associated with the instance.
  */
 
-const createService = require('feathers-sequelize');
-const createModel = require('../../models/error_log');
-const hooks = require('./errorTelemetry.hooks');
+const hooks                 = require('./errorTelemetry.hooks');
+const createErrorTelemetry = require('./errorTelemetry.class');
 
 module.exports = function (app) {
-  const options = {
-    name: 'error_log',
-    Model: createModel(app)
-  };
-
-  app.use('/errorTelemetry', createService(options));
-  app.service('errorTelemetry').hooks(hooks.getHooks());
+  app.use('/telemetry/error', createErrorTelemetry());
+  app.service('telemetry/error').hooks(hooks.getHooks());
 };

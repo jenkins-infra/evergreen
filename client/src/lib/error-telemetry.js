@@ -19,12 +19,12 @@ class ErrorTelemetry {
    * (Private) default behaviour for the output where to send data to when the watched logging file
    * has a modification detected.
    */
-  callErrorTelemetryService(app, text) {
+  callErrorTelemetryService(app, logDataObject) {
 
-    const api = app.service('errorTelemetry');
+    const api = app.service('telemetry/error');
 
     return api.create({
-      log: text // FIXME: not very happy with this, to design in JEP: json in (json) log field?
+      log: logDataObject
     }).then((res) => {
       logger.info('pushed as '+ res.id);
     }).catch((res) => {
@@ -58,7 +58,13 @@ class ErrorTelemetry {
     });
 
     tail.on('line', data => {
-      outputFunction(this.app, data);
+      logger.debug('Reading line:', data);
+
+      try {
+        outputFunction(this.app, JSON.parse(data));
+      } catch(err) {
+        logger.error(`Unable to parse as JSON, corrupt log line? ***${data}***`);
+      }
     });
 
     tail.on('error', error => {

@@ -25,4 +25,5 @@ EXPOSE 3030
 
 COPY wait-for-postgres.sh /wait-for-postgres.sh
 RUN apk add --update-cache postgresql-client && chmod a+x /wait-for-postgres.sh
+ENV ERROR_LOGGING_FILE ${APP_DIR}/error-logging.json
 CMD npm run start
