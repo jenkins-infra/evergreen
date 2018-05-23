@@ -15,6 +15,18 @@ class ErrorTelemetryHooks {
   constructor() {
   }
 
+  checkLogFormat(hook) {
+    logger.debug('HOOK DATA => ', hook.data);
+    if(!(hook.data.log)) {
+      throw new errors.BadRequest('Missing log field');
+    }
+    errorTelemetryApiRequiredFields.forEach( field => {
+      if(!hook.data.log[field]) {
+        throw new errors.BadRequest(`Missing required field '${field}'`);
+      }
+    });
+  }
+
   getHooks() {
     return {
       before: {
@@ -25,18 +37,7 @@ class ErrorTelemetryHooks {
         get: [],
         create: [
           ensureMatchingUUID,
-          // JEP 308 Error Telemetry API
-          (hook) => {
-            logger.debug('HOOK DATA => ', hook.data);
-            if(!(hook.data.log)) {
-              throw new errors.BadRequest('Missing log field');
-            }
-            errorTelemetryApiRequiredFields.forEach( field => {
-              if(!hook.data.log[field]) {
-                throw new errors.BadRequest(`Missing required field '${field}'`);
-              }
-            });
-          }
+          this.checkLogFormat
         ],
         update: [],
         patch: [],
