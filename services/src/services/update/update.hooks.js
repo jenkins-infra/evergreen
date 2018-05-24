@@ -84,7 +84,7 @@ class UpdateHooks {
             }
           },
           {
-            'url' : 'http://mirrors.jenkins-ci.org/plugins/configuration-as-code/0.5-alpha/configuration-as-code.hpi',
+            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi',
             'checksum' : {
               'type' : 'sha256',
               'signature' : '703f04ad2820a39e131ec66de6872c13556f6a7345e3f50471c2ff7bf3d19f2c'
