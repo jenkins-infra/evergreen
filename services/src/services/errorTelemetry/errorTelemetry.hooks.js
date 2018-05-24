@@ -24,7 +24,8 @@ class ErrorTelemetryHooks {
         find: [],
         get: [],
         create: [
-          // JEP XXX Error Telemetry API
+          ensureMatchingUUID,
+          // JEP 308 Error Telemetry API
           (hook) => {
             logger.debug('HOOK DATA => ', hook.data);
             if(!(hook.data.log)) {
@@ -35,8 +36,7 @@ class ErrorTelemetryHooks {
                 throw new errors.BadRequest(`Missing required field '${field}'`);
               }
             });
-          },
-          ensureMatchingUUID
+          }
         ],
         update: [],
         patch: [],
