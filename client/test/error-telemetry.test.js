@@ -11,6 +11,14 @@ describe('Error Telemetry Logging', () => {
     fs.volume.reset();
   });
 
+  describe('authenticate()', () => {
+
+    it('should store values', () => {
+      const telemetry = new ErrorTelemetry().authenticate('you-you-i-Dee', 'toe-ken-that-guy');
+      assert.equal(telemetry.uuid, 'you-you-i-Dee');
+    });
+  });
+
   describe('setup() call', () => {
 
     // FIXME: only hackish, the end goal is definitely not to forward to another file
