@@ -16,7 +16,6 @@ class ErrorTelemetry {
   }
 
   authenticate(uuid, token) {
-    logger.info(`Error telemetry: uuid=${uuid}, token=${token}`);
     this.uuid = uuid;
     this.token = token;
     return this;
