@@ -11,6 +11,14 @@ describe('Error Telemetry Logging', () => {
     fs.volume.reset();
   });
 
+  describe('authenticate()', () => {
+
+    it('should store values', () => {
+      const telemetry = new ErrorTelemetry().authenticate('you-you-i-Dee', 'toe-ken-that-guy');
+      assert.equal(telemetry.uuid, 'you-you-i-Dee');
+    });
+  });
+
   describe('setup() call', () => {
 
     // FIXME: only hackish, the end goal is definitely not to forward to another file
@@ -25,9 +33,12 @@ describe('Error Telemetry Logging', () => {
       assert(fs.existsSync(logFile));
 
       mkdirp.sync('/tmp');
-      const response = new ErrorTelemetry().setup(logFile, (app,jsonObject) => {
+      const errorTelemetryService = new ErrorTelemetry();
+      errorTelemetryService.callErrorTelemetryService = (app,jsonObject) => {
         fs.appendFileSync('/tmp/test', `MESSAGE=${jsonObject.message}\n`);
-      });
+      };
+
+      const response = errorTelemetryService.setup(logFile);
       assert(!(response instanceof Promise));
 
       assert(!fs.existsSync('/tmp/test'));

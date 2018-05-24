@@ -15,28 +15,42 @@ class ErrorTelemetry {
     this.options = options;
   }
 
+  authenticate(uuid, token) {
+    this.uuid = uuid;
+    this.token = token;
+    return this;
+  }
+
   /**
-   * (Private) default behaviour for the output where to send data to when the watched logging file
-   * has a modification detected.
-   */
+  * (Private) default behaviour for the output where to send data to when the watched logging file
+  * has a modification detected.
+  */
   callErrorTelemetryService(app, logDataObject) {
 
     const api = app.service('telemetry/error');
 
-    return api.create({
-      log: logDataObject
-    }).then((res) => {
-      logger.info('pushed as '+ res.id);
+    const payload = {
+      log: logDataObject,
+      uuid: this.uuid
+    };
+    return api.create(
+      payload
+      ,
+      {
+        headers: { Authorization: this.token }
+      }
+    ).then((res) => {
+      logger.info('pushed as ', res);
     }).catch((res) => {
       logger.error('Failed to push log:', res);
     });
   }
 
   /**
-   * monitoredFile: path to the log file to watch
-   * outputFunction(app,line): the function that will be called on each new line detected
-   */
-  setup(monitoredFile, outputFunction=this.callErrorTelemetryService) {
+  * monitoredFile: path to the log file to watch
+  * outputFunction(app,line): the function that will be called on each new line detected
+  */
+  setup(monitoredFile) {
     logger.info('Setting up error logging...');
 
     let loggingFile = '';
@@ -61,9 +75,9 @@ class ErrorTelemetry {
       logger.debug('Reading line:', data);
 
       try {
-        outputFunction(this.app, JSON.parse(data));
+        this.callErrorTelemetryService(this.app, JSON.parse(data));
       } catch(err) {
-        logger.error(`Unable to parse as JSON, corrupt log line? ***${data}***`);
+        logger.error(`Unable to parse as JSON, corrupt log line? ***${data}***`, err);
       }
     });
 

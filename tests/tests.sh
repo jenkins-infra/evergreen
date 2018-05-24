@@ -156,4 +156,15 @@ test_evergreen_home_is_fully_owned_by_jenkins_user() {
   assertEquals "Some files are not owned by 'jenkins', should not happen!" "" "$result"
 }
 
+# JENKINS-51496 check error telemetry is secured
+test_error_telemetry_service_is_secured() {
+  result=$( $COMPOSE exec -T instance curl --silent -H "Content-Type: application/json" -X POST \
+          --data '{"log":{"version":1,"timestamp":1234,"name":"blah","level":"WARNING","message":"a msg"}}' \
+          --output /dev/null \
+          --write-out "%{http_code}" http://backend:3030/telemetry/error )
+  assertEquals "command should succeed" 0 "$?"
+  assertEquals "Service should return 401" 401 "$result"
+
+}
+
 . ./shunit2/shunit2

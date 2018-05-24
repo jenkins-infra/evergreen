@@ -1,5 +1,7 @@
 const errors      = require('@feathersjs/errors');
 const logger = require('winston');
+const authentication     = require('@feathersjs/authentication');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
 const errorTelemetryApiRequiredFields = [
   'version',
@@ -16,11 +18,14 @@ class ErrorTelemetryHooks {
   getHooks() {
     return {
       before: {
-        all: [],
+        all: [
+          authentication.hooks.authenticate(['jwt'])
+        ],
         find: [],
         get: [],
         create: [
-          // JEP XXX Error Telemetry API
+          ensureMatchingUUID,
+          // JEP 308 Error Telemetry API
           (hook) => {
             logger.debug('HOOK DATA => ', hook.data);
             if(!(hook.data.log)) {
