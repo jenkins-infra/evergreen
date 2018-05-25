@@ -54,13 +54,13 @@ class ErrorTelemetry {
     logger.info('Setting up error logging...');
 
     let loggingFile = '';
-    if(monitoredFile) {
+    if (monitoredFile) {
       loggingFile = monitoredFile;
     } else {
       loggingFile = this.fileToWatch();
     }
 
-    if(!fs.existsSync(loggingFile)) {
+    if (!fs.existsSync(loggingFile)) {
       logger.warn(`Logging file ${loggingFile} not found. Still watching the path in case the file gets created later. Can be normal when starting up.`);
     } else {
       logger.info(`Watching ${loggingFile}`);
@@ -76,7 +76,7 @@ class ErrorTelemetry {
 
       try {
         this.callErrorTelemetryService(this.app, JSON.parse(data));
-      } catch(err) {
+      } catch (err) {
         logger.error(`Unable to parse as JSON, corrupt log line? ***${data}***`, err);
       }
     });
@@ -90,7 +90,7 @@ class ErrorTelemetry {
 
   fileToWatch() {
     let path = '';
-    if(!process.env.ESSENTIALS_LOG_FILE) {
+    if (!process.env.ESSENTIALS_LOG_FILE) {
       logger.debug('Defaulting to essentials.log.0');
       path = '/evergreen/jenkins/var/logs/essentials.log.0';
     } else {

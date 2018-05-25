@@ -282,7 +282,7 @@ class UpdateHooks {
           authentication.hooks.authenticate(['jwt'])
         ],
         find: [
-          //ensureMatchingUUID,
+          // ensureMatchingUUID,
           this.scopeFindQuery,
         ],
         get: [],

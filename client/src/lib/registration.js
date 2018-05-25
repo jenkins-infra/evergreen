@@ -32,7 +32,7 @@ class Registration {
       fs.statSync(this.uuidPath());
       return true;
     }
-    catch(err) {
+    catch (err) {
       if (err.code == 'ENOENT') {
         return false;
       }
