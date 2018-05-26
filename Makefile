@@ -19,6 +19,10 @@ check: lint
 	$(MAKE) -C services $@
 	$(MAKE) container-check
 
+fix-formatting:
+	$(MAKE) -C client $@
+	$(MAKE) -C services $@
+
 container-prereqs: build/jenkins-support build/jenkins.sh
 
 container-check: shunit2 ./tests/tests.sh containers
