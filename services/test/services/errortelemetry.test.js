@@ -31,7 +31,7 @@ describe('Error Telemetry', () => {
       {'log':{'version': 1 }},
       {'log':{'timestamp': 1526387942 }}
     ];
-    for ( let i=0; i<badQueries.length;i++ ) {
+    for (let i = 0; i < badQueries.length; i++) {
       try {
         await service.create(badQueries[i]);
         assert.fail('Should have failed above');

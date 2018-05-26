@@ -25,7 +25,7 @@ describe('Error Telemetry Logging', () => {
     it('writing to essentials logging file should forward to another', done => {
 
       // Given: the file is watched
-      //Write before setup to make sure the file is already present
+      // Write before setup to make sure the file is already present
       const logsDir = '/evergreen/jenkins/var/logs/';
       const logFile = logsDir + 'essentials.log.0';
       mkdirp.sync(logsDir);

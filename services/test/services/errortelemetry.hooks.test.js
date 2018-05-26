@@ -18,7 +18,7 @@ describe('Error Telemetry Hooks', () => {
       {'log':{'version': 1 }},
       {'log':{'timestamp': 1526387942 }}
     ];
-    for ( let i=0; i<badQueries.length;i++ ) {
+    for (let i = 0; i < badQueries.length; i++) {
       try {
         checkLogFormat(badQueries[i]);
         assert.fail('Should have failed above (value=${badQueries[i]})');

@@ -29,6 +29,13 @@
       "error",
       { "allowNamedFunctions": true }
     ],
-    "no-var": "error"
+    "no-var": "error",
+    "keyword-spacing": "error",
+    "block-spacing": "error",
+    "space-before-blocks": "error",
+    "spaced-comment": "error",
+    "space-infix-ops": "error",
+    "semi-spacing": "error",
+    "template-tag-spacing": "error"
   }
 }

@@ -16,18 +16,18 @@ class ErrorTelemetryHooks {
   }
 
   checkLogFormat(hook) {
-    if(!hook) {
+    if (!hook) {
       throw new errors.BadRequest('No hook at all?');
     }
     logger.debug('HOOK DATA => ', hook.data);
-    if(!(hook.data)) {
+    if (!(hook.data)) {
       throw new errors.BadRequest('Missing data');
     }
-    if(!hook.data.log) {
+    if (!hook.data.log) {
       throw new errors.BadRequest('Missing log field');
     }
     errorTelemetryApiRequiredFields.forEach( field => {
-      if(!hook.data.log[field]) {
+      if (!hook.data.log[field]) {
         throw new errors.BadRequest(`Missing required field '${field}'`);
       }
     });
