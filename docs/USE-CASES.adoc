@@ -1,0 +1,35 @@
+= _Essentials_ Use Cases
+:toc:
+:sectnums:
+
+This document summarizes the Priority 1 use cases for _Jenkins Essentials_.
+
+NOTE: This is still early work.
+To help the thought process, the cases definition and analysis was done by thinking about what a demonstration would need to go through.
+
+== Priority 1 Cases: Risk analysis
+
+=== I can start an instance from scratch and it's available
+
+* Registration & authentication service need to be available:
+** An Internet connection is required
+** Bandwidth needs to be enough to download things in a _reasonable_ time.
+(It can probably be more than 5 minutes, if there is an issue.)
+* Binaries repository must be available.
+
+=== Jenkins is constantly upgraded safely
+
+* If the backend becomes unavailable:
+** Check the evergreen-client does reconnect automatically when back.
+* it the unavailability happens just after a failed upgrade, can we rollback offline?
+
+=== Starting in a given cloud environment, Essentials is auto-configured and ready to build with it
+
+Concrete examples:
+
+* auto-configuring the docker-plugin if the Docker socket is available,
+* auto-configuring with ec2-plugin if AWS.
+
+== Priority 2 Cases
+
+=== First startup should be done in less than 5 clicks and 5 minutes
