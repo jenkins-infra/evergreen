@@ -84,13 +84,6 @@ class UpdateHooks {
             }
           },
           {
-            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi',
-            'checksum' : {
-              'type' : 'sha256',
-              'signature' : '703f04ad2820a39e131ec66de6872c13556f6a7345e3f50471c2ff7bf3d19f2c'
-            }
-          },
-          {
             'url' : 'https://updates.jenkins.io/latest/ace-editor.hpi',
             'checksum' : {
               'type' : 'sha256',
@@ -123,6 +116,13 @@ class UpdateHooks {
             'checksum' : {
               'type' : 'sha256',
               'signature' : 'c4f964c6deb599816f6740ef674cb6dd2644d5f1b4e7b886a948f778ec5c189e'
+            }
+          },
+          {
+            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '703f04ad2820a39e131ec66de6872c13556f6a7345e3f50471c2ff7bf3d19f2c'
             }
           },
           {
