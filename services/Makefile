@@ -13,6 +13,9 @@ check: depends lint
 lint: depends
 	$(NODE) npm run eslint
 
+fix-formatting:
+	$(NODE) npm run eslint -- --fix
+
 unit:
 	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run jest
 

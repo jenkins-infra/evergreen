@@ -5,6 +5,9 @@ all: check
 lint:
 	$(NODE) npm run eslint
 
+fix-formatting:
+	$(NODE) npm run eslint -- --fix
+
 check: depends lint
 	$(MAKE) unit
 
