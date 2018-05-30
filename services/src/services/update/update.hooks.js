@@ -102,6 +102,13 @@ class UpdateHooks {
             }
           },
           {
+            'url' : 'https://updates.jenkins.io/latest/authentication-tokens.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : 'abc97028893c8a71581a5f559ea48e8e1f1a65164faee96dabfed9e95e9abad2'
+            }
+          },
+          {
             'url' : 'https://updates.jenkins.io/latest/bouncycastle-api.hpi',
             'checksum' : {
               'type' : 'sha256',
@@ -148,6 +155,41 @@ class UpdateHooks {
             'checksum' : {
               'type' : 'sha256',
               'signature' : 'c4f964c6deb599816f6740ef674cb6dd2644d5f1b4e7b886a948f778ec5c189e'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/credentials-binding.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : 'c4f964c6deb599816f6740ef674cb6dd2644d5f1b4e7b886a948f778ec5c189e'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/docker-java-api.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '94a367b3810cb3175c78490616d0d5f7fb4f7f710c24583901da5159f3d93e0c'
+            }
+          },
+          {
+            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/docker/docker-plugin/1.1.5-rc594.60f3627e3691/docker-plugin-1.1.5-rc594.60f3627e3691.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '94a367b3810cb3175c78490616d0d5f7fb4f7f710c24583901da5159f3d93e0c'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/docker-commons.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '94a367b3810cb3175c78490616d0d5f7fb4f7f710c24583901da5159f3d93e0c'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/durable-task.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '94a367b3810cb3175c78490616d0d5f7fb4f7f710c24583901da5159f3d93e0c'
             }
           },
           {
@@ -207,6 +249,13 @@ class UpdateHooks {
             }
           },
           {
+            'url' : 'https://updates.jenkins.io/latest/plain-credentials.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : 'e7c11c9a751809258f0016221a99f6dc820bd6513600e913e3847551db53d34f'
+            }
+          },
+          {
             'url' : 'https://updates.jenkins.io/latest/scm-api.hpi',
             'checksum' : {
               'type' : 'sha256',
@@ -228,7 +277,21 @@ class UpdateHooks {
             }
           },
           {
+            'url' : 'https://updates.jenkins.io/latest/ssh-slaves.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '837a2ed38069d8bc089c5370eaa5858edc519433801949fd6b84d05444f13afe'
+            }
+          },
+          {
             'url' : 'https://updates.jenkins.io/latest/structs.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '43a27488fd58f95affdef0766570bbe705ac8c39fe11d3b38208282c21cac58b'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/token-macro.hpi',
             'checksum' : {
               'type' : 'sha256',
               'signature' : '43a27488fd58f95affdef0766570bbe705ac8c39fe11d3b38208282c21cac58b'
