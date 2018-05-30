@@ -1,0 +1,46 @@
+= 2018-05-30 -- How to provide access to Essentials logs to some Jenkins developers
+:toc:
+
+== Notes
+
+=== Context
+
+Now link:https://issues.jenkins-ci.org/browse/JENKINS-49811[JENKINS-49811] (and the associated link:https://github.com/jenkinsci/jep/tree/master/jep/308[JEP 308]) are done, we need to move forward and see how we will actually provide access to the generated logs to a given subset of plugin developers.
+
+That work is tracked as https://issues.jenkins-ci.org/browse/JENKINS-51299[JENKINS-51299].
+
+=== Attendees
+
+* Olivier Vernin
+* Baptiste Mathus
+
+== Summary
+
+Azure Log Analytics is the service in use for logging in the new Kubernetes cluster used for the Jenkins infrastructure.
+
+* Olivier says it is not integrated, and cannot be, with the existing Jenkins LDAP.
+To use roles/users in Azure, it has to use the existing Active Directory setup there.
+So, a possibility could be to just run a job, each hour for instance, to sync the external (OpenLDAP) LDAP data, to the _Active Directory_ service in the Azure account for the Jenkins Project.
+The master data would stay on the external LDAP, and the Active Directory side would be in read-only and reset regularly from the master one.
+
+* DataDog was quickly discussed, but ditched because there does not seem anyway to be a way to segregate the things/logs people would have access to.
+
+* Another possibility, failing an easy path above, would be to set up a dedicated ELK cluster for those logs.
+But we want to avoid it because it would be time consuming to set up and operate exclusively for Jenkins Essentials needs.
+
+
+So, we ended up agreeing that Olivier would check what is feasible with regard to data visibility/segregation on Azure Logs Analytics side.
+
+This work is tracked through link:https://issues.jenkins-ci.org/browse/INFRA-1643[INFRA-1643]
+
+== Actions
+
+////
+Summarize the actions that ought to be done.
+Explain why none are listed if none.
+////
+
+|===
+| ACTION | Person
+| Work on link:https://issues.jenkins-ci.org/browse/INFRA-1643[INFRA-1643] to have more insights of what is doable.| Olivier
+|===
