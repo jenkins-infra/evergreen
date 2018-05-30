@@ -33,6 +33,9 @@ So, we ended up agreeing that Olivier would check what is feasible with regard t
 
 This work is tracked through link:https://issues.jenkins-ci.org/browse/INFRA-1643[INFRA-1643]
 
+Relevant documentation for managing accounts and users in Azure:
+https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-manage-access#manage-accounts-and-users
+
 == Actions
 
 ////
