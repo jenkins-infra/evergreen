@@ -172,7 +172,7 @@ class UpdateHooks {
             }
           },
           {
-            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/docker/docker-plugin/1.1.5-rc594.60f3627e3691/docker-plugin-1.1.5-rc594.60f3627e3691.hpi',
+            'url' : 'https://repo.jenkins-ci.org/incrementals/io/jenkins/docker/docker-plugin/1.1.5-rc591.93ebeb1fd9ab/docker-plugin-1.1.5-rc591.93ebeb1fd9ab.hpi',
             'checksum' : {
               'type' : 'sha256',
               'signature' : '94a367b3810cb3175c78490616d0d5f7fb4f7f710c24583901da5159f3d93e0c'
