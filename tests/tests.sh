@@ -152,4 +152,13 @@ test_error_telemetry_service_is_secured() {
 
 }
 
+# JENKINS-49866
+test_docker_available_as_jenkins_user() {
+  $COMPOSE exec -T instance bash -c 'su - jenkins -c "DOCKER_HOST=localhost:2375 /usr/local/bin/docker version"' > /dev/null
+  assertEquals "command should succeed" 0 "$?"
+
+  $COMPOSE exec -T instance bash -c 'su - jenkins -c "DOCKER_HOST=localhost:2375 /usr/local/bin/docker run hello-world"' > /dev/null
+  assertEquals "docker run hello-world" 0 "$?"
+}
+
 . ./shunit2/shunit2
