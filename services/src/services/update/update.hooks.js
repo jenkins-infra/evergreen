@@ -1,5 +1,6 @@
 
-const authentication = require('@feathersjs/authentication');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
+const authentication     = require('@feathersjs/authentication');
 
 class UpdateHooks {
   constructor() {
@@ -296,7 +297,7 @@ class UpdateHooks {
           authentication.hooks.authenticate(['jwt'])
         ],
         find: [
-          // ensureMatchingUUID,
+          ensureMatchingUUID,
           this.scopeFindQuery,
         ],
         get: [],
