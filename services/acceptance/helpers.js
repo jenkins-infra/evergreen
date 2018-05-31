@@ -72,6 +72,24 @@ class Helpers {
       }
     });
   }
+
+  async registerAndAuthenticate() {
+    this.keys = this.generateKeys();
+    this.reg = await this.register(this.keys);
+
+    const signature = this.keys.sign(this.reg.uuid);
+    this.token = await request({
+      url: this.getUrl('/authentication'),
+      method: 'POST',
+      json: true,
+      body: {
+        uuid: this.reg.uuid,
+        signature: signature
+      }
+    });
+
+    return { token: this.token, uuid: this.reg.uuid };
+  }
 }
 
 module.exports = new Helpers();

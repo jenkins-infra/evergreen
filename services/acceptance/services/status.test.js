@@ -16,23 +16,11 @@ describe('Status service acceptance tests', () => {
   });
 
   describe('with a pre-existing registration', () => {
-    beforeEach(async () => {
-      this.keys = h.generateKeys();
-      this.reg = await h.register(this.keys);
-    });
-
     describe('and an auth token', () => {
       beforeEach(async () => {
-        const signature = this.keys.sign(this.reg.uuid);
-        this.token = await request({
-          url: h.getUrl('/authentication'),
-          method: 'POST',
-          json: true,
-          body: {
-            uuid: this.reg.uuid,
-            signature: signature
-          }
-        });
+        let { token, uuid } = await h.registerAndAuthenticate();
+        this.token = token;
+        this.uuid = uuid;
       });
 
       it('should allow authorized access', () => {
@@ -52,7 +40,7 @@ describe('Status service acceptance tests', () => {
             method: 'POST',
             headers: { 'Authorization': this.token },
             json: true,
-            body: { uuid: this.reg.uuid }
+            body: { uuid: this.uuid }
           });
 
           assert.ok(response);
@@ -74,7 +62,7 @@ describe('Status service acceptance tests', () => {
 
       describe('With a valid Instance', () => {
         beforeEach(async ()  => {
-          this.instanceId = this.reg.uuid;
+          this.instanceId = this.uuid;
           this.response = await request({
             url: h.getUrl('/status'),
             method: 'POST',
