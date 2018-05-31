@@ -152,7 +152,7 @@ test_logs_are_propagated() {
 
 # Test everything under /evergreen is owned by the jenkins user
 test_evergreen_home_is_fully_owned_by_jenkins_user() {
-  result=$( docker exec "$container_under_test" find . \! -user jenkins -print )
+  result=$( docker exec "$container_under_test" find . \! -user jenkins \! -name "supervisor*" -print )
   assertEquals "Some files are not owned by 'jenkins', should not happen!" "" "$result"
 }
 

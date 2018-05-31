@@ -34,3 +34,4 @@ services:
       - backend
     volumes:
       - ./client:/evergreen/client
+      - /var/run/docker.sock:/var/run/docker.sock

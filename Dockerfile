@@ -54,7 +54,8 @@ RUN apk add --no-cache git \
                         supervisor \
                         nodejs \
                         ttf-dejavu \
-                        curl
+                        curl \
+                        socat
 
 # TODO: add a checksum check?
 RUN cd /tmp && \
@@ -114,3 +115,5 @@ RUN touch ${JENKINS_VAR}/logs/essentials.log.0
 # Important: this must be done *after* the chown
 
 VOLUME ${EVERGREEN_HOME}
+
+USER root
