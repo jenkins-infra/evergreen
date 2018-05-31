@@ -88,8 +88,8 @@ COPY build/jenkins-support /usr/local/bin/
 
 # FIXME (?): what if the end users touches the config value?
 # as is, we'll override it.
-COPY config/jenkins-configuration.yaml /usr/share/jenkins/ref/jenkins.yaml
-ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/jenkins.yaml
+COPY config/as-code/ /usr/share/jenkins/ref/configuration/
+ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/configuration/
 
 # Ensure the supervisord configuration is copied and executed by default such
 # that the Jenkins and evergreen-client processes both execute properly
