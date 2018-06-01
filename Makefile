@@ -10,7 +10,7 @@ SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 all: check container
 
 lint: essentials.yaml shunit2
-	./tools/yamllint -s essentials.yaml
+	./tools/yamllint -s *.yaml
 	./tools/yamllint -s config/as-code/*.yaml
 	./tools/shellcheck -x tests/tests.sh
 

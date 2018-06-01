@@ -3,4 +3,4 @@
 exec docker run --rm \
     -w ${PWD} \
     -v ${PWD}:${PWD} \
-    boiyaa/yamllint $@
+    boiyaa/yamllint:1.8.1 $@

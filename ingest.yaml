@@ -8,16 +8,16 @@
 # example)
 timestamp: '2018-05-21T21:40:17+00:00'
 
-# Core defines the latest incremental jenkins.war artifact. 
+# Core defines the latest incremental jenkins.war artifact.
 core:
   # The URL referenced doesn't need to be sourced through a CDN, Artifactory is
   # suitable. Future versions of the Evergreen backend will need to point to a
   # CDN automatically anyways.
-  urL: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
+  url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   # The checksum is important for the Evergreen backend services, and client,
   # to verify the artifact but also to distinguish effectively between two
   # files which might be referenced in multiple ingest manifests which are in
-  # fact the same. 
+  # fact the same.
   checksum:
     # The type of supported checksum will need to be negotiated with the
     # client-side support. Currently only sha256 is supported.
