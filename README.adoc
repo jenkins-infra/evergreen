@@ -103,6 +103,9 @@ documents:
 | JEP-307
 | link:https://github.com/jenkinsci/jep/blob/master/jep/307[Evergreen Update Client/Server Lifecycle]
 
+| JEP-308
+| link:https://github.com/jenkinsci/jep/blob/master/jep/308[Essentials Error Telemetry API]
+
 |===
 
 [[deployment]]
