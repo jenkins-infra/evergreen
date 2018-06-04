@@ -1,4 +1,6 @@
 
+const errors             = require('@feathersjs/errors');
+const dbtimestamp        = require('../../hooks/dbtimestamp');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const authentication     = require('@feathersjs/authentication');
 
@@ -6,6 +8,10 @@ class UpdateHooks {
   constructor() {
   }
 
+  /*
+   * Scope the find query to the appopriate update level for the client
+   * requesting an update
+   */
   scopeFindQuery(context) {
     let level = 0;
     let channel = 'general';
@@ -55,6 +61,9 @@ class UpdateHooks {
     return context;
   }
 
+  /*
+   * XXX: This is obviously terrible and hard-coded
+   */
   terribleHardCodedDefault(context) {
     if (context.result.length == 0) {
       // TODO set 304 Not Modified
@@ -290,6 +299,33 @@ class UpdateHooks {
     return context;
   }
 
+  /*
+   * For create() methods, add the default `channel` to the data which will be
+   * "general" until richer channel management is added
+   */
+  defaultChannel(context) {
+    context.data.channel = 'general';
+    return context;
+  }
+
+  /*
+   * This function is responsible for swapping the ingest.yaml-based payload
+   * which has been provided by the client POSTing and create a record on
+   * `context.data1 which more accurately matches the model in the database.
+   */
+  prepareIngestManifest(context) {
+    if ((!context.data) || (Object.keys(context.data).length === 0)) {
+      throw new errors.BadRequest('Missing ingest.yaml payload');
+    }
+
+    let manifest = context.data;
+    context.data = {
+      manifest: manifest,
+    };
+
+    return context;
+  }
+
   getHooks() {
     return {
       before: {
@@ -301,7 +337,11 @@ class UpdateHooks {
           this.scopeFindQuery,
         ],
         get: [],
-        create: [],
+        create: [
+          this.prepareIngestManifest,
+          dbtimestamp('createdAt'),
+          this.defaultChannel,
+        ],
         update: [],
         patch: [],
         remove: []
