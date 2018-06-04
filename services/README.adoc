@@ -196,3 +196,19 @@ java.util.logging.Logger.getLogger('some.logger.name').warning('Warning log for 
 | Set with the secret to use for creating JSON Web Tokens for authentication
 
 |===
+
+== Debugging
+
+The best way to debug the services is to use the Chrome Dev Tools in
+conjunction with
+link:https://nodejs.org/en/docs/guides/debugging-getting-started/[Node's
+debugger].
+
+. Create a unit test in the `test/` directory which is going to exercise the
+  functionality you wish to debug.
+. Add a `debugger;` statement into your code where you wish to create a
+  breakpoint.
+. Open Chrome and navigate to link:about://inspect[about://inspect]
+. In the `services/` directory execute: `make debug-unit`
+. Select the appropriate **Remote Target** in the Chrome Dev Tools.
+. Start debugging!
