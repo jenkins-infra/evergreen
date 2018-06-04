@@ -3,6 +3,7 @@
  */
 
 const authentication     = require('@feathersjs/authentication');
+const dbtimestamp        = require('../../hooks/dbtimestamp');
 const internalOnly       = require('../../hooks/internalonly');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
@@ -24,18 +25,21 @@ class StatusHooks {
         ],
         create: [
           ensureMatchingUUID,
+          dbtimestamp('createdAt'),
           module.exports.defaultUpdateLevel,
           module.exports.pruneQueryParams,
         ],
 
         update: [
           ensureMatchingUUID,
+          dbtimestamp('updatedAt'),
         ],
         patch: [
           ensureMatchingUUID,
+          dbtimestamp('updatedAt'),
         ],
         remove: [
-          internalOnly
+          internalOnly,
         ]
       },
       after: {},
