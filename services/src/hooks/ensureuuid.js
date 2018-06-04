@@ -13,16 +13,32 @@ module.exports = function(context) {
     return context;
   }
 
-  if (!context.data.uuid) {
-    logger.error('Receiving a request without a valid UUID', context.data);
-    throw new errors.BadRequest('Invalid UUID');
+  /*
+   * If we have no UUID provided by the JWT, bail early
+   */
+  if (!context.params.payload) {
+    throw new errors.BadRequest('Missing token with request');
   }
 
-  if (context.data.uuid != context.params.payload.uuid) {
-    logger.error('Receiving a request with to modify a UUID not matching the token (%s/%s)',
-      context.data.uuid,
-      context.params.payload.uuid);
-    throw new errors.NotAuthenticated('Invalid UUID');
+  if ((context.method == 'get') || (context.method == 'find')) {
+    if (!context.params.query.uuid) {
+      throw new errors.BadRequest('Invalid UUID in query parameters');
+    }
+    // if (context.data.uuid != context.params.query.uuid) {
+    //   throw new errors.NotAuthenticated('Invalid UUID');
+    // }
+  }
+  else {
+    if (!context.data.uuid) {
+      throw new errors.BadRequest('Invalid UUID in data body');
+    }
+
+    if (context.data.uuid != context.params.payload.uuid) {
+      logger.error('Receiving a request with a UUID not matching the token (%s/%s)',
+        context.data.uuid,
+        context.params.payload.uuid);
+      throw new errors.NotAuthenticated('Invalid UUID');
+    }
   }
 
   return context;
