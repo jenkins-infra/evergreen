@@ -19,6 +19,10 @@ fix-formatting:
 unit:
 	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run jest
 
+debug-unit:
+	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm -p 9229:9229 node \
+		node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest --runInBand --bail --forceExit test/
+
 acceptance:
 	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run acceptance
 
