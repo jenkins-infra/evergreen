@@ -21,5 +21,21 @@ describe('Update service acceptance tests', () => {
         .then(r => expect(r))
         .catch((err) => h.assertStatus(err, 400));
     });
+
+    describe('with query parameters', () => {
+      it('should return an update level', () => {
+        return request({
+          url: h.getUrl('/update'),
+          qs: {
+            level: 1,
+            uuid: this.uuid,
+          },
+          headers: { 'Authorization': this.token },
+          json: true
+        })
+          .then(r => expect(r))
+          .catch((err) => h.assertStatus(err, 200));
+      });
+    });
   });
 });
