@@ -1,3 +1,11 @@
+/*
+ * This suite of acceptance tests corresponds to JEP-307 and ensures that the
+ * Update service is behaving as expected
+ */
+
+const yaml = require('js-yaml');
+const fs   = require('fs');
+
 const request = require('request-promise');
 const h       = require('../helpers');
 
@@ -36,6 +44,36 @@ describe('Update service acceptance tests', () => {
           .then(r => expect(r))
           .catch((err) => h.assertStatus(err, 200));
       });
+    });
+  });
+
+  describe('PUT /update', () => {
+    beforeEach(() => {
+      this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
+    });
+
+    it('should treat an empty `create` as invalid', () => {
+      return request({
+        url: h.getUrl('/update'),
+        method: 'POST',
+        json: true,
+        headers: { 'Authorization': this.token },
+        body: {}
+      })
+        .then(r => expect(r))
+        .catch((err) => h.assertStatus(err, 400));
+    });
+
+    it('should treat a valid "ingest JSON" as valid', () => {
+      return request({
+        url: h.getUrl('/update'),
+        method: 'POST',
+        json: true,
+        headers: { 'Authorization': this.token },
+        body: this.ingest,
+      })
+        .then(r => expect(r))
+        .catch((err) => h.assertStatus(err, 200));
     });
   });
 });
