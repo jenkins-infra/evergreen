@@ -1,7 +1,7 @@
 
-const errors             = require('@feathersjs/errors');
 const dbtimestamp        = require('../../hooks/dbtimestamp');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
+const internalOnly       = require('../../hooks/internalonly');
 const authentication     = require('@feathersjs/authentication');
 
 class UpdateHooks {
@@ -308,43 +308,26 @@ class UpdateHooks {
     return context;
   }
 
-  /*
-   * This function is responsible for swapping the ingest.yaml-based payload
-   * which has been provided by the client POSTing and create a record on
-   * `context.data1 which more accurately matches the model in the database.
-   */
-  prepareIngestManifest(context) {
-    if ((!context.data) || (Object.keys(context.data).length === 0)) {
-      throw new errors.BadRequest('Missing ingest.yaml payload');
-    }
-
-    let manifest = context.data;
-    context.data = {
-      manifest: manifest,
-    };
-
-    return context;
-  }
-
   getHooks() {
     return {
       before: {
         all: [
-          authentication.hooks.authenticate(['jwt'])
         ],
         find: [
+          authentication.hooks.authenticate(['jwt']),
           ensureMatchingUUID,
           this.scopeFindQuery,
         ],
         get: [],
         create: [
-          this.prepareIngestManifest,
           dbtimestamp('createdAt'),
           this.defaultChannel,
         ],
         update: [],
         patch: [],
-        remove: []
+        remove: [
+          internalOnly,
+        ],
       },
 
       after: {

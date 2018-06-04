@@ -68,9 +68,12 @@ describe('Update service acceptance tests', () => {
       return request({
         url: h.getUrl('/update'),
         method: 'POST',
+        // XXX: need a different authentication scheme
         json: true,
-        headers: { 'Authorization': this.token },
-        body: this.ingest,
+        body: {
+          commit: '0xdeadbeef',
+          manifest: this.ingest,
+        },
       })
         .then(r => expect(r))
         .catch((err) => h.assertStatus(err, 200));
