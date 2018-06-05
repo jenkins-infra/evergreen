@@ -320,6 +320,7 @@ class UpdateHooks {
         ],
         get: [],
         create: [
+          // XXX: Need admin local-auth hook
           dbtimestamp('createdAt'),
           this.defaultChannel,
         ],
