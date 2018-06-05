@@ -137,29 +137,6 @@ documentation has more information, as does the
 link:http://docs.sequelizejs.com/variable/index.html[Variable/Data Types reference].
 
 
-===== Database Debugging
-
-Debugging database queries can be done by enabling the
-link:http://sequelizejs.com[Sequelize]
-logging by setting the `DB_TRACING` environment variable, for example:
-
-[source,base]
-----
-DB_TRACING=true make check
-----
-
-In order to poke around in the development database being used for testing,
-after running `make migrate` you can inspect the docker-compose `db` instance
-with:
-
-[source,bash]
-----
-../tools/compose run --rm db psql -h db -U postgres -d evergreen_development
-----
-
-This will open up the `psql` command line client for PostgreSQL and should
-allow you to inspect and query the tables being used a development instance of
-the backend services.
 
 [[telemetry]]
 == Telemetry
@@ -212,3 +189,27 @@ debugger].
 . In the `services/` directory execute: `make debug-unit`
 . Select the appropriate **Remote Target** in the Chrome Dev Tools.
 . Start debugging!
+
+=== Database Debugging
+
+Debugging database queries can be done by enabling the
+link:http://sequelizejs.com[Sequelize]
+logging by setting the `DB_TRACING` environment variable, for example:
+
+[source,base]
+----
+DB_TRACING=true make check
+----
+
+In order to poke around in the development database being used for testing,
+after running `make migrate` you can inspect the docker-compose `db` instance
+with:
+
+[source,bash]
+----
+../tools/compose run --rm db psql -h db -U postgres -d evergreen_development
+----
+
+This will open up the `psql` command line client for PostgreSQL and should
+allow you to inspect and query the tables being used a development instance of
+the backend services.
