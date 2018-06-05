@@ -54,9 +54,18 @@ pipeline {
             }
         }
 
-        stage('Test jenkins/evergreen') {
-            steps {
-                sh 'make container-check'
+        stage('Test images') {
+            parallel {
+                stage('Base image') {
+                  steps {
+                        sh 'make base-container-check'
+                    }
+                }
+                stage('Docker Cloud image') {
+                  steps {
+                        sh 'make docker-cloud-container-check'
+                    }
+                }
             }
             post {
                 always {
