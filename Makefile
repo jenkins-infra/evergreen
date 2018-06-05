@@ -25,10 +25,17 @@ fix-formatting:
 
 container-prereqs: build/jenkins-support build/jenkins.sh
 
-container-check: shunit2 ./tests/tests.sh containers
+container-check: shunit2 ./tests/tests.sh containers base-container-check docker-cloud-container-check
+
+base-container-check:
 	$(MAKE) -C services dump
 	./tests/offline-tests.sh
 	./tests/tests.sh
+
+docker-cloud-container-check:
+	$(MAKE) -C services dump
+	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
+	ENVIRONMENT=docker-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	docker build -t ${JENKINS_CONTAINER}:latest .
