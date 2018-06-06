@@ -57,11 +57,13 @@ pipeline {
         stage('Test images') {
             parallel {
                 stage('Base image') {
+                  agent { label 'linux' }
                   steps {
                         sh 'make base-container-check'
                     }
                 }
                 stage('Docker Cloud image') {
+                  agent { label 'linux' }
                   steps {
                         sh 'make docker-cloud-container-check'
                     }
