@@ -133,6 +133,13 @@ class UpdateHooks {
             }
           },
           {
+            'url' : 'https://updates.jenkins.io/latest/durable-task.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : 'c4f964c6deb599816f6740ef674cb6dd2644d5f1b4e7b886a948f778ec5c189e'
+            }
+          },
+          {
             'url' : 'https://updates.jenkins.io/latest/essentials.hpi',
             'checksum' : {
               'type' : 'sha256',
@@ -225,6 +232,13 @@ class UpdateHooks {
           },
           {
             'url' : 'https://updates.jenkins.io/latest/workflow-cps.hpi',
+            'checksum' : {
+              'type' : 'sha256',
+              'signature' : '1861d2cd288f7cb81c404647b9bf4a863aea3625fad73d0c8a0930b7742c5eea'
+            }
+          },
+          {
+            'url' : 'https://updates.jenkins.io/latest/workflow-durable-task-step.hpi',
             'checksum' : {
               'type' : 'sha256',
               'signature' : '1861d2cd288f7cb81c404647b9bf4a863aea3625fad73d0c8a0930b7742c5eea'
