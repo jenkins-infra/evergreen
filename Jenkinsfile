@@ -59,19 +59,24 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                        sh 'make base-container-check'
-                    }
+                      sh 'make base-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                      }
+                  }
                 }
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
-                        sh 'make docker-cloud-container-check'
-                    }
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                      sh 'make docker-cloud-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                      }
+                  }
                 }
             }
         }
