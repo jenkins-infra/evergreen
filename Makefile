@@ -25,14 +25,16 @@ fix-formatting:
 
 container-prereqs: build/jenkins-support build/jenkins.sh
 
-container-check: shunit2 ./tests/tests.sh containers base-container-check docker-cloud-container-check
+container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh
 
-base-container-check:
+container-check: base-container-check docker-cloud-container-check
+
+base-container-check: containers container-check-prereqs
 	$(MAKE) -C services dump
 	./tests/offline-tests.sh
 	./tests/tests.sh
 
-docker-cloud-container-check:
+docker-cloud-container-check: containers container-check-prereqs
 	$(MAKE) -C services dump
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
 	ENVIRONMENT=docker-cloud ./tests/tests.sh
@@ -74,4 +76,4 @@ build/jenkins-support:
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs
+.PHONY: all check clean container container-check container-prereqs container-check-prereqs base-container-check docker-cloud-container-check
