@@ -40,6 +40,7 @@ docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
+	$(MAKE) -C client unit
 	docker build -t ${JENKINS_CONTAINER}:latest .
 	$(MAKE) -C environments $@
 
