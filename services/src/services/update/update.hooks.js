@@ -3,6 +3,7 @@ const dbtimestamp        = require('../../hooks/dbtimestamp');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const internalOnly       = require('../../hooks/internalonly');
 const authentication     = require('@feathersjs/authentication');
+const internalApi        = require('../../hooks/internalapi');
 
 class UpdateHooks {
   constructor() {
@@ -320,7 +321,7 @@ class UpdateHooks {
         ],
         get: [],
         create: [
-          // XXX: Need admin local-auth hook
+          internalApi,
           dbtimestamp('createdAt'),
           this.defaultChannel,
         ],

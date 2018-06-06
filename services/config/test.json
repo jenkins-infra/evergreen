@@ -6,6 +6,9 @@
     "default": 10,
     "max": 50
   },
-  "postgres": "postgres://postgres:grassisevergreener@db:5432/evergreen_test"
+  "postgres": "postgres://postgres:grassisevergreener@db:5432/evergreen_test",
+  "internalAPI" : {
+      "secret" : "this is really a poor secret"
+  }
 }
 

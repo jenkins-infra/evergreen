@@ -50,6 +50,7 @@ describe('Update service acceptance tests', () => {
   describe('PUT /update', () => {
     beforeEach(() => {
       this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
+      this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
     });
 
     it('should treat an empty `create` as invalid', () => {
@@ -57,7 +58,7 @@ describe('Update service acceptance tests', () => {
         url: h.getUrl('/update'),
         method: 'POST',
         json: true,
-        headers: { 'Authorization': this.token },
+        headers: { 'Authorization': this.settings.internalAPI.secret },
         body: {}
       })
         .then(r => expect(r))
@@ -68,14 +69,14 @@ describe('Update service acceptance tests', () => {
       return request({
         url: h.getUrl('/update'),
         method: 'POST',
-        // XXX: need a different authentication scheme
+        headers: { 'Authorization': this.settings.internalAPI.secret },
         json: true,
         body: {
           commit: '0xdeadbeef',
           manifest: this.ingest,
         },
       })
-        .then(r => expect(r))
+        .then(r => expect(r.id).toBeGreaterThan(0))
         .catch((err) => h.assertStatus(err, 200));
     });
   });
