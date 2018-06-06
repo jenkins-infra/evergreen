@@ -11,5 +11,8 @@
       "name": "evergreen-jwt",
       "secret": "an evergreen is a plant that has leaves throughout the year, always green",
       "expiresIn": "14d"
+  },
+  "internalAPI" : {
+      "secret" : "the API calls are coming from inside the house"
   }
 }

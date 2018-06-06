@@ -10,6 +10,8 @@ module.exports = function (app) {
   /*
    * Add headers onto all our request objects for use by feathers hooks
    *
+   * `context.params.headers`
+   *
    * This seems to be required in order to make bearer tokens with
    * @feathersjs/authentication-jwt work
    */
