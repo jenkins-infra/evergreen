@@ -11,8 +11,6 @@ const createService = require('feathers-sequelize');
 const createModel = require('../../models/version');
 const hooks = require('./versions.hooks');
 
-const ensureMatchingUUID = require('../../hooks/ensureuuid');
-
 module.exports = function (app) {
   const options = {
     name: 'versions',

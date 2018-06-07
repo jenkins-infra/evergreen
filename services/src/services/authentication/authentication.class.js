@@ -13,7 +13,7 @@ class Authentication {
    * This method assumes the validation of the information has already happened
    * in a hook
    */
-  async create(data, params) {
+  async create(data) {
     const app = this.options.app;
     return await app.passport.createJWT({
       uuid: data.uuid
