@@ -22,6 +22,8 @@ const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
 const sequelize      = require('./sequelize');
 
+const swagger          = require('feathers-swagger');
+const sequelizeSwagger = require('./sequelize-swagger');
 
 const settings = configuration();
 const app = express(feathers());
@@ -43,6 +45,14 @@ app.configure(express.rest());
 app.configure(socketio());
 app.configure(sequelize);
 
+app.configure(swagger({
+  docsPath: '/docs',
+  uiIndex: true,
+  info: {
+    title: 'Evergreen Backend APIs',
+    description: 'Backend APIs for evergreen-client to integrate with',
+  },
+}));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
@@ -64,6 +74,12 @@ else {
 }
 
 app.hooks(appHooks);
+
+/*
+ * Need to configure the sequelizeSwagger after the services have all been
+ * loaded and configured
+ */
+app.configure(sequelizeSwagger);
 
 /* Configure the authentication provider via @feathersjs/authentication-jwt and
  * passport-jwt (https://github.com/themikenicholson/passport-jwt)
