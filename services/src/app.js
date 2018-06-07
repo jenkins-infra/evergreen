@@ -46,7 +46,7 @@ app.configure(socketio());
 app.configure(sequelize);
 
 app.configure(swagger({
-  docsPath: '/docs',
+  docsPath: '/apidocs',
   uiIndex: true,
   info: {
     title: 'Evergreen Backend APIs',
