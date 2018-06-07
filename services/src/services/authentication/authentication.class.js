@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
-const logger = require('winston');
-
-/* Stub service class for an Authentication service to map instances in and out of
- * the application
+/*
+ * Stub service class for an Authentication service to map instances in and out
+ * of the application
  */
 class Authentication {
   constructor (options) {
@@ -15,7 +13,7 @@ class Authentication {
    * This method assumes the validation of the information has already happened
    * in a hook
    */
-  async create(data, params) {
+  async create(data) {
     const app = this.options.app;
     return await app.passport.createJWT({
       uuid: data.uuid
@@ -24,4 +22,3 @@ class Authentication {
 }
 
 module.exports = function(options) { return new Authentication(options); };
-module.exports.Authentication = Authentication;

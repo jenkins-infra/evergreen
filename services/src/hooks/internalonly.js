@@ -15,3 +15,8 @@ module.exports = function(context) {
 
   throw new errors.MethodNotAllowed(`The ${context.method} is not allowed on this service`);
 };
+
+module.exports.swagger = {
+  description: 'This method is guarded and only callable from within the Evergreen services application itself',
+  summary: 'Only available for internal service calls',
+};

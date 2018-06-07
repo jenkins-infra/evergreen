@@ -8,8 +8,13 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const connection = sequelizeClient.define('connections', {
-    uuid: DataTypes.UUID,
-    lastConnectedAt: DataTypes.DATE
+    uuid: {
+      type: DataTypes.UUID,
+      description: 'An evergreen-client\'s generated from registration UUID',
+    },
+    lastConnectedAt: {
+      type: DataTypes.DATE
+    },
   });
 
   // eslint-disable-next-line no-unused-vars
