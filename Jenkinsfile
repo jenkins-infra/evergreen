@@ -54,13 +54,29 @@ pipeline {
             }
         }
 
-        stage('Test jenkins/evergreen') {
-            steps {
-                sh 'make container-check'
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+        stage('Test images') {
+            parallel {
+                stage('Base image') {
+                  agent { label 'linux' }
+                  steps {
+                      sh 'make base-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                      }
+                  }
+                }
+                stage('Docker Cloud image') {
+                  agent { label 'linux' }
+                  steps {
+                      sh 'make docker-cloud-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                      }
+                  }
                 }
             }
         }

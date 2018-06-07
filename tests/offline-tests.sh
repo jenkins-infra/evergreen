@@ -23,22 +23,22 @@ test_docker_CLI_available() {
 
   # Check that not only something called docker can be found on the PATH
   # but is actually looking more like it using a specific command call
-  output=$( docker exec "$container_under_test" docker version 2>&1 )
-  assertEquals "error is expected since no Docker daemon $?" 1 $?
-
-  echo "$output" | \
-      grep "Cannot connect to the Docker daemon" > /dev/null
-  assertEquals "expected message about daemon unavailable" 0 $?
+  output=$( docker exec "$container_under_test" docker --version 2>&1 | cut -d ' ' -f 1,2 )
+  assertEquals "Command should succeed" 0 "$?"
+  assertEquals "Should start with 'Docker version ...'" "Docker version" "$output"
 }
 
 # JENKINS-50195
 test_not_root() {
   username=$( docker exec "$container_under_test" whoami )
-  assertEquals "jenkins" "$username"
+  assertEquals "root" "$username"
 
-  for process_user in $( docker exec "$container_under_test" ps -o user | grep -v USER)
+  docker exec "$container_under_test" ps -o user= -o comm= | \
+    grep -E 'jenkins|npm' | \
+    while read process_user
   do
-    assertEquals "jenkins" "$process_user"
+    currentUser=$( echo "$process_user" | awk '{print $1}' )
+    assertEquals "User for '$process_user' should be jenkins" "jenkins" "$currentUser"
   done
 }
 

@@ -2,16 +2,16 @@ NODE:=../tools/node
 
 all: check
 
-lint:
+lint: depends
 	$(NODE) npm run eslint
 
-fix-formatting:
+fix-formatting: depends
 	$(NODE) npm run eslint -- --fix
 
-check: depends lint
+check: lint
 	$(MAKE) unit
 
-unit:
+unit: depends
 	$(NODE) npm run jest
 
 depends: node_modules
@@ -23,7 +23,7 @@ node_modules: package-lock.json package.json
 		$(NODE) npm install; \
 	fi;
 
-run: run-services
+run: depends run-services
 	EVERGREEN_HOME=/tmp/evergreen-home \
 		EVERGREEN_ENDPOINT=http://127.0.0.1:3030 \
 		$(NODE) npm run client

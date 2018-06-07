@@ -43,21 +43,6 @@ test_no_node_error_in_logs() {
     endSkipping
 }
 
-# JENKINS-49864
-test_docker_CLI_available() {
-  docker exec "$container_under_test" which docker > /dev/null
-  assertEquals "docker found in the PATH" 0 $?
-
-  # Check that not only something called docker can be found on the PATH
-  # but is actually looking more like it using a specific command call
-  output=$( docker exec "$container_under_test" docker version 2>&1 )
-  assertEquals "error is expected since no Docker daemon $?" 1 $?
-
-  echo "$output" | \
-      grep "Cannot connect to the Docker daemon" > /dev/null
-  assertEquals "expected message about daemon unavailable" 0 $?
-}
-
 # JENKINS-49861
 test_no_executor() {
   numExecutors=$( docker exec "$container_under_test" cat "$JENKINS_HOME/config.xml" | \
@@ -152,7 +137,7 @@ test_logs_are_propagated() {
 
 # Test everything under /evergreen is owned by the jenkins user
 test_evergreen_home_is_fully_owned_by_jenkins_user() {
-  result=$( docker exec "$container_under_test" find . \! -user jenkins -print )
+  result=$( docker exec "$container_under_test" find . \! -user jenkins \! -name "supervisor*" -print )
   assertEquals "Some files are not owned by 'jenkins', should not happen!" "" "$result"
 }
 
@@ -165,6 +150,20 @@ test_error_telemetry_service_is_secured() {
   assertEquals "command should succeed" 0 "$?"
   assertEquals "Service should return 401" 401 "$result"
 
+}
+
+# JENKINS-49866
+test_docker_available_as_jenkins_user() {
+
+  [[ "$ENVIRONMENT" = "docker-cloud" ]] || startSkipping
+
+  $COMPOSE exec -T instance bash -c 'su - jenkins -c "DOCKER_HOST=localhost:2375 /usr/local/bin/docker version"' > /dev/null
+  assertEquals "command should succeed" 0 "$?"
+
+  $COMPOSE exec -T instance bash -c 'su - jenkins -c "DOCKER_HOST=localhost:2375 /usr/local/bin/docker run hello-world"' > /dev/null
+  assertEquals "docker run hello-world" 0 "$?"
+
+  [[ "$ENVIRONMENT" = "docker-cloud" ]] || endSkipping
 }
 
 . ./shunit2/shunit2
