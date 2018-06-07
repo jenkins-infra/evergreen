@@ -14,7 +14,14 @@ module.exports = function (app) {
     Model: app.get('models').instance
   };
 
-  app.use('/status', createService(options));
+  let service = createService(options);
+  service.docs = {
+    description: 'Manage and retrieve Update Levels for Evergreen clients',
+    create: {
+      description: 'Create a new Update Level based off an ingest.yaml',
+    },
+  };
+  app.use('/status', service);
 
   /* Since status.hooks is putting moer than just before/after/error onto
    * module.exports, we need to make sure that we're not pushing things which

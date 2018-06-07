@@ -1,6 +1,6 @@
 // Initializes the `authentication` service on the path `/authentication`
 
-const createAuth = require('./authentication.class');
+const createService = require('./authentication.class');
 const hooks = require('./authentication.hooks');
 
 module.exports = function(app) {
@@ -10,6 +10,7 @@ module.exports = function(app) {
     sequelize: app.get('sequelizeClient')
   };
 
-  app.use('/authentication', createAuth(options));
+  let service = createService(options);
+  app.use('/authentication', service);
   app.service('authentication').hooks(hooks.getHooks());
 };

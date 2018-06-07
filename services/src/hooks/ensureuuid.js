@@ -43,3 +43,17 @@ module.exports = function(context) {
 
   return context;
 };
+
+/*
+ * Describe the parameter requirements for this hook
+ */
+module.exports.swagger = {
+  query: {
+    name: 'uuid',
+    description: 'The client\'s UUID',
+    required: true,
+    schema: {
+      type: 'string',
+    },
+  },
+};

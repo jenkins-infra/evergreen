@@ -51,7 +51,11 @@ if (process.env.NODE_ENV != 'production') {
     uiIndex: true,
     info: {
       title: 'Evergreen Backend APIs',
-      description: 'Backend APIs for evergreen-client to integrate with',
+      description:
+`These backend APIs are primarily for the \`evergreen-client\` to consume. There are a few scattered APIs which are required for the Evergreen distribution system's behind-the-scenes automated processes as well.
+
+For more details and reasoning behind these APIs, please refer to the [Evergreen design documents](https://github.com/jenkins-infra/evergreen#design-documents) as well as this API documentation.
+`,
     },
   }));
 }

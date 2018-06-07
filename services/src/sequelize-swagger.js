@@ -54,6 +54,7 @@ function getType(type) {
   case 'DATEONLY':
   case 'TIME':
   case 'NOW':
+  case 'UUID':
     return 'string';
   case 'INTEGER':
   case 'BIGINT':

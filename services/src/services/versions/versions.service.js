@@ -11,12 +11,18 @@ const createService = require('feathers-sequelize');
 const createModel = require('../../models/version');
 const hooks = require('./versions.hooks');
 
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
+
 module.exports = function (app) {
   const options = {
     name: 'versions',
     Model: createModel(app)
   };
 
-  app.use('/versions', createService(options));
+  let service = createService(options);
+  service.docs = {
+    description: 'Store a given instance\'s core and plugin version information',
+  };
+  app.use('/versions', service);
   app.service('versions').hooks(hooks.getHooks());
 };
