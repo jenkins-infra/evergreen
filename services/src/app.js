@@ -45,14 +45,16 @@ app.configure(express.rest());
 app.configure(socketio());
 app.configure(sequelize);
 
-app.configure(swagger({
-  docsPath: '/apidocs',
-  uiIndex: true,
-  info: {
-    title: 'Evergreen Backend APIs',
-    description: 'Backend APIs for evergreen-client to integrate with',
-  },
-}));
+if (process.env.NODE_ENV != 'production') {
+  app.configure(swagger({
+    docsPath: '/apidocs',
+    uiIndex: true,
+    info: {
+      title: 'Evergreen Backend APIs',
+      description: 'Backend APIs for evergreen-client to integrate with',
+    },
+  }));
+}
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
