@@ -57,6 +57,11 @@ migrate: depends
 run: migrate
 	$(COMPOSE) up node
 
+debug-run:
+	$(COMPOSE) run -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json \
+		--rm -p 9229:9229 -p 3030:3030 node \
+		node --inspect-brk=0.0.0.0:9229 src/
+
 run-detach: migrate
 	$(COMPOSE) up -d node
 
