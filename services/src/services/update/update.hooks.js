@@ -1,10 +1,18 @@
 
-const authentication = require('@feathersjs/authentication');
+const dbtimestamp        = require('../../hooks/dbtimestamp');
+const ensureMatchingUUID = require('../../hooks/ensureuuid');
+const internalOnly       = require('../../hooks/internalonly');
+const authentication     = require('@feathersjs/authentication');
+const internalApi        = require('../../hooks/internalapi');
 
 class UpdateHooks {
   constructor() {
   }
 
+  /*
+   * Scope the find query to the appopriate update level for the client
+   * requesting an update
+   */
   scopeFindQuery(context) {
     let level = 0;
     let channel = 'general';
@@ -54,6 +62,9 @@ class UpdateHooks {
     return context;
   }
 
+  /*
+   * XXX: This is obviously terrible and hard-coded
+   */
   terribleHardCodedDefault(context) {
     if (context.result.length == 0) {
       // TODO set 304 Not Modified
@@ -289,21 +300,36 @@ class UpdateHooks {
     return context;
   }
 
+  /*
+   * For create() methods, add the default `channel` to the data which will be
+   * "general" until richer channel management is added
+   */
+  defaultChannel(context) {
+    context.data.channel = 'general';
+    return context;
+  }
+
   getHooks() {
     return {
       before: {
         all: [
-          authentication.hooks.authenticate(['jwt'])
         ],
         find: [
-          // ensureMatchingUUID,
+          authentication.hooks.authenticate(['jwt']),
+          ensureMatchingUUID,
           this.scopeFindQuery,
         ],
         get: [],
-        create: [],
+        create: [
+          internalApi,
+          dbtimestamp('createdAt'),
+          this.defaultChannel,
+        ],
         update: [],
         patch: [],
-        remove: []
+        remove: [
+          internalOnly,
+        ],
       },
 
       after: {

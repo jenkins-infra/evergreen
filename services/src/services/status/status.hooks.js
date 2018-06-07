@@ -3,6 +3,7 @@
  */
 
 const authentication     = require('@feathersjs/authentication');
+const dbtimestamp        = require('../../hooks/dbtimestamp');
 const internalOnly       = require('../../hooks/internalonly');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 
@@ -24,18 +25,21 @@ class StatusHooks {
         ],
         create: [
           ensureMatchingUUID,
+          dbtimestamp('createdAt'),
           module.exports.defaultUpdateLevel,
           module.exports.pruneQueryParams,
         ],
 
         update: [
           ensureMatchingUUID,
+          dbtimestamp('updatedAt'),
         ],
         patch: [
           ensureMatchingUUID,
+          dbtimestamp('updatedAt'),
         ],
         remove: [
-          internalOnly
+          internalOnly,
         ]
       },
       after: {},
@@ -73,12 +77,12 @@ class StatusHooks {
     const updates = context.app.service('update');
     const result = await updates.find();
 
-    if (result.size == 0) {
+    if (Object.keys(result).length === 0) {
       throw new Error('Failed to find the latest `general` updates for instance creation');
     }
     /*
-      * The result returned is a paginated object
-      */
+     * The result returned is a paginated object
+     */
     context.data.updateId = result.meta.level;
     return context;
   }

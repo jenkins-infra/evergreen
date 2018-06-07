@@ -82,4 +82,9 @@ app.configure(jwt({
   }
 }));
 
+/*
+ * Override the internalAPI secret if it has been provided by the environment
+ */
+app.get('internalAPI').secret = process.env.EVERGREEN_INTERNAL_API_SECRET || app.get('internalAPI').secret;
+
 module.exports = app;

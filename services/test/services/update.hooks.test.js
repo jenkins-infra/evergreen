@@ -31,4 +31,16 @@ describe('update service hooks', () => {
       expect(query.id.$gt).toBe(5);
     });
   });
+
+  describe('defaultChannel()', () => {
+    let context = {
+      params: {},
+      data: {},
+    };
+
+    it('should add the default `channel` to the context.data', () => {
+      expect(hooks.defaultChannel(context)).toBe(context);
+      expect(context.data.channel).toBe('general');
+    });
+  });
 });

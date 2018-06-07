@@ -1,4 +1,5 @@
 const authentication     = require('@feathersjs/authentication');
+const dbtimestamp        = require('../../hooks/dbtimestamp');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const hash               = require('object-hash');
 
@@ -16,6 +17,7 @@ class VersionsHooks {
         get: [],
         create: [
           ensureMatchingUUID,
+          dbtimestamp('createdAt'),
           this.computeManifestChecksum,
         ],
         update: [],

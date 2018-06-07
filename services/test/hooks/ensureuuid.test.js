@@ -1,42 +1,60 @@
-const assert             = require('assert');
 const errors             = require('@feathersjs/errors');
 const ensureMatchingUUID = require('../../src/hooks/ensureuuid');
 
 describe('ensureuuid hook', () => {
-  let context = {
-    params: {
-      provider: 'rest',
-    },
-    data: {},
-  };
+  beforeEach(() => {
+    this.context = {
+      params: {
+        provider: 'rest',
+        payload: {},
+        query: {},
+      },
+      data: {},
+    };
+  });
 
   it('should fail if the request does not include a UUID', () => {
-    try {
-      assert.fail(ensureMatchingUUID(context));
-    }
-    catch (err) {
-      assert.equal(err.name, errors.BadRequest.name);
-    }
+    expect(() => {
+      ensureMatchingUUID(this.context);
+    }).toThrow(errors.BadRequest);
   });
 
   it('should fail if the JWT uuid and the given UUID are identical', () => {
-    context.data.uuid = 'who i want to be';
-    context.params.payload = { uuid: 'who i be' };
-    try {
-      assert.fail(ensureMatchingUUID(context));
-    }
-    catch (err) {
-      assert.equal(err.name, errors.NotAuthenticated.name);
-    }
+    this.context.data.uuid = 'who i want to be';
+    this.context.params.payload = { uuid: 'who i be' };
+    expect(() => {
+      ensureMatchingUUID(this.context);
+    }).toThrow(errors.NotAuthenticated);
   });
 
   describe('for internal service calls', () => {
     beforeEach(() => {
-      delete context.params.provider;
+      delete this.context.params.provider;
     });
 
     it('should return successfully', () => {
-      assert.ok(ensureMatchingUUID(context));
+      expect(ensureMatchingUUID(this.context));
+    });
+  });
+
+  describe('for GET methods which use query parameters', () => {
+    beforeEach(() => {
+      this.context.method = 'get';
+    });
+
+    it('should fail with an omitted query parameter', () => {
+      expect(() => {
+        ensureMatchingUUID(this.context);
+      }).toThrow(errors.BadRequest);
+    });
+
+    it('should allow the request with a matching `uuid` query param', () => {
+      let uuid = 'jest-uuid';
+      /* This is the property name that JWT would extract to */
+      this.context.params.payload.uuid = uuid;
+      this.context.params.query = { uuid: uuid };
+
+      expect(ensureMatchingUUID(this.context));
     });
   });
 });

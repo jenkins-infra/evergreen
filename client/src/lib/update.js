@@ -32,6 +32,7 @@ class Update {
     return api.find({
       headers: { Authorization: this.token },
       query: {
+        uuid: this.uuid,
         level: this.getCurrentLevel(),
       }
     });
