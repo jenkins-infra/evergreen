@@ -10,7 +10,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./services/initdb.d:/docker-entrypoint-initdb.d
+      - ../services/initdb.d:/docker-entrypoint-initdb.d
 
   backend:
     image: jenkinsciinfra/evergreen-backend
