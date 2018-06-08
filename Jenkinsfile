@@ -50,9 +50,13 @@ pipeline {
 
         stage('Build jenkins/evergreen') {
             steps {
-              dir('distribution') {
-                sh 'make container'
-              }
+                sh 'make -C distribution container'
+            }
+        }
+
+        stage('Build backend container') {
+            steps {
+                sh 'make -C services container'
             }
         }
 
@@ -61,13 +65,11 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                    dir('distribution') {
-                      sh 'make base-container-check'
-                    }
+                      sh 'make -C distribution base-container-check'
                   }
                   post {
                       always {
-                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
                   }
                 }
