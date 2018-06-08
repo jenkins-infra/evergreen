@@ -402,7 +402,9 @@ class UpdateHooks {
           ensureMatchingUUID,
           this.scopeFindQuery,
         ],
-        get: [],
+        get: [
+          authentication.hooks.authenticate(['jwt']),
+        ],
         create: [
           internalApi,
           dbtimestamp('createdAt'),

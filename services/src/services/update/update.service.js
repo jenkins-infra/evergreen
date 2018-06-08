@@ -1,7 +1,6 @@
-// Initializes the `update` service on path `/update`
-const createService = require('feathers-sequelize');
-const createModel = require('../../models/update');
-const hooks = require('./update.hooks');
+const createService = require('./update.class');
+const hooks         = require('./update.hooks');
+const createModel   = require('../../models/update');
 
 module.exports = function (app) {
   const Model = createModel(app);

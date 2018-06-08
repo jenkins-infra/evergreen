@@ -19,14 +19,11 @@ describe('Update service acceptance tests', () => {
     this.uuid = uuid;
   });
 
-  describe('GET /update', () => {
+  describe('GET /update/:uuid', () => {
     it('should return 400 when called without anything', () => {
       return request({
-        url: h.getUrl('/update'),
+        url: h.getUrl(`/update/${this.uuid}`),
         headers: { 'Authorization': this.token },
-        qs: {
-          uuid: this.uuid,
-        },
         json: true
       })
         .then(r => expect(r))
@@ -36,10 +33,9 @@ describe('Update service acceptance tests', () => {
     describe('with query parameters', () => {
       it('should return an update level', () => {
         return request({
-          url: h.getUrl('/update'),
+          url: h.getUrl(`/update/${this.uuid}`),
           qs: {
             level: 1,
-            uuid: this.uuid,
           },
           headers: { 'Authorization': this.token },
           json: true
