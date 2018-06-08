@@ -37,9 +37,9 @@ describe('ensureuuid hook', () => {
     });
   });
 
-  describe('for GET methods which use query parameters', () => {
+  describe('for find methods which use query parameters', () => {
     beforeEach(() => {
-      this.context.method = 'get';
+      this.context.method = 'find';
     });
 
     it('should fail with an omitted query parameter', () => {
@@ -66,6 +66,29 @@ describe('ensureuuid hook', () => {
       expect(() => {
         expect(ensureMatchingUUID(this.context));
       }).toThrow(errors.NotAuthenticated);
+    });
+  });
+
+  describe('for get methods which use the uuid as an id', () => {
+    let uuid = 'jest-uuid';
+
+    beforeEach(() => {
+      this.context.method = 'get';
+      /* This is the property name that JWT would extract to */
+      this.context.params.payload.uuid = uuid;
+    });
+
+    it('should be NotAuthenticated when the `id` doesn\'t match the JWT', () => {
+      this.context.id = 'pickles';
+
+      expect(() => {
+        expect(ensureMatchingUUID(this.context));
+      }).toThrow(errors.NotAuthenticated);
+    });
+
+    it('should allow the request when the `id` matches', () => {
+      this.context.id = uuid;
+      expect(ensureMatchingUUID(this.context)).toBe(this.context);
     });
   });
 });
