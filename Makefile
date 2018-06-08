@@ -5,3 +5,7 @@ clean:
 lint:
 	$(MAKE) -C distribution $@
 	$(MAKE) -C services $@
+
+check:
+	$(MAKE) -C distribution $@
+	$(MAKE) -C services $@
