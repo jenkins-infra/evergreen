@@ -2,7 +2,10 @@
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
 current_directory=$(dirname "$0")
+# TODO: use the $( cd blah ; ... ) trick to un-relativize path below
 export PATH="$current_directory/../../tools:$PATH"
+
+echo "Debugging: PATH=***$PATH***"
 
 JENKINS_HOME=to_override
 
