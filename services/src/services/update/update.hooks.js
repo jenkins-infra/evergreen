@@ -397,13 +397,12 @@ class UpdateHooks {
         all: [
         ],
         find: [
-          authentication.hooks.authenticate(['jwt']),
-          this.preservePayload,
-          ensureMatchingUUID,
+          internalOnly,
           this.scopeFindQuery,
         ],
         get: [
           authentication.hooks.authenticate(['jwt']),
+          ensureMatchingUUID,
         ],
         create: [
           internalApi,
@@ -417,12 +416,7 @@ class UpdateHooks {
         ],
       },
 
-      after: {
-        find: [
-          this.queryVersionsFor,
-          this.terribleHardCodedDefault,
-        ],
-      },
+      after: {},
       error: {}
     };
   }

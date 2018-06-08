@@ -2,6 +2,8 @@ const createService = require('./update.class');
 const hooks         = require('./update.hooks');
 const createModel   = require('../../models/update');
 
+const internalOnly  = require('../../hooks/internalonly');
+
 module.exports = function (app) {
   const Model = createModel(app);
 
@@ -17,6 +19,11 @@ module.exports = function (app) {
     create: {
       description: 'Create a new Update Level based off an ingest.yaml',
     },
+    get: {
+      description: 'Retrieve the computed Update Manifest for the given evergreen-client',
+    },
+    find: internalOnly.swagger,
+    remove: internalOnly.swagger,
   };
   app.use('/update', service);
   app.service('update').hooks(hooks.getHooks());
