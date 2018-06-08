@@ -9,7 +9,7 @@ class Update extends FeathersSequelize.Service {
     super(options);
 
     /*
-     * Undefining some APIs which we don't want/need
+     * Undefining some APIs which we don't want/need.
      */
     this.update = undefined;
     this.patch = undefined;

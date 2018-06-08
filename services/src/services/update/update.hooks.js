@@ -416,7 +416,11 @@ class UpdateHooks {
         ],
       },
 
-      after: {},
+      after: {
+        find: [
+          this.terribleHardCodedDefault,
+        ],
+      },
       error: {}
     };
   }
