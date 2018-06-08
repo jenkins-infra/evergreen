@@ -61,6 +61,26 @@ class UpdateHooks {
     return context;
   }
 
+  preservePayload(context) {
+    context.authPayload = context.params.payload;
+    return context;
+  }
+
+  /*
+   * This hook method will look up the latest versions record for the
+   * requester's uuid and augment context.data with it
+   */
+  queryVersionsFor(context) {
+    if (context.params.provider != 'rest') {
+      // We can safely bail uot early for internal calls for now
+      return context;
+    }
+    const versions = context.app.service('versions');
+    const uuid = context.authPayload.uuid;
+    context.latestVersion = versions.find({ uuid: uuid });
+    return context;
+  }
+
   /*
    * XXX: This is obviously terrible and hard-coded
    */
@@ -378,6 +398,7 @@ class UpdateHooks {
         ],
         find: [
           authentication.hooks.authenticate(['jwt']),
+          this.preservePayload,
           ensureMatchingUUID,
           this.scopeFindQuery,
         ],
@@ -396,6 +417,7 @@ class UpdateHooks {
 
       after: {
         find: [
+          this.queryVersionsFor,
           this.terribleHardCodedDefault,
         ],
       },

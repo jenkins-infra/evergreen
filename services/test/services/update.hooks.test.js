@@ -43,4 +43,25 @@ describe('update service hooks', () => {
       expect(context.data.channel).toBe('general');
     });
   });
+
+  describe('queryVersionsFor(context)', () => {
+    let uuid = '0xdeadbeef';
+    let version = { uuid: uuid };
+    let context = {
+      authPayload: { uuid: uuid },
+      params: {
+        provider: 'rest',
+        query: { uuid: uuid },
+      },
+      app: {
+        service: () => { return { find: () => { return version; }, }; }
+      },
+    };
+
+    it('should return the context with a latestVersion', () => {
+      let result = hooks.queryVersionsFor(context);
+      expect(result).toBe(context);
+      expect(context.latestVersion).toBe(version);
+    });
+  });
 });
