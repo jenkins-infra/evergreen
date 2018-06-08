@@ -56,5 +56,16 @@ describe('ensureuuid hook', () => {
 
       expect(ensureMatchingUUID(this.context));
     });
+
+    it('should fail without matching token and query param `uuid`s', () => {
+      let uuid = 'jest-uuid';
+      /* This is the property name that JWT would extract to */
+      this.context.params.payload.uuid = uuid;
+      this.context.params.query = { uuid: 'pickles', };
+
+      expect(() => {
+        expect(ensureMatchingUUID(this.context));
+      }).toThrow(errors.NotAuthenticated);
+    });
   });
 });

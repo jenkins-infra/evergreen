@@ -24,6 +24,9 @@ describe('Update service acceptance tests', () => {
       return request({
         url: h.getUrl('/update'),
         headers: { 'Authorization': this.token },
+        qs: {
+          uuid: this.uuid,
+        },
         json: true
       })
         .then(r => expect(r))
