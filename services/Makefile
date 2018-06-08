@@ -44,7 +44,7 @@ docs: depends
 
 migrate: depends
 	$(COMPOSE) up -d db
-	../scripts/check-psql
+	./scripts/check-psql
 	for env in "test" "development"; do \
 		echo ">> Preparing $$env database"; \
 		$(COMPOSE) run --rm db \
@@ -72,7 +72,6 @@ dump: stop migrate
 	$(COMPOSE) run --rm db pg_dump \
 		--inserts \
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
-
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .

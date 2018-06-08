@@ -2,7 +2,7 @@
 # Note: would have used set -euo pipefail, but ./shunit2 unfortunately fails hard with this :-(.
 
 current_directory=$(dirname "$0")
-export PATH="$current_directory/../tools:$PATH"
+export PATH="$current_directory/../../tools:$PATH"
 
 JENKINS_HOME=to_override
 

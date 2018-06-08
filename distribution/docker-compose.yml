@@ -14,7 +14,7 @@ services:
 
   backend:
     image: jenkinsciinfra/evergreen-backend
-    build: ./services
+    build: ../services
     environment:
       - 'PGPASSWORD=grassisevergreener'
     ports:

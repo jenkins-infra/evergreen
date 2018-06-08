@@ -6,7 +6,7 @@
 # If we cannot find some basic tables we expect in a few tries, exit non-zero
 
 
-REPO_ROOT=$(dirname "${BASH_SOURCE[0]}")/../
+REPO_ROOT=$(dirname "${BASH_SOURCE[0]}")/../..
 
 for i in $(seq 1 5); do
     ${REPO_ROOT}/tools/compose run --rm db psql -h db -U postgres \

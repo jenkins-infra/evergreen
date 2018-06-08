@@ -25,9 +25,9 @@ pipeline {
 
         stage('Verifications') {
             parallel {
-                stage('Client') {
+                stage('Evergreen Client') {
                     steps {
-                        sh 'make -C client check'
+                        sh 'make -C distribution/client check'
                     }
                     post {
                         success {
@@ -35,7 +35,7 @@ pipeline {
                         }
                     }
                 }
-                stage('Services') {
+                stage('Backend Services') {
                     steps {
                         sh 'make -C services check'
                     }
@@ -50,7 +50,9 @@ pipeline {
 
         stage('Build jenkins/evergreen') {
             steps {
-              sh 'make container'
+              dir('distribution') {
+                sh 'make container'
+              }
             }
         }
 
@@ -59,7 +61,9 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
+                    dir('distribution') {
                       sh 'make base-container-check'
+                    }
                   }
                   post {
                       always {
@@ -70,7 +74,9 @@ pipeline {
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
+                    dir('distribution') {
                       sh 'make docker-cloud-container-check'
+                    }
                   }
                   post {
                       always {
@@ -90,7 +96,9 @@ pipeline {
                 withCredentials([[$class: 'ZipFileBinding',
                            credentialsId: 'jenkins-dockerhub',
                                 variable: 'DOCKER_CONFIG']]) {
-                    sh 'make publish'
+                    dir('distribution') {
+                      sh 'make publish'
+                    }
                 }
             }
         }

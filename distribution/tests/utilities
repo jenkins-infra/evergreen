@@ -1,6 +1,6 @@
 container_under_test_prefix=evergreen-testing
 container_under_test=$container_under_test_prefix-$RANDOM
-COMPOSE="./tools/compose"
+COMPOSE="../tools/compose"
 
 RED='\033[0;31m'
 NC='\033[0m' # No Color
