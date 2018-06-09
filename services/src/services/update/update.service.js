@@ -8,6 +8,7 @@ module.exports = function (app) {
   const Model = createModel(app);
 
   const options = {
+    app: app,
     name: 'update',
     Model,
   };
