@@ -25,17 +25,17 @@ pipeline {
 
         stage('Verifications') {
             parallel {
-                stage('Client') {
+                stage('Evergreen Client') {
                     steps {
-                        sh 'make -C client check'
+                        sh 'make -C distribution/client check'
                     }
                     post {
                         success {
-                            archiveArtifacts 'client/coverage/**'
+                            archiveArtifacts 'distribution/client/coverage/**'
                         }
                     }
                 }
-                stage('Services') {
+                stage('Backend Services') {
                     steps {
                         sh 'make -C services check'
                     }
@@ -50,7 +50,13 @@ pipeline {
 
         stage('Build jenkins/evergreen') {
             steps {
-              sh 'make container'
+                sh 'make -C distribution container'
+            }
+        }
+
+        stage('Build backend container') {
+            steps {
+                sh 'make -C services container'
             }
         }
 
@@ -59,22 +65,24 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                      sh 'make base-container-check'
+                      sh 'make -C distribution base-container-check'
                   }
                   post {
                       always {
-                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
                   }
                 }
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
+                    dir('distribution') {
                       sh 'make docker-cloud-container-check'
+                    }
                   }
                   post {
                       always {
-                          archiveArtifacts artifacts: 'build/tests-run*/**.log*'
+                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
                   }
                 }
@@ -90,7 +98,9 @@ pipeline {
                 withCredentials([[$class: 'ZipFileBinding',
                            credentialsId: 'jenkins-dockerhub',
                                 variable: 'DOCKER_CONFIG']]) {
-                    sh 'make publish'
+                    dir('distribution') {
+                      sh 'make publish'
+                    }
                 }
             }
         }

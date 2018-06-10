@@ -61,7 +61,7 @@
   "jest": {
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
-        "<rootDir>/src/sequelize-swagger.js"
+      "<rootDir>/src/sequelize-swagger.js"
     ],
     "coverageReporters": [
       "json",

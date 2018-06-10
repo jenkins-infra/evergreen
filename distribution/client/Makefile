@@ -1,4 +1,4 @@
-NODE:=../tools/node
+NODE:=../../tools/node
 
 all: check
 
