@@ -31,7 +31,7 @@ pipeline {
                     }
                     post {
                         success {
-                            archiveArtifacts 'client/coverage/**'
+                            archiveArtifacts 'distribution/client/coverage/**'
                         }
                     }
                 }
