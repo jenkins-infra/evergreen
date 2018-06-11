@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn('instances', 'flavor',
       {
-        defaultValue: 'docker',
+        defaultValue: 'docker-cloud',
         allowNull: false,
         type: Sequelize.STRING
       });
