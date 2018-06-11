@@ -47,3 +47,11 @@ environments:
         checksum:
           type: 'sha256'
           signature: '246c298e9f9158f21b931e9781555ae83fcd7a46e509522e3770b9d5bdc88628'
+  docker-cloud:
+    plugins:
+      - groupId: 'io.jenkins.docker'
+        artifactId: 'docker-plugin'
+        url: 'https://repo.jenkins-ci.org/incrementals/io/jenkins/docker/docker-plugin/1.1.5-rc591.93ebeb1fd9ab/docker-plugin-1.1.5-rc591.93ebeb1fd9ab.hpi'
+        checksum:
+          type: 'sha256'
+          signature: '246c298e9f9158f21b931e9781555ae83fcd7a46e509522e3770b9d5bdc88628'
