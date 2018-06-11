@@ -19,33 +19,6 @@ describe('Update service acceptance tests', () => {
     this.uuid = uuid;
   });
 
-  describe('GET /update/:uuid', () => {
-    it('should return 400 when called without anything', () => {
-      return request({
-        url: h.getUrl(`/update/${this.uuid}`),
-        headers: { 'Authorization': this.token },
-        json: true
-      })
-        .then(r => expect(r))
-        .catch((err) => h.assertStatus(err, 400));
-    });
-
-    describe('with query parameters', () => {
-      it('should return an update level', () => {
-        return request({
-          url: h.getUrl(`/update/${this.uuid}`),
-          qs: {
-            level: 1,
-          },
-          headers: { 'Authorization': this.token },
-          json: true
-        })
-          .then(r => expect(r))
-          .catch((err) => h.assertStatus(err, 200));
-      });
-    });
-  });
-
   describe('PUT /update', () => {
     beforeEach(() => {
       this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
