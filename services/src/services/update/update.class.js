@@ -19,14 +19,13 @@ class Update extends FeathersSequelize.Service {
   }
 
   async get(id, params) {
-    const versions = this.app.service('versions');
-    const latestVersion = await versions.find({
+    const instance = await this.app.service('status').get(id);
+    let latestVersion = await this.app.service('versions').find({
       query: {
         uuid: id,
         $limit: 1
       },
     });
-    const instance = await this.app.service('status').get(id);
 
     let findParams = {
       query: params.query, /* copy the original query parameters over */
@@ -48,6 +47,14 @@ class Update extends FeathersSequelize.Service {
           ],
         },
       };
+
+      if (latestVersion.length === 1) {
+        latestVersion = latestVersion[0];
+
+        if (latestVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
+          computed.core = {};
+        }
+      }
       this.prepareManifestFromRecord(record, computed);
       /*
        * Last but not least, make sure that any flavor specific updates are

@@ -90,8 +90,47 @@ describe('versions/updates interaction acceptance tests', () => {
           foundPlugin = true;
         }
       });
-
       expect(foundPlugin).toBeTruthy();
+    });
+  });
+
+  describe('fetching updates for a client with `versions` records', () => {
+
+    beforeEach(async () => {
+      /*
+       * First we need to publish a versions
+       */
+      let versions = {
+        schema: 1,
+        container: {},
+        client: {},
+        jenkins: {
+          core: this.ingest.core.checksum.signature,
+          plugins: {
+          },
+        },
+      };
+      return request({
+        url: h.getUrl('/versions'),
+        method: 'POST',
+        headers: { 'Authorization': this.token },
+        json: true,
+        body: {
+          uuid: this.uuid,
+          manifest: versions
+        }
+      });
+    });
+
+    it('should not be given that core version as an update', async () => {
+      let response = await request({
+        url: h.getUrl(`/update/${this.uuid}`),
+        headers: { 'Authorization': this.token },
+        json: true
+      });
+
+      expect(response).toBeTruthy();
+      expect(response).toHaveProperty('core', {});
     });
   });
 });
