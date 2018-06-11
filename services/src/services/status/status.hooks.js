@@ -75,15 +75,20 @@ class StatusHooks {
    */
   async defaultUpdateLevel(context) {
     const updates = context.app.service('update');
-    const result = await updates.find();
+    const records = await updates.find({
+      query: {
+        $limit: 1,
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    });
 
-    if (Object.keys(result).length === 0) {
+    if (records.length === 0) {
       throw new Error('Failed to find the latest `general` updates for instance creation');
     }
-    /*
-     * The result returned is a paginated object
-     */
-    context.data.updateId = result.meta.level;
+
+    context.data.updateId = records[0].id;
     return context;
   }
 }
