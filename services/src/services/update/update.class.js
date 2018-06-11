@@ -48,25 +48,57 @@ class Update extends FeathersSequelize.Service {
           ],
         },
       };
-
-      record.manifest.plugins.forEach((plugin) => {
-        computed.plugins.updates.push({
-          url: plugin.url,
-          checksum: plugin.checksum,
-        });
-      });
-
+      this.prepareManifestFromRecord(record, computed);
       /*
        * Last but not least, make sure that any flavor specific updates are
        * assigned to the computed update manifest
        */
-      let flavor = record.manifest.environments[instance.flavor];
-      if (flavor) {
-        Object.assign(computed.plugins.updates, flavor);
-      }
-
+      this.prepareManifestWithFlavor(instance, record, computed);
       return computed;
     });
+  }
+
+  /*
+   * Copy the appropriate members from an ingested update level record to the
+   * computed update manifest which should be sent to the client
+   */
+  prepareManifestFromRecord(record, computedManifest) {
+    /*
+     * When dealing with records which have empty manifests, we can just bail
+     * out early.
+     */
+    if (!record.manifest) {
+      return computedManifest;
+    }
+
+    record.manifest.plugins.forEach((plugin) => {
+      computedManifest.plugins.updates.push({
+        url: plugin.url,
+        checksum: plugin.checksum,
+      });
+    });
+    return computedManifest;
+  }
+
+  /*
+   * Prepares the manifest with the updates specific to the given instance's
+   * flavor
+   */
+  prepareManifestWithFlavor(instance, record, computedManifest) {
+    if ((!instance.flavor) || (!record.manifest)) {
+      return computedManifest;
+    }
+
+    let flavor = record.manifest.environments[instance.flavor];
+    if (flavor) {
+      flavor.plugins.forEach((plugin) => {
+        computedManifest.plugins.updates.push({
+          url: plugin.url,
+          checksum: plugin.checksum,
+        });
+      });
+    }
+    return computedManifest;
   }
 
   /*

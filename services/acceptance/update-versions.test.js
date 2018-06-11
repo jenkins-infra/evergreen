@@ -23,7 +23,7 @@ describe('versions/updates interaction acceptance tests', () => {
      * Once we have registered, we need to send a status in order for updates
      * to properly be loaded.
      */
-     await request({
+    await request({
       url: h.getUrl('/status'),
       method: 'POST',
       headers: { 'Authorization': this.token },

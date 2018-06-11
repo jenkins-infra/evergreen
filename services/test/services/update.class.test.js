@@ -42,4 +42,58 @@ describe('update service class', () => {
     });
   });
 
+  describe('prepareManifestFromRecord()', () => {
+    let computed = {
+      plugins: {
+        updates: [],
+      },
+    };
+    it('should handle an empty record properly', () => {
+      expect(this.service.prepareManifestFromRecord({}, computed)).toBe(computed);
+    });
+
+    it('should populate the manifest', () => {
+      let plugin = { url: 'http://jest.io', checksum: {} };
+      let record = {
+        manifest: {
+          plugins: [plugin]
+        },
+      };
+
+      expect(this.service.prepareManifestFromRecord(record, computed)).toBe(computed);
+
+      expect(computed).toHaveProperty('plugins.updates', [plugin]);
+    });
+  });
+
+  describe('prepareManifestWithFlavor()', () => {
+    let computed = {
+      plugins: {
+        updates: [],
+      },
+    };
+
+    // how bland!
+    it('should do nothing if the instance has no flavor', () => {
+      expect(this.service.prepareManifestWithFlavor({}, {}, computed)).toBe(computed);
+    });
+
+    it('should populate the manifest with the flavor\'s additions', () => {
+      let plugin = { url: 'http://jest.io', checksum: {} };
+      let instance = { flavor : 'docker-cloud' };
+      let record = {
+        manifest: {
+          environments: {
+            'docker-cloud': {
+              plugins: [plugin]
+            },
+          }
+        }
+      };
+
+      let result = this.service.prepareManifestWithFlavor(instance, record, computed);
+      expect(result).toBe(computed);
+      expect(result).toHaveProperty('plugins.updates', [plugin]);
+    });
+  });
 });
