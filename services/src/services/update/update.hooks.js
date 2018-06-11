@@ -350,7 +350,6 @@ class UpdateHooks {
 
       after: {
         find: [
-          this.terribleHardCodedDefault,
         ],
       },
       error: {}
