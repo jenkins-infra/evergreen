@@ -4,6 +4,9 @@
  * client.
  */
 
+const yaml = require('js-yaml');
+const fs   = require('fs');
+
 const request = require('request-promise');
 const h       = require('./helpers');
 
@@ -15,15 +18,42 @@ describe('versions/updates interaction acceptance tests', () => {
     let { token, uuid } = await h.registerAndAuthenticate();
     this.token = token;
     this.uuid = uuid;
+
+    /*
+     * Once we have registered, we need to send a status in order for updates
+     * to properly be loaded.
+     */
+     await request({
+      url: h.getUrl('/status'),
+      method: 'POST',
+      headers: { 'Authorization': this.token },
+      json: true,
+      body: { uuid: this.uuid }
+    });
+
+    /*
+     * We always want to make sure we have a properly seeded database with the
+     * latest from ingest.yaml for each test.
+     */
+    this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
+    this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
+
+    return request({
+      url: h.getUrl('/update'),
+      method: 'POST',
+      headers: { 'Authorization': this.settings.internalAPI.secret },
+      json: true,
+      body: {
+        commit: '0xdeadbeef',
+        manifest: this.ingest,
+      },
+    });
   });
 
   describe('fetching updates for a fresh client', () => {
     beforeEach(async () => {
       this.response = await request({
         url: h.getUrl(`/update/${this.uuid}`),
-        qs: {
-          level: 1,
-        },
         headers: { 'Authorization': this.token },
         json: true
       });
@@ -35,6 +65,33 @@ describe('versions/updates interaction acceptance tests', () => {
 
     it('should have a core url', () => {
       expect(this.response).toHaveProperty('core.url');
+    });
+
+    it('should have plugins', () => {
+      expect(this.response).toHaveProperty('plugins.updates');
+      expect(this.response.plugins.updates.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('fetching updates for a fresh client with a `docker-cloud` flavor', () => {
+    beforeEach(async () => {
+      this.response = await request({
+        url: h.getUrl(`/update/${this.uuid}`),
+        headers: { 'Authorization': this.token },
+        json: true
+      });
+    });
+
+    it('should include the docker-plugin', () => {
+      expect(this.response).toHaveProperty('plugins.updates');
+      let foundPlugin = false;
+      this.response.plugins.updates.forEach((plugin) => {
+        if (plugin.url.match(/docker-plugin/)) {
+          foundPlugin = true;
+        }
+      });
+
+      expect(foundPlugin).toBeTruthy();
     });
   });
 });

@@ -1,5 +1,4 @@
 const FeathersSequelize = require('feathers-sequelize');
-const logger            = require('winston');
 
 /*
  * This class exist mostly as a wrapper around the feathers-sequelize service
@@ -19,7 +18,7 @@ class Update extends FeathersSequelize.Service {
     this.remove = undefined;
   }
 
-  async get(id) {
+  async get(id, params) {
     const versions = this.app.service('versions');
     const latestVersion = await versions.find({
       query: {
@@ -27,20 +26,47 @@ class Update extends FeathersSequelize.Service {
         $limit: 1
       },
     });
+    const instance = await this.app.service('status').get(id);
 
-    let findParams = {};
+    let findParams = {
+      query: params.query, /* copy the original query parameters over */
+    };
     this.scopeFindQuery(findParams);
 
-    return {
-      schema: 1,
-      meta: {
-        channel: 'general',
-      },
-      core: {
-      },
-      plugins: {
-      },
-    };
+    return this.find(findParams).then((records) => {
+      let record = records[0];
+      let computed = {
+        meta: {
+          channel: record.channel,
+          level: record.id,
+        },
+        core: record.manifest.core,
+        plugins: {
+          updates: [
+          ],
+          deletes: [
+          ],
+        },
+      };
+
+      record.manifest.plugins.forEach((plugin) => {
+        computed.plugins.updates.push({
+          url: plugin.url,
+          checksum: plugin.checksum,
+        });
+      });
+
+      /*
+       * Last but not least, make sure that any flavor specific updates are
+       * assigned to the computed update manifest
+       */
+      let flavor = record.manifest.environments[instance.flavor];
+      if (flavor) {
+        Object.assign(computed.plugins.updates, flavor);
+      }
+
+      return computed;
+    });
   }
 
   /*
