@@ -48,19 +48,31 @@ class Update extends FeathersSequelize.Service {
         },
       };
 
-      if (latestVersion.length === 1) {
-        latestVersion = latestVersion[0];
-
-        if (latestVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
-          computed.core = {};
-        }
-      }
       this.prepareManifestFromRecord(record, computed);
       /*
        * Last but not least, make sure that any flavor specific updates are
        * assigned to the computed update manifest
        */
       this.prepareManifestWithFlavor(instance, record, computed);
+
+      if (latestVersion.length === 1) {
+        latestVersion = latestVersion[0];
+
+        if (latestVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
+          computed.core = {};
+        }
+
+        if (Object.keys(latestVersion.manifest.jenkins.plugins).length > 0) {
+          let signatures = Object.values(latestVersion.manifest.jenkins.plugins);
+          let updates = [];
+          record.manifest.plugins.forEach((plugin) => {
+            if (!signatures.includes(plugin.checksum.signature)) {
+              updates.push(plugin);
+            }
+          });
+          computed.plugins.updates = updates;
+        }
+      }
       return computed;
     });
   }

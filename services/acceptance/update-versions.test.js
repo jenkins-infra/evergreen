@@ -100,6 +100,10 @@ describe('versions/updates interaction acceptance tests', () => {
       /*
        * First we need to publish a versions
        */
+      let pluginManifest = this.ingest.plugins[0];
+      let pluginName = this.ingest.plugins[0].artifactId;
+      this.pluginName = pluginName;
+
       let versions = {
         schema: 1,
         container: {},
@@ -107,10 +111,11 @@ describe('versions/updates interaction acceptance tests', () => {
         jenkins: {
           core: this.ingest.core.checksum.signature,
           plugins: {
+            pluginName: pluginManifest.checksum.signature,
           },
         },
       };
-      return request({
+      await request({
         url: h.getUrl('/versions'),
         method: 'POST',
         headers: { 'Authorization': this.token },
@@ -120,17 +125,29 @@ describe('versions/updates interaction acceptance tests', () => {
           manifest: versions
         }
       });
-    });
-
-    it('should not be given that core version as an update', async () => {
-      let response = await request({
+      this.response = await request({
         url: h.getUrl(`/update/${this.uuid}`),
         headers: { 'Authorization': this.token },
         json: true
       });
+    });
 
-      expect(response).toBeTruthy();
-      expect(response).toHaveProperty('core', {});
+    it('should not be given that core version as an update', () => {
+      expect(this.response).toBeTruthy();
+      expect(this.response).toHaveProperty('core', {});
+    });
+
+    it('should not be given a plugin it already has', () => {
+      expect(this.response).toBeTruthy();
+      expect(this.response).toHaveProperty('plugins.updates');
+
+      let found = false;
+      this.response.plugins.updates.forEach((plugin) => {
+        if (plugin.url.match(this.pluginName)) {
+          found = true;
+        }
+      });
+      expect(found).not.toBeTruthy();
     });
   });
 });
