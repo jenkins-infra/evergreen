@@ -21,13 +21,10 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       updatedAt: {
-        type: Sequelize.DATE
-      },
-      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
