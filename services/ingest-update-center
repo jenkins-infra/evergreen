@@ -1,0 +1,93 @@
+//!/usr/bin/env node
+
+const fs     = require('fs');
+const yaml   = require('js-yaml');
+const logger = require('winston');
+
+let essentials = yaml.safeLoad(fs.readFileSync('./essentials.yaml'));
+let uc = JSON.parse(fs.readFileSync('./update-center.json'));
+
+let ingest = {
+  timestamp: (new Date()).toISOString(),
+  core: {
+    url: 'http://mirrors.jenkins.io/war/latest/jenkins.war',
+    checksum: {
+      type: 'sha256',
+      signature: null,
+    }
+  },
+  plugins: [
+  ],
+  environments: {
+  },
+};
+
+/*
+ * Recursively grab the non-optional dependencies
+ */
+let resolveFor = function(pluginName, graph) {
+  let depends = [];
+  graph.plugins[pluginName].dependencies.forEach((dependency) => {
+    if (!dependency.optional) {
+      depends.push(dependency.name);
+      resolveFor(dependency.name, graph).forEach(d => depends.push(d));
+    }
+  });
+  // de-duplicate
+  return [...new Set(depends)];
+};
+
+/*
+ * Convert a given plugin name to the ingest.yaml representation of it
+ */
+let pluginToRecord = function(plugin, graph) {
+  let gav = graph.plugins[plugin].gav;
+  return {
+    groupId: gav.split(':', 1)[0],
+    artifactId: plugin,
+    url: graph.plugins[plugin].url,
+    checksum: {
+      type: 'sha512',
+      signature: graph.plugins[plugin].sha512,
+    },
+  };
+};
+
+/*
+ * Populate the foundational plugins
+ */
+let plugins = [];
+essentials.spec.plugins.forEach((plugin) => {
+  let name = plugin.artifactId;
+  if (uc.plugins[name]) {
+    logger.info(`Processing dependencies for ${name}`);
+    resolveFor(name, uc).forEach(p => plugins.push(p));
+  }
+});
+plugins = [...new Set(plugins)];
+plugins.forEach((plugin) => {
+  ingest.plugins.push(pluginToRecord(plugin, uc));
+});
+
+/*
+ * Handle the environments
+ */
+essentials.spec.environments.forEach((env) => {
+  let record = {
+    plugins: [],
+  };
+
+  env.plugins.forEach((plugin) => {
+    record.plugins.push(pluginToRecord(plugin.artifactId, uc));
+    resolveFor(plugin.artifactId, uc).forEach((envPluginName) => {
+      if (!plugins.includes(envPluginName)) {
+        record.plugins.push(pluginToRecord(envPluginName, uc));
+      }
+    });
+  });
+  record.plugins = [...new Set(record.plugins)];
+
+  ingest.environments[env.name] = record;
+});
+
+fs.writeFileSync('ingest.yaml', yaml.safeDump(ingest));
