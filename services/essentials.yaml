@@ -44,8 +44,11 @@ spec:
 
   environments:
     # environments get added to the other section when enabled
-    - name: aws
+    - name: docker-cloud
       plugins:
+        - groupId: 'io.jenkins.docker'
+          artifactId: 'docker-plugin'
+          version: '2.60.3'
 
 # the realized BoM after refs are resolved
 # status:
