@@ -29,12 +29,20 @@ class Client {
     this.status = new Status(this.app);
     this.update = new Update(this.app);
     this.errorTelemetry = new ErrorTelemetry(this.app);
+    this.updating = false;
   }
 
   async runUpdates() {
+    if (this.updating) {
+      logger.debug('Update already in process..');
+      return;
+    }
+
+    this.updating = true;
     return this.update.query().then((ups) => {
       if (process.env.EVERGREEN_OFFLINE) {
         logger.info('Evergreen in offline mode, disabling downloading of updates..');
+        this.updating = false;
         return;
       }
 
@@ -63,9 +71,13 @@ class Client {
           logger.info('All downloads completed, restarting Jenkins');
           this.update.saveUpdateSync(ups);
           Supervisord.restartProcess('jenkins');
+          this.updating = false;
         });
       }
-    }).catch((res) => logger.info('No updates available', res));
+    }).catch((res) => {
+      this.updating = false;
+      logger.info('No updates available', res);
+    });
   }
 
   runloop(app) {
@@ -87,9 +99,10 @@ class Client {
 
     this.errorTelemetry.setup();
 
-    setInterval( () => {
+    setInterval(() => {
       /* no-op to keep this process alive */
-    }, 10);
+      this.runUpdates();
+    }, 5000);
   }
 
   bootstrap() {
@@ -106,7 +119,7 @@ class Client {
       this.errorTelemetry.authenticate(this.reg.uuid, this.reg.token);
 
       return this.status.create().then((r) => {
-        logger.info('Starting the runloop with a new registration and status', r);
+        logger.info('Starting the runloop with a new registration and status', r, newRegistration);
         this.runloop(this.app);
       });
     }).catch((err) => {
