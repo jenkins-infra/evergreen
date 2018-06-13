@@ -29,10 +29,9 @@ class Update {
 
   async query() {
     let api = this.app.service('update');
-    return api.find({
+    return api.get(this.uuid, {
       headers: { Authorization: this.token },
       query: {
-        uuid: this.uuid,
         level: this.getCurrentLevel(),
       }
     });
