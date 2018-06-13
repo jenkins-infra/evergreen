@@ -91,3 +91,4 @@ essentials.spec.environments.forEach((env) => {
 });
 
 fs.writeFileSync('ingest.yaml', yaml.safeDump(ingest));
+fs.writeFileSync('ingest.json', JSON.stringify(ingest));
