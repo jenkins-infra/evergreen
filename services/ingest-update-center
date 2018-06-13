@@ -17,6 +17,16 @@ let ingest = {
     }
   },
   plugins: [
+    /*
+     * Hard-coding configuration as code until it hits the main update center
+     */
+    {
+      url: 'https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi',
+      checksum: {
+        type: 'sha512',
+        signature: '6d0af73303cbc6b9451dfab8739362efb49e28bd0319c88854128e0fd8783bd4cd967f0d5622a7f8d696ebc85eb20737ba6f4bd0bfe15e97a848041c3716615b',
+      },
+    },
   ],
   environments: {
   },
@@ -61,6 +71,7 @@ essentials.spec.plugins.forEach((plugin) => {
   let name = plugin.artifactId;
   if (uc.plugins[name]) {
     logger.info(`Processing dependencies for ${name}`);
+    plugins.push(name);
     resolveFor(name, uc).forEach(p => plugins.push(p));
   }
 });
@@ -92,3 +103,5 @@ essentials.spec.environments.forEach((env) => {
 
 fs.writeFileSync('ingest.yaml', yaml.safeDump(ingest));
 fs.writeFileSync('ingest.json', JSON.stringify(ingest));
+
+// vim: ft=javascript

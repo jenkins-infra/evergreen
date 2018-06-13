@@ -1,10 +1,24 @@
-timestamp: '2018-06-12T20:26:50.577Z'
+timestamp: '2018-06-13T22:51:51.395Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
     type: sha256
     signature: null
 plugins:
+  - url: >-
+      https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        6d0af73303cbc6b9451dfab8739362efb49e28bd0319c88854128e0fd8783bd4cd967f0d5622a7f8d696ebc85eb20737ba6f4bd0bfe15e97a848041c3716615b
+  - groupId: io.jenkins.blueocean
+    artifactId: blueocean
+    url: >-
+      http://updates.jenkins-ci.org/download/plugins/blueocean/1.5.0/blueocean.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        2MJSa2hmwBqQdGSXJjcpwbSx3f4wYJyvE29NqrJyy7NTIrpoxFbeppAIF6NLuwz446MG3zSd6eKfFUbwyoZ7dg==
   - groupId: io.jenkins.blueocean
     artifactId: blueocean-bitbucket-pipeline
     url: >-
@@ -627,6 +641,22 @@ plugins:
       signature: >-
         YdwhFZz8zf3SEFU8O3jvs7AytQsYNL83EuwQzRtSR/fAkghmqTERkWyR6QRFr8CuaerZNbNt1hnh3dlegn2RrQ==
   - groupId: org.jenkins-ci.plugins
+    artifactId: buildtriggerbadge
+    url: >-
+      http://updates.jenkins-ci.org/download/plugins/buildtriggerbadge/2.9/buildtriggerbadge.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        y/rvw/ensI+8vJrG2C5rwQ0gH5ng/YFVB3UkaLVlRXiTMlyeiPS0OTymsAVr5UnX+QqqvwF7tl2by8hsOKum/A==
+  - groupId: org.jenkins-ci.plugins
+    artifactId: ssh-agent
+    url: >-
+      http://updates.jenkins-ci.org/download/plugins/ssh-agent/1.15/ssh-agent.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        NLX1/7egxfHKbcAatq6PNYjPHNlf5/r0SXkZlt0MgATrRkMRXV6qs9CBzJbbqtCQ0ktDt+YrJY/QInk+yZmWzg==
+  - groupId: org.jenkins-ci.plugins
     artifactId: bouncycastle-api
     url: >-
       http://updates.jenkins-ci.org/download/plugins/bouncycastle-api/2.16.3/bouncycastle-api.hpi
@@ -634,6 +664,14 @@ plugins:
       type: sha512
       signature: >-
         Dt7nxRnOomzwZzpLJbcTZhnPCh46/395zBlHnMuurWiF+h8c5HAtIDjnxq3L9Jr2wxcjwLLet/zczyvQ/JuLPw==
+  - groupId: org.jenkins-ci.plugins.workflow
+    artifactId: workflow-aggregator
+    url: >-
+      http://updates.jenkins-ci.org/download/plugins/workflow-aggregator/2.5/workflow-aggregator.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        2IPvTHQjm4QOJPKYBK1/xrvpKZPLKwd+sG48GL2lc9dI583gG0macr9K4oGqOK89xKdoNoALAfNhUzkfzOhjeg==
   - groupId: org.jenkins-ci.plugins.pipeline-stage-view
     artifactId: pipeline-stage-view
     url: >-
@@ -665,6 +703,13 @@ plugins:
       type: sha512
       signature: >-
         72eyC2DfEJZ/ji1V2zi827IGy4/0srqaamJ2w2WfaLzRAOuPEClAhuNtQkZ0qHihnTEI2LCN9PO9skiNq2hw5Q==
+  - groupId: org.jenkins-ci.plugins
+    artifactId: job-dsl
+    url: 'http://updates.jenkins-ci.org/download/plugins/job-dsl/1.69/job-dsl.hpi'
+    checksum:
+      type: sha512
+      signature: >-
+        dUIzL6r0yyJeoQUNrxjHqxqKoUu3Typ4xiLtjtejV8Qrd6QmT4/vHtGqSVYsFOaCVnQ2cliNDPJqwQ965rNkPA==
 environments:
   docker-cloud:
     plugins:
