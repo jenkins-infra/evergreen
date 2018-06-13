@@ -105,18 +105,10 @@ class Client {
       this.update.authenticate(this.reg.uuid, this.reg.token);
       this.errorTelemetry.authenticate(this.reg.uuid, this.reg.token);
 
-      /*
-       * It is only valid to start the runloop assuming we have been able to
-       * register and log in successfully, otherwise the client will exit and
-       * supervisord should try again :/
-       */
-      if (newRegistration) {
-        return this.status.create().then(() => {
-          this.runloop(this.app);
-        });
-      } else {
-        return this.runloop(this.app);
-      }
+      return this.status.create().then((r) => {
+        logger.info('Starting the runloop with a new registration and status', r);
+        this.runloop(this.app);
+      });
     }).catch((err) => {
       logger.info('Fatal error encountered while trying to register, exiting the client and will restart and retry', err);
       process.exit(1);
