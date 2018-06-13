@@ -16,6 +16,7 @@ services:
     image: jenkinsciinfra/evergreen-backend
     build: ../services
     environment:
+      - 'DB_TRACING=1'
       - 'PGPASSWORD=grassisevergreener'
     ports:
       - '3030:3030'
