@@ -1,4 +1,4 @@
-timestamp: '2018-06-13T22:51:51.395Z'
+timestamp: '2018-06-13T22:58:55.089Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
@@ -710,6 +710,13 @@ plugins:
       type: sha512
       signature: >-
         dUIzL6r0yyJeoQUNrxjHqxqKoUu3Typ4xiLtjtejV8Qrd6QmT4/vHtGqSVYsFOaCVnQ2cliNDPJqwQ965rNkPA==
+  - groupId: org.jenkins-ci.plugins
+    artifactId: jdk-tool
+    url: 'http://updates.jenkins-ci.org/download/plugins/jdk-tool/1.1/jdk-tool.hpi'
+    checksum:
+      type: sha512
+      signature: >-
+        JADgKI+H6IZR2YaC5hR9kXs911/nx6fVAfxD1oImdXP3eMefpvav2Bn4iLcHnKzIuKSST7NxjqnOKYyMl5yN4A==
 environments:
   docker-cloud:
     plugins:
