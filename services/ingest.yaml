@@ -1,4 +1,4 @@
-timestamp: '2018-06-13T22:58:55.089Z'
+timestamp: '2018-06-13T23:22:41.948Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
@@ -6,11 +6,11 @@ core:
     signature: null
 plugins:
   - url: >-
-      https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.7-alpha-rc240.6e7dd119b0d3/configuration-as-code-0.7-alpha-rc240.6e7dd119b0d3.hpi
+      http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.jar
     checksum:
       type: sha512
       signature: >-
-        6d0af73303cbc6b9451dfab8739362efb49e28bd0319c88854128e0fd8783bd4cd967f0d5622a7f8d696ebc85eb20737ba6f4bd0bfe15e97a848041c3716615b
+        4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d
   - groupId: io.jenkins.blueocean
     artifactId: blueocean
     url: >-
