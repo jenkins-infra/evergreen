@@ -1,4 +1,4 @@
-timestamp: '2018-06-14T17:40:39.899Z'
+timestamp: '2018-06-14T18:28:22.242Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
@@ -8,7 +8,7 @@ plugins:
   - groupId: org.jenkins-ci.plugins
     artifactId: configuration-as-code
     url: >-
-      http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.hpi
+      http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.9-alpha-rc292.ee88abe834b2/configuration-as-code-0.9-alpha-rc292.ee88abe834b2.hpi
     checksum:
       type: sha512
       signature: >-
