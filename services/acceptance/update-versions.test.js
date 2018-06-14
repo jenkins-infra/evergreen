@@ -101,8 +101,7 @@ describe('versions/updates interaction acceptance tests', () => {
        * First we need to publish a versions
        */
       let pluginManifest = this.ingest.plugins[0];
-      let pluginName = this.ingest.plugins[0].artifactId;
-      this.pluginName = pluginName;
+      this.pluginName = pluginManifest.artifactId;
 
       let versions = {
         schema: 1,
@@ -110,11 +109,11 @@ describe('versions/updates interaction acceptance tests', () => {
         client: {},
         jenkins: {
           core: this.ingest.core.checksum.signature,
-          plugins: {
-            pluginName: pluginManifest.checksum.signature,
-          },
+          plugins: {},
         },
       };
+      versions.jenkins.plugins[this.pluginName] = pluginManifest.checksum.signature;
+
       await request({
         url: h.getUrl('/versions'),
         method: 'POST',
