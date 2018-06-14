@@ -23,7 +23,7 @@ let ingest = {
     {
       groupId: 'org.jenkins-ci.plugins',
       artifactId: 'configuration-as-code',
-      url: 'http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.jar',
+      url: 'http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.hpi',
       checksum: {
         type: 'sha512',
         signature: '4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d',
