@@ -57,4 +57,15 @@ describe('The update module', () => {
       assert.equal(typeof update.updatePath(), 'string');
     });
   });
+
+  describe('applyUpdates()', () => {
+    it('should not run if the instance is already updating', () => {
+      update.updateInProgress = true;
+      expect(update.applyUpdates()).toBeFalsy();
+    });
+
+    it('should not run if there are no updates available', () => {
+      expect(update.applyUpdates()).toBeFalsy();
+    });
+  });
 });

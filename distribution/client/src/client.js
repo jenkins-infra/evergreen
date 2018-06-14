@@ -2,7 +2,6 @@
  * This is the main entrypoint for the evergreen-client
  */
 
-const path    = require('path');
 const process = require('process');
 
 const feathers = require('@feathersjs/feathers');
@@ -11,11 +10,9 @@ const logger   = require('winston');
 const rest     = require('@feathersjs/rest-client');
 
 const createCron     = require('./lib/periodic');
-const Downloader     = require('./lib/downloader');
 const ErrorTelemetry = require('./lib/error-telemetry');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
-const Supervisord    = require('./lib/supervisord');
 const Update         = require('./lib/update');
 
 /*
@@ -32,52 +29,23 @@ class Client {
     this.updating = false;
   }
 
+  /*
+   * Determine whether the instance should be considered offline or not
+   *
+   * @return {boolean} Defaults to false unless EVERGREEN_OFFLINE=1 is et in
+   *  the environment
+   */
+  isOffline() {
+    return !!process.env.EVERGREEN_OFFLINE;
+  }
+
   async runUpdates() {
-    if (this.updating) {
-      logger.debug('Update already in process..');
-      return;
+    if (this.isOffline()) {
+      logger.info('Evergreen in offline mode, disabling downloading of updates..');
+      return false;
     }
 
-    this.updating = true;
-    return this.update.query().then((ups) => {
-      if (process.env.EVERGREEN_OFFLINE) {
-        logger.info('Evergreen in offline mode, disabling downloading of updates..');
-        this.updating = false;
-        return;
-      }
-
-      if (ups) {
-        logger.info('Updates available', ups);
-        let tasks = [];
-
-        const dir = path.join(process.env.EVERGREEN_HOME,
-          'jenkins',
-          'home');
-
-        if (ups.core.url) {
-          tasks.push(Downloader.download(ups.core.url, dir).then((stream) => {
-            logger.info('Core downloaded', stream.path);
-          }));
-        }
-
-        ups.plugins.updates.forEach((plugin) => {
-          logger.info('Fetching ', plugin.url);
-          tasks.push(Downloader.download(plugin.url, path.join(dir, 'plugins')).then((stream) => {
-            logger.info('download complete', stream.path);
-          }));
-        });
-
-        Promise.all(tasks).then(() => {
-          logger.info('All downloads completed, restarting Jenkins');
-          this.update.saveUpdateSync(ups);
-          Supervisord.restartProcess('jenkins');
-          this.updating = false;
-        });
-      }
-    }).catch((res) => {
-      this.updating = false;
-      logger.info('No updates available', res);
-    });
+    return this.update.query().then(updates => this.update.applyUpdates(updates));
   }
 
   runloop(app) {
