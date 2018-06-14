@@ -14,6 +14,9 @@ check: lint
 unit: depends
 	$(NODE) npm run jest
 
+debug-unit: depends
+	$(NODE) node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest --runInBand --bail --forceExit test/
+
 depends: node_modules
 
 node_modules: package-lock.json package.json
