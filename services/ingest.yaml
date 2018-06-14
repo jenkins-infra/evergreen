@@ -1,11 +1,13 @@
-timestamp: '2018-06-13T23:22:41.948Z'
+timestamp: '2018-06-14T16:04:06.735Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
     type: sha256
     signature: null
 plugins:
-  - url: >-
+  - groupId: org.jenkins-ci.plugins
+    artifactId: configuration-as-code
+    url: >-
       http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.jar
     checksum:
       type: sha512
@@ -413,11 +415,11 @@ plugins:
   - groupId: org.jenkinsci.plugins
     artifactId: pipeline-model-definition
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.9/pipeline-model-definition.hpi
+      http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.3/pipeline-model-definition.hpi
     checksum:
       type: sha512
       signature: >-
-        YoOSTZ/AH4Qoy21Vxt14TPX9oTbwGSRzXO8gxO+Cfcodx2ER+t1QXASKlTmtxtqVPPeMFJ/O60Xt/l2dL7WyBw==
+        KDAvpG0Oz+YX2hW+vY6trrwfJJp2fOUALubU1Mxa/Y82KsQFjqggPbmZi5BsAEuPRL5e1oPVZoNqsdK0JJkC6A==
   - groupId: org.jenkins-ci.plugins.workflow
     artifactId: workflow-basic-steps
     url: >-
@@ -477,11 +479,11 @@ plugins:
   - groupId: org.jenkinsci.plugins
     artifactId: pipeline-model-api
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.2.9/pipeline-model-api.hpi
+      http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.3/pipeline-model-api.hpi
     checksum:
       type: sha512
       signature: >-
-        JwS/ElYOb/yhPewmUOekhqunk0tQt503tMvF13HG9xLPQIt+Xjn3QxrTlZmkmgv8QFMnlpp1Qnxt3RwyzatBpQ==
+        +vk66OexuLbrug3pV3yCncIbg/lDkKgkLDHCs3EoYot8IgDbqrHFc0EWjY3iy9qrv8mKQQR4wbH82oYDKLVFNA==
   - groupId: org.jenkinsci.plugins
     artifactId: pipeline-model-declarative-agent
     url: >-
@@ -493,19 +495,19 @@ plugins:
   - groupId: org.jenkinsci.plugins
     artifactId: pipeline-model-extensions
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/pipeline-model-extensions/1.2.9/pipeline-model-extensions.hpi
+      http://updates.jenkins-ci.org/download/plugins/pipeline-model-extensions/1.3/pipeline-model-extensions.hpi
     checksum:
       type: sha512
       signature: >-
-        E1gUOF7Y8ud2l2VhcVPCp/LlsQA5i8CRXXYShbE6G2kTuRCbZgwALJr4B2hPyjUluUFEtbGMbM+5MQm81TZ7pA==
+        jDOFWK3loqv6Gsi/bC718pQCyGnGIm+IGenNW6wBc3lXjCvKfZF4EusQhAOycrU1eKtHOlKQEd97mupfDgnjLw==
   - groupId: org.jenkinsci.plugins
     artifactId: pipeline-stage-tags-metadata
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/pipeline-stage-tags-metadata/1.2.9/pipeline-stage-tags-metadata.hpi
+      http://updates.jenkins-ci.org/download/plugins/pipeline-stage-tags-metadata/1.3/pipeline-stage-tags-metadata.hpi
     checksum:
       type: sha512
       signature: >-
-        COAdO+WhT4+gPgBEjEZZUZV8rbkaQZJwP6SrkUyPned+yYA5+12UqO/AC1zFGXNqqBmWRzw9SuEGRAUzlFyS1w==
+        /AIATM3C47RlhHwEI0OS4ooDg+ingYabo6FUfkx6xKKpj8YsYbX/YIVZd6UmZ26IMbcoWDqo7/LEUIR8l9XhhQ==
   - groupId: org.jenkins-ci.plugins
     artifactId: cloudbees-bitbucket-branch-source
     url: >-

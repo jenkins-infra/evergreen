@@ -21,6 +21,8 @@ let ingest = {
      * Hard-coding configuration as code until it hits the main update center
      */
     {
+      groupId: 'org.jenkins-ci.plugins',
+      artifactId: 'configuration-as-code',
       url: 'http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/1.0-rc236.edd0199b46bb/configuration-as-code-1.0-rc236.edd0199b46bb.jar',
       checksum: {
         type: 'sha512',
