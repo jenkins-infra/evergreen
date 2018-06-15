@@ -26,7 +26,6 @@ class Update extends FeathersSequelize.Service {
   }
 
   async get(id, params) {
-    const instance = await this.app.service('status').get(id);
     let latestVersion = await this.app.service('versions').find({
       query: {
         uuid: id,
@@ -43,6 +42,7 @@ class Update extends FeathersSequelize.Service {
       if (records.length === 0) {
         throw new NotModified('No updates presently available');
       }
+
       let record = records[0];
       let computed = {
         meta: {
@@ -63,7 +63,7 @@ class Update extends FeathersSequelize.Service {
        * Last but not least, make sure that any flavor specific updates are
        * assigned to the computed update manifest
        */
-      this.prepareManifestWithFlavor(instance, record, computed);
+      this.prepareManifestWithFlavor(id, record, computed);
 
       if (latestVersion.length === 1) {
         latestVersion = latestVersion[0];
@@ -113,7 +113,8 @@ class Update extends FeathersSequelize.Service {
    * Prepares the manifest with the updates specific to the given instance's
    * flavor
    */
-  prepareManifestWithFlavor(instance, record, computedManifest) {
+  async prepareManifestWithFlavor(id, record, computedManifest) {
+    const instance = await this.app.service('status').get(id);
     if ((!instance.flavor) || (!record.manifest)) {
       return computedManifest;
     }
