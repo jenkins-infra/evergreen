@@ -1,4 +1,11 @@
 const FeathersSequelize = require('feathers-sequelize');
+const errors            = require('@feathersjs/errors');
+
+class NotModified extends errors.FeathersError {
+  constructor(message, data) {
+    super(message, 'not-modified', 304, 'NotModified', data);
+  }
+}
 
 /*
  * This class exist mostly as a wrapper around the feathers-sequelize service
@@ -33,6 +40,9 @@ class Update extends FeathersSequelize.Service {
     this.scopeFindQuery(findParams);
 
     return this.find(findParams).then((records) => {
+      if (records.length === 0) {
+        throw new NotModified('No updates presently available');
+      }
       let record = records[0];
       let computed = {
         meta: {
@@ -175,3 +185,4 @@ class Update extends FeathersSequelize.Service {
 }
 
 module.exports = (options) => { return new Update(options); };
+module.exports.NotModified = NotModified;

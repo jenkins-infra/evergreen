@@ -71,6 +71,21 @@ describe('versions/updates interaction acceptance tests', () => {
       expect(this.response).toHaveProperty('plugins.updates');
       expect(this.response.plugins.updates.length).toBeGreaterThan(0);
     });
+
+    describe('a follow-up request for updates', () => {
+      it('should receive a 304 Not Modified response', () => {
+        return request({
+          url: h.getUrl(`/update/${this.uuid}`),
+          headers: { 'Authorization': this.token },
+          qs: {
+            level: this.response.meta.level,
+          },
+          json: true
+        })
+          .then(r => expect(r).toBeFalsy())
+          .catch(err => expect(err.statusCode).toBe(304));
+      })
+    });
   });
 
   describe('fetching updates for a fresh client with a `docker-cloud` flavor', () => {
