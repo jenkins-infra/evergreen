@@ -1,9 +1,9 @@
-timestamp: '2018-06-14T18:28:22.242Z'
+timestamp: '2018-06-16T00:03:33.013Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
     type: sha256
-    signature: null
+    signature: latest
 plugins:
   - groupId: org.jenkins-ci.plugins
     artifactId: configuration-as-code
@@ -72,11 +72,11 @@ plugins:
   - groupId: org.jenkins-ci.plugins.workflow
     artifactId: workflow-api
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/workflow-api/2.27/workflow-api.hpi
+      http://updates.jenkins-ci.org/download/plugins/workflow-api/2.28/workflow-api.hpi
     checksum:
       type: sha512
       signature: >-
-        28Xmw/oILloovcqqw2o4IPxYcODcTnKAJDidEvbmJ20ShJ4tDVqpOj//82dYRd8/BWM347KMfJHEv0L4C8LQ3w==
+        HIy//TT//6RAqpOZ2e7xBPxiCW4LqnHnPSq0Osy8+4XPN5SN5K2dz3mODrA/nysh+N7Wxt1GsYtFFZ+4D7y/jA==
   - groupId: org.jenkins-ci.plugins.workflow
     artifactId: workflow-step-api
     url: >-
@@ -423,11 +423,11 @@ plugins:
   - groupId: org.jenkins-ci.plugins.workflow
     artifactId: workflow-basic-steps
     url: >-
-      http://updates.jenkins-ci.org/download/plugins/workflow-basic-steps/2.7/workflow-basic-steps.hpi
+      http://updates.jenkins-ci.org/download/plugins/workflow-basic-steps/2.9/workflow-basic-steps.hpi
     checksum:
       type: sha512
       signature: >-
-        RWtCO9xFgVBvOQOyvPrlSAMEL7LIfobN+o3kkZBUAgg94qUfvg+2BM3/MPUDsv/PUktkL8YzKWpqk8RAFr49dA==
+        M7ek6MNtGEbmCKTYeqoZb68+7V0sdveUrQBf3c9G9SpcmjGgC+Ak6Vv2HT9lpbMfeGkqUgeb97XFq+jBbgOHKQ==
   - groupId: org.jenkins-ci.plugins.workflow
     artifactId: workflow-cps-global-lib
     url: >-

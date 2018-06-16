@@ -13,7 +13,7 @@ let ingest = {
     url: 'http://mirrors.jenkins.io/war/latest/jenkins.war',
     checksum: {
       type: 'sha256',
-      signature: null,
+      signature: 'latest',
     }
   },
   plugins: [

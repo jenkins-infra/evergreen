@@ -3,15 +3,17 @@ const createService = require('../../src/services/update/update.class');
 const createModel   = require('../../src/models/update');
 
 describe('update service class', () => {
-  describe('scopeFindQuery()', () => {
-    beforeEach(() => {
-      let options = {
-        name: 'update',
-        Model: createModel(app),
-      };
-      this.service = createService(options);
-    });
+  beforeEach(() => {
+    this.app = {};
+    let options = {
+      app: this.app,
+      name: 'update',
+      Model: createModel(app),
+    };
+    this.service = createService(options);
+  });
 
+  describe('scopeFindQuery()', () => {
     it('should default the channel', () => {
       let params = {};
       this.service.scopeFindQuery(params);
@@ -73,27 +75,171 @@ describe('update service class', () => {
       },
     };
 
-    // how bland!
-    it('should do nothing if the instance has no flavor', () => {
-      expect(this.service.prepareManifestWithFlavor({}, {}, computed)).toBe(computed);
+
+    describe('when there is no `status` record yet', () => {
+      beforeEach(() => {
+        this.app.service = () => {
+          return {
+            get: () => { return null; },
+          };
+        };
+      });
+
+      // how bland!
+      it('should do nothing', () => {
+        expect(this.service.prepareManifestWithFlavor(1, {}, computed)).resolves.toBe(computed);
+      });
     });
 
-    it('should populate the manifest with the flavor\'s additions', () => {
-      let plugin = { url: 'http://jest.io', checksum: {} };
-      let instance = { flavor : 'docker-cloud' };
-      let record = {
-        manifest: {
-          environments: {
-            'docker-cloud': {
-              plugins: [plugin]
+    describe('when the `status` record has a flavor', () => {
+      beforeEach(() => {
+        this.app.service = () => {
+          return {
+            get: () => {
+              return {
+                flavor: 'docker-cloud',
+              };
             },
-          }
-        }
-      };
+          };
+        };
+      });
 
-      let result = this.service.prepareManifestWithFlavor(instance, record, computed);
-      expect(result).toBe(computed);
-      expect(result).toHaveProperty('plugins.updates', [plugin]);
+      it('should populate the manifest with the flavor\'s additions', async () => {
+        let plugin = { url: 'http://jest.io', checksum: {} };
+        let record = {
+          manifest: {
+            environments: {
+              'docker-cloud': {
+                plugins: [plugin]
+              },
+            }
+          }
+        };
+
+        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        expect(result).toBe(computed);
+        expect(result).toHaveProperty('plugins.updates', [plugin]);
+      });
+    });
+  });
+
+  describe('filterVersionsForClient()', () => {
+    describe('with no pre-existing versions', () => {
+      beforeEach(() => {
+        this.app.service = () => {
+          return {
+            find: () => { return []; },
+          };
+        };
+      });
+
+      it('should return false, indicating no filtering', () => {
+        expect(this.service.filterVersionsForClient(1, {})).resolves.toBeFalsy();
+      });
+    });
+
+    describe('with pre-existing versions', () => {
+      beforeEach(() => {
+        this.app.service = () => {
+          return {
+            find: () => {
+              return [{
+                manifest: {
+                  jenkins: {
+                    core: 'signature',
+                    plugins: [],
+                  },
+                },
+              }];
+            },
+          };
+        };
+      });
+
+      describe('when the core is identical', () => {
+        let update = {
+          manifest: {
+            core: {
+              checksum: {
+                signature: 'signature',
+              },
+            },
+          },
+        };
+
+        it('should filter out core', async () => {
+          let manifest = {
+            plugins: [],
+          };
+          expect.assertions(2);
+          let result = await this.service.filterVersionsForClient(1, update, manifest);
+          expect(result).toBeTruthy();
+          expect(manifest.core).toMatchObject({});
+        });
+      });
+
+      describe('when there are plugin updates available', () => {
+        let update = {
+          manifest: {
+            core: { checksum: { signature: null } },
+            plugins: [
+              {
+                url: 'http://jest.io',
+                checksum: { signature: '0xdeadbeef' },
+              },
+            ],
+          },
+        };
+
+        describe('when the client has no plugins', () => {
+          it('should leave the plugins in the manifest', async () => {
+            let updateManifest = {
+              core: {},
+              plugins: {},
+            };
+            let result = await this.service.filterVersionsForClient(1, update, updateManifest);
+            expect(result).toBeTruthy();
+            expect(updateManifest.plugins.updates).toHaveLength(1);
+          });
+        });
+
+        describe('when the client has plugins', () => {
+          beforeEach(() => {
+            this.app.service = () => {
+              return {
+                find: () => {
+                  return [{
+                    manifest: {
+                      jenkins: {
+                        core: 'signature',
+                        plugins: [
+                          {
+                            /*
+                             * stub just for testing, we only check the
+                             * signatures anyways
+                             */
+                            signature: '0xdeadbeef',
+                          },
+                        ],
+                      },
+                    },
+                  }];
+                },
+              };
+            };
+          });
+
+          it('should only update plugins which need updating', async () => {
+            let updateManifest = {
+              core: {},
+              plugins: {},
+            };
+            let result = await this.service.filterVersionsForClient(1, update, updateManifest);
+            expect(result).toBeTruthy();
+            expect(updateManifest.plugins.updates).toHaveLength(1);
+          });
+        });
+      });
     });
   });
 });

@@ -84,7 +84,7 @@ describe('versions/updates interaction acceptance tests', () => {
         })
           .then(r => expect(r).toBeFalsy())
           .catch(err => expect(err.statusCode).toBe(304));
-      })
+      });
     });
   });
 

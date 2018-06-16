@@ -26,19 +26,12 @@ class Update extends FeathersSequelize.Service {
   }
 
   async get(id, params) {
-    let latestVersion = await this.app.service('versions').find({
-      query: {
-        uuid: id,
-        $limit: 1
-      },
-    });
-
     let findParams = {
       query: params.query, /* copy the original query parameters over */
     };
     this.scopeFindQuery(findParams);
 
-    return this.find(findParams).then((records) => {
+    return this.find(findParams).then(async (records) => {
       if (records.length === 0) {
         throw new NotModified('No updates presently available');
       }
@@ -63,28 +56,52 @@ class Update extends FeathersSequelize.Service {
        * Last but not least, make sure that any flavor specific updates are
        * assigned to the computed update manifest
        */
-      this.prepareManifestWithFlavor(id, record, computed);
-
-      if (latestVersion.length === 1) {
-        latestVersion = latestVersion[0];
-
-        if (latestVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
-          computed.core = {};
-        }
-
-        if (Object.keys(latestVersion.manifest.jenkins.plugins).length > 0) {
-          let signatures = Object.values(latestVersion.manifest.jenkins.plugins);
-          let updates = [];
-          record.manifest.plugins.forEach((plugin) => {
-            if (!signatures.includes(plugin.checksum.signature)) {
-              updates.push(plugin);
-            }
-          });
-          computed.plugins.updates = updates;
-        }
-      }
+      await this.prepareManifestWithFlavor(id, record, computed);
+      await this.filterVersionsForClient(id, record, computed);
       return computed;
     });
+  }
+
+  /*
+   * Use the latest versions from the client to filter out updates which are
+   * not necessary
+   */
+  async filterVersionsForClient(id, record, computedManifest) {
+    let clientVersions = await this.app.service('versions').find({
+      query: {
+        uuid: id,
+        $limit: 1
+      },
+    });
+    /*
+     * If we have a version (not guaranteed on a fresh installation)
+     * then we need to merge the changes to make sure we're only sending the
+     * client the updates they need
+     */
+    if (clientVersions.length != 1) {
+      return false;
+    }
+    let latestClientVersion = clientVersions[0];
+
+    if (latestClientVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
+      computedManifest.core = {};
+    }
+
+    if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length === 0) {
+      computedManifest.plugins.updates = record.manifest.plugins;
+    }
+    else {
+      let signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
+      let updates = [];
+      record.manifest.plugins.forEach((plugin) => {
+        if (!signatures.includes(plugin.checksum.signature)) {
+          updates.push(plugin);
+        }
+      });
+      computedManifest.plugins.updates = updates;
+    }
+
+    return true;
   }
 
   /*
@@ -115,6 +132,11 @@ class Update extends FeathersSequelize.Service {
    */
   async prepareManifestWithFlavor(id, record, computedManifest) {
     const instance = await this.app.service('status').get(id);
+
+    if (!instance) {
+      return computedManifest;
+    }
+
     if ((!instance.flavor) || (!record.manifest)) {
       return computedManifest;
     }
