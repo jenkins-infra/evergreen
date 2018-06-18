@@ -51,7 +51,7 @@ class Update {
    * @return {Promise} Which resolves once updates have been applied
    * @return {boolean} False if there is already an update in progress
    */
-  applyUpdates(updates) {
+  async applyUpdates(updates) {
     if (this.updateInProgress || (!updates)) {
       return false;
     }
@@ -60,12 +60,17 @@ class Update {
     this.updateInProgress = new Date();
     let tasks = [];
 
-    const outputDir = path.join(process.env.EVERGREEN_HOME,
+    const outputDir = path.join(storage.homeDirectory(),
       'jenkins',
       'home');
 
     if (updates.core.url) {
       tasks.push(this.fetchTo(updates.core.url, outputDir));
+    }
+
+    if ((!updates.plugins) || (!updates.plugins.updates)) {
+      logger.debug('No plugins available in the response');
+      return false;
     }
 
     /*

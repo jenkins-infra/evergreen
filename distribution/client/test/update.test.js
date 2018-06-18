@@ -59,13 +59,27 @@ describe('The update module', () => {
   });
 
   describe('applyUpdates()', () => {
+    beforeEach(() => {
+      update.updateInProgress = false;
+    });
     it('should not run if the instance is already updating', () => {
       update.updateInProgress = true;
-      expect(update.applyUpdates()).toBeFalsy();
+      expect(update.applyUpdates()).resolves.toBeFalsy();
     });
 
     it('should not run if there are no updates available', () => {
-      expect(update.applyUpdates()).toBeFalsy();
+      expect(update.applyUpdates()).resolves.toBeFalsy();
+    });
+
+    it('should not reject on no plugin updates', async () => {
+      let manifest = {
+        core: {
+          url: 'https://jenkins.io',
+        },
+        plugins: {},
+      };
+      let response = await update.applyUpdates(manifest);
+      expect(response).toBeFalsy();
     });
   });
 });

@@ -45,7 +45,9 @@ class Client {
       return false;
     }
 
-    return this.update.query().then(updates => this.update.applyUpdates(updates));
+    return this.update.query().then(updates => this.update.applyUpdates(updates)).catch((err) => {
+      logger.info('Failed to query updates', err);
+    });
   }
 
   runloop(app) {
