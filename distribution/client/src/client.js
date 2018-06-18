@@ -46,7 +46,12 @@ class Client {
     }
 
     return this.update.query().then(updates => this.update.applyUpdates(updates)).catch((err) => {
-      logger.info('Failed to query updates', err);
+      if (err.type == 'invalid-json') {
+        logger.warn('Received non-JSON response from the Update service');
+      }
+      else {
+        logger.error('Failed to query updates', err, err.code, err.data, err.error);
+      }
     });
   }
 

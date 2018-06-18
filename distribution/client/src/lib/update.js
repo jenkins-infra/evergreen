@@ -38,6 +38,7 @@ class Update {
   async query() {
     return this.app.service('update').get(this.uuid, {
       headers: { Authorization: this.token },
+      json: true,
       query: {
         level: this.getCurrentLevel(),
       }
