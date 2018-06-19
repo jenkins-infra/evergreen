@@ -4,7 +4,6 @@
  * client.
  */
 
-const yaml = require('js-yaml');
 const fs   = require('fs');
 
 const request = require('request-promise');
@@ -35,7 +34,7 @@ describe('versions/updates interaction acceptance tests', () => {
      * We always want to make sure we have a properly seeded database with the
      * latest from ingest.yaml for each test.
      */
-    this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
+    this.ingest = JSON.parse(fs.readFileSync('./ingest.json'));
     this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
 
     return request({

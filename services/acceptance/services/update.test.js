@@ -3,7 +3,6 @@
  * Update service is behaving as expected
  */
 
-const yaml = require('js-yaml');
 const fs   = require('fs');
 
 const request = require('request-promise');
@@ -21,7 +20,7 @@ describe('Update service acceptance tests', () => {
 
   describe('PUT /update', () => {
     beforeEach(() => {
-      this.ingest = yaml.safeLoad(fs.readFileSync('./ingest.yaml'));
+      this.ingest = JSON.parse(fs.readFileSync('./ingest.json'));
       this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
     });
 
