@@ -1,4 +1,4 @@
-timestamp: '2018-06-16T00:03:33.013Z'
+timestamp: '2018-06-19T12:48:32.502Z'
 core:
   url: 'http://mirrors.jenkins.io/war/latest/jenkins.war'
   checksum:
@@ -705,6 +705,14 @@ plugins:
       type: sha512
       signature: >-
         72eyC2DfEJZ/ji1V2zi827IGy4/0srqaamJ2w2WfaLzRAOuPEClAhuNtQkZ0qHihnTEI2LCN9PO9skiNq2hw5Q==
+  - groupId: org.jenkins-ci.plugins
+    artifactId: metrics
+    url: >-
+      http://updates.jenkins-ci.org/download/plugins/metrics/3.1.2.12/metrics.hpi
+    checksum:
+      type: sha512
+      signature: >-
+        x2MIFJGx9oaB2inLaaorJ2m3Jt6oa4pkppZWntd5jFkJ7KwkE/QVpc7qVnfzOURMdUa+Mug2+HxjNn8HnckIdw==
   - groupId: org.jenkins-ci.plugins
     artifactId: job-dsl
     url: 'http://updates.jenkins-ci.org/download/plugins/job-dsl/1.69/job-dsl.hpi'
