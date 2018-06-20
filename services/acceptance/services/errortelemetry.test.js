@@ -71,7 +71,20 @@ describe('Error Telemetry service acceptance tests', () => {
       });
 
       it('should reject large payloads', () => {
-        let largeLog = new Array(1000001).join('a');
+        let largeMessage = new Array(1000001).join('a');
+        let largeLog = {
+          uuid: this.reg.uuid,
+          log: {
+            version: 1,
+            timestamp: 1522840762769,
+            name: 'io.jenkins.plugins.SomeTypicalClass',
+            level: 'WARNING',
+            message: largeMessage,
+            exception: {
+              raw: 'serialized exception\n many \n many \n lines'
+            }
+          }
+        };
         return request({
           url: h.getUrl('/telemetry/error'),
           method: 'POST',
