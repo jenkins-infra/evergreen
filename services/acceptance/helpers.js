@@ -39,7 +39,7 @@ class Helpers {
 
   assertStatus(response, code) {
     if (response.statusCode) {
-      assert.equal(response.statusCode, code);
+      assert.equal(response.statusCode, code, 'expected: ' + code + ', received: ' + response.statusCode);
     }
     else {
       throw response;
