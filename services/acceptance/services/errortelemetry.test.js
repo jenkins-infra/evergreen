@@ -56,6 +56,35 @@ describe('Error Telemetry service acceptance tests', () => {
           });
       });
 
+      it('should reject invalid json', () => {
+        return request({
+          url: h.getUrl('/telemetry/error'),
+          method: 'POST',
+          headers: { 'Authorization': this.token },
+          json: true,
+          body: 'invalid json'
+        })
+          .then(res => assert.fail(res))
+          .catch(err => {
+            h.assertStatus(err, 400);
+          });
+      });
+
+      it('should reject large payloads', () => {
+        let largeLog = new Array(1000001).join('a');
+        return request({
+          url: h.getUrl('/telemetry/error'),
+          method: 'POST',
+          headers: { 'Authorization': this.token },
+          json: true,
+          body: largeLog
+        })
+          .then(res => assert.fail(res))
+          .catch(err => {
+            h.assertStatus(err, 413);
+          });
+      });
+
       it('should accept correctly formatted logs', () => {
         let emptyLog = {
           uuid: this.reg.uuid,
