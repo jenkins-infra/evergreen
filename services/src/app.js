@@ -28,6 +28,9 @@ const sequelizeSwagger = require('./sequelize-swagger');
 const settings = configuration();
 const app = express(feathers());
 
+// const SUCCESS = 'OK';
+const FAILURE = 'ERROR';
+
 // Load app configuration
 app.configure(settings);
 // Enable CORS, security, compression, favicon and body parsing
@@ -71,13 +74,19 @@ app.configure(channels);
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 
-/* Avoid cluttering the test logs with expected errors and exceptions */
-if (process.env.NODE_ENV != 'test') {
-  app.use(express.errorHandler({ logger }));
-}
-else {
-  app.use(express.errorHandler());
-}
+/* eslint-disable no-unused-vars */
+app.use((err, req, res, next) => { 
+  if (!err.statusCode) err.statusCode = err.code ? err.code : 500;
+  if (!err.message) err.message = 'Unexpected server error';
+  /* Avoid cluttering the test logs with expected errors and exceptions */
+  if (process.env.NODE_ENV != 'test') {
+    logger.error(err.stack);
+    logger.debug('statusCode: ' + err.statusCode + ' message: ' + err.message);
+  }
+  res.status(err.statusCode);
+  res.json({ status: FAILURE, message: err.message });
+});
+/* eslint-enable no-unused-vars */
 
 app.hooks(appHooks);
 
