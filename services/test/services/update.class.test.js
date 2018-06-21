@@ -45,11 +45,16 @@ describe('update service class', () => {
   });
 
   describe('prepareManifestFromRecord()', () => {
-    let computed = {
-      plugins: {
-        updates: [],
-      },
-    };
+    let computed = {};
+
+    beforeEach(() => {
+      computed = {
+        plugins: {
+          updates: [],
+        },
+      };
+    });
+
     it('should handle an empty record properly', () => {
       expect(this.service.prepareManifestFromRecord({}, computed)).toBe(computed);
     });
@@ -126,6 +131,20 @@ describe('update service class', () => {
         let result = await this.service.prepareManifestWithFlavor(1, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates', [plugin]);
+      });
+
+      it('should accomodate empty flavors', async () => {
+        let record = {
+          manifest: {
+            environments: {
+              'docker-cloud': {},
+            }
+          }
+        };
+
+        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        expect(result).toBe(computed);
+        expect(result).toHaveProperty('plugins.updates');
       });
     });
   });

@@ -141,7 +141,7 @@ class Update extends FeathersSequelize.Service {
     }
 
     let flavor = record.manifest.environments[instance.flavor];
-    if (flavor) {
+    if ((flavor) && (flavor.plugins)) {
       flavor.plugins.forEach((plugin) => {
         computedManifest.plugins.updates.push({
           url: plugin.url,
