@@ -57,7 +57,9 @@ describe('status service hooks', () => {
          */
         context.app.service = () => {
           return {
-            find: () => { return {}; },
+            find: () => {
+              return {};
+            },
           };
         };
 

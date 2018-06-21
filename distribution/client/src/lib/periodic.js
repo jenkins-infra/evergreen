@@ -49,5 +49,7 @@ class Periodic {
   }
 }
 
-module.exports = function(app, options) { return new Periodic(app, options); };
+module.exports = function(app, options) {
+  return new Periodic(app, options);
+};
 module.exports.Periodic = Periodic;

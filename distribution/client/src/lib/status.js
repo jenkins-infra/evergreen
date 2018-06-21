@@ -50,8 +50,7 @@ class Status {
          */
         if (err.code != 400) {
           logger.error('Failed to create a Status record', err);
-        }
-        else {
+        } else {
           logger.debug('Status record not changed');
         }
       });
@@ -67,7 +66,9 @@ class Status {
 
       zip.on('ready', () => {
         zip.stream(manifestName, (err, stream) => {
-          if (err) { reject(err); }
+          if (err) {
+            reject(err);
+          }
           let buffer = '';
           stream.on('data', chunk => buffer += chunk );
           stream.on('end', () => {

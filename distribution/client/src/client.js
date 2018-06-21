@@ -114,8 +114,7 @@ class Client {
         return this.status.create().then(() => {
           this.runloop(this.app);
         });
-      }
-      else {
+      } else {
         return this.runloop(this.app);
       }
     }).catch((err) => {

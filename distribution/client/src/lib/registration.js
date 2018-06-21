@@ -31,8 +31,7 @@ class Registration {
     try {
       fs.statSync(this.uuidPath());
       return true;
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         return false;
       }
@@ -56,8 +55,7 @@ class Registration {
         self.loadKeysSync();
         self.loadUUIDSync();
         return self.login().then(res => resolve(res, false));
-      }
-      else {
+      } else {
         if (!self.generateKeys()) {
           return reject('Failed to generate keys');
         }
@@ -73,8 +71,7 @@ class Registration {
           self.uuid = res.uuid;
           if (!self.saveUUIDSync()) {
             reject('Failed to save UUID!');
-          }
-          else {
+          } else {
             return self.login().then(res => resolve(res, true));
           }
         }).catch((res) => {
@@ -169,12 +166,10 @@ class Registration {
     try {
       fs.statSync(this.uuidPath());
       return true;
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         return false;
-      }
-      else {
+      } else {
         throw err;
       }
     }
@@ -231,12 +226,10 @@ class Registration {
     try {
       fs.statSync(this.publicKeyPath());
       return true;
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         return false;
-      }
-      else {
+      } else {
         throw err;
       }
     }
@@ -252,12 +245,10 @@ class Registration {
     /* Only bother making the directory if it doesn't already exist */
     try {
       fs.statSync(keys);
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         mkdirp.sync(keys);
-      }
-      else {
+      } else {
         throw err;
       }
     }

@@ -49,8 +49,7 @@ class UpdateHooks {
           createdAt: 1,
         }
       });
-    }
-    else {
+    } else {
       Object.assign(query, {
         $sort: {
           createdAt: -1,

@@ -94,8 +94,7 @@ describe('Versions service acceptance tests', () => {
         try {
           await request(req);
           assert.fail('Should not have succeeded');
-        }
-        catch (err) {
+        } catch (err) {
           h.assertStatus(err, 400);
         }
       });

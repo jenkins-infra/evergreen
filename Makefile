@@ -9,3 +9,7 @@ lint:
 check:
 	$(MAKE) -C distribution $@
 	$(MAKE) -C services $@
+
+fix-formatting:
+	$(MAKE) -C distribution $@
+	$(MAKE) -C services $@
