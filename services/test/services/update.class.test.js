@@ -66,6 +66,11 @@ describe('update service class', () => {
 
       expect(computed).toHaveProperty('plugins.updates', [plugin]);
     });
+
+    it('should return for empty/undefined plugins', () => {
+      let record = { manifest: {} };
+      expect(this.service.prepareManifestFromRecord(record, computed)).toBe(computed);
+    });
   });
 
   describe('prepareManifestWithFlavor()', () => {

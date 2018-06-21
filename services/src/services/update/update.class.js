@@ -113,7 +113,7 @@ class Update extends FeathersSequelize.Service {
      * When dealing with records which have empty manifests, we can just bail
      * out early.
      */
-    if (!record.manifest) {
+    if ((!record.manifest) || (!record.manifest.plugins)) {
       return computedManifest;
     }
 
