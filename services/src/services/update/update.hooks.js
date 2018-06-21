@@ -9,6 +9,7 @@ class UpdateHooks {
   constructor() {
   }
 
+  /*
    * For create() methods, add the default `channel` to the data which will be
    * "general" until richer channel management is added
    */

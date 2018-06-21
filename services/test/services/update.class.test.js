@@ -85,7 +85,9 @@ describe('update service class', () => {
       beforeEach(() => {
         this.app.service = () => {
           return {
-            get: () => { return null; },
+            get: () => {
+              return null;
+            },
           };
         };
       });
@@ -133,7 +135,9 @@ describe('update service class', () => {
       beforeEach(() => {
         this.app.service = () => {
           return {
-            find: () => { return []; },
+            find: () => {
+              return [];
+            },
           };
         };
       });

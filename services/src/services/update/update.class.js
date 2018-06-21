@@ -89,8 +89,7 @@ class Update extends FeathersSequelize.Service {
 
     if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length === 0) {
       computedManifest.plugins.updates = record.manifest.plugins;
-    }
-    else {
+    } else {
       let signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
       let updates = [];
       record.manifest.plugins.forEach((plugin) => {
@@ -193,8 +192,7 @@ class Update extends FeathersSequelize.Service {
           createdAt: 1,
         }
       });
-    }
-    else {
+    } else {
       Object.assign(query, {
         $sort: {
           createdAt: -1,
@@ -207,5 +205,7 @@ class Update extends FeathersSequelize.Service {
   }
 }
 
-module.exports = (options) => { return new Update(options); };
+module.exports = (options) => {
+  return new Update(options);
+};
 module.exports.NotModified = NotModified;
