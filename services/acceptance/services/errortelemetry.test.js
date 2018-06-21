@@ -56,6 +56,48 @@ describe('Error Telemetry service acceptance tests', () => {
           });
       });
 
+      it('should reject invalid json', () => {
+        return request({
+          url: h.getUrl('/telemetry/error'),
+          method: 'POST',
+          headers: { 'Authorization': this.token },
+          json: true,
+          body: 'invalid json'
+        })
+          .then(res => assert.fail(res))
+          .catch(err => {
+            h.assertStatus(err, 400);
+          });
+      });
+
+      it('should reject large payloads', () => {
+        let largeMessage = new Array(1000001).join('a');
+        let largeLog = {
+          uuid: this.reg.uuid,
+          log: {
+            version: 1,
+            timestamp: 1522840762769,
+            name: 'io.jenkins.plugins.SomeTypicalClass',
+            level: 'WARNING',
+            message: largeMessage,
+            exception: {
+              raw: 'serialized exception\n many \n many \n lines'
+            }
+          }
+        };
+        return request({
+          url: h.getUrl('/telemetry/error'),
+          method: 'POST',
+          headers: { 'Authorization': this.token },
+          json: true,
+          body: largeLog
+        })
+          .then(res => assert.fail(res))
+          .catch(err => {
+            h.assertStatus(err, 413);
+          });
+      });
+
       it('should accept correctly formatted logs', () => {
         let emptyLog = {
           uuid: this.reg.uuid,
