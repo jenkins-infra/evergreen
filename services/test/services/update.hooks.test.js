@@ -12,4 +12,13 @@ describe('update service hooks', () => {
       expect(context.data.channel).toBe('general');
     });
   });
+
+  describe('getHooks()', () => {
+    it('should have before/after/error properties', () => {
+      let result = hooks.getHooks();
+      expect(result).toHaveProperty('before');
+      expect(result).toHaveProperty('after');
+      expect(result).toHaveProperty('error');
+    });
+  });
 });
