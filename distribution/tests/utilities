@@ -94,7 +94,7 @@ wait_for_jenkins() {
   # FIXME: have to wait pretty long because plugin installations
   # Possibly we'll want a special mode to accelerate testing, maybe by downloading plugins
   # from a local cache by overriding JENKINS_UC?
-  max_attempts=20
+  max_attempts=40
   cur_attempts=0
   while true
   do
