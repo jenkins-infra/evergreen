@@ -29,6 +29,15 @@ let ingest = {
         signature: '4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d',
       },
     },
+     {
+       groupId: 'io.jenkins.plugins',
+       artifactId: 'essentials',
+       url: 'http://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/essentials/0.3-rc20.a3f76cdd1348/essentials-0.3-rc20.a3f76cdd1348.hpi',
+       checksum: {
+         type: 'sha512',
+         signature: 'e1cdf271eabed428c2198c4f7a49c5dea7fc8850987bcf63b87b74936a3cc426896a4b7c9c974f0fe3abd61071ea5a2238538af9f9266f2d37696856809d697a',
+       },
+     },
   ],
   environments: {
   },
