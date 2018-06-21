@@ -26,8 +26,7 @@ class AuthenticationHooks {
     return reg.find({ query: { uuid: context.data.uuid }}).then(records => {
       if (records.total < 1) {
         throw new errors.NotFound('Unknown instance');
-      }
-      else {
+      } else {
         /*
         * Since we've already looked up the UUID, let's pass it along for
         * future hook use
@@ -58,8 +57,7 @@ class AuthenticationHooks {
       if (!key.verify(record.uuid, context.data.signature)) {
         throw invalidError;
       }
-    }
-    catch (err) {
+    } catch (err) {
       logger.error('Improperly formed signature sent', err.message);
       throw invalidError;
     }

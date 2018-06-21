@@ -36,12 +36,10 @@ describe('The update module', () => {
       assert(update.saveUpdateSync());
       try {
         fs.statSync(update.updatePath());
-      }
-      catch (err) {
+      } catch (err) {
         if (err.code == 'ENOENT') {
           assert.fail('Could not find the updates saved on disk');
-        }
-        else {
+        } else {
           throw err;
         }
       }

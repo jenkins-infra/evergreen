@@ -48,12 +48,10 @@ describe('The registration module', () => {
         assert(this.reg.saveUUIDSync());
         try {
           fs.statSync(this.reg.uuidPath());
-        }
-        catch (err) {
+        } catch (err) {
           if (err.code == 'ENOENT') {
             assert.fail('Could not find the uuid saved on disk');
-          }
-          else {
+          } else {
             throw err;
           }
         }
@@ -91,8 +89,7 @@ describe('The registration module', () => {
         assert(this.reg.saveKeysSync());
         try {
           fs.statSync(this.reg.publicKeyPath());
-        }
-        catch (err) {
+        } catch (err) {
           assert.fail('The public key was not written properly');
         }
 
@@ -101,8 +98,7 @@ describe('The registration module', () => {
             'evergreen-private-key'].join(path.sep);
 
           fs.statSync(privateKeyPath);
-        }
-        catch (err) {
+        } catch (err) {
           assert.fail('The private key was not written properly');
         }
       });
@@ -172,8 +168,7 @@ describe('The registration module', () => {
       /* this is really a test to make sure memfs is behaving appropriately */
       try {
         fs.statSync('/evergreen/keys');
-      }
-      catch (err) {
+      } catch (err) {
         assert.equal(err.code, 'ENOENT');
       }
     });

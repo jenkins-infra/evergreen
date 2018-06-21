@@ -27,8 +27,7 @@ module.exports = function(context) {
     // if (context.data.uuid != context.params.query.uuid) {
     //   throw new errors.NotAuthenticated('Invalid UUID');
     // }
-  }
-  else {
+  } else {
     if (!context.data.uuid) {
       throw new errors.BadRequest('Invalid UUID in data body');
     }

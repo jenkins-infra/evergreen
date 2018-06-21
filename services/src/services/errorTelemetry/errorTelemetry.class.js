@@ -35,5 +35,7 @@ class ErrorTelemetryService {
   }
 }
 
-module.exports = function() { return new ErrorTelemetryService(); };
+module.exports = function() {
+  return new ErrorTelemetryService();
+};
 module.exports.ErrorTelemetryService = ErrorTelemetryService;

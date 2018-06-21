@@ -12,7 +12,9 @@ const _ = require('lodash');
 module.exports = function() {
   const app = this;
   // Check for swagger
-  if (_.isNil(app.docs)) throw new Error('no swagger defined');
+  if (_.isNil(app.docs)) {
+    throw new Error('no swagger defined');
+  }
   // Iterate over the doc paths, find the service
   _(app.docs.paths)
     .keys()

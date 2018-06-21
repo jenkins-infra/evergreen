@@ -74,13 +74,16 @@ app.configure(channels);
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 
-app.use((err, req, res, next) => { 
+app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  if (!err.statusCode) 
+  if (!err.statusCode) {
     err.statusCode = (err.code ? err.code : 500);
-  if (!err.message) err.message = 'Unexpected server error';
+  }
+  if (!err.message) {
+    err.message = 'Unexpected server error';
+  }
   /* Avoid cluttering the test logs with expected errors and exceptions */
   if (process.env.NODE_ENV != 'test') {
     logger.error(err.stack);

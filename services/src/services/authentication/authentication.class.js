@@ -21,4 +21,6 @@ class Authentication {
   }
 }
 
-module.exports = function(options) { return new Authentication(options); };
+module.exports = function(options) {
+  return new Authentication(options);
+};

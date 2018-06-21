@@ -60,12 +60,10 @@ class Update {
   loadUpdateSync() {
     try {
       fs.statSync(this.updatePath());
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         return null;
-      }
-      else {
+      } else {
         throw err;
       }
     }
@@ -85,12 +83,10 @@ class Update {
 
     try {
       fs.statSync(dir);
-    }
-    catch (err) {
+    } catch (err) {
       if (err.code == 'ENOENT') {
         mkdirp.sync(storage.homeDirectory());
-      }
-      else {
+      } else {
         throw err;
       }
     }

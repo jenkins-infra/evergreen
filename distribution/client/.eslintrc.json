@@ -36,6 +36,9 @@
     "spaced-comment": "error",
     "space-infix-ops": "error",
     "semi-spacing": "error",
-    "template-tag-spacing": "error"
+    "template-tag-spacing": "error",
+    "curly": "error",
+    "brace-style": "error",
+    "no-trailing-spaces": "error"
   }
 }
