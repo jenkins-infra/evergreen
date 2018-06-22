@@ -53,6 +53,8 @@ describe('Error Telemetry service acceptance tests', () => {
           .then(res => assert.fail(res))
           .catch(err => {
             assert.equal(err.statusCode, 400);
+            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
+            assert.equal(err.error.message, 'Missing required field \'version\'', 'response.message got: ' + err.error.message);
           });
       });
 
@@ -67,6 +69,8 @@ describe('Error Telemetry service acceptance tests', () => {
           .then(res => assert.fail(res))
           .catch(err => {
             h.assertStatus(err, 400);
+            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
+            assert.equal(err.error.message, 'Unexpected token " in JSON at position 0', 'response.message got: ' + err.error.message);
           });
       });
 
@@ -95,6 +99,7 @@ describe('Error Telemetry service acceptance tests', () => {
           .then(res => assert.fail(res))
           .catch(err => {
             h.assertStatus(err, 413);
+            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
           });
       });
 
@@ -119,7 +124,10 @@ describe('Error Telemetry service acceptance tests', () => {
           json: true,
           body: emptyLog
         })
-          .then(res => assert.ok(res))
+          .then(res => {
+            assert.ok(res);
+            assert.equal(res.status, 'OK', 'response.status should be OK but got: ' + res.status);
+          })
           .catch(err => assert.fail(err));
       });
     });
