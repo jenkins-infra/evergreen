@@ -42,10 +42,25 @@ spec:
       artifactId: 'workflow-aggregator'
       version: '2.5'
 
+    - groupId: 'org.jenkins-ci.plugins'
+      artifactId: 'metrics'
+
+    # Not presently considered 'essential', but a dependency of
+    # configuraiton-as-code
+    - groupId: 'org.jenkins-ci.plugins'
+      artifactId: 'job-dsl'
+      version: '2.73'
+    - groupId: 'org.jenkins-ci.plugins'
+      artifactId: 'jdk-tool'
+      version: '2.73'
+
   environments:
     # environments get added to the other section when enabled
-    - name: aws
+    - name: docker-cloud
       plugins:
+        - groupId: 'io.jenkins.docker'
+          artifactId: 'docker-plugin'
+          version: '2.60.3'
 
 # the realized BoM after refs are resolved
 # status:

@@ -23,16 +23,15 @@ fix-formatting:
 container-prereqs: build/jenkins-support build/jenkins.sh
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh
+	$(MAKE) -C ../services dump
 
 container-check: base-container-check docker-cloud-container-check
 
 base-container-check: containers container-check-prereqs
-	$(MAKE) -C ../services dump
 	./tests/offline-tests.sh
 	./tests/tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
-	$(MAKE) -C ../services dump
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
 	ENVIRONMENT=docker-cloud ./tests/tests.sh
 

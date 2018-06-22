@@ -78,10 +78,16 @@ container: depends check Dockerfile
 
 container-check: container check
 
+ingest-update-center: essentials.yaml ingest-update-center
+	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
+	$(NODE) node ./ingest-update-center
+
 clean:
 	$(COMPOSE) down || true
 	rm -rf node_modules
 	rm -f $(DB_DUMP)
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
-.PHONY: all check clean container depends migrate unit acceptance run run-detach dump
+.PHONY: all check clean container depends migrate unit acceptance run run-detach \
+	dump debug-unit debug-run debug-acceptance \
+	ingest-update-center

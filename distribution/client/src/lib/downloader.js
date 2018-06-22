@@ -7,15 +7,15 @@ const fs     = require('fs');
 const path   = require('path');
 const url    = require('url');
 
-const fetch  = require('node-fetch');
-const logger = require('winston');
-const mkdirp = require('mkdirp');
+const fetch   = require('node-fetch');
+const logger  = require('winston');
+const mkdirp  = require('mkdirp');
 
 class Downloader {
   constructor() {
   }
 
-  download(item, dir) {
+  static download(item, dir) {
     const u = url.parse(item);
     mkdirp.sync(dir);
     const filename = [dir, path.basename(u.pathname)].join(path.sep);
@@ -40,4 +40,4 @@ class Downloader {
   }
 }
 
-module.exports = new Downloader();
+module.exports = Downloader;

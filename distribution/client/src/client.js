@@ -2,7 +2,6 @@
  * This is the main entrypoint for the evergreen-client
  */
 
-const path    = require('path');
 const process = require('process');
 
 const feathers = require('@feathersjs/feathers');
@@ -11,11 +10,9 @@ const logger   = require('winston');
 const rest     = require('@feathersjs/rest-client');
 
 const createCron     = require('./lib/periodic');
-const Downloader     = require('./lib/downloader');
 const ErrorTelemetry = require('./lib/error-telemetry');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
-const Supervisord    = require('./lib/supervisord');
 const Update         = require('./lib/update');
 
 /*
@@ -29,43 +26,32 @@ class Client {
     this.status = new Status(this.app);
     this.update = new Update(this.app);
     this.errorTelemetry = new ErrorTelemetry(this.app);
+    this.updating = false;
+  }
+
+  /*
+   * Determine whether the instance should be considered offline or not
+   *
+   * @return {boolean} Defaults to false unless EVERGREEN_OFFLINE=1 is et in
+   *  the environment
+   */
+  isOffline() {
+    return !!process.env.EVERGREEN_OFFLINE;
   }
 
   async runUpdates() {
-    return this.update.query().then((ups) => {
-      if (process.env.EVERGREEN_OFFLINE) {
-        logger.info('Evergreen in offline mode, disabling downloading of updates..');
-        return;
+    if (this.isOffline()) {
+      logger.info('Evergreen in offline mode, disabling downloading of updates..');
+      return false;
+    }
+
+    return this.update.query().then(updates => this.update.applyUpdates(updates)).catch((err) => {
+      if (err.type == 'invalid-json') {
+        logger.warn('Received non-JSON response from the Update service');
+      } else {
+        logger.error('Failed to query updates', err, err.code, err.data, err.error);
       }
-
-      if (ups) {
-        logger.info('Updates available', ups);
-        let tasks = [];
-
-        const dir = path.join(process.env.EVERGREEN_HOME,
-          'jenkins',
-          'home');
-
-        if (ups.core.url) {
-          tasks.push(Downloader.download(ups.core.url, dir).then((stream) => {
-            logger.info('Core downloaded', stream.path);
-          }));
-        }
-
-        ups.plugins.updates.forEach((plugin) => {
-          logger.info('Fetching ', plugin.url);
-          tasks.push(Downloader.download(plugin.url, path.join(dir, 'plugins')).then((stream) => {
-            logger.info('download complete', stream.path);
-          }));
-        });
-
-        Promise.all(tasks).then(() => {
-          logger.info('All downloads completed, restarting Jenkins');
-          this.update.saveUpdateSync(ups);
-          Supervisord.restartProcess('jenkins');
-        });
-      }
-    }).catch((res) => logger.info('No updates available', res));
+    });
   }
 
   runloop(app) {
@@ -87,9 +73,10 @@ class Client {
 
     this.errorTelemetry.setup();
 
-    setInterval( () => {
+    setInterval(() => {
       /* no-op to keep this process alive */
-    }, 10);
+      this.runUpdates();
+    }, 5000);
   }
 
   bootstrap() {
@@ -105,18 +92,10 @@ class Client {
       this.update.authenticate(this.reg.uuid, this.reg.token);
       this.errorTelemetry.authenticate(this.reg.uuid, this.reg.token);
 
-      /*
-       * It is only valid to start the runloop assuming we have been able to
-       * register and log in successfully, otherwise the client will exit and
-       * supervisord should try again :/
-       */
-      if (newRegistration) {
-        return this.status.create().then(() => {
-          this.runloop(this.app);
-        });
-      } else {
-        return this.runloop(this.app);
-      }
+      return this.status.create().then((r) => {
+        logger.info('Starting the runloop with a new registration and status', r, newRegistration);
+        this.runloop(this.app);
+      });
     }).catch((err) => {
       logger.info('Fatal error encountered while trying to register, exiting the client and will restart and retry', err);
       process.exit(1);
