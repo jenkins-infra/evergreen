@@ -7,8 +7,10 @@ all: check docs container
 
 check: depends lint
 	$(MAKE) migrate
-	$(MAKE) unit
-	$(MAKE) acceptance
+	if [ -z "$${SKIP_TESTS}" ]; then \
+		$(MAKE) unit; \
+		$(MAKE) acceptance; \
+	fi;
 
 lint: depends
 	$(NODE) npm run eslint
