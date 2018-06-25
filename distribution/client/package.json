@@ -14,12 +14,12 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "hoek": "^5.0.3",
-    "jest": "^22.4.3",
-    "memfs": "^2.8.0"
+    "jest": "^22.4.4",
+    "memfs": "^2.9.0"
   },
   "dependencies": {
-    "@feathersjs/feathers": "^3.1.4",
-    "@feathersjs/rest-client": "^1.3.4",
+    "@feathersjs/feathers": "^3.1.7",
+    "@feathersjs/rest-client": "^1.4.0",
     "cron": "^1.3.0",
     "elliptic": "^6.4.0",
     "eventsource": "^1.0.5",
@@ -29,7 +29,7 @@
     "tail": "^1.2.3",
     "unzip": "^0.1.11",
     "uuid": "^3.2.1",
-    "winston": "^2.4.2",
+    "winston": "^2.4.3",
     "xmlrpc": "^1.3.2"
   },
   "jest": {
