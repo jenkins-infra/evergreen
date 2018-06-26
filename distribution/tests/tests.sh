@@ -42,11 +42,15 @@ test_smoke() {
 }
 
 test_required_plugins_are_here() {
-  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.hpi" > /dev/null
+  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.hpi"
   assertEquals "The metrics plugin should be installed" 0 "$?"
 
-  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/essentials.hpi" > /dev/null
+  # workaround for JENKINS-52197
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/essentials*.hpi'
   assertEquals "The essentials plugin should be installed" 0 "$?"
+
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.hpi'
+  assertEquals "The configuration-as-code plugin should be installed" 0 "$?"
 }
 
 # FIXME JENKINS-51328 to re-enable
