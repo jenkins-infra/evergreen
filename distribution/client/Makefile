@@ -9,7 +9,9 @@ fix-formatting: depends
 	$(NODE) npm run eslint -- --fix
 
 check: lint
-	$(MAKE) unit
+	if [ -z "$${SKIP_TESTS}" ]; then \
+		$(MAKE) unit; \
+	fi;
 
 unit: depends
 	$(NODE) npm run jest
