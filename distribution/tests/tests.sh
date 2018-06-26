@@ -41,6 +41,14 @@ test_smoke() {
 
 }
 
+test_required_plugins_are_here() {
+  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.hpi" > /dev/null
+  assertEquals "The metrics plugin should be installed" 0 "$?"
+
+  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/essentials.hpi" > /dev/null
+  assertEquals "The essentials plugin should be installed" 0 "$?"
+}
+
 # FIXME JENKINS-51328 to re-enable
 test_no_node_error_in_logs() {
 
