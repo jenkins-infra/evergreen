@@ -46,9 +46,11 @@ test_required_plugins_are_here() {
   assertEquals "The metrics plugin should be installed" 0 "$?"
 
   # workaround for JENKINS-52197
+  # shellcheck disable=SC2016
   docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/essentials*.hpi'
   assertEquals "The essentials plugin should be installed" 0 "$?"
 
+  # shellcheck disable=SC2016
   docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.hpi'
   assertEquals "The configuration-as-code plugin should be installed" 0 "$?"
 }
