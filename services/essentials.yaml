@@ -45,11 +45,6 @@ spec:
     - groupId: 'org.jenkins-ci.plugins'
       artifactId: 'metrics'
 
-    # Not presently considered 'essential', but a dependency of
-    # configuraiton-as-code
-    - groupId: 'org.jenkins-ci.plugins'
-      artifactId: 'job-dsl'
-      version: '2.73'
     - groupId: 'org.jenkins-ci.plugins'
       artifactId: 'jdk-tool'
       version: '2.73'

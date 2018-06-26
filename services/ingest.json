@@ -11,7 +11,7 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "configuration-as-code",
-      "url": "http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.9-alpha-rc292.ee88abe834b2/configuration-as-code-0.9-alpha-rc292.ee88abe834b2.hpi",
+      "url": "http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.9-alpha-rc305.6e0189a51b16/configuration-as-code-0.9-alpha-rc305.6e0189a51b16.hpi",
       "checksum": {
         "type": "sha512",
         "signature": "4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d"
@@ -825,15 +825,6 @@
       "checksum": {
         "type": "sha512",
         "signature": "3bFR8GEKZmQQ65XjxQUxtcLjFRYiB4s9tlZqgKc7N8CpeplCj7eOW3iCOfBjlK8fzKVBE1vGEJakqQDiBmE0KQ=="
-      }
-    },
-    {
-      "groupId": "org.jenkins-ci.plugins",
-      "artifactId": "job-dsl",
-      "url": "http://updates.jenkins-ci.org/download/plugins/job-dsl/1.69/job-dsl.hpi",
-      "checksum": {
-        "type": "sha512",
-        "signature": "dUIzL6r0yyJeoQUNrxjHqxqKoUu3Typ4xiLtjtejV8Qrd6QmT4/vHtGqSVYsFOaCVnQ2cliNDPJqwQ965rNkPA=="
       }
     },
     {
