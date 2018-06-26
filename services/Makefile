@@ -90,6 +90,9 @@ clean:
 	rm -f $(DB_DUMP)
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
+publish: container
+	docker push ${IMAGE_NAME}:latest
+
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
-	ingest-update-center
+	ingest-update-center publish

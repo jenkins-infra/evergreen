@@ -1,4 +1,4 @@
-JENKINS_CONTAINER:=jenkins/evergreen
+IMAGE_NAME:=jenkins/evergreen
 COMPOSE:=../tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
@@ -37,21 +37,21 @@ docker-cloud-container-check: containers container-check-prereqs
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client unit
-	docker build -t ${JENKINS_CONTAINER}:latest .
+	docker build -t ${IMAGE_NAME}:latest .
 	$(MAKE) -C environments $@
 
 containers: container
 	$(MAKE) -C ../services container
 
 publish: container
-	docker push ${JENKINS_CONTAINER}:latest
+	docker push ${IMAGE_NAME}:latest
 
 run:
 	$(COMPOSE) up
 
 clean:
 	$(COMPOSE) down || true
-	docker rmi $$(docker images -q -f "reference=$(JENKINS_CONTAINER)") || true
+	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 	$(MAKE) -C client $@
 	$(MAKE) -C ../services $@
 	rm -f build/docker-compose

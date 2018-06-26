@@ -107,9 +107,7 @@ pipeline {
                 withCredentials([[$class: 'ZipFileBinding',
                            credentialsId: 'jenkins-dockerhub',
                                 variable: 'DOCKER_CONFIG']]) {
-                    dir('distribution') {
-                      sh 'make publish'
-                    }
+                    sh 'make publish'
                 }
             }
         }

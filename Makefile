@@ -13,3 +13,7 @@ check:
 fix-formatting:
 	$(MAKE) -C distribution $@
 	$(MAKE) -C services $@
+
+publish:
+	$(MAKE) -C distribution $@
+	$(MAKE) -C services $@
