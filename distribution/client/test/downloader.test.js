@@ -13,13 +13,13 @@ describe('the Downloader class', () => {
     });
 
     it('should return promise', () => {
-      let response = Downloader.download('https://jenkins.io/index.html', dir);
+      let response = Downloader.download(`${item}/index.html`, dir);
       expect(Promise.resolve(response)).toBe(response);
     });
 
     it('should fail on url without final basename-ish path', () => {
       expect(() => {
-        Promise.resolve(Downloader.download('https://jenkins.io/', dir));
+        Promise.resolve(Downloader.download(`${item}/`, dir));
       }
       ).toThrow();
     });
