@@ -1,11 +1,12 @@
-'use strict';
+jest.mock('fs');
 
 const Downloader = require('../src/lib/downloader');
 const mkdirp     = require('mkdirp');
 
 describe('the Downloader class', () => {
   describe('download()', () => {
-    let dir  = '/tmp/jest';
+    let item = 'https://jenkins.io';
+    let dir  = '/tmp';
 
     beforeEach(() => {
       mkdirp.sync(dir);
