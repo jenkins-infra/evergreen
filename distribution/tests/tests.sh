@@ -41,6 +41,20 @@ test_smoke() {
 
 }
 
+test_required_plugins_are_here() {
+  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.hpi"
+  assertEquals "The metrics plugin should be installed" 0 "$?"
+
+  # workaround for JENKINS-52197
+  # shellcheck disable=SC2016
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/essentials*.hpi'
+  assertEquals "The essentials plugin should be installed" 0 "$?"
+
+  # shellcheck disable=SC2016
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.hpi'
+  assertEquals "The configuration-as-code plugin should be installed" 0 "$?"
+}
+
 # FIXME JENKINS-51328 to re-enable
 test_no_node_error_in_logs() {
 
