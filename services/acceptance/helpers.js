@@ -2,7 +2,6 @@
  * This module contains functions which are helpful for running all acceptance
  * tests
  */
-const assert  = require('assert');
 const ecc     = require('elliptic');
 const request = require('request-promise');
 const url     = require('url');
@@ -35,14 +34,6 @@ class Helpers {
       port: this.port(),
       pathname
     });
-  }
-
-  assertStatus(response, code) {
-    if (response.statusCode) {
-      assert.equal(response.statusCode, code, 'expected: ' + code + ', received: ' + response.statusCode);
-    } else {
-      throw response;
-    }
   }
 
   /*

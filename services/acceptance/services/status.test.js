@@ -11,8 +11,8 @@ describe('Status service acceptance tests', () => {
       url: h.getUrl('/status'),
       json: true
     })
-      .then(() => assert.fail('This should not have succeeded'))
-      .catch((err) => h.assertStatus(err, 401));
+      .then((res) => assert.fail(res))
+      .catch((err) => expect(err.statusCode).toEqual(401));
   });
 
   describe('with a pre-existing registration', () => {
@@ -27,10 +27,14 @@ describe('Status service acceptance tests', () => {
         return request({
           url: h.getUrl('/status'),
           headers: { 'Authorization': this.token },
-          json: true
+          json: true,
+          resolveWithFullResponse: true
         })
-          .then(r => assert.ok(r))
-          .catch((err) => h.assertStatus(err, 200));
+          .then(res => {
+            expect(res.statusCode).toEqual(200);
+            expect(res).toBeTruthy();
+          })
+          .catch((err) => assert.fail(err));
       });
 
       describe('POST /status (create)', () => {
@@ -43,8 +47,8 @@ describe('Status service acceptance tests', () => {
             body: { uuid: this.uuid }
           });
 
-          assert.ok(response);
-          assert.ok(response.updateId);
+          expect(response).toBeTruthy();
+          expect(response.updateId).toBeTruthy();
         });
 
         it('should not allow creating a status for a uuid not in the JWT', () => {
@@ -55,8 +59,8 @@ describe('Status service acceptance tests', () => {
             json: true,
             body: { uuid: 'fake out!' }
           })
-            .then(() => assert.fail('Should have failed'))
-            .catch(err => h.assertStatus(err, 401));
+            .then(res => assert.fail(res))
+            .catch(err => expect(err.statusCode).toEqual(401));
         });
       });
 
@@ -82,15 +86,15 @@ describe('Status service acceptance tests', () => {
           });
 
           it('should return the right uuid in the record', () => {
-            assert.ok(this.response);
-            assert.equal(this.response.uuid, this.instanceId);
+            expect(this.response).toBeTruthy();
+            expect(this.response.uuid).toEqual(this.instanceId);
           });
 
           it('should return the proper `channel` relationship', () => {
-            assert.ok(this.response);
-            assert.ok(this.response.update);
+            expect(this.response).toBeTruthy();
+            expect(this.response.update).toBeTruthy();
             /* we expect everybody to be in the general channel by default */
-            assert.equal(this.response.update.channel, 'general');
+            expect(this.response.update.channel).toEqual('general');
           });
         });
 
@@ -103,8 +107,8 @@ describe('Status service acceptance tests', () => {
               json: true,
               body: { uuid: this.instanceId }
             })
-              .then(() => assert.fail('This should fail'))
-              .catch(err => h.assertStatus(err, 400));
+              .then(res => assert.fail(res))
+              .catch(err => expect(err.statusCode).toEqual(400));
           });
         });
       });
