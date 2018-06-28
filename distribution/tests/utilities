@@ -16,8 +16,13 @@ info() {
 cleanup () {
   echo
 
+  flavor=no-flavor
+  if [[ -n $ENVIRONMENT ]]; then
+    flavor=$ENVIRONMENT
+  fi
+  currentCommand="$( basename $0 )"
   theDate=$( date +%Y-%m-%d_%H-%M-%S )
-  testRunDirectory=build/tests-run-$theDate
+  testRunDirectory=build/tests-run-$theDate-$currentCommand-$flavor
   mkdir -p $testRunDirectory
 
   echo -n "Retrieving test run data (container logs, ...) before shutdown... Will be in the $testRunDirectory directory... "
