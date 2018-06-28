@@ -74,7 +74,7 @@ describe('The update module', () => {
     it('should not reject on no plugin updates', async () => {
       let manifest = {
         core: {
-          url: 'https://jenkins.io',
+          url: 'https://jenkins.io/index.html',
         },
         plugins: {},
       };
