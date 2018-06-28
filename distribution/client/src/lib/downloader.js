@@ -16,9 +16,14 @@ class Downloader {
   }
 
   static download(item, dir) {
-    const u = url.parse(item);
+    const itemUrl = url.parse(item);
+    const itemUrlBaseName = path.basename(itemUrl.pathname);
+    if (!itemUrlBaseName) {
+      throw new Error(`The URL must end with a non-empty path. E.g. http://jenkins.io/something.html instead of https://jenkins.io/ (received URL=${itemUrl})`);
+    }
+
     mkdirp.sync(dir);
-    const filename = [dir, path.basename(u.pathname)].join(path.sep);
+    const filename = [dir, itemUrlBaseName].join(path.sep);
 
     logger.info('Fetching %s and saving to %s', item, filename);
 
