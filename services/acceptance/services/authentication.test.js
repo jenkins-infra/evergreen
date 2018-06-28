@@ -14,7 +14,7 @@ describe('Authentication service acceptance tests', () => {
         method: 'POST'
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch(res => h.assertStatus(res, 400));
+        .catch(err => expect(err.statusCode).toEqual(400));
     });
 
     it('should handle redundant slashes correctly', () => {
@@ -23,7 +23,7 @@ describe('Authentication service acceptance tests', () => {
         method: 'POST'
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch(res => h.assertStatus(res, 400));
+        .catch(err => expect(err.statusCode).toEqual(400));
     });
 
     it('should return a 404 if the client has not registered', () => {
@@ -37,7 +37,7 @@ describe('Authentication service acceptance tests', () => {
         }
       })
         .then(() => assert.fail('Got a 200 response'))
-        .catch(res => h.assertStatus(res, 404));
+        .catch(err => expect(err.statusCode).toEqual(404));
     });
 
     describe('with a pre-existing registration', () => {
@@ -57,7 +57,7 @@ describe('Authentication service acceptance tests', () => {
           }
         })
           .then(() => assert.fail('Should not have succeeded'))
-          .catch((err) => assert.equal(err.statusCode, 400));
+          .catch(err => expect(err.statusCode).toEqual(400));
       });
 
       it('should create a JWT token if the client has registered', async () => {
@@ -74,7 +74,7 @@ describe('Authentication service acceptance tests', () => {
           }
         });
         /* ensure this response looks somewhat tokeny? */
-        assert.ok(auth);
+        expect(auth).toBeTruthy();
       });
     });
   });

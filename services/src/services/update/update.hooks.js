@@ -4,6 +4,7 @@ const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const internalOnly       = require('../../hooks/internalonly');
 const authentication     = require('@feathersjs/authentication');
 const internalApi        = require('../../hooks/internalapi');
+const errors             = require('@feathersjs/errors');
 
 class UpdateHooks {
   constructor() {
@@ -16,6 +17,16 @@ class UpdateHooks {
   defaultChannel(context) {
     context.data.channel = 'general';
     return context;
+  }
+
+  checkUpdateFormat(hook) {
+    if (!(hook.data) || !Object.keys(hook.data).length) {
+      throw new errors.BadRequest('Missing data');
+    }
+    if (!(hook.data.commit)) {
+      throw new errors.BadRequest('Missing commit field');
+    }
+    // TODO add required field validation once we know what the required fields are
   }
 
   getHooks() {
@@ -32,6 +43,7 @@ class UpdateHooks {
         ],
         create: [
           internalApi,
+          this.checkUpdateFormat,
           dbtimestamp('createdAt'),
           this.defaultChannel,
         ],

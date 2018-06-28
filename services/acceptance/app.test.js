@@ -1,4 +1,3 @@
-const assert = require('assert');
 const rp = require('request-promise');
 const url = require('url');
 const app = require('../src/app');
@@ -22,8 +21,8 @@ describe('Feathers application tests', () => {
   });
 
   it('starts and shows the index page', () => {
-    return rp(getUrl()).then(body =>
-      assert.ok(body.indexOf('<html>') !== -1)
-    );
+    return rp(getUrl()).then(body => {
+      expect(body).toEqual(expect.stringContaining('<html>'));
+    });
   });
 });

@@ -5,6 +5,7 @@
 
 const fs   = require('fs');
 
+const assert  = require('assert');
 const request = require('request-promise');
 const h       = require('../helpers');
 
@@ -29,11 +30,14 @@ describe('Update service acceptance tests', () => {
         url: h.getUrl('/update'),
         method: 'POST',
         json: true,
+        resolveWithFullResponse: true,
         headers: { 'Authorization': this.settings.internalAPI.secret },
         body: {}
       })
-        .then(r => expect(r))
-        .catch((err) => h.assertStatus(err, 400));
+        .then(res => assert.fail(res.body))
+        .catch(err => {
+          expect(err.statusCode).toEqual(400);
+        });
     });
 
     it('should treat a valid "ingest JSON" as valid', () => {
@@ -42,13 +46,17 @@ describe('Update service acceptance tests', () => {
         method: 'POST',
         headers: { 'Authorization': this.settings.internalAPI.secret },
         json: true,
+        resolveWithFullResponse: true,
         body: {
           commit: '0xdeadbeef',
           manifest: this.ingest,
         },
       })
-        .then(r => expect(r.id).toBeGreaterThan(0))
-        .catch((err) => h.assertStatus(err, 200));
+        .then(res => {
+          expect(res.statusCode).toEqual(201);
+          expect(res.body.id).toBeGreaterThan(0);
+        })
+        .catch((err) => assert.fail(err));
     });
   });
 });

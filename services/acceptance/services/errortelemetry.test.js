@@ -14,7 +14,7 @@ describe('Error Telemetry service acceptance tests', () => {
         method: 'POST'
       })
         .then(() => assert.fail('This should not have succeeded'))
-        .catch((err) => h.assertStatus(err, 401));
+        .catch((err) => expect(err.statusCode).toEqual(401));
     });
   });
 
@@ -52,9 +52,9 @@ describe('Error Telemetry service acceptance tests', () => {
         })
           .then(res => assert.fail(res))
           .catch(err => {
-            assert.equal(err.statusCode, 400);
-            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
-            assert.equal(err.error.message, 'Missing required field \'version\'', 'response.message got: ' + err.error.message);
+            expect(err.statusCode).toEqual(400);
+            expect(err.error.status).toEqual('ERROR');
+            expect(err.error.message).toEqual('Missing required field \'version\'');
           });
       });
 
@@ -68,9 +68,9 @@ describe('Error Telemetry service acceptance tests', () => {
         })
           .then(res => assert.fail(res))
           .catch(err => {
-            h.assertStatus(err, 400);
-            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
-            assert.equal(err.error.message, 'Unexpected token " in JSON at position 0', 'response.message got: ' + err.error.message);
+            expect(err.statusCode).toEqual(400);
+            expect(err.error.status).toEqual('ERROR');
+            expect(err.error.message).toEqual('Unexpected token " in JSON at position 0');
           });
       });
 
@@ -98,8 +98,8 @@ describe('Error Telemetry service acceptance tests', () => {
         })
           .then(res => assert.fail(res))
           .catch(err => {
-            h.assertStatus(err, 413);
-            assert.equal(err.error.status, 'ERROR', 'response.status should be ERROR but got: ' + err.error.status);
+            expect(err.statusCode).toEqual(413);
+            expect(err.error.status).toEqual('ERROR');
           });
       });
 
@@ -125,8 +125,8 @@ describe('Error Telemetry service acceptance tests', () => {
           body: emptyLog
         })
           .then(res => {
-            assert.ok(res);
-            assert.equal(res.status, 'OK', 'response.status should be OK but got: ' + res.status);
+            expect(res).toBeTruthy();
+            expect(res.status).toEqual('OK');
           })
           .catch(err => assert.fail(err));
       });

@@ -1,4 +1,3 @@
-const assert  = require('assert');
 const request = require('request-promise');
 const h       = require('../helpers');
 
@@ -63,10 +62,13 @@ describe('Versions service acceptance tests', () => {
           method: 'POST',
           headers: { 'Authorization': this.token },
           json: true,
+          resolveWithFullResponse: true,
           body: version
         })
-          .then(res => assert.ok(res))
-          .catch(err => assert.fail(err));
+          .then(res => {
+            expect(res.body.uuid).toBeTruthy();
+          })
+          .catch(() => expect(false).toBeTruthy());
       });
 
       it('should not allow creating a versions record for some other uuid', () => {
@@ -77,8 +79,8 @@ describe('Versions service acceptance tests', () => {
           json: true,
           body: { uuid: 'phony', manifest: manifest }
         })
-          .then(() => assert.fail('Should have failed'))
-          .catch(err => h.assertStatus(err, 401));
+          .then(() => expect(false).toBeTruthy())
+          .catch(err => expect(err.statusCode).toEqual(401));
       });
 
       it('should disallow creating redundant versions records', async () => {
@@ -93,9 +95,9 @@ describe('Versions service acceptance tests', () => {
 
         try {
           await request(req);
-          assert.fail('Should not have succeeded');
+          expect(false).toBeTruthy();
         } catch (err) {
-          h.assertStatus(err, 400);
+          expect(err.statusCode).toEqual(400);
         }
       });
     });
