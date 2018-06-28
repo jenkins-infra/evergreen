@@ -20,10 +20,7 @@ class UpdateHooks {
   }
 
   checkUpdateFormat(hook) {
-    if (!hook) {
-      throw new errors.BadRequest('No hook at all?');
-    }
-    if (!(hook.data)) {
+    if (!(hook.data) || !Object.keys(hook.data).length) {
       throw new errors.BadRequest('Missing data');
     }
     if (!(hook.data.commit)) {
