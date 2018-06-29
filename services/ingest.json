@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-06-25T20:56:06.610Z",
+  "timestamp": "2018-06-29T11:13:04.353Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -191,10 +191,10 @@
     {
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-job",
-      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-job/2.21/workflow-job.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-job/2.22/workflow-job.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "AAKY13PIuleJSz25gsv3FOYeCljpMJ1FCl7sRr6/ORHyrJ/Gd8wx1c3Q4kK/3ske3C7ojEZv9Rc+8RI+G1g87w=="
+        "signature": "VNr4tj5+XnC9fpy6I/jYWMmGb5p02JY0E0u7dwdLXhe5NABZfVhLZayJ29zCz2v5FpalVCSn4J11HanqgPSdVg=="
       }
     },
     {
@@ -488,10 +488,10 @@
     {
       "groupId": "org.jenkinsci.plugins",
       "artifactId": "pipeline-model-definition",
-      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.3/pipeline-model-definition.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.3.1/pipeline-model-definition.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "KDAvpG0Oz+YX2hW+vY6trrwfJJp2fOUALubU1Mxa/Y82KsQFjqggPbmZi5BsAEuPRL5e1oPVZoNqsdK0JJkC6A=="
+        "signature": "u1zZmXUjaq87UYBhRyIYjDaxcxfor+bTYCGif2u8Tghkahf6GVXqpdAckJgD/wYxrf5R7M9Ugod3ftXKIG+Umg=="
       }
     },
     {
@@ -560,10 +560,10 @@
     {
       "groupId": "org.jenkinsci.plugins",
       "artifactId": "pipeline-model-api",
-      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.3/pipeline-model-api.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.3.1/pipeline-model-api.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "+vk66OexuLbrug3pV3yCncIbg/lDkKgkLDHCs3EoYot8IgDbqrHFc0EWjY3iy9qrv8mKQQR4wbH82oYDKLVFNA=="
+        "signature": "nCkKTuX3eJUifmZKwJJG7cZaukacNeVw7o/J4GbIFEfTFkMpmFXoIFHpCd2IdZ/bjfdObceMsbxOOA8mXL89MQ=="
       }
     },
     {
@@ -578,19 +578,19 @@
     {
       "groupId": "org.jenkinsci.plugins",
       "artifactId": "pipeline-model-extensions",
-      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-extensions/1.3/pipeline-model-extensions.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-extensions/1.3.1/pipeline-model-extensions.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "jDOFWK3loqv6Gsi/bC718pQCyGnGIm+IGenNW6wBc3lXjCvKfZF4EusQhAOycrU1eKtHOlKQEd97mupfDgnjLw=="
+        "signature": "ICA0lwdWMV8vkuj3I1qN2v29bHAPnVzMbs+6so1jc8KKYPxfw6b8S1arFFFglyDtJOaoPH5qUVyaD+S0V3ZMPA=="
       }
     },
     {
       "groupId": "org.jenkinsci.plugins",
       "artifactId": "pipeline-stage-tags-metadata",
-      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-stage-tags-metadata/1.3/pipeline-stage-tags-metadata.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-stage-tags-metadata/1.3.1/pipeline-stage-tags-metadata.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "/AIATM3C47RlhHwEI0OS4ooDg+ingYabo6FUfkx6xKKpj8YsYbX/YIVZd6UmZ26IMbcoWDqo7/LEUIR8l9XhhQ=="
+        "signature": "MUnYHtwn6fBU3KMP7luKnpikkw9J0HFrxu/s5LvzB1SeTb/JofjpiiuFr6CbI19Nr4IMcgSrXEuy/4zBlImRCw=="
       }
     },
     {
@@ -614,10 +614,10 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "mercurial",
-      "url": "http://updates.jenkins-ci.org/download/plugins/mercurial/2.3/mercurial.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/mercurial/2.4/mercurial.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "qJk9jp+9dO1PIHe3m7xao6a95QcJ0dMnz106mqy4MuywPJd7mLbJv3OXyo4+0ZV5iyi44Au6n0YFuy482X0NMw=="
+        "signature": "bay+kjEHGM87Fl2VpebmpxtpEB0T0er5oLaSz6LdGnJHzPBlE1oFzcvVr6Kfqn4dUVPZCqfxLEuKO6fkJ4aVUg=="
       }
     },
     {
