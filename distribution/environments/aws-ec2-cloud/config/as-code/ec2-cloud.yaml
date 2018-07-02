@@ -10,13 +10,13 @@ jenkins:
         useInstanceProfileForCredentials: true
         privateKey: "${PRIVATE_KEY}"
         templates:
-          - description: "Auto configured EC2 Agent yay again"
+          - description: "EC2 Agent"
             # TODO: create & version an AMI properly. This one was created off the console quickly from a running VM I had configured.
             ami: "ami-0c6bb742864ffa3f3"
-            labels: "test yey"
+            labels: "agent"
             type: "T2Xlarge"
             securityGroups: "${AGENT_SECURITY_GROUP}"
             remoteFS: "/home/ec2-user"
             remoteAdmin: "ec2-user"
-            # FIXME: file JIRA: without this, there's an NPE during provisioning
+            # FIXME: JENKINS-52319: without this, there's an NPE during provisioning
             userData: ""

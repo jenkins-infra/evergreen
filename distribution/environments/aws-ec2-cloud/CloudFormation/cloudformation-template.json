@@ -44,7 +44,7 @@
           { "Ref": "EssentialsMasterSecurityGroup"}
         ],
         "Tags" : [
-            {"Key" : "Name", "Value" : "Jenkins Essentials Tinkering Master"}
+            {"Key" : "Name", "Value" : "Jenkins Essentials Master"}
         ],
         "UserData": {
           "Fn::Base64" : {
