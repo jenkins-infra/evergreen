@@ -1,0 +1,154 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters" : {
+    "InstanceTypeParameter" : {
+      "Type" : "String",
+      "Default" : "t2.large",
+      "AllowedValues" : ["t2.micro", "m1.small", "m1.large", "t2.large"],
+      "Description" : "Type of EC2 instance you want to run your master in."
+    },
+    "KeyNameParameter": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "The KeyName that will be used to access this EC2 instance."
+    },
+    "PrivateKey": {
+      "Type" : "String",
+      "Description" : "The private key for the keypair specified above (required to access agents from master)."
+    },
+    "SSHLocation" : {
+      "Description" : "The IP address range that can be used to SSH to the EC2 instance for your Jenkins Essentials instance.",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+      "ConstraintDescription": "Must be a valid IP CIDR range of the form x.x.x.x/x"
+    }
+  },
+  "Resources": {
+    "EC2EssentialsInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": "ami-0c6bb742864ffa3f3",
+        "InstanceType": {"Ref": "InstanceTypeParameter"},
+        "IamInstanceProfile": {"Ref": "MasterInstanceProfile"},
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+              "VolumeSize": "115"
+            }
+          }
+        ],
+        "KeyName" : { "Ref" : "KeyNameParameter" },
+        "SecurityGroups": [
+          { "Ref": "EssentialsMasterSecurityGroup"}
+        ],
+        "Tags" : [
+            {"Key" : "Name", "Value" : "Jenkins Essentials Tinkering Master"}
+        ],
+        "UserData": {
+          "Fn::Base64" : {
+            "Fn::Join" : ["", [
+              "#!/bin/bash -v\n",
+              "touch blah\n",
+              "echo ",{"Ref":"S3BucketForArtifactManager"}, "> BUCKET_NAME\n",
+              "echo \"", { "Ref": "PrivateKey"}, "\" > ssh-agents-private-key\n",
+              "#chmod og-rw ssh-agents-private-key\n",
+              "#docker run -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080 -d -p 8080:8080 -p 50000:50000 batmat/evergreen:docker-cloud\n",
+              "docker run -d -p 8080:8080 -p 50000:50000 ",
+              " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
+              " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
+              " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
+              " batmat/evergreen:aws-ec2-cloud\n"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EssentialsMasterSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable HTTP access via port 8080 and JNLP port (TODO: restrict agent port)",
+        "SecurityGroupIngress" : [
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"}},
+          {"IpProtocol" : "tcp", "FromPort" : "8080", "ToPort" : "8080", "CidrIp" : "0.0.0.0/0"},
+          {"IpProtocol" : "tcp", "FromPort" : "50000", "ToPort" : "50000", "CidrIp" : "0.0.0.0/0"}
+        ]
+      }
+    },
+    "MasterInstanceProfile": {
+       "Type": "AWS::IAM::InstanceProfile",
+       "Properties": {
+          "Roles": [ { "Ref": "EssentialsMasterRole" } ],
+       }
+    },
+    "EssentialsMasterRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+               "Version" : "2012-10-17",
+               "Statement": [ {
+                  "Effect": "Allow",
+                  "Principal": {
+                     "Service": [ "ec2.amazonaws.com" ]
+                  },
+                  "Action": [ "sts:AssumeRole" ]
+               } ]
+        },
+        "Policies": [{
+            "PolicyName": "EC2CloudPluginPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [{
+                  "Sid": "ControlEC2JenkinsAgents",
+                  "Effect": "Allow",
+                  "Action": [
+                      "ec2:DescribeInstances",
+                      "ec2:TerminateInstances",
+                      "ec2:RequestSpotInstances",
+                      "ec2:DeleteTags",
+                      "ec2:CreateTags",
+                      "ec2:DescribeRegions",
+                      "ec2:RunInstances",
+                      "ec2:DescribeSpotInstanceRequests",
+                      "ec2:StopInstances",
+                      "ec2:DescribeSecurityGroups",
+                      "ec2:GetConsoleOutput",
+                      "ec2:DescribeImages",
+                      "ec2:CancelSpotInstanceRequests",
+                      "ec2:StartInstances",
+                      "ec2:DescribeAvailabilityZones",
+                      "ec2:DescribeSubnets",
+                      "ec2:DescribeKeyPairs"
+                  ],
+                  "Resource": "*"
+              }]
+            }
+          }, {
+            "PolicyName": "S3ArtifactManagerPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Sid": "TodoRefineSecurityALot",
+                      "Effect": "Allow",
+                      "Action": [
+                          "s3:PutObject",
+                          "s3:GetObject",
+                          "s3:ListBucket",
+                          "s3:DeleteObject"
+                      ],
+                      "Resource": "*"
+                  }
+              ]
+            }
+          }
+        ]
+        }
+      },
+      "S3BucketForArtifactManager": {
+        "Type": "AWS::S3::Bucket"
+      }
+  }
+}
