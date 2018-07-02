@@ -56,6 +56,7 @@
               "#chmod og-rw ssh-agents-private-key\n",
               "#docker run -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080 -d -p 8080:8080 -p 50000:50000 batmat/evergreen:docker-cloud\n",
               "docker run -d -p 8080:8080 -p 50000:50000 ",
+              " --name jenkins-essentials",
               " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
