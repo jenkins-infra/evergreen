@@ -20,3 +20,5 @@ jenkins:
             remoteAdmin: "ec2-user"
             # FIXME: JENKINS-52319: without this, there's an NPE during provisioning
             userData: ""
+            # FIXME: file JIRA without this, the cloud will be unusable, no logs, nothing. Just not works.
+            mode: NORMAL
