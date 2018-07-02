@@ -30,6 +30,8 @@ export KEYPAIR_NAME=<SOME KEYPAIR NAME DEFINED ON AWS UI>
 
 Then, the following command should work without further customization.
 
+CAUTION: FIXME the link below `--template-body https://git.io/fMtLN` will need to be fixed after this is merged.
+
 [source,shell]
 export PEM_FILE_LOCAL_PATH=~/.ssh/$KEYPAIR_NAME.pem
 export PEM_NAME_IN_AWS=$KEYPAIR_NAME
@@ -42,6 +44,8 @@ aws cloudformation create-stack \
                      ParameterKey=KeyNameParameter,ParameterValue=$PEM_NAME_IN_AWS \
                      ParameterKey=SSHLocation,ParameterValue=$( curl ident.me )/0 \
                      ParameterKey=PrivateKey,ParameterValue="$( cat $PEM_FILE_LOCAL_PATH )"
+
+FIXME: file JIRA => `SSHLocation` is currently ignored above and incorrectly creates a `0.0.0.0/0` inbound rule currently.
 
 FIXME: how to retrieve the `initialAdminPassword` in an easy way.
 Probably "outputs" => https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
