@@ -49,6 +49,16 @@ spec:
       artifactId: 'jdk-tool'
       version: '2.73'
 
+# FIXME: delete the two deps below for AWS once JENKINS-51766 is done
+    - groupId: 'org.jenkins-ci.plugins'
+      artifactId: 'ec2'
+      version: '1.39'
+    - groupId: 'io.jenkins.plugins'
+      artifactId: 'artifact-manager-s3'
+      version: '1.0'
+# END FIXME shim to remove for JENKINS-51766
+
+
   environments:
     # environments get added to the other section when enabled
     - name: docker-cloud
@@ -56,6 +66,14 @@ spec:
         - groupId: 'io.jenkins.docker'
           artifactId: 'docker-plugin'
           version: '2.60.3'
+    - name: aws-ec2-cloud
+      plugins:
+        - groupId: 'org.jenkins-ci.plugins'
+          artifactId: 'ec2'
+          version: '1.39'
+        - groupId: 'io.jenkins.plugins'
+          artifactId: 'artifact-manager-s3'
+          version: '1.0'
 
 # the realized BoM after refs are resolved
 # status:
