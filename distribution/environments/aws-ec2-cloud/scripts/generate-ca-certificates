@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+OUTPUT=/etc/ca-certificates.conf
+
+# Clear out the old file
+echo "# Only trusted certificates by Jenkins Essentials allowed" > $OUTPUT
+
+for cert in $(ls /usr/share/ca-certificates/mozilla); do
+    if [ "${cert}" = "DST_Root_CA_X3.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "IdenTrust_Public_Sector_Root_CA_1.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "IdenTrust_Commercial_Root_CA_1.crt" ]; then
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "Go_Daddy_Root_Certificate_Authority_-_G2.crt" ]; then
+        # Incrementals https://repo.jenkins-ci.org/incrementals/
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "Baltimore_CyberTrust_Root.crt" ]; then
+        # S3 certificate (for auto-detection using an instance profile)
+        echo "mozilla/${cert}" >> $OUTPUT;
+    elif  [ "${cert}" = "Amazon_Root_CA_1.crt" ]; then
+        # EC2 certificate (for auto-detection using an instance profile)
+        # Amazon_Root_CA_* go up to 4. Could they be all/randomly used for EC2? We'll see
+        echo "mozilla/${cert}" >> $OUTPUT;
+    else
+        echo "!mozilla/${cert}" >> $OUTPUT;
+    fi;
+done;
+
+exec /usr/sbin/update-ca-certificates
