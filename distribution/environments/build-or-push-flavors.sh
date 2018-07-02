@@ -3,9 +3,6 @@ set -euo pipefail
 
 IMAGE_NAME=jenkins/evergreen
 
-# docker build -t $IMAGE_NAME:$currentDir .
-# docker push $IMAGE_NAME:$currentDir
-
 if [[ "$1" == "build" ]]; then
   for dir in *-cloud
   do
