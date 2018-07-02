@@ -1,5 +1,7 @@
 IMAGE_NAME:=jenkins/evergreen
-DOCKERCLOUD_TAGNAME:=docker-cloud
 
-container: docker-cloud/Dockerfile
-	cd docker-cloud && docker build -t ${IMAGE_NAME}:${DOCKERCLOUD_TAGNAME} .
+container:
+	./build-or-push-flavors.sh build
+
+publish: container
+	./build-or-push-flavors.sh push

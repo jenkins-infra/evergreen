@@ -45,6 +45,7 @@ containers: container
 
 publish: container
 	docker push ${IMAGE_NAME}:latest
+	$(MAKE) -C environments $@
 
 run:
 	$(COMPOSE) up
