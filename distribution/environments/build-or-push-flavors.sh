@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-IMAGE_NAME=batmat/evergreen
+IMAGE_NAME=jenkins/evergreen
 
 # docker build -t $IMAGE_NAME:$currentDir .
 # docker push $IMAGE_NAME:$currentDir
