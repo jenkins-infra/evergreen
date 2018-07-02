@@ -59,6 +59,7 @@
               " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
+              " -e AGENT_SECURITY_GROUP=", {"Ref":"EssentialsAgentSecurityGroup"},
               " batmat/evergreen:aws-ec2-cloud\n"
               ]
             ]
@@ -74,6 +75,15 @@
           {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"}},
           {"IpProtocol" : "tcp", "FromPort" : "8080", "ToPort" : "8080", "CidrIp" : "0.0.0.0/0"},
           {"IpProtocol" : "tcp", "FromPort" : "50000", "ToPort" : "50000", "CidrIp" : "0.0.0.0/0"}
+        ]
+      }
+    },
+    "EssentialsAgentSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable HTTP access via port 8080 and JNLP port (TODO: restrict agent port)",
+        "SecurityGroupIngress" : [
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"},
         ]
       }
     },
