@@ -1,0 +1,12 @@
+---
+# TODO: file JIRAs to make this classifed (and for other used plugins too)
+unclassified:
+  s3blobstoreconfig:
+    # TODO: create through CloudFormation
+    container: "${ARTIFACT_MANAGER_S3_BUCKET_NAME}"
+    # FIXME: not a sensible default for everyone
+    region: "us-east-1"
+    prefix: "twiddling/"
+  #artifactManager:
+  #  artifactManagerFactories:
+  #    JCloudsArtifactManagerFactory:
