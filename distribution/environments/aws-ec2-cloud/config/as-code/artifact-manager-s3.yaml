@@ -1,0 +1,15 @@
+---
+# TODO: file JIRAs to make this classifed (and for other used plugins too)
+unclassified:
+  s3blobstoreconfig:
+    # TODO: create through CloudFormation
+    container: "${ARTIFACT_MANAGER_S3_BUCKET_NAME}"
+    # FIXME: not a sensible default for everyone
+    region: "us-east-1"
+    prefix: "jenkins_data/"
+
+# FIXME JENKINS-52304: wasn't able to configure the following via CasC,
+# so it's done though init.groovy.d for now.
+# artifactManager:
+#  artifactManagerFactories:
+#    JCloudsArtifactManagerFactory:

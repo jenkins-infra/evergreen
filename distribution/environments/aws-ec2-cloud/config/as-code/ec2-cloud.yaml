@@ -1,0 +1,23 @@
+---
+jenkins:
+  clouds:
+    - amazonEC2:
+        cloudName: "ec2"
+        instanceCapStr: 20
+        zone: "us-east-1"
+        # this shouldn't be needed, since without explicit creds this should
+        # already be used but let's be explicit to avoid issues.
+        useInstanceProfileForCredentials: true
+        privateKey: "${PRIVATE_KEY}"
+        templates:
+          - description: "EC2 Agent"
+            ami: "ami-032b0a5293352ac96"
+            labelString: "agent"
+            type: "T2Xlarge"
+            securityGroups: "${AGENT_SECURITY_GROUP}"
+            remoteFS: "/home/ec2-user"
+            remoteAdmin: "ec2-user"
+            # FIXME: JENKINS-52319: without this, NPE during provisioning
+            userData: ""
+            # FIXME: JENKINS-52334: mode *required*, broken if missing.
+            mode: NORMAL

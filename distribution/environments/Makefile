@@ -1,5 +1,12 @@
-IMAGE_NAME:=jenkins/evergreen
-DOCKERCLOUD_TAGNAME:=docker-cloud
+container:
+	./build-or-push-flavors.sh build
 
-container: docker-cloud/Dockerfile
-	cd docker-cloud && docker build -t ${IMAGE_NAME}:${DOCKERCLOUD_TAGNAME} .
+publish: container
+	./build-or-push-flavors.sh push
+
+lint:
+	../../tools/shellcheck *.sh
+	../../tools/jsonlint --quiet ./aws-ec2-cloud/CloudFormation/cloudformation-template.json
+	../../tools/yamllint --strict */config/as-code/*.yaml
+
+.PHONY: container publish lint

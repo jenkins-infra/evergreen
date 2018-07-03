@@ -1,0 +1,65 @@
+= AWS EC2 flavor for Jenkins Essentials
+
+CAUTION: Work in progress
+
+This directory contains the bits needed to create a flavor of Jenkins Essentials which will be auto-configured when running in AWS.
+
+It will configure Jenkins to provision EC2 VMs for agents.
+The artifact management will be using S3, instead of sending back archives or Pipeline stashes to the master as usual.
+
+
+== How to use it
+
+The simplest way is to use link:https://aws.amazon.com/cli/[`aws` CLI].
+
+=== Prerequisites
+
+You will need to configure `aws` credentials to use the CLI.
+Then, you will need to create or use a link:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[EC2 Key Pair].
+
+=== The command
+
+If you want to follow the steps, create a keypair on AWS UI.
+Then, download the `.pem` file under `.ssh` on your machine.
+
+Then define the path to that `pem` file as follows by replacing the value:
+
+
+[source,shell]
+export KEYPAIR_NAME=<SOME KEYPAIR NAME DEFINED ON AWS UI>
+
+Then, the following command should work without further customization.
+
+CAUTION: FIXME the link below `--template-body https://git.io/fMtLN` will need to be fixed after this is merged.
+
+[source,shell]
+export PEM_FILE_LOCAL_PATH=~/.ssh/$KEYPAIR_NAME.pem
+export PEM_NAME_IN_AWS=$KEYPAIR_NAME
+aws cloudformation create-stack \
+                   --capabilities CAPABILITY_NAMED_IAM \
+                   --region us-east-1 \
+                   --stack-name evergreen-test$RANDOM \
+                   --template-body https://git.io/fMtLN \
+                   --parameters \
+                     ParameterKey=KeyNameParameter,ParameterValue=$PEM_NAME_IN_AWS \
+                     ParameterKey=SSHLocation,ParameterValue=$( curl ident.me )/0 \
+                     ParameterKey=PrivateKey,ParameterValue="$( cat $PEM_FILE_LOCAL_PATH )"
+
+FIXME: file JIRA => `SSHLocation` is currently ignored above and incorrectly creates a `0.0.0.0/0` inbound rule currently.
+
+FIXME: how to retrieve the `initialAdminPassword` in an easy way.
+Probably "outputs" => https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
+
+== How does it work
+
+NOTE: This part does not intend to explain every details.
+This is aiming more at making it easy for users to quickly grasp what is going to be done, and what resources will be needed.
+
+We use link:https://aws.amazon.com/cloudformation/[AWS CloudFormation] to create the set of resources we need.
+
+In short, the Jenkins Essentials instance is going to run as a single EC2 VM, running in a custom _link:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html[Instance Profile]_.
+
+This Instance Profile is set up to be only allowed to:
+
+* create EC2 VMs,
+* and have access in read-write to a specific S3 bucket and only this one (FIXME: Not yet restricted => restrict to *this* bucket).
