@@ -11,9 +11,7 @@ jenkins:
         privateKey: "${PRIVATE_KEY}"
         templates:
           - description: "EC2 Agent"
-            # TODO: create & version an AMI properly.
-            # This one was created off the console quickly from a running VM.
-            ami: "ami-0c6bb742864ffa3f3"
+            ami: "ami-032b0a5293352ac96"
             labelString: "agent"
             type: "T2Xlarge"
             securityGroups: "${AGENT_SECURITY_GROUP}"
