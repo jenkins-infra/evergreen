@@ -1,5 +1,3 @@
-IMAGE_NAME:=jenkins/evergreen
-
 container:
 	./build-or-push-flavors.sh build
 
