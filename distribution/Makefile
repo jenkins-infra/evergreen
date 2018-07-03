@@ -12,6 +12,7 @@ all: check container
 lint: shunit2
 	../tools/yamllint -s config/as-code/*.yaml
 	../tools/shellcheck -x tests/tests.sh
+	$(MAKE) -C environments lint
 
 check: lint
 	$(MAKE) -C client $@

@@ -79,14 +79,14 @@
       "Properties" : {
         "GroupDescription" : "Enable HTTP access via port 8080 and JNLP port (TODO: restrict agent port)",
         "SecurityGroupIngress" : [
-          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"},
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"}
         ]
       }
     },
     "MasterInstanceProfile": {
        "Type": "AWS::IAM::InstanceProfile",
        "Properties": {
-          "Roles": [ { "Ref": "EssentialsMasterRole" } ],
+          "Roles": [ { "Ref": "EssentialsMasterRole" } ]
        }
     },
     "EssentialsMasterRole": {

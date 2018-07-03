@@ -5,20 +5,21 @@ jenkins:
         cloudName: "ec2"
         instanceCapStr: 20
         zone: "us-east-1"
-        # this shouldn't be needed, since without explicit creds this should already be used
-        # but let's be explicit to avoid issues.
+        # this shouldn't be needed, since without explicit creds this should
+        # already be used but let's be explicit to avoid issues.
         useInstanceProfileForCredentials: true
         privateKey: "${PRIVATE_KEY}"
         templates:
           - description: "EC2 Agent"
-            # TODO: create & version an AMI properly. This one was created off the console quickly from a running VM I had configured.
+            # TODO: create & version an AMI properly.
+            # This one was created off the console quickly from a running VM.
             ami: "ami-0c6bb742864ffa3f3"
             labelString: "agent"
             type: "T2Xlarge"
             securityGroups: "${AGENT_SECURITY_GROUP}"
             remoteFS: "/home/ec2-user"
             remoteAdmin: "ec2-user"
-            # FIXME: JENKINS-52319: without this, there's an NPE during provisioning
+            # FIXME: JENKINS-52319: without this, NPE during provisioning
             userData: ""
-            # FIXME: file JIRA without this, the cloud will be unusable, no logs, nothing. Just not works.
+            # FIXME: JENKINS-52334: mode *required*, broken if missing.
             mode: NORMAL
