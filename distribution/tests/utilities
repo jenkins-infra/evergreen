@@ -22,7 +22,7 @@ cleanup () {
   fi
   currentCommand="$( basename $0 )"
   theDate=$( date +%Y-%m-%d_%H-%M-%S )
-  testRunDirectory=build/tests-run-$theDate-$currentCommand-$flavor
+  testRunDirectory=build/tests-run-$theDate-$flavor-$currentCommand
   mkdir -p $testRunDirectory
 
   echo -n "Retrieving test run data (container logs, ...) before shutdown... Will be in the $testRunDirectory directory... "
