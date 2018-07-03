@@ -51,6 +51,7 @@
             "Fn::Join" : ["", [
               "#!/bin/bash -v\n",
               "export DOCKER_IMAGE=jenkins/evergreen:aws-ec2-cloud\n",
+              "echo \"", { "Ref": "PrivateKey"}, "\" > ssh-agents-private-key\n",
               "docker pull $DOCKER_IMAGE\n",
               "docker run -d -p 8080:8080 -p 50000:50000 ",
               " --name jenkins-essentials",
