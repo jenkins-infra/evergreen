@@ -28,7 +28,7 @@
     "EC2EssentialsInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "ImageId": "ami-0c6bb742864ffa3f3",
+        "ImageId": "ami-0b32af9c4a966ea17",
         "InstanceType": {"Ref": "InstanceTypeParameter"},
         "IamInstanceProfile": {"Ref": "MasterInstanceProfile"},
         "BlockDeviceMappings": [
@@ -50,13 +50,15 @@
           "Fn::Base64" : {
             "Fn::Join" : ["", [
               "#!/bin/bash -v\n",
+              "export DOCKER_IMAGE=jenkins/evergreen:aws-ec2-cloud\n",
+              "docker pull $DOCKER_IMAGE\n",
               "docker run -d -p 8080:8080 -p 50000:50000 ",
               " --name jenkins-essentials",
               " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
               " -e AGENT_SECURITY_GROUP=", {"Ref":"EssentialsAgentSecurityGroup"},
-              " jenkins/evergreen:aws-ec2-cloud\n"
+              " $DOCKER_IMAGE\n"
               ]
             ]
           }
