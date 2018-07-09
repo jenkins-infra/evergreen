@@ -29,8 +29,6 @@ milestones of development.
 
 ==== Milestone One
 
-**Planned for April 30th, 2018**
-
 The first milestone of Jenkins Essentials is to provide the first
 full-update-cycle of the Evergreen distribution mechanism. Like the first wire
 stretched across
