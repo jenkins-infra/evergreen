@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-02T07:56:35.038Z",
+  "timestamp": "2018-07-10T14:08:24.941Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -92,10 +92,10 @@
     {
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-multibranch",
-      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-multibranch/2.19/workflow-multibranch.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-multibranch/2.20/workflow-multibranch.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "CEzHfG0htqyFsUy0yZ2n0H1NynxqwPTXkeXQc5K4GPUBHf/Oa0oi3Dv8ljcAvRLm7fki1Md6PBBIQ48FjEuzbw=="
+        "signature": "TOd4X05YVsOtSiF76G1ueOon43okHoiDhBwKpcnxPRKT2h+Z868bWXjqRJ+hR4tS9TNRFd6arQuKEe266T7X6A=="
       }
     },
     {
@@ -596,10 +596,10 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "cloudbees-bitbucket-branch-source",
-      "url": "http://updates.jenkins-ci.org/download/plugins/cloudbees-bitbucket-branch-source/2.2.11/cloudbees-bitbucket-branch-source.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/cloudbees-bitbucket-branch-source/2.2.12/cloudbees-bitbucket-branch-source.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "zsj221ue0Gn/olYd20kKwGhkwLzltEaqC4e5CzD8hf3zxMZH/St9cxRVxiRxz0fxlqoQrifCxJb716IYAU7ozA=="
+        "signature": "uQt7ogv9XnmTnQxEgCit6lj6YZGhg5RPHKWck2YmaN8CsCGAwOqUsCnIXh+MneDGc2e9SEmiHgKWie29LcODCw=="
       }
     },
     {
