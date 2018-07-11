@@ -9,12 +9,12 @@ fix-formatting: depends
 	$(NODE) npm run eslint -- --fix
 
 check: lint
-	if [ -z "$${SKIP_TESTS}" ]; then \
-		$(MAKE) unit; \
-	fi;
+	$(MAKE) unit
 
 unit: depends
-	$(NODE) npm run jest
+	if [ -z "$${SKIP_TESTS}" ]; then \
+		$(NODE) npm run jest; \
+	fi;
 
 debug-unit: depends
 	$(NODE) node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest --runInBand --bail --forceExit test/
