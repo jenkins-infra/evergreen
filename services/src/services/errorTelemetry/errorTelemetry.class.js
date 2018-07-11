@@ -2,7 +2,7 @@ const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
-const sentry = require('../../lib/sentry');
+const sentry = require('../../libs/sentry');
 
 const DEFAULT_ERROR_LOGGING_FILE = '/srv/evergreen/error-logging.json';
 

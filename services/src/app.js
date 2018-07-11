@@ -22,7 +22,7 @@ const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
 const sequelize      = require('./sequelize');
 
-const sentry           = require('./lib/sentry');
+const sentry           = require('./libs/sentry');
 
 const swagger          = require('feathers-swagger');
 const sequelizeSwagger = require('./sequelize-swagger');
