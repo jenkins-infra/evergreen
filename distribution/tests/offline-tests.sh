@@ -49,6 +49,10 @@ test_npm_5_plus() {
   result=$( docker exec "$container_under_test" npm --version )
   assertEquals "5." "${result:0:2}"
 }
+test_node_version() {
+  result=$( docker exec "$container_under_test" node --version )
+  assertEquals "v8." "${result:0:3}"
+}
 
 # Ensure that we can successfully connect to only Let's Encrypt authorized
 # sites. See JEP-307

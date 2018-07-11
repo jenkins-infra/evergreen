@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8u171-jre-alpine3.8
 
 ARG user=jenkins
 ARG group=jenkins
@@ -53,6 +53,7 @@ RUN apk add --no-cache git \
                         bash \
                         supervisor \
                         nodejs \
+                        nodejs-npm \
                         ttf-dejavu \
                         curl \
                         socat
