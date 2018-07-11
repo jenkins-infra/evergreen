@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8u171-jre-alpine3.7
 
 ARG user=jenkins
 ARG group=jenkins
