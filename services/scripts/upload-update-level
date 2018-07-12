@@ -1,0 +1,6 @@
+#!/bin/sh
+
+exec curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ingest.json)}" \
+      -H 'Authorization: the API calls are coming from inside the house' \
+      -H 'Content-Type: application/json' \
+      http://localhost:3030/update
