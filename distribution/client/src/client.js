@@ -76,7 +76,11 @@ class Client {
       this.runUpdates();
     });
 
-    this.errorTelemetry.setup();
+    try {
+      this.errorTelemetry.setup();
+    } catch (err) {
+      logger.error('Failed to set up Error Telemetry, treating as non-fatal for now', err);
+    }
 
     setInterval(() => {
       /* no-op to keep this process alive */
