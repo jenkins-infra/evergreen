@@ -2,8 +2,6 @@ FROM jenkins/evergreen
 
 COPY config/as-code/* /usr/share/jenkins/ref/configuration/
 
-COPY init.groovy.d /usr/share/jenkins/ref/init.groovy.d
-
 # Need to override the default certificates to add the ones for EC2 and S3 auto-detection
 # See specific comments in the script
 COPY scripts/generate-ca-certificates /usr/local/sbin/

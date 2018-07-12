@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-10T14:08:24.941Z",
+  "timestamp": "2018-07-12T10:22:35.628Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -11,7 +11,7 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "configuration-as-code",
-      "url": "http://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.9-alpha-rc305.6e0189a51b16/configuration-as-code-0.9-alpha-rc305.6e0189a51b16.hpi",
+      "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.11-alpha-rc362.942711740b07/configuration-as-code-0.11-alpha-rc362.942711740b07.hpi",
       "checksum": {
         "type": "sha512",
         "signature": "4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d"
@@ -191,10 +191,10 @@
     {
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-job",
-      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-job/2.22/workflow-job.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-job/2.23/workflow-job.hpi",
       "checksum": {
         "type": "sha512",
-        "signature": "VNr4tj5+XnC9fpy6I/jYWMmGb5p02JY0E0u7dwdLXhe5NABZfVhLZayJ29zCz2v5FpalVCSn4J11HanqgPSdVg=="
+        "signature": "96O4l3gNp8BfnPi24X/G1kVZd22IuXhFJMVro7xMWL3mf5wJ+HlyI4sOaHg+jbtRV4fh6mAp5D0sGgALhkg68A=="
       }
     },
     {
