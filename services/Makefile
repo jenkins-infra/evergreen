@@ -5,11 +5,9 @@ DB_DUMP=initdb.d/db.sql
 
 all: check docs container
 
-check: depends lint
-	$(MAKE) migrate
+check: depends lint migrate
 	if [ -z "$${SKIP_TESTS}" ]; then \
-		$(MAKE) unit; \
-		$(MAKE) acceptance; \
+        $(MAKE) unit acceptance; \
 	fi;
 
 lint: depends
