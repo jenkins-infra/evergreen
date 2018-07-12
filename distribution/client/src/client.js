@@ -8,12 +8,15 @@ const feathers = require('@feathersjs/feathers');
 const fetch    = require('node-fetch');
 const logger   = require('winston');
 const rest     = require('@feathersjs/rest-client');
+const socketio = require('@feathersjs/socketio-client');
+const io       = require('socket.io-client');
 
 const createCron     = require('./lib/periodic');
 const ErrorTelemetry = require('./lib/error-telemetry');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
 const Update         = require('./lib/update');
+
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
@@ -27,6 +30,8 @@ class Client {
     this.update = new Update(this.app);
     this.errorTelemetry = new ErrorTelemetry(this.app);
     this.updating = false;
+    // This should be overridden on bootstrap
+    this.socket = null;
   }
 
   /*
@@ -75,8 +80,7 @@ class Client {
 
     setInterval(() => {
       /* no-op to keep this process alive */
-      this.runUpdates();
-    }, 5000);
+    }, 1000);
   }
 
   bootstrap() {
@@ -85,6 +89,16 @@ class Client {
 
     logger.info('Configuring the client to use the endpoint %s', endpoint);
     this.app.configure(restClient.fetch(fetch));
+
+    logger.info('Configuring the client for socket.io off %s', endpoint);
+    this.socket = io(process.env.EVERGREEN_ENDPOINT);
+    const socketApp = feathers();
+    socketApp.configure(socketio(this.socket));
+
+    socketApp.service('update').on('created', (message) => {
+      logger.info('Received an Update `created` event, checking for updates', message);
+      this.runUpdates();
+    });
 
     this.reg.register().then((res, newRegistration) => {
       logger.debug('Registration returned', res);
