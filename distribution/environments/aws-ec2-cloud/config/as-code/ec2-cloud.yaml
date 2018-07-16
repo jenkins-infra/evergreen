@@ -10,7 +10,6 @@ jenkins:
         privateKey: "${PRIVATE_KEY}"
         templates:
           - description: "EC2 Agent"
-            zone: "us-east-1"
             ami: "ami-032b0a5293352ac96"
             labelString: "agent"
             type: "T2Xlarge"
