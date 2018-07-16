@@ -54,12 +54,11 @@ This will display a json output like the following:
 After a few minutes, the Jenkins master will have been created as an EC2 instance. To retrieve its IP, use the following command:
 
 [source,shell]
-aws cloudformation list-stack-resources --stack-name $STACK_NAME
+aws cloudformation list-stack-resources --region us-east-1 --stack-name $STACK_NAME
 
 This should display something like the following:
 
 [source,json]
-aws cloudformation list-stack-resources --region us-east-1 --stack-name $STACK_NAME
 {
     "StackResourceSummaries": [
         {
@@ -113,7 +112,7 @@ For the `EC2EssentialsInstance`, if the creation is complete enough, there will 
 Use this to retrieve the instance IP address:
 
 [source,shell]
-aws ec2 describe-instances --region=us-east-1 --instance-ids i-09acbba4df83bcc59
+aws ec2 describe-instances --region=us-east-1 --instance-ids <i-09acbba4df83bcc59> | \
 jq -r '.Reservations[0].Instances[].PublicIpAddress'
 1.2.3.4
 
