@@ -1,14 +1,14 @@
 ---
-# TODO: file JIRAs to make this classifed (and for other used plugins too)
 unclassified:
-  s3blobstoreconfig:
-    # TODO: create through CloudFormation
-    container: "${ARTIFACT_MANAGER_S3_BUCKET_NAME}"
-    # FIXME: not a sensible default for everyone
-    region: "us-east-1"
-    prefix: "jenkins_data/"
-
   artifactManager:
     artifactManagerFactories:
-      - JCloudsArtifactManagerFactory:
-          provider: s3blobstore
+      - jclouds:
+          provider: s3
+aws:
+  awsCredentials:
+    # FIXME: not a sensible default for everyone
+    region: "us-east-1"
+  s3:
+    # TODO: create through CloudFormation
+    container: "${ARTIFACT_MANAGER_S3_BUCKET_NAME}"
+    prefix: "jenkins_data/"

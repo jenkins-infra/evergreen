@@ -12,6 +12,7 @@ spec:
   plugins:
     - groupId: 'org.jenkins-ci.plugins'
       artifactId: 'configuration-as-code'
+      # TODO overridden
       version: '0.1-alpha'
 
     - groupId: 'io.jenkins.blueocean'
@@ -49,10 +50,13 @@ spec:
       artifactId: 'jdk-tool'
       version: '2.73'
 
-# FIXME: delete the two deps below for AWS once JENKINS-51766 is done
+# FIXME: delete the deps below for AWS once JENKINS-51766 is done
     - groupId: 'org.jenkins-ci.plugins'
       artifactId: 'ec2'
       version: '1.39'
+    - groupId: 'io.jenkins.plugins'
+      artifactId: 'aws-global-configuration'
+      version: '1.0'
     - groupId: 'io.jenkins.plugins'
       artifactId: 'artifact-manager-s3'
       version: '1.0'
@@ -72,7 +76,12 @@ spec:
           artifactId: 'ec2'
           version: '1.39'
         - groupId: 'io.jenkins.plugins'
+          artifactId: 'aws-global-configuration'
+          # TODO overridden
+          version: '1.0'
+        - groupId: 'io.jenkins.plugins'
           artifactId: 'artifact-manager-s3'
+          # TODO overridden
           version: '1.0'
 
 # the realized BoM after refs are resolved
