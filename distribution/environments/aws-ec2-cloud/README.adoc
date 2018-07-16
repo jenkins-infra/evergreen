@@ -17,7 +17,7 @@ The simplest way is to use link:https://aws.amazon.com/cli/[`aws` CLI].
 You will need to configure `aws` credentials to use the CLI.
 Then, you will need to create or use a link:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html[EC2 Key Pair].
 
-=== The command
+=== Getting started
 
 If you want to follow the steps, create a keypair on AWS UI.
 Then, download the `.pem` file under `.ssh` on your machine.
@@ -30,25 +30,115 @@ export KEYPAIR_NAME=<SOME KEYPAIR NAME DEFINED ON AWS UI>
 
 Then, the following command should work without further customization.
 
-CAUTION: FIXME the link below `--template-body https://git.io/fMtLN` will need to be fixed after this is merged.
-
 [source,shell]
 export PEM_FILE_LOCAL_PATH=~/.ssh/$KEYPAIR_NAME.pem
 export PEM_NAME_IN_AWS=$KEYPAIR_NAME
+export STACK_NAME=evergreen-test$RANDOM
 aws cloudformation create-stack \
                    --capabilities CAPABILITY_NAMED_IAM \
                    --region us-east-1 \
-                   --stack-name evergreen-test$RANDOM \
-                   --template-body https://git.io/fMtLN \
+                   --stack-name $STACK_NAME \
+                   --template-body https://raw.githubusercontent.com/jenkins-infra/evergreen/master/distribution/environments/aws-ec2-cloud/CloudFormation/cloudformation-template.json \
                    --parameters \
                      ParameterKey=KeyNameParameter,ParameterValue=$PEM_NAME_IN_AWS \
                      ParameterKey=SSHLocation,ParameterValue=$( curl ident.me )/0 \
                      ParameterKey=PrivateKey,ParameterValue="$( cat $PEM_FILE_LOCAL_PATH )"
 
-FIXME: file JIRA => `SSHLocation` is currently ignored above and incorrectly creates a `0.0.0.0/0` inbound rule currently.
+This will display a json output like the following:
 
-FIXME: how to retrieve the `initialAdminPassword` in an easy way.
-Probably "outputs" => https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
+[source,json,title=Jenkins Essentials stack creation command output]
+{
+    "StackId": "arn:aws:cloudformation:us-east-1:372953910679:stack/evergreen-test18717/269933c0-88b6-11e8-aac6-503aca4a58fd"
+}
+
+After a few minutes, the Jenkins master will have been created as an EC2 instance. To retrieve its IP, use the following command:
+
+[source,shell]
+aws cloudformation list-stack-resources --stack-name $STACK_NAME
+
+This should display something like the following:
+
+[source,json]
+aws cloudformation list-stack-resources --region us-east-1 --stack-name $STACK_NAME
+{
+    "StackResourceSummaries": [
+        {
+            "LogicalResourceId": "EC2EssentialsInstance",
+            "PhysicalResourceId": "i-09acbba4df83bcc59",
+            "ResourceType": "AWS::EC2::Instance",
+            "LastUpdatedTimestamp": "2018-07-16T05:23:36.996Z",
+            "ResourceStatus": "CREATE_IN_PROGRESS",
+            "ResourceStatusReason": "Resource creation Initiated"
+        },
+        {
+            "LogicalResourceId": "EssentialsAgentSecurityGroup",
+            "PhysicalResourceId": "evergreen-test17793-EssentialsAgentSecurityGroup-2538QM8PAIPN",
+            "ResourceType": "AWS::EC2::SecurityGroup",
+            "LastUpdatedTimestamp": "2018-07-16T05:21:20.708Z",
+            "ResourceStatus": "CREATE_COMPLETE"
+        },
+        {
+            "LogicalResourceId": "EssentialsMasterRole",
+            "PhysicalResourceId": "evergreen-test17793-EssentialsMasterRole-120MK7UAUWEYO",
+            "ResourceType": "AWS::IAM::Role",
+            "LastUpdatedTimestamp": "2018-07-16T05:21:29.926Z",
+            "ResourceStatus": "CREATE_COMPLETE"
+        },
+        {
+            "LogicalResourceId": "EssentialsMasterSecurityGroup",
+            "PhysicalResourceId": "evergreen-test17793-EssentialsMasterSecurityGroup-L2O7JE3F1LLR",
+            "ResourceType": "AWS::EC2::SecurityGroup",
+            "LastUpdatedTimestamp": "2018-07-16T05:21:21.057Z",
+            "ResourceStatus": "CREATE_COMPLETE"
+        },
+        {
+            "LogicalResourceId": "MasterInstanceProfile",
+            "PhysicalResourceId": "evergreen-test17793-MasterInstanceProfile-9ZP9RP2YFF8",
+            "ResourceType": "AWS::IAM::InstanceProfile",
+            "LastUpdatedTimestamp": "2018-07-16T05:23:32.794Z",
+            "ResourceStatus": "CREATE_COMPLETE"
+        },
+        {
+            "LogicalResourceId": "S3BucketForArtifactManager",
+            "PhysicalResourceId": "evergreen-test17793-s3bucketforartifactmanager-hwdtoaezhx1c",
+            "ResourceType": "AWS::S3::Bucket",
+            "LastUpdatedTimestamp": "2018-07-16T05:21:40.019Z",
+            "ResourceStatus": "CREATE_COMPLETE"
+        }
+    ]
+}
+
+For the `EC2EssentialsInstance`, if the creation is complete enough, there will be also a `PhysicalResourceId`, here `i-09acbba4df83bcc59` in the example above.
+
+Use this to retrieve the instance IP address:
+
+[source,shell]
+aws ec2 describe-instances --region=us-east-1 --instance-ids i-09acbba4df83bcc59
+jq -r '.Reservations[0].Instances[].PublicIpAddress'
+1.2.3.4
+
+TIP: `jq` is a nice tool to process JSON.
+If you do not have it installed, either install it, or just look for `PublicIpAddress` field in the json returned from the `aws ec2 describe-instances` command.
+
+Once you have the public IP, open a browser on the http://1.2.3.4:8080 URL.
+This should display the Jenkins Install Wizard, asking for a secret to unlock the screen, located under `/evergreen/jenkins/home/secrets/initialAdminPassword`.
+
+To retrieve it, use the IP retrieved above in the following command:
+
+[source,shell]
+ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-essentials cat /evergreen/jenkins/home/secrets/initialAdminPassword
+The authenticity of host '35.173.187.174 (35.173.187.174)' can't be established.
+ECDSA key fingerprint is SHA256:/q51fyKpC+EvWTKqO8W/oEycTbCn0FZFA6lMV3pnpdQ.
+ECDSA key fingerprint is MD5:e2:3b:e3:eb:b7:da:7b:68:09:dd:c6:3a:2c:13:7f:e9.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '35.173.187.174' (ECDSA) to the list of known hosts.
+757c621744ba445bab0b198e00588210
+
+Then, you will see the _Getting Started_ wizard, click on the right cross on the top right to skip installing additional plugins. Click _Start using Jenkins_.
+
+Congrats, you can now use Jenkins.
+
+NOTE: This documentation will be completed with fuller explanations on how to build and deploy projects once we finalize Jenkins Essentials core developments.
 
 == How does it work
 
