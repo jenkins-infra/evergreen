@@ -14,6 +14,8 @@ check: lint
 unit: depends
 	if [ -z "$${SKIP_TESTS}" ]; then \
 		$(NODE) npm run jest; \
+	else \
+		echo "Tests are skipped!"; \
 	fi;
 
 debug-unit: depends
