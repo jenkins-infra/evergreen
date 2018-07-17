@@ -5,6 +5,14 @@ provide functionality for the Evergreen distribution system.
 
 :toc:
 
+
+[NOTE]
+====
+This project uses a consistent version of Node for all tasks via a Docker
+container. To pull Node CLI tools into your path for interactive use, execute
+`make depends && source activate` in your shell.
+====
+
 [[dashboard]]
 == Dashboard
 
@@ -128,7 +136,8 @@ In order to create a new Model, execute the following from this directory:
 
 [source,bash]
 ----
-../tools/node sequelize model:generate --help
+% source activate
+% sequelize model:generate --help
 ----
 
 And then follow the help text. The
