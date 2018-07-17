@@ -104,6 +104,11 @@ pipeline {
         }
 
         stage('Test images') {
+            environment {
+                // Since tests have already been successfully run, skip them
+                SKIP_TESTS = 'true'
+            }
+
             parallel {
                 stage('Base image') {
                   agent { label 'linux' }
