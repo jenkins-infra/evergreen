@@ -59,7 +59,7 @@ spec:
       version: '1.0'
     - groupId: 'io.jenkins.plugins'
       artifactId: 'artifact-manager-s3'
-      version: '1.0'
+      version: '1.1'
 # END FIXME shim to remove for JENKINS-51766
 
 
@@ -77,12 +77,10 @@ spec:
           version: '1.39'
         - groupId: 'io.jenkins.plugins'
           artifactId: 'aws-global-configuration'
-          # TODO overridden
           version: '1.0'
         - groupId: 'io.jenkins.plugins'
           artifactId: 'artifact-manager-s3'
-          # TODO overridden
-          version: '1.0'
+          version: '1.1'
 
 # the realized BoM after refs are resolved
 # status:

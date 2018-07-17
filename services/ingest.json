@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-16T14:39:03.906Z",
+  "timestamp": "2018-07-17T14:49:51.896Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -15,24 +15,6 @@
       "checksum": {
         "type": "sha512",
         "signature": "4faefcc46299557efaa1c896835a2413ad0646201e40938b4207dbd4cfecf33303cf5f28fd1f53cb71146c45d12c7fa34d2d87d312acf9fd7964c08506d2278d"
-      }
-    },
-    {
-      "groupId": "io.jenkins.plugins",
-      "artifactId": "aws-global-configuration",
-      "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/aws-global-configuration/1.0-rc20.ffbe7e5de068/aws-global-configuration-1.0-rc20.ffbe7e5de068.hpi",
-      "checksum": {
-        "type": "sha512",
-        "signature": "c78067f7f96668aa9798b7fc735b77dfaa208f4499238d42079ba6a4c9eabbc43adf6b58b9e5cb1dd143b17659f33d23945cda86d09423e17c4b9dad682c5cef"
-      }
-    },
-    {
-      "groupId": "io.jenkins.plugins",
-      "artifactId": "artifact-manager-s3",
-      "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/artifact-manager-s3/1.1-rc77.15d7dd937b42/artifact-manager-s3-1.1-rc77.15d7dd937b42.hpi",
-      "checksum": {
-        "type": "sha512",
-        "signature": "547b6a605aae7585f1c4d0995618735942ce3936bf4560bd11717b7c0c08876d30933a755a596f5be6e7d0834b2e3587fa55913fe3233a6d28857976435aa18d"
       }
     },
     {
@@ -889,6 +871,24 @@
         "type": "sha512",
         "signature": "uTAZ1ovZRPrgOPl6LZPotsiUF8QjuYPHVKISjZAX1tBf127kGuh6LtPTHOOTV1c3nIiSd1h+TjeuofZDIluxSg=="
       }
+    },
+    {
+      "groupId": "io.jenkins.plugins",
+      "artifactId": "aws-global-configuration",
+      "url": "http://updates.jenkins-ci.org/download/plugins/aws-global-configuration/1.0/aws-global-configuration.hpi",
+      "checksum": {
+        "type": "sha512",
+        "signature": "2ZwvchK+epnpKCYowYz3k+YcDlrfGsy93MdH8zFQg9835bxmL76Ogw+ZSFItT1E5I9LIgdAxVR/oIc679J07uQ=="
+      }
+    },
+    {
+      "groupId": "io.jenkins.plugins",
+      "artifactId": "artifact-manager-s3",
+      "url": "http://updates.jenkins-ci.org/download/plugins/artifact-manager-s3/1.1/artifact-manager-s3.hpi",
+      "checksum": {
+        "type": "sha512",
+        "signature": "pU+/MNqgz1esfg/b5GblLIF9HSY8XnFOf7RPGr6bSR/iiRcuYC/iZyHD6GyK2cHUTL08svpbUBNrnheDk1qWbQ=="
+      }
     }
   ],
   "environments": {
@@ -937,19 +937,19 @@
         {
           "groupId": "io.jenkins.plugins",
           "artifactId": "aws-global-configuration",
-          "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/aws-global-configuration/1.0-rc20.ffbe7e5de068/aws-global-configuration-1.0-rc20.ffbe7e5de068.hpi",
+          "url": "http://updates.jenkins-ci.org/download/plugins/aws-global-configuration/1.0/aws-global-configuration.hpi",
           "checksum": {
             "type": "sha512",
-            "signature": "c78067f7f96668aa9798b7fc735b77dfaa208f4499238d42079ba6a4c9eabbc43adf6b58b9e5cb1dd143b17659f33d23945cda86d09423e17c4b9dad682c5cef"
+            "signature": "2ZwvchK+epnpKCYowYz3k+YcDlrfGsy93MdH8zFQg9835bxmL76Ogw+ZSFItT1E5I9LIgdAxVR/oIc679J07uQ=="
           }
         },
         {
           "groupId": "io.jenkins.plugins",
           "artifactId": "artifact-manager-s3",
-          "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/artifact-manager-s3/1.1-rc77.15d7dd937b42/artifact-manager-s3-1.1-rc77.15d7dd937b42.hpi",
+          "url": "http://updates.jenkins-ci.org/download/plugins/artifact-manager-s3/1.1/artifact-manager-s3.hpi",
           "checksum": {
             "type": "sha512",
-            "signature": "547b6a605aae7585f1c4d0995618735942ce3936bf4560bd11717b7c0c08876d30933a755a596f5be6e7d0834b2e3587fa55913fe3233a6d28857976435aa18d"
+            "signature": "pU+/MNqgz1esfg/b5GblLIF9HSY8XnFOf7RPGr6bSR/iiRcuYC/iZyHD6GyK2cHUTL08svpbUBNrnheDk1qWbQ=="
           }
         }
       ]
