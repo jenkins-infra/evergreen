@@ -96,6 +96,17 @@ pipeline {
                       }
                   }
                 }
+                stage('AWS Cloud image (smokes)') {
+                  agent { label 'linux' }
+                  steps {
+                      sh 'make -C distribution aws-cloud-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
+                      }
+                  }
+                }
             }
         }
 

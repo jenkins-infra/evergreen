@@ -1,0 +1,5 @@
+version: '3'
+services:
+
+  instance:
+    image: jenkins/evergreen:aws-ec2-cloud
