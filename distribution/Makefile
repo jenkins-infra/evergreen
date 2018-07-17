@@ -26,7 +26,7 @@ container-prereqs: build/jenkins-support build/jenkins.sh
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh
 	$(MAKE) -C ../services dump
 
-container-check: base-container-check docker-cloud-container-check
+container-check: base-container-check docker-cloud-container-check aws-cloud-container-check
 
 base-container-check: containers container-check-prereqs
 	./tests/offline-tests.sh
@@ -35,6 +35,10 @@ base-container-check: containers container-check-prereqs
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
 	ENVIRONMENT=docker-cloud ./tests/tests.sh
+
+aws-cloud-container-check: containers container-check-prereqs
+	ENVIRONMENT=aws-ec2-cloud ./tests/offline-tests.sh
+	ENVIRONMENT=aws-ec2-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client unit
