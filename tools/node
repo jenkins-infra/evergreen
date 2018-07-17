@@ -1,10 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # If we're executing from a normal shell, allow input. If we're in a
 # subprocess, like under Jenkins Pipeline, don't allow it
 tty -s
 if [ $? -eq 0 ]; then
     TTY_ARGS="-ti"
+fi;
+
+COMMAND=$@
+
+# The caller is passing in some custom paraneters to the `node` binary, so we
+# need to override the entrypoint to explicitly call node
+if [[ "${1}" =~ "--" ]]; then
+    COMMAND="node $@";
 fi;
 
 exec docker run --net host --rm ${TTY_ARGS} \
@@ -15,6 +23,10 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -v ${PWD}:${PWD} \
     -e PATH=$PWD/node_modules/.bin:/usr/local/bin:$PATH \
     -e LANG=C.UTF-8 \
+    -e DB_TRACING=$DB_TRACING \
+    -e DEBUG=$DEBUG \
+    -e ERROR_LOGGING_FILE=/tmp/evergreen-errosr.json \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
-    ${PORTS} node:9 $@
+    node:9-alpine \
+    ${COMMAND}
