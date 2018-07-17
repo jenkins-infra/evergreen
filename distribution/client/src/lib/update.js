@@ -78,7 +78,6 @@ class Update {
      * Queue up all the downloads simultaneously, we need updates ASAP!
      */
     updates.plugins.updates.forEach((plugin) => {
-      logger.info('Fetching', plugin.url);
       let pluginsPath = path.join(outputDir, 'plugins');
       tasks.push(this.fetchTo(plugin.url, pluginsPath));
     });

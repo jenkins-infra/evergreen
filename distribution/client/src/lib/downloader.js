@@ -7,7 +7,7 @@ const fs     = require('fs');
 const path   = require('path');
 const url    = require('url');
 
-const fetch   = require('node-fetch');
+const rp      = require('promise-request-retry');
 const logger  = require('winston');
 const mkdirp  = require('mkdirp');
 
@@ -27,20 +27,38 @@ class Downloader {
 
     logger.info('Fetching %s and saving to %s', item, filename);
 
-    return new Promise((resolve, reject) => {
-      fetch(item).then((res) => {
-        const output = fs.createWriteStream(filename);
+    let options = {
+      uri: item,
+      verboseLogging: true,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'evergreen-client'
+      },
+      simple: true,
+      resolveWithFullResponse: true,
+      encoding: null,
+      timeout: 10 * 1000,
+      retry: 3 // make it configurable?
+    };
 
-        output.on('close', () => {
-          logger.debug('Downloaded %s (%d bytes)',
-            filename, output.bytesWritten);
-          resolve(output);
+    return new Promise( (resolve, reject) => {
+      rp(options)
+        .then( (response) => {
+
+          const output = fs.createWriteStream(filename);
+
+          output.on('close', () => {
+            logger.debug('Downloaded %s (%d bytes)',
+              filename, output.bytesWritten);
+            resolve(output);
+          });
+          output.write(response.body);
+          output.end();
+        })
+        .catch((err) => {
+          logger.error('Error %s occurred while fetching %s and saving to %s', err, item, filename);
+          reject(err);
         });
-
-        output.on('error', err => reject(err));
-
-        res.body.pipe(output);
-      });
     });
   }
 }

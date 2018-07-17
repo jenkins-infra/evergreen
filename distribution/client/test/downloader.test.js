@@ -36,10 +36,10 @@ describe('the Downloader class', () => {
       const toDownload = 'http://updates.jenkins-ci.org/download/plugins/ace-editor/1.1/ace-editor.hpi';
       const expectedSha1 = '39ed0947dcd9b414769ae28b3eb955643e25d5e0';
 
+      jest.setTimeout(50000); // default is 5 seconds, could be bigger because of the file size
       await Downloader.download(toDownload, dir);
 
       expect(checksum(fs.readFileSync(`${dir}/ace-editor.hpi`))).toBe(expectedSha1);
-
     });
   });
 });
