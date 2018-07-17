@@ -1,4 +1,4 @@
-NODE:=../tools/node
+PATH:=./node_modules/.bin:../tools:$(PATH)
 COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen-backend
 DB_DUMP=initdb.d/db.sql
@@ -13,10 +13,10 @@ check: depends lint migrate
 	fi;
 
 lint: depends
-	$(NODE) npm run eslint
+	npm run eslint
 
 fix-formatting:
-	$(NODE) npm run eslint -- --fix
+	npm run eslint -- --fix
 
 unit:
 	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run jest
@@ -39,7 +39,7 @@ depends: package.json
 	# Checking to see if the directory exists because npm install updates the
 	# directory every time it runs, busting the GNU/Make cache causing rebuilds
 	@if [ ! -d node_modules ]; then \
-		$(NODE) npm install; \
+		npm install; \
 	fi;
 
 docs: depends
@@ -86,7 +86,7 @@ container-migration: Dockerfile.migrations
 
 ingest-update-center: essentials.yaml ingest-update-center
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
-	$(NODE) node ./ingest-update-center
+	node ./ingest-update-center
 
 clean:
 	$(COMPOSE) down || true
