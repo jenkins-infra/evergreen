@@ -101,6 +101,11 @@ pipeline {
                     }
                 }
             }
+            post {
+                cleanup {
+                    sh 'make -C services stop'
+                }
+            }
         }
 
         stage('Test images') {
