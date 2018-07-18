@@ -15,7 +15,7 @@ unit: depends
 	if [ -z "$${SKIP_TESTS}" ]; then \
 		$(NODE) npm run jest; \
 	else \
-		echo "Tests are skipped!"; \
+		echo "[Client] Tests are skipped!"; \
 	fi;
 
 debug-unit: depends

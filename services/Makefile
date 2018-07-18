@@ -8,6 +8,8 @@ all: check docs container
 check: depends lint migrate
 	if [ -z "$${SKIP_TESTS}" ]; then \
         $(MAKE) unit acceptance; \
+	else \
+		echo "[Service] Tests are skipped!"; \
 	fi;
 
 lint: depends
