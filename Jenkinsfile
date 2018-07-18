@@ -86,9 +86,7 @@ pipeline {
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
-                    dir('distribution') {
-                      sh 'make docker-cloud-container-check'
-                    }
+                      sh 'make -C distribution docker-cloud-container-check'
                   }
                   post {
                       always {
