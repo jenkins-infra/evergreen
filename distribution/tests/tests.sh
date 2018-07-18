@@ -25,7 +25,7 @@ upload_update_level() {
     http://localhost:3030/update \
        && break
 
-    n=$(( $n + 1 ))
+    n=$((n+1))
     sleep $n
   done
 }
