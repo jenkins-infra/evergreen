@@ -4,6 +4,7 @@ DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
 SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
+SQUID_VOLUME_NAME=squid-cache
 
 ### Phony targets
 #################
@@ -53,7 +54,7 @@ publish: container
 	$(MAKE) -C environments $@
 
 create-squid-cache-volume:
-	docker volume create squid-cache
+	docker volume create ${SQUID_VOLUME_NAME}
 
 run: create-squid-cache-volume
 	$(COMPOSE) up
@@ -66,6 +67,7 @@ clean:
 	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
 	rm -rf build/essentials/target
+	docker volume rm ${SQUID_VOLUME_NAME} || echo "Volume already removed?"
 
 #################
 
@@ -82,4 +84,6 @@ build/jenkins-support:
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs container-check-prereqs base-container-check docker-cloud-container-check
+.PHONY: all check clean container container-check container-prereqs \
+	container-check-prereqs base-container-check \
+	docker-cloud-container-check create-squid-cache-volume
