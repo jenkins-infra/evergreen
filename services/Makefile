@@ -74,6 +74,7 @@ dump: stop migrate
 	$(COMPOSE) run --rm db pg_dump \
 		--inserts \
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
+	$(MAKE) stop
 
 container: depends check Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
