@@ -1,6 +1,8 @@
-var path = require('path')
+const path = require('path')
 
 module.exports = {
-  'config':          path.resolve('config', 'database.json'),
+  'config':          path.resolve('config', 'database.js'),
   'models-path': path.resolve('src', 'models')
 }
+
+// vim: ft=javascript
