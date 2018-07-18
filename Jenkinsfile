@@ -50,6 +50,9 @@ pipeline {
                         success {
                             archiveArtifacts 'services/coverage/**'
                         }
+                        cleanup {
+                            sh 'make -C services stop'
+                        }
                     }
                 }
             }
