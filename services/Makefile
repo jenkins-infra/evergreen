@@ -81,7 +81,7 @@ container: depends check Dockerfile container-migration
 
 container-check: container check
 
-container-migration: container migrate Dockerfile.migrations
+container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:latest -f Dockerfile.migrations .
 
 ingest-update-center: essentials.yaml ingest-update-center
