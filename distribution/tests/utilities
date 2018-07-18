@@ -69,7 +69,7 @@ setup_container_under_test() {
     # shellcheck disable=SC1090
     if [[ -e $ENVIRONMENT_COMPOSE_OVERRIDE ]] ; then
       set -e
-      COMPOSEFILES="$COMPOSEFILES -f $ENVIRONMENT_COMPOSE_OVERRIDE"
+      COMPOSEFILES="$COMPOSEFILES -f $ENVIRONMENT_COMPOSE_OVERRIDE "
       set +e
     else
       echo "$ENVIRONMENT_COMPOSE_OVERRIDE could not be found, stopping!"
@@ -77,6 +77,13 @@ setup_container_under_test() {
     fi
   else
     echo "No environment specified."
+  fi
+
+  if [[ -z $DISABLE_PROXY_CACHE ]] ; then
+    echo "[Squid] ENABLED"
+    COMPOSEFILES="$COMPOSEFILES -f docker-compose.squid-cache.yml "
+  else
+    echo "[Squid] DISABLED"
   fi
 
   echo "Starting docker-compose with the following parameters: '$COMPOSEFILES'"

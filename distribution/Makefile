@@ -4,6 +4,7 @@ DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
 SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
+SQUID_VOLUME_NAME=squid-cache
 
 ### Phony targets
 #################
@@ -23,7 +24,7 @@ fix-formatting:
 
 container-prereqs: build/jenkins-support build/jenkins.sh
 
-container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh
+container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C ../services dump
 
 container-check: base-container-check docker-cloud-container-check aws-cloud-container-check
@@ -52,7 +53,10 @@ publish: container
 	docker push ${IMAGE_NAME}:latest
 	$(MAKE) -C environments $@
 
-run:
+create-squid-cache-volume:
+	docker volume create ${SQUID_VOLUME_NAME}
+
+run: create-squid-cache-volume
 	$(COMPOSE) up
 
 clean:
@@ -63,6 +67,7 @@ clean:
 	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
 	rm -rf build/essentials/target
+	docker volume rm ${SQUID_VOLUME_NAME} || echo "Volume already removed?"
 
 #################
 
@@ -79,4 +84,6 @@ build/jenkins-support:
 shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
-.PHONY: all check clean container container-check container-prereqs container-check-prereqs base-container-check docker-cloud-container-check
+.PHONY: all check clean container container-check container-prereqs \
+	container-check-prereqs base-container-check \
+	docker-cloud-container-check create-squid-cache-volume
