@@ -23,7 +23,7 @@ fix-formatting:
 
 container-prereqs: build/jenkins-support build/jenkins.sh
 
-container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh
+container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C ../services dump
 
 container-check: base-container-check docker-cloud-container-check aws-cloud-container-check
@@ -52,7 +52,10 @@ publish: container
 	docker push ${IMAGE_NAME}:latest
 	$(MAKE) -C environments $@
 
-run:
+create-squid-cache-volume:
+	docker volume create squid-cache
+
+run: create-squid-cache-volume
 	$(COMPOSE) up
 
 clean:

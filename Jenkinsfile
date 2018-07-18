@@ -12,6 +12,11 @@ pipeline {
         cron('H H * * *')
     }
 
+    environment {
+        // Squid is enabled by default in the dev environment
+        DISABLE_PROXY_CACHE = 'true'
+    }
+
     stages {
         stage('Prepare Workspace') {
             steps {

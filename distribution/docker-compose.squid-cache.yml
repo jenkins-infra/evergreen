@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  instance:
+    environment:
+      - 'HTTP_PROXY=http://cache:3128'
+      - 'http_proxy=http://cache:3128'
+
+  cache:
+    image: sameersbn/squid:3.3.8-23
+    ports:
+      - '3128:3128'
+    volumes:
+      - squid-cache:/var/spool/squid3
+      - ./config/squid.conf:/etc/squid3/squid.conf:ro
+volumes:
+  squid-cache:
+    external: true
