@@ -12,14 +12,28 @@ JENKINS_HOME=to_override
 # shellcheck source=tests/utilities
 . "$current_directory/utilities"
 
+# Upload the ingest.json to the update service.
+# Retries a few times in case of error
+upload_update_level() {
+  n=0
+  until [ $n -ge 20 ]
+  do
+    echo "Uploading Update Level to /update service (attempt #$n):"
+    curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ../services/ingest.json)}" \
+    -H 'Authorization: the API calls are coming from inside the house' \
+    -H 'Content-Type: application/json' \
+    http://localhost:3030/update \
+       && break
+
+    n=$(( $n + 1 ))
+    sleep $n
+  done
+}
+
 oneTimeSetUp() {
   setup_container_under_test
 
-  # Upload the ingest.yaml
-  curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ../services/ingest.json)}" \
-      -H 'Authorization: the API calls are coming from inside the house' \
-      -H 'Content-Type: application/json' \
-      http://localhost:3030/update
+  upload_update_level
 
   wait_for_jenkins
   # shellcheck disable=SC2016
