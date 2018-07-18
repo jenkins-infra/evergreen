@@ -50,23 +50,28 @@ pipeline {
             }
         }
 
-        stage('Build jenkins/evergreen') {
-            environment {
-                // Since tests have already been successfully run, skip them
-                SKIP_TESTS = 'true'
-            }
-            steps {
-                sh 'make -C distribution container'
-            }
-        }
+        stage('Build images') {
+            parallel {
 
-        stage('Build backend container') {
-            environment {
-                // Since tests have already been successfully run, skip them
-                SKIP_TESTS = 'true'
-            }
-            steps {
-                sh 'make -C services container'
+                stage('jenkins/evergreen') {
+                    environment {
+                        // Since tests have already been successfully run, skip them
+                        SKIP_TESTS = 'true'
+                    }
+                    steps {
+                        sh 'make -C distribution container'
+                    }
+                }
+
+                stage('jenkinsciinfra/evergreen-backend') {
+                    environment {
+                        // Since tests have already been successfully run, skip them
+                        SKIP_TESTS = 'true'
+                    }
+                    steps {
+                        sh 'make -C services container'
+                    }
+                }
             }
         }
 
