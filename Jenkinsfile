@@ -108,16 +108,16 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'base-container-check', description: 'base-container-check', status: 'PENDING'
+                      githubNotify context: 'container-check/base', description: 'base-container-check', status: 'PENDING'
                       sh 'make -C distribution base-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'base-container-check', description: 'base-container-check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'base-container-check', description: 'base-container-check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'base-container-check', description: 'base-container-check', status: 'FAILURE' }
+                      success  { githubNotify context: 'container-check/base', description: 'base-container-check', status: 'SUCCESS' }
+                      failure  { githubNotify context: 'container-check/base', description: 'base-container-check', status: 'FAILURE' }
+                      unstable { githubNotify context: 'container-check/base', description: 'base-container-check', status: 'FAILURE' }
                   }
                 }
                 stage('Docker Cloud image') {
