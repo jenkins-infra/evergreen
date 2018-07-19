@@ -26,28 +26,28 @@ pipeline {
 
         stage('Lint code') {
           steps {
-              githubNotify context: 'lint', description: 'make lint', status: 'PENDING'
+              githubNotify context: 'checks/lint', description: 'make lint', status: 'PENDING'
               sh 'make lint'
           }
           post {
-              success  { githubNotify context: 'lint', description: 'make lint', status: 'SUCCESS' }
-              failure  { githubNotify context: 'lint', description: 'make lint', status: 'FAILURE' }
-              unstable { githubNotify context: 'lint', description: 'make lint', status: 'FAILURE' }
+              success  { githubNotify context: 'checks/lint', description: 'make lint', status: 'SUCCESS' }
+              failure  { githubNotify context: 'checks/lint', description: 'make lint', status: 'FAILURE' }
+              unstable { githubNotify context: 'checks/lint', description: 'make lint', status: 'FAILURE' }
           }
         }
 
         stage('Verifications') {
             post {
-                success  { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'SUCCESS' }
-                failure  { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'FAILURE' }
-                unstable { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'FAILURE' }
+                success  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'SUCCESS' }
+                failure  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
+                unstable { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
             }
             parallel {
                 stage('Evergreen Client') {
                     steps {
                         // notification not purely related to here, but there's no proper way with
                         // Declarative to run something before all parallel stages.
-                        githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'PENDING'
+                        githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'PENDING'
                         sh 'make -C distribution/client check'
                     }
                     post {
@@ -74,9 +74,9 @@ pipeline {
 
         stage('Build images') {
             post {
-                success  { githubNotify context: 'build-images', description: 'Build Docker images', status: 'SUCCESS' }
-                failure  { githubNotify context: 'build-images', description: 'Build Docker images', status: 'FAILURE' }
-                unstable { githubNotify context: 'build-images', description: 'Build Docker images', status: 'FAILURE' }
+                success  { githubNotify context: 'images/build', description: 'Build Docker images', status: 'SUCCESS' }
+                failure  { githubNotify context: 'images/build', description: 'Build Docker images', status: 'FAILURE' }
+                unstable { githubNotify context: 'images/build', description: 'Build Docker images', status: 'FAILURE' }
             }
             parallel {
 
@@ -86,7 +86,7 @@ pipeline {
                         SKIP_TESTS = 'true'
                     }
                     steps {
-                        githubNotify context: 'build-images', description: 'Build Docker images', status: 'PENDING'
+                        githubNotify context: 'images/build', description: 'Build Docker images', status: 'PENDING'
                         sh 'make -C distribution container'
                     }
                 }
