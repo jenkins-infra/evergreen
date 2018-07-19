@@ -73,6 +73,11 @@ pipeline {
         }
 
         stage('Build images') {
+            post {
+                success  { githubNotify context: 'build-images', description: 'Build Docker images', status: 'SUCCESS' }
+                failure  { githubNotify context: 'build-images', description: 'Build Docker images', status: 'FAILURE' }
+                unstable { githubNotify context: 'build-images', description: 'Build Docker images', status: 'FAILURE' }
+            }
             parallel {
 
                 stage('jenkins/evergreen') {
@@ -81,13 +86,8 @@ pipeline {
                         SKIP_TESTS = 'true'
                     }
                     steps {
-                        githubNotify context: 'build-evergreen', description: 'jenkins/evergreen build', status: 'PENDING'
+                        githubNotify context: 'build-images', description: 'Build Docker images', status: 'PENDING'
                         sh 'make -C distribution container'
-                    }
-                    post {
-                        success  { githubNotify context: 'build-evergreen', description: 'jenkins/evergreen build', status: 'SUCCESS' }
-                        failure  { githubNotify context: 'build-evergreen', description: 'jenkins/evergreen build', status: 'FAILURE' }
-                        unstable { githubNotify context: 'build-evergreen', description: 'jenkins/evergreen build', status: 'FAILURE' }
                     }
                 }
 
@@ -97,13 +97,7 @@ pipeline {
                         SKIP_TESTS = 'true'
                     }
                     steps {
-                        githubNotify context: 'build-evergreen-backend', description: 'jenkinsciinfra/evergreen-backend build', status: 'PENDING'
                         sh 'make -C services container'
-                    }
-                    post {
-                        success  { githubNotify context: 'build-evergreen-backend', description: 'jenkinsciinfra/evergreen-backend build', status: 'SUCCESS' }
-                        failure  { githubNotify context: 'build-evergreen-backend', description: 'jenkinsciinfra/evergreen-backend build', status: 'FAILURE' }
-                        unstable { githubNotify context: 'build-evergreen-backend', description: 'jenkinsciinfra/evergreen-backend build', status: 'FAILURE' }
                     }
                 }
             }
