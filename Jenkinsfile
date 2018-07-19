@@ -123,31 +123,31 @@ pipeline {
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'docker-cloud-container-check', description: 'docker-cloud-container-check', status: 'PENDING'
+                      githubNotify context: 'docker-cloud-container-check', description: 'Docker Cloud Flavor check', status: 'PENDING'
                       sh 'make -C distribution docker-cloud-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'docker-cloud-container-check', description: 'docker-cloud-container-check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'docker-cloud-container-check', description: 'docker-cloud-container-check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'docker-cloud-container-check', description: 'docker-cloud-container-check', status: 'FAILURE' }
+                      success  { githubNotify context: 'docker-cloud-container-check', description: 'Docker Cloud Flavor check', status: 'SUCCESS' }
+                      failure  { githubNotify context: 'docker-cloud-container-check', description: 'Docker Cloud Flavor check', status: 'FAILURE' }
+                      unstable { githubNotify context: 'docker-cloud-container-check', description: 'Docker Cloud Flavor check', status: 'FAILURE' }
                   }
                 }
                 stage('AWS Cloud image (smokes)') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'aws-cloud-container-check', description: 'aws-cloud-container-check', status: 'PENDING'
+                      githubNotify context: 'aws-cloud-container-check', description: 'AWS Cloud Flavor check', status: 'PENDING'
                       sh 'make -C distribution aws-cloud-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'aws-cloud-container-check', description: 'aws-cloud-container-check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'aws-cloud-container-check', description: 'aws-cloud-container-check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'aws-cloud-container-check', description: 'aws-cloud-container-check', status: 'FAILURE' }
+                      success  { githubNotify context: 'aws-cloud-container-check', description: 'AWS Cloud Flavor check', status: 'SUCCESS' }
+                      failure  { githubNotify context: 'aws-cloud-container-check', description: 'AWS Cloud Flavor check', status: 'FAILURE' }
+                      unstable { githubNotify context: 'aws-cloud-container-check', description: 'AWS Cloud Flavor check', status: 'FAILURE' }
                   }
                 }
             }
