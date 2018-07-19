@@ -76,10 +76,13 @@ dump: stop migrate
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
 	$(MAKE) stop
 
-container: depends check Dockerfile
+container: depends check Dockerfile container-migration
 	docker build -t $(IMAGE_NAME):latest .
 
 container-check: container check
+
+container-migration: Dockerfile.migrations
+	docker build -t $(IMAGE_NAME)-migrations:latest -f Dockerfile.migrations .
 
 ingest-update-center: essentials.yaml ingest-update-center
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
@@ -93,6 +96,7 @@ clean:
 
 publish: container
 	docker push ${IMAGE_NAME}:latest
+	docker push ${IMAGE_NAME}-migrations:latest
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
