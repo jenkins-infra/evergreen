@@ -96,6 +96,7 @@ clean:
 
 publish: container
 	docker push ${IMAGE_NAME}:latest
+	docker push ${IMAGE_NAME}-migrations:latest
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
