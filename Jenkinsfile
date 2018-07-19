@@ -37,36 +37,36 @@ pipeline {
         }
 
         stage('Verifications') {
+            post {
+                success  { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'SUCCESS' }
+                failure  { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'FAILURE' }
+                unstable { githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'FAILURE' }
+            }
             parallel {
                 stage('Evergreen Client') {
                     steps {
-                        githubNotify context: 'client-check', description: 'Evergreen Client Check', status: 'PENDING'
+                        // notification not purely related to here, but there's no proper way with
+                        // Declarative to run something before all parallel stages.
+                        githubNotify context: 'verifications', description: 'NodeJS Checks', status: 'PENDING'
                         sh 'make -C distribution/client check'
                     }
                     post {
                         success {
                             archiveArtifacts 'distribution/client/coverage/**'
-                            githubNotify context: 'client-check', description: 'Evergreen Client Check', status: 'SUCCESS'
                         }
-                        failure  { githubNotify context: 'client-check', description: 'Evergreen Client Check', status: 'FAILURE' }
-                        unstable { githubNotify context: 'client-check', description: 'Evergreen Client Check', status: 'FAILURE' }
                     }
                 }
                 stage('Backend Services') {
                     steps {
-                        githubNotify context: 'backend-check', description: 'Evergreen Backend Check', status: 'PENDING'
                         sh 'make -C services check'
                     }
                     post {
                         success {
                             archiveArtifacts 'services/coverage/**'
-                            githubNotify context: 'backend-check', description: 'Evergreen Backend Check', status: 'SUCCESS'
                         }
                         cleanup {
                             sh 'make -C services stop'
                         }
-                        failure  { githubNotify context: 'backend-check', description: 'Evergreen Backend Check', status: 'FAILURE' }
-                        unstable { githubNotify context: 'backend-check', description: 'Evergreen Backend Check', status: 'FAILURE' }
                     }
                 }
             }
