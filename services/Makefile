@@ -70,8 +70,9 @@ dump: stop migrate
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
 	$(MAKE) stop
 
-container: depends Dockerfile container-migration
+container: depends Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
+	$(MAKE) container-migration
 
 container-check: container
 
