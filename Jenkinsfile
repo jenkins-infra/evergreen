@@ -74,9 +74,9 @@ pipeline {
 
         stage('Build images') {
             post {
-                success  { githubNotify context: 'docker/images/build', description: 'Build Docker images', status: 'SUCCESS' }
-                failure  { githubNotify context: 'docker/images/build', description: 'Build Docker images', status: 'FAILURE' }
-                unstable { githubNotify context: 'docker/images/build', description: 'Build Docker images', status: 'FAILURE' }
+                success  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'SUCCESS' }
+                failure  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
+                unstable { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
             }
             parallel {
 
@@ -86,7 +86,7 @@ pipeline {
                         SKIP_TESTS = 'true'
                     }
                     steps {
-                        githubNotify context: 'docker/images/build', description: 'Build Docker images', status: 'PENDING'
+                        githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'PENDING'
                         sh 'make -C distribution container'
                     }
                 }
