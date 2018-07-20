@@ -37,11 +37,6 @@ pipeline {
         }
 
         stage('Verifications') {
-            post {
-                success  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'SUCCESS' }
-                failure  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
-                unstable { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
-            }
             parallel {
                 stage('Evergreen Client') {
                     steps {
@@ -70,16 +65,15 @@ pipeline {
                     }
                 }
             }
+            post {
+                success  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'SUCCESS' }
+                failure  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
+                unstable { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
+            }
         }
 
         stage('Build images') {
-            post {
-                success  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'SUCCESS' }
-                failure  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
-                unstable { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
-            }
             parallel {
-
                 stage('jenkins/evergreen') {
                     environment {
                         // Since tests have already been successfully run, skip them
@@ -102,6 +96,9 @@ pipeline {
                 }
             }
             post {
+                success  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'SUCCESS' }
+                failure  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
+                unstable { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
                 cleanup {
                     sh 'make -C services stop'
                 }
