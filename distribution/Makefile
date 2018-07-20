@@ -63,7 +63,6 @@ clean:
 	$(COMPOSE) down || true
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 	$(MAKE) -C client $@
-	$(MAKE) -C ../services $@
 	rm -f build/docker-compose
 	rm -rf build/configuration-as-code/target
 	rm -rf build/essentials/target

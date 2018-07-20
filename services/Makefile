@@ -1,4 +1,4 @@
-NODE:=../tools/node
+PATH:=./node_modules/.bin:../tools:$(PATH)
 COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen-backend
 DB_DUMP=initdb.d/db.sql
@@ -13,33 +13,32 @@ check: depends lint migrate
 	fi;
 
 lint: depends
-	$(NODE) npm run eslint
+	npm run eslint
 
-fix-formatting:
-	$(NODE) npm run eslint -- --fix
+fix-formatting: depends
+	npm run eslint -- --fix
 
-unit:
-	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run jest
+unit: depends
+	NODE_ENV=test npm run jest
 
 debug-unit:
-	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm -p 9229:9229 node \
-		node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest --runInBand --bail --forceExit test/
+	NODE_ENV=test node --inspect-brk=9229 jest -i -b --forceExit test/
 
 acceptance:
-	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node npm run acceptance
+	NODE_ENV=test npm run acceptance
 
 debug-acceptance:
-	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm -p 9229:9229 node \
-		node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest --runInBand --bail --forceExit acceptance/
+	NODE_ENV=test node --inspect-brk=9229 jest -i -b --forceExit acceptance/
 
 watch:
-	$(COMPOSE) run -e NODE_ENV=test -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json --rm node jest --bail --watchAll
+	NODE_ENV=test jest --bail --watchAll test/
 
+
+# Checking to see if the directory exists because npm install updates the
+# directory every time it runs, busting the GNU/Make cache causing rebuilds
 depends: package.json
-	# Checking to see if the directory exists because npm install updates the
-	# directory every time it runs, busting the GNU/Make cache causing rebuilds
 	@if [ ! -d node_modules ]; then \
-		$(NODE) npm install; \
+		npm install; \
 	fi;
 
 docs: depends
@@ -52,20 +51,15 @@ migrate: depends
 		$(COMPOSE) run --rm db \
 			psql -v ON_ERROR_STOP=1 \
 				-U postgres -h db -c "CREATE DATABASE evergreen_test;"; \
-		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:migrate; \
-		$(COMPOSE) run -e NODE_ENV=$$env --rm node sequelize db:seed:all; \
+		NODE_ENV=$$env sequelize db:migrate; \
+		NODE_ENV=$$env sequelize db:seed:all; \
 	done;
 
 run: migrate
-	$(COMPOSE) up node
+	npm run start
 
 debug-run:
-	$(COMPOSE) run -e ERROR_LOGGING_FILE=/srv/evergreen/error-logging.json \
-		--rm -p 9229:9229 -p 3030:3030 node \
-		node --inspect-brk=0.0.0.0:9229 src/
-
-run-detach: migrate
-	$(COMPOSE) up -d node
+	node --inspect-brk=0.0.0.0:9229 src/
 
 stop:
 	$(COMPOSE) stop
@@ -76,17 +70,18 @@ dump: stop migrate
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
 	$(MAKE) stop
 
-container: depends check Dockerfile container-migration
+container: depends Dockerfile
 	docker build -t $(IMAGE_NAME):latest .
+	$(MAKE) container-migration
 
-container-check: container check
+container-check: container
 
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:latest -f Dockerfile.migrations .
 
 ingest-update-center: essentials.yaml ingest-update-center
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
-	$(NODE) node ./ingest-update-center
+	node ./ingest-update-center
 
 clean:
 	$(COMPOSE) down || true

@@ -6,7 +6,7 @@
     "default": 10,
     "max": 50
   },
-  "postgres": "postgres://postgres:grassisevergreener@db:5432/evergreen_development",
+  "postgres": "postgres://postgres:grassisevergreener@localhost:5432/evergreen_development",
   "jwt": {
       "name": "evergreen-jwt",
       "secret": "an evergreen is a plant that has leaves throughout the year, always green",
