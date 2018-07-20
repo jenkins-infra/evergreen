@@ -26,13 +26,7 @@ pipeline {
 
         stage('Lint code') {
           steps {
-              githubNotify context: 'checks/lint', description: 'make lint', status: 'PENDING'
               sh 'make lint'
-          }
-          post {
-              success  { githubNotify context: 'checks/lint', description: 'make lint', status: 'SUCCESS' }
-              failure  { githubNotify context: 'checks/lint', description: 'make lint', status: 'FAILURE' }
-              unstable { githubNotify context: 'checks/lint', description: 'make lint', status: 'FAILURE' }
           }
         }
 
@@ -40,9 +34,6 @@ pipeline {
             parallel {
                 stage('Evergreen Client') {
                     steps {
-                        // notification not purely related to here, but there's no proper way with
-                        // Declarative to run something before all parallel stages.
-                        githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'PENDING'
                         sh 'make -C distribution/client check'
                     }
                     post {
@@ -65,11 +56,6 @@ pipeline {
                     }
                 }
             }
-            post {
-                success  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'SUCCESS' }
-                failure  { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
-                unstable { githubNotify context: 'checks/node', description: 'NodeJS Checks', status: 'FAILURE' }
-            }
         }
 
         stage('Build images') {
@@ -80,7 +66,6 @@ pipeline {
                         SKIP_TESTS = 'true'
                     }
                     steps {
-                        githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'PENDING'
                         sh 'make -C distribution container'
                     }
                 }
@@ -96,9 +81,6 @@ pipeline {
                 }
             }
             post {
-                success  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'SUCCESS' }
-                failure  { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
-                unstable { githubNotify context: 'docker/build-images', description: 'Build Docker images', status: 'FAILURE' }
                 cleanup {
                     sh 'make -C services stop'
                 }
@@ -115,46 +97,34 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'docker/container-check/base', description: 'base-container-check', status: 'PENDING'
                       sh 'make -C distribution base-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'docker/container-check/base', description: 'base-container-check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'docker/container-check/base', description: 'base-container-check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'docker/container-check/base', description: 'base-container-check', status: 'FAILURE' }
                   }
                 }
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'docker/container-check/docker-cloud', description: 'Docker Cloud Flavor check', status: 'PENDING'
                       sh 'make -C distribution docker-cloud-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'docker/container-check/docker-cloud', description: 'Docker Cloud Flavor check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'docker/container-check/docker-cloud', description: 'Docker Cloud Flavor check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'docker/container-check/docker-cloud', description: 'Docker Cloud Flavor check', status: 'FAILURE' }
                   }
                 }
                 stage('AWS Cloud image (smokes)') {
                   agent { label 'linux' }
                   steps {
-                      githubNotify context: 'docker/container-check/aws-cloud', description: 'AWS Cloud Flavor check', status: 'PENDING'
                       sh 'make -C distribution aws-cloud-container-check'
                   }
                   post {
                       always {
                           archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
                       }
-                      success  { githubNotify context: 'docker/container-check/aws-cloud', description: 'AWS Cloud Flavor check', status: 'SUCCESS' }
-                      failure  { githubNotify context: 'docker/container-check/aws-cloud', description: 'AWS Cloud Flavor check', status: 'FAILURE' }
-                      unstable { githubNotify context: 'docker/container-check/aws-cloud', description: 'AWS Cloud Flavor check', status: 'FAILURE' }
                   }
                 }
             }
