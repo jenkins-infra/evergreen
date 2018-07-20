@@ -18,6 +18,7 @@ services:
     environment:
       - 'DB_TRACING=1'
       - 'PGPASSWORD=grassisevergreener'
+      - 'DB_CONNECTION_STRING=postgres://postgres:grassisevergreener@db:5432/evergreen_development'
     ports:
       - '3030:3030'
     depends_on:
