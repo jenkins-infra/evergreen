@@ -104,6 +104,12 @@ documents:
 | JEP-308
 | link:https://github.com/jenkinsci/jep/blob/master/jep/308[Essentials Error Telemetry API]
 
+| JEP-309
+| link:https://github.com/jenkinsci/jep/blob/master/jep/309[Bill of Materials]
+
+| JEP-310
+| link:https://github.com/jenkinsci/jep/blob/master/jep/310 [Essentials AWS auto-configuration]
+
 |===
 
 [[deployment]]
