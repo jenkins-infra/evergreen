@@ -1,4 +1,18 @@
 {
-  "host": "evergreen-services-app.feathersjs.com",
-  "port": "PORT"
+  "host": "0.0.0.0",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "postgres": "postgres://envionment_override@example.com:5432/evergreen_prod",
+  "jwt": {
+      "name": "evergreen-jwt",
+      "secret": "an evergreen is a plant that has leaves throughout the year, always green",
+      "expiresIn": "14d"
+  },
+  "internalAPI" : {
+      "secret" : "the API calls are coming from inside the house"
+  }
 }
