@@ -13,6 +13,9 @@ check: depends lint migrate
 	fi;
 
 lint: depends
+	../tools/yamllint -s docker-compose*.yml
+	../tools/yamllint -s essentials.yaml
+	../tools/jsonlint --quiet ingest.json
 	npm run eslint
 
 fix-formatting: depends
