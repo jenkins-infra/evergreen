@@ -6,13 +6,13 @@
     "default": 10,
     "max": 50
   },
-  "postgres": "postgres://envionment_override@example.com:5432/evergreen_prod",
+  "postgres": "set to DB_CONNECTION_STRING in the environment",
   "jwt": {
       "name": "evergreen-jwt",
-      "secret": "an evergreen is a plant that has leaves throughout the year, always green",
+      "secret": "set to EVERGREEN_JWT_SECRET in the environment",
       "expiresIn": "14d"
   },
   "internalAPI" : {
-      "secret" : "the API calls are coming from inside the house"
+      "secret" : "set to EVERGREEN_INTERNAL_API_SECRET in the environment"
   }
 }
