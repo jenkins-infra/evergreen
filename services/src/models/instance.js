@@ -6,6 +6,7 @@ module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const instance = sequelizeClient.define('instances', {
     uuid: {
+      allowNull: false,
       type: DataTypes.UUID,
       description: 'An evergreen-client\'s generated from registration UUID',
     },
