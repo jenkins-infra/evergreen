@@ -107,7 +107,9 @@ app.hooks(appHooks);
  * Need to configure the sequelizeSwagger after the services have all been
  * loaded and configured
  */
-app.configure(sequelizeSwagger);
+if (process.env.NODE_ENV != 'production') {
+  app.configure(sequelizeSwagger);
+}
 
 /* Configure the authentication provider via @feathersjs/authentication-jwt and
  * passport-jwt (https://github.com/themikenicholson/passport-jwt)
