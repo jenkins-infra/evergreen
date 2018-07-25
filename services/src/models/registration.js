@@ -6,6 +6,7 @@ module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const reg = sequelizeClient.define('registrations', {
     uuid: {
+      allowNull: false,
       type: DataTypes.UUID,
     },
     pubKey: {

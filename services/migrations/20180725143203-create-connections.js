@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('registrations', {
+    return queryInterface.createTable('connections', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,10 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       uuid: {
+        allowNull: false,
         type: Sequelize.UUID
       },
-      pubKey: {
-        type: Sequelize.STRING
+      lastConnectedAt: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -25,6 +26,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('registrations');
+    return queryInterface.dropTable('connections');
   }
 };

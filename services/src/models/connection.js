@@ -9,6 +9,7 @@ module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const connection = sequelizeClient.define('connections', {
     uuid: {
+      allowNull: false,
       type: DataTypes.UUID,
       description: 'An evergreen-client\'s generated from registration UUID',
     },

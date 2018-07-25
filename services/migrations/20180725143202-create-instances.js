@@ -9,16 +9,21 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       uuid: {
+        allowNull: false,
+        unique: true,
         type: Sequelize.UUID
       },
       timezone: {
         type: Sequelize.STRING
       },
-      channelId: {
-        type: Sequelize.BIGINT
-      },
       updateId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'updates',
+          key: 'id'
+        },
+        onDelete: 'no action',
+        onUpdate: 'no action'
       },
       updatedAt: {
         allowNull: false,
@@ -27,6 +32,11 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      flavor: {
+        defaultValue: 'docker-cloud',
+        allowNull: false,
+        type: Sequelize.STRING
       }
     });
   },
