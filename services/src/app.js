@@ -33,8 +33,6 @@ const app = express(feathers());
 // const SUCCESS = 'OK';
 const FAILURE = 'ERROR';
 
-sentry.initialize(process.env.SENTRY_URL);
-
 // Load app configuration
 app.configure(settings);
 // Enable CORS, security, compression, favicon and body parsing
@@ -51,6 +49,12 @@ app.use('/', express.static(app.get('public')));
 app.configure(express.rest());
 app.configure(socketio());
 app.configure(sequelize);
+
+
+/*
+ * Initialize the Sentry backend integration for reporting error telemetry
+ */
+sentry.initialize(app.get('sentry').url || process.env.SENTRY_URL);
 
 if (process.env.NODE_ENV != 'production') {
   app.configure(swagger({
