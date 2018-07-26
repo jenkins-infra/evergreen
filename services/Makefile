@@ -2,6 +2,9 @@ PATH:=./node_modules/.bin:../tools:$(PATH)
 COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen-backend
 DB_DUMP=initdb.d/db.sql
+ifndef SENTRY_URL
+  SENTRY_URL='https://publickey@sentry.io/projectid'
+endif
 
 all: check docs container
 

@@ -14,5 +14,8 @@
   },
   "internalAPI" : {
       "secret" : "the API calls are coming from inside the house"
+  },
+  "sentry": {
+    "url": "https://sentry-dsn@example.com/project-id"
   }
 }

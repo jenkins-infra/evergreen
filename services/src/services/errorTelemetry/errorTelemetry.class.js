@@ -2,7 +2,7 @@ const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
-
+const sentry = require('../../libs/sentry');
 
 const DEFAULT_ERROR_LOGGING_FILE = '/srv/evergreen/error-logging.json';
 
@@ -27,9 +27,9 @@ class ErrorTelemetryService {
       return Promise.reject({status:'KO'});
     }
 
-    // FIXME: TBD where, what and how to actually send data
     const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
     fs.appendFileSync(this.loggingFile, toWrite);
+    sentry.sendOutput(data);
 
     return Promise.resolve({status:'OK'});
   }

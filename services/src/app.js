@@ -22,6 +22,8 @@ const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
 const sequelize      = require('./sequelize');
 
+const sentry           = require('./libs/sentry');
+
 const swagger          = require('feathers-swagger');
 const sequelizeSwagger = require('./sequelize-swagger');
 
@@ -47,6 +49,12 @@ app.use('/', express.static(app.get('public')));
 app.configure(express.rest());
 app.configure(socketio());
 app.configure(sequelize);
+
+
+/*
+ * Initialize the Sentry backend integration for reporting error telemetry
+ */
+sentry.initialize(app.get('sentry').url || process.env.SENTRY_URL);
 
 if (process.env.NODE_ENV != 'production') {
   app.configure(swagger({
