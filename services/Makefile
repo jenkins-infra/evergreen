@@ -1,6 +1,7 @@
 PATH:=./node_modules/.bin:../tools:$(PATH)
 COMPOSE:=../tools/compose
 IMAGE_NAME:=jenkinsciinfra/evergreen-backend
+IMAGE_TAG:=$(shell date "+%Y%m%d%H%M")
 DB_DUMP=initdb.d/db.sql
 ifndef SENTRY_URL
   SENTRY_URL='https://publickey@sentry.io/projectid'
@@ -77,13 +78,13 @@ dump: stop migrate
 	$(MAKE) stop
 
 container: depends Dockerfile
-	docker build -t $(IMAGE_NAME):latest .
+	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
 	$(MAKE) container-migration
 
 container-check: container
 
 container-migration: Dockerfile.migrations
-	docker build -t $(IMAGE_NAME)-migrations:latest -f Dockerfile.migrations .
+	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
 ingest-update-center: essentials.yaml ingest-update-center
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
@@ -96,8 +97,10 @@ clean:
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
 publish: container
-	docker push ${IMAGE_NAME}:latest
-	docker push ${IMAGE_NAME}-migrations:latest
+	docker push ${IMAGE_NAME}:$(IMAGE_TAG)
+	docker push ${IMAGE_NAME}-migrations:$(IMAGE_TAG)
+	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
+	docker push $(IMAGE_NAME):latest
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \

@@ -1,4 +1,18 @@
 {
-  "host": "evergreen-services-app.feathersjs.com",
-  "port": "PORT"
+  "host": "0.0.0.0",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "postgres": "set to DB_CONNECTION_STRING in the environment",
+  "jwt": {
+      "name": "evergreen-jwt",
+      "secret": "set to EVERGREEN_JWT_SECRET in the environment",
+      "expiresIn": "14d"
+  },
+  "internalAPI" : {
+      "secret" : "set to EVERGREEN_INTERNAL_API_SECRET in the environment"
+  }
 }
