@@ -68,8 +68,8 @@ let pluginToRecord = function(plugin, graph) {
     artifactId: plugin,
     url: graph.plugins[plugin].url,
     checksum: {
-      type: 'sha512',
-      signature: graph.plugins[plugin].sha512,
+      type: 'sha256',
+      signature: graph.plugins[plugin].sha256,
     },
   };
 };
@@ -112,7 +112,6 @@ essentials.spec.environments.forEach((env) => {
   ingest.environments[env.name] = record;
 });
 
-fs.writeFileSync('ingest.yaml', yaml.safeDump(ingest));
 fs.writeFileSync('ingest.json', JSON.stringify(ingest, undefined, 2));
 
 // vim: ft=javascript

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-22T20:17:07.542Z",
+  "timestamp": "2018-07-27T17:48:32.783Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -31,8 +31,8 @@
       "artifactId": "blueocean",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean/1.7.1/blueocean.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "LZhc3zIrjZglSPsKg2o3LNQlQBjOv4/uI3BoJDeemZTUnvptETqESbZJpjc2uG+eQM9LlAulDEM/Z8EFOiq7fA=="
+        "type": "sha256",
+        "signature": "OOdNT09fY8qnbrF4IbArrgI6dcM4eIGD7nOba1UfUL0="
       }
     },
     {
@@ -40,8 +40,8 @@
       "artifactId": "blueocean-bitbucket-pipeline",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-bitbucket-pipeline/1.7.1/blueocean-bitbucket-pipeline.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "0xWNCc0wwCNXQW48GlDMJlJowMz2HfeNc5y854Bti22wfh7H3dFMQqQ5RjK6bgqhA2yw193qWlAnSuAS/Yn3qQ=="
+        "type": "sha256",
+        "signature": "uYyuaMY6pVg5rlfcUT6Nub9NvOUqlQaiMi3AzoPD22k="
       }
     },
     {
@@ -49,8 +49,8 @@
       "artifactId": "blueocean-pipeline-api-impl",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-pipeline-api-impl/1.7.1/blueocean-pipeline-api-impl.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "rbW6Y46tBSTmXi57wp40dwCun1+7ZxC7aUGY8UFyxFMxiryF3Ak60hGcukw1DjLrLYGVcP04oO8Lo7TKIjoagA=="
+        "type": "sha256",
+        "signature": "q4yL3H9ko6aHa+f/Bh8QdqVXvM1FCBDl4kSH+/IinXc="
       }
     },
     {
@@ -58,8 +58,8 @@
       "artifactId": "blueocean-pipeline-scm-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-pipeline-scm-api/1.7.1/blueocean-pipeline-scm-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "Yrj++fzuN0UH3QYV6xBbBoEmrNJMMqrsQVcto2TURZ87DLEIOcgygmsXYLkmnUiac3A7Xr716vk9e7gWx9of4A=="
+        "type": "sha256",
+        "signature": "0zYPwytWNZW2ZcQyWoYBkr4yDagSCMtvU/bdm7wEb38="
       }
     },
     {
@@ -67,8 +67,8 @@
       "artifactId": "blueocean-rest",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-rest/1.7.1/blueocean-rest.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "lmeus88YfW3+mPL3YUTdqIeiIAADYj7qtACIPeLv+tWzRfP/8fx1oW+Td15vsBdbNa0BeVzEziM5A69R5C3rnw=="
+        "type": "sha256",
+        "signature": "cK3bDp8TU7Map9yyEMtTfJWE/DDX6Now/PEb0uBeyzY="
       }
     },
     {
@@ -76,8 +76,8 @@
       "artifactId": "blueocean-commons",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-commons/1.7.1/blueocean-commons.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "KSaURamuqs5aHQqABD+OhlUGpR7h+f82aiUVzXK5Rw9mC0zkHpREvwo2IYDgkwUl3AnN/Y+MDOQm8jrg2P647g=="
+        "type": "sha256",
+        "signature": "wWo2yAFCcQr1qnBBYj1kRrcs2vDYbrcm6tRZX8j4buE="
       }
     },
     {
@@ -85,8 +85,8 @@
       "artifactId": "jackson2-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/jackson2-api/2.8.11.3/jackson2-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "i7J8z7ShvFE/9HS6yhxQkQaTRQCBMl/fupOgBVxvOwWeU/SeBmL4lndvQZrgt/LENHApIx/A88zh4p8IkY/0gA=="
+        "type": "sha256",
+        "signature": "o20H6mk8J/ZYxhNZYTQig6q5hp7EIZxLrb8MlSo1bKg="
       }
     },
     {
@@ -94,17 +94,17 @@
       "artifactId": "workflow-multibranch",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-multibranch/2.20/workflow-multibranch.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "TOd4X05YVsOtSiF76G1ueOon43okHoiDhBwKpcnxPRKT2h+Z868bWXjqRJ+hR4tS9TNRFd6arQuKEe266T7X6A=="
+        "type": "sha256",
+        "signature": "wyruQK/QaE/WTcSxPqKSZn4mozVSwp/ooC9y1XxtHho="
       }
     },
     {
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-api",
-      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-api/2.28/workflow-api.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/workflow-api/2.29/workflow-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "HIy//TT//6RAqpOZ2e7xBPxiCW4LqnHnPSq0Osy8+4XPN5SN5K2dz3mODrA/nysh+N7Wxt1GsYtFFZ+4D7y/jA=="
+        "type": "sha256",
+        "signature": "9MyeqT/3f1HhYXPx4MPjZG6S8UZ7vEfwi0V0s4CpOzI="
       }
     },
     {
@@ -112,8 +112,8 @@
       "artifactId": "workflow-step-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-step-api/2.16/workflow-step-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "FZHpBIMf8DgD6p2L29HidTRXMJJQiQzxyoQRXDcC2RfV81YllL/FvORfWqEh/6qUG/9VDgzk7nzPEs4oTYI00g=="
+        "type": "sha256",
+        "signature": "1kKkCZ1JvjyscScOUlZaNnNIx+1FzeTZ4y7QYkx4dZ8="
       }
     },
     {
@@ -121,8 +121,8 @@
       "artifactId": "structs",
       "url": "http://updates.jenkins-ci.org/download/plugins/structs/1.14/structs.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "zU6P7lhiZkehR0NU5ckoe4sggZFqnR49RhQP4EaBOyqkSajFiQESDHC7D7QvC9Ga8OTmXlJYwi+0UPCJLI1CWg=="
+        "type": "sha256",
+        "signature": "Q6J0iP1Y+Vr/3vB2ZXC75wWsjDn+EdOzgggoLCHKxYs="
       }
     },
     {
@@ -130,8 +130,8 @@
       "artifactId": "scm-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/scm-api/2.2.7/scm-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "PWDZKiQG/TMoH6cvA4U3sDcpWDi4Y48plP53fx1xiwbsiPPp+NhYYQoCCY7RwYPdECpTkTfUNTpIwHiw9xa1jA=="
+        "type": "sha256",
+        "signature": "nFUPha2FcLnXd6PJiAGI+wDoTL31s3BJd+Gj4+3HOkc="
       }
     },
     {
@@ -139,8 +139,8 @@
       "artifactId": "workflow-cps",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-cps/2.54/workflow-cps.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "i8d3WHxuCNT29KoaB9ls01sxxeTQYIMdqy/GcZww0jotw3Sl4lBONQJRPIdbbg4fy3c6NP7z26Eaw70lFx1JdQ=="
+        "type": "sha256",
+        "signature": "jSMzKlTYp0S9FaR9LuzQIgaLLUC2K8UbbItN/a9IiU4="
       }
     },
     {
@@ -148,8 +148,8 @@
       "artifactId": "workflow-scm-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-scm-step/2.6/workflow-scm-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "ZqAjSNfO89lh76FFezbNVo8aEdK6T35WQREgRR2wVAZ0VTQlUdUA4VRYHMPZGAJbYBn9ETfKXdM/StBSPCFoUA=="
+        "type": "sha256",
+        "signature": "o4KGStrw/IDVgkNWgVehRQAo5tBQOgO4ERHUxN6CddA="
       }
     },
     {
@@ -157,8 +157,8 @@
       "artifactId": "workflow-support",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-support/2.19/workflow-support.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "K0u6GzIEieK9NZeqkZRHL7QafQnOuRbSmlLRiCiBNPqizuTYcY320RZEYFhctpQjt3CunnwYfQbfCmlO+vVagg=="
+        "type": "sha256",
+        "signature": "k8EewImpaZ9kjSfsnB0oxkI8bJyNONklGSf0b+razws="
       }
     },
     {
@@ -166,8 +166,8 @@
       "artifactId": "script-security",
       "url": "http://updates.jenkins-ci.org/download/plugins/script-security/1.44/script-security.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "46vyEyS4lUXsfg5FsnVN0GFJ35x7rAvJCW/LMeW1LpRVx3rqb2GGxwOZds/HAS09i0a62hE7s43OWKMRE5Pscg=="
+        "type": "sha256",
+        "signature": "g3ou04Bp2LwInFNw6qWFjtxRlDOAGUn9a4TQVETxOv4="
       }
     },
     {
@@ -175,8 +175,8 @@
       "artifactId": "ace-editor",
       "url": "http://updates.jenkins-ci.org/download/plugins/ace-editor/1.1/ace-editor.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "QMXhGsYbOyJ/SIsa5NjZJ4RNqoTyMS6QFgwxJwI8fd5HqO6yZGJalPEu6D8kQa0G6zFjnqEGQ+Di3ZSGSjcIhQ=="
+        "type": "sha256",
+        "signature": "q8lwKIk8inFYGl9VnqSOjh8aZRZPrultq/7Z6V6autI="
       }
     },
     {
@@ -184,8 +184,8 @@
       "artifactId": "jquery-detached",
       "url": "http://updates.jenkins-ci.org/download/plugins/jquery-detached/1.2.1/jquery-detached.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "bbMkyqwVtj00LXo7i6+pA/NLFY1iTmalLpkgbEA6phK7CgH+lnZGRvp9I4VQhLYOTjAAgHOunqFYFaRmPCZ3vg=="
+        "type": "sha256",
+        "signature": "oFJzzSDBFVf/y33LdRUPIdNdyL4oNVVIuDHClg1/EcA="
       }
     },
     {
@@ -193,8 +193,8 @@
       "artifactId": "workflow-job",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-job/2.23/workflow-job.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "96O4l3gNp8BfnPi24X/G1kVZd22IuXhFJMVro7xMWL3mf5wJ+HlyI4sOaHg+jbtRV4fh6mAp5D0sGgALhkg68A=="
+        "type": "sha256",
+        "signature": "el40mbwblU8nrhFrWzT7j0AkiCJbFyPMAS6k5/bO5xI="
       }
     },
     {
@@ -202,8 +202,8 @@
       "artifactId": "branch-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/branch-api/2.0.20/branch-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "vVzaOn3A+UNm2TY6e9rfJF53kFpWGhSlLKTcBhgxFwNPneLu89pmID1ech1cl8cGtshHBnE1O+P4aEKAXbDKMQ=="
+        "type": "sha256",
+        "signature": "fI1IkLUSV9elLaIwfpik27Ee9k+zU+PAxMt/RXm8Xp4="
       }
     },
     {
@@ -211,8 +211,8 @@
       "artifactId": "cloudbees-folder",
       "url": "http://updates.jenkins-ci.org/download/plugins/cloudbees-folder/6.5.1/cloudbees-folder.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "/YdlASJ2UyJAIjg9pvnkSnLmaaEiy4nRDo/90XPPck62xvgGuX+0F4cUAj56eOsEs3y3jqAqZdRJjZ6rNXcoAQ=="
+        "type": "sha256",
+        "signature": "aRYryC3F6oOpOGlxlCrYbKPR3Y15nuOYrdj6arCfRe0="
       }
     },
     {
@@ -220,8 +220,8 @@
       "artifactId": "credentials",
       "url": "http://updates.jenkins-ci.org/download/plugins/credentials/2.1.18/credentials.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "AyIfAD4ga+nbIyFZPxUclwe3usRG3CfdhMN0vGPOfnNM5tPXVTjIEZBIaH4zEaHkijwaDXLrOXjFasHSB2c4/Q=="
+        "type": "sha256",
+        "signature": "UKY6oGM9w5pRqXnYlS3htqxCT3ZATTMzDmaTXIGA/M4="
       }
     },
     {
@@ -229,8 +229,8 @@
       "artifactId": "pubsub-light",
       "url": "http://updates.jenkins-ci.org/download/plugins/pubsub-light/1.12/pubsub-light.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "z2J9M1TY8i2YyhyTI1cg1ZSyHe6te5XQUifvifglF3TZf5Khf01LqYTNdboOPy1KhjMSMpO+P6fNBjIcXMyiWw=="
+        "type": "sha256",
+        "signature": "Zmy8V52ChJvvjQOWpXM1yZlCIuiwulLwe+dtq5+1bEA="
       }
     },
     {
@@ -238,8 +238,8 @@
       "artifactId": "blueocean-rest-impl",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-rest-impl/1.7.1/blueocean-rest-impl.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "aMOOY3ymX3g/xQGMVy3bIq3QOAz3cBG5yGG1mz6+QGSwnTiV0FsBNMHdC2vd31C0XzglPqdVMqEhR4nc0NYaKA=="
+        "type": "sha256",
+        "signature": "yHpCvIj+IHJ1iKWXHuZKFJq2WsGinw+wDAsi2ebm66g="
       }
     },
     {
@@ -247,8 +247,8 @@
       "artifactId": "blueocean-jwt",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-jwt/1.7.1/blueocean-jwt.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "lD1DH6UiZxIhKDkJeOv9ghZZbvtAIFWdlpZkiLyEbCzfRSyEYjCqwbUt2/TnFgPIAofWKHll1aCDwoOrqcdL2g=="
+        "type": "sha256",
+        "signature": "C52uXgEv3DgebvgnMsVT7TGtjelO/Yg4udpPVy4LLJc="
       }
     },
     {
@@ -256,8 +256,8 @@
       "artifactId": "mailer",
       "url": "http://updates.jenkins-ci.org/download/plugins/mailer/1.21/mailer.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "IBg9ALZewDhy2TbC1Bgr9PCOI8ybE0uvsVp/HV40vLMF0lqPBb4UyUp+roIdmozPWp5X58OlYB4rIb7+3oGyPw=="
+        "type": "sha256",
+        "signature": "I6z1yQkQ7YA9K6xLM+69qUCX0mWVyPyP4JrG0pdQoLo="
       }
     },
     {
@@ -265,8 +265,8 @@
       "artifactId": "display-url-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/display-url-api/2.2.0/display-url-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "4rXJqAiRlRUlgEgBaUIAqCcVKnmfawF8axR2D5HgaAI/Z0ZThzGAw7tnAdYfcz4fLWnZK0HOWyaaVbCCs7ajUQ=="
+        "type": "sha256",
+        "signature": "+aessJoMZJ0s/iXtUtapdOZk86AOdtnczyT4RdILt1Q="
       }
     },
     {
@@ -274,8 +274,8 @@
       "artifactId": "blueocean-web",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-web/1.7.1/blueocean-web.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "vfyNsOjGtc9/3LGsTIsQZArAcMi1ATICPoOMwWiFV6faWpstQMqcYknai+7tlfoFRIscqsMN73cqsk1nt+M4iQ=="
+        "type": "sha256",
+        "signature": "DgJiPJ6wWT+YN+A+zLGuCF7OiCvoB1v7w8yLRcKE2f4="
       }
     },
     {
@@ -283,8 +283,8 @@
       "artifactId": "blueocean-core-js",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-core-js/1.7.1/blueocean-core-js.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "oMO0i2Trevy98mkpOnqif9uB1xh6xRzxY4ktFIsFi3wevZyoIlE7ZFovYjX9Lzo1pdEGdExayTL5mxzH+zZekw=="
+        "type": "sha256",
+        "signature": "i5uNsm/J8T2p+ktq+99jpFwWXmaDustYCyJnn1Ff3Fg="
       }
     },
     {
@@ -292,8 +292,8 @@
       "artifactId": "jenkins-design-language",
       "url": "http://updates.jenkins-ci.org/download/plugins/jenkins-design-language/1.7.1/jenkins-design-language.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "4zZYQN9deit3U6fpza3zGh697qpmjGfMLykcsepb5pG5b6y+tMJQ1ZBUgrBThsqyVYJAeOET3b+j8qMnKom70w=="
+        "type": "sha256",
+        "signature": "SWpDJKsxSobmLIGJuCbh6yvAOxv+tgyQ1ePpBLbAefA="
       }
     },
     {
@@ -301,8 +301,8 @@
       "artifactId": "variant",
       "url": "http://updates.jenkins-ci.org/download/plugins/variant/1.1/variant.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "dx1ppDEByKXNeFPSEgGblah+UXWlwrLi+QvSCSExbRZeOxGPnrDfIG4Hae4odAUu7lphnhIBSlEU1Wtoi6Sq4w=="
+        "type": "sha256",
+        "signature": "lxiT+wXaITYxuOqXejKl1JU/HLerb73skCDVA1UCdf8="
       }
     },
     {
@@ -310,8 +310,8 @@
       "artifactId": "junit",
       "url": "http://updates.jenkins-ci.org/download/plugins/junit/1.24/junit.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "L8HVUhTL36dsPYxnaV8MaAfrWLZDMvWoclFNEvdyiI0l41YBcRvnPS/Gzvcne2tge2UVQLQqlP3EHpha/BQqNw=="
+        "type": "sha256",
+        "signature": "mmXThaqIcF+WOXd/MmxaD4BS70NnxEDSPjQw4eQoA/o="
       }
     },
     {
@@ -319,8 +319,8 @@
       "artifactId": "favorite",
       "url": "http://updates.jenkins-ci.org/download/plugins/favorite/2.3.2/favorite.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "vUDZmx4/scHEb452WfY3YMn5mMrIem2auT+gDENI8AtASpn8jMKMHnDrzg1qzu5u1Iff9F0JF4OyVozivdAAOg=="
+        "type": "sha256",
+        "signature": "1RVj3fRUHiD7VoqB0rZGMrlA6qAzjQHkHI/1H+w1wbM="
       }
     },
     {
@@ -328,8 +328,8 @@
       "artifactId": "matrix-project",
       "url": "http://updates.jenkins-ci.org/download/plugins/matrix-project/1.13/matrix-project.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "Zl0yR4idXjsTBfxcybhjfZjUTtuONOMPj0oGDLZxdj0DAyHtElQ2CS6Wsb27AvkJrONq2hWse1hWLNRAASdyCQ=="
+        "type": "sha256",
+        "signature": "612Y4FUgMY+jSKj0G/AzxgaEnqGi4zAcIXxaHDIorxM="
       }
     },
     {
@@ -337,8 +337,8 @@
       "artifactId": "token-macro",
       "url": "http://updates.jenkins-ci.org/download/plugins/token-macro/2.5/token-macro.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "SMFXE1UQYYVk4imgEoZS1g6XJWLJfA+aMxzcdNREYCvC1bf0MdEZXJ1/UhpHoQCYwG96tZHA0hPMJpMmx0E2Rw=="
+        "type": "sha256",
+        "signature": "xlddAw724LQW2tOAlDVe7TDoYK3jh1n/Cnbi9Yg1Dms="
       }
     },
     {
@@ -346,8 +346,8 @@
       "artifactId": "workflow-durable-task-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-durable-task-step/2.19/workflow-durable-task-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "5ghQnEs3DvGEjyC1FQ9p8PUvdML8/sUx+kORLheefqQcVDy9Y8WgUGdKR1TFs/xadBlcrjnkHbX43d+JlJFv4w=="
+        "type": "sha256",
+        "signature": "UmsrDbsk2QtW4v0AKsjBYFfEzGYjfbLE7rQRG9O2K64="
       }
     },
     {
@@ -355,8 +355,8 @@
       "artifactId": "durable-task",
       "url": "http://updates.jenkins-ci.org/download/plugins/durable-task/1.22/durable-task.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "xYm4YR3agut12tLnPjpMhAYvaq/uOrhXMq3L01m6JVVN5MbEsyQ1/GdQF012qPs5PpzxYoHi64LBVPAmcucHaQ=="
+        "type": "sha256",
+        "signature": "1jfEZMXtaRT0nIRbzLP7ZS8GneTg7dW1WndctZF+aE0="
       }
     },
     {
@@ -364,17 +364,17 @@
       "artifactId": "git",
       "url": "http://updates.jenkins-ci.org/download/plugins/git/3.9.1/git.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "EGVN2VywYxuqWjck960bip9qZIrOOzSb8/Ei9FDAgCEj7qyrNySpGInF57rWQmTfoDuwKPLqKtoGLMJ4oNIyog=="
+        "type": "sha256",
+        "signature": "sX9P1geKo2yzzyLg8sVz3zof9lbEXkQCLaW18ob7Fh4="
       }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "git-client",
-      "url": "http://updates.jenkins-ci.org/download/plugins/git-client/2.7.2/git-client.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/git-client/2.7.3/git-client.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "lrm2G0Qp6vUOdbUQpCAfTrjC2FKeylPZJqfmO3/psJWl884JwCtytLw+y8NWJZvAeFItZuCE+jPtDu31nQql7Q=="
+        "type": "sha256",
+        "signature": "4d3JJR/bl4gS5UrJ0pfpNPCu5PPQ0jOAZ8Yx9E9tZd8="
       }
     },
     {
@@ -382,8 +382,8 @@
       "artifactId": "apache-httpcomponents-client-4-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/apache-httpcomponents-client-4-api/4.5.5-3.0/apache-httpcomponents-client-4-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "PFBvGKMzCQfnZWYPDvKVZYO7ppi/JVw7qomwUVux1FLLRYXNlN0G39XPnGjN3kRP4t584HwzP97gsvr3ksQ0TQ=="
+        "type": "sha256",
+        "signature": "WnBIEHDYeql3FZRQA4xU93rT4R6Ml+PpFcTgrGaL3ec="
       }
     },
     {
@@ -391,8 +391,8 @@
       "artifactId": "jsch",
       "url": "http://updates.jenkins-ci.org/download/plugins/jsch/0.1.54.2/jsch.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "il9qVdLQovLIqWIbRcjn2F5/E6eSIeeGGU+xVeym6xt4u5a3LKo+11kZLQ//syt7k4sHqTkHQZITIM6PNubbSQ=="
+        "type": "sha256",
+        "signature": "8piPtNj98d/zlbTNqWal1ULrJa+lRpwUSuuQMfSyji8="
       }
     },
     {
@@ -400,8 +400,8 @@
       "artifactId": "ssh-credentials",
       "url": "http://updates.jenkins-ci.org/download/plugins/ssh-credentials/1.14/ssh-credentials.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "IJY6ZTHw/KnfkWauXDqzkFMz25Dg/8BQf2zkcEiWi3gjonbReUN1uSEAhpMa2paqZxqHfB7cGE0DY0AMQV7IUA=="
+        "type": "sha256",
+        "signature": "9fwR4wbND+Crsl/89AAU1rw8MTGOnS0zCellMg393jQ="
       }
     },
     {
@@ -409,8 +409,8 @@
       "artifactId": "github-branch-source",
       "url": "http://updates.jenkins-ci.org/download/plugins/github-branch-source/2.3.6/github-branch-source.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "jrRoe9JXTp4kPb6Q4HfO9hl1AGBCcju0R4CA/l8s/HOlsY9vUF9AbezyZttt9dTJbWmbSlKPEqC4kCSlPoux3g=="
+        "type": "sha256",
+        "signature": "hKadz5gd0lO2+NT+eReKPrWPRMriSjUkZIjZyo8rEY8="
       }
     },
     {
@@ -418,8 +418,8 @@
       "artifactId": "github",
       "url": "http://updates.jenkins-ci.org/download/plugins/github/1.29.2/github.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "E0TmT8TNQFzZYZiZAru12vX3eKfNDVNCF/2F49svW9NUVu0VzBNoVTtvrU9cjwLN39IlKdJmaee5dpqOeyjZGg=="
+        "type": "sha256",
+        "signature": "P0s/MQxAXzTNZyxZ2NxuRTx4gTgPy0yywZlKbg5z4SE="
       }
     },
     {
@@ -427,8 +427,8 @@
       "artifactId": "github-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/github-api/1.92/github-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "7/fF5M8wP9PpP6eMAdbCyONjpYvXkQ2cJu7RaocPQst0dDEs97MkAqXswm0VV96S1mRug09DMtqFHwCQxtejNA=="
+        "type": "sha256",
+        "signature": "FQiqRCtAuu93e3pIuMfHsMRBOc+EPBHHopR9SpaCp+I="
       }
     },
     {
@@ -436,8 +436,8 @@
       "artifactId": "plain-credentials",
       "url": "http://updates.jenkins-ci.org/download/plugins/plain-credentials/1.4/plain-credentials.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "aRVupR6BmwrRkghIcyunRiBy9W5AmrjBwRq4ABM0cRarK+sX7qI7lQtg1rjmHhT8dAWPFCTY6765sxchHgJK9Q=="
+        "type": "sha256",
+        "signature": "Txg0+Z/9fyp9sZcv5G7kLQavgZsnKXGTrInrM6FCktg="
       }
     },
     {
@@ -445,8 +445,8 @@
       "artifactId": "htmlpublisher",
       "url": "http://updates.jenkins-ci.org/download/plugins/htmlpublisher/1.16/htmlpublisher.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "5rRXGkryYC1/BcfXVYz39NMkexw42TULb0W/SwUFd1ML3+WqzA2Su634PCpddN+lKrTdwBBFhnNP4TDQXu4BRg=="
+        "type": "sha256",
+        "signature": "SoFT+XkeCM0H0LzD7lfZfiHzjBXVeDEfboBcZQAppcU="
       }
     },
     {
@@ -454,8 +454,8 @@
       "artifactId": "pipeline-build-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-build-step/2.7/pipeline-build-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "4oHBFDMTXSqWFLEQTH7gw8Lg65JeiuMSiOfKg2MiW4tMI0x83S+2YjTp4aeUJxovMJu+FU2w7LP85Qf73HAaag=="
+        "type": "sha256",
+        "signature": "0C/SeYgyhDXAvEIR5ORf7oiyi11jPDu85stNypSAqcs="
       }
     },
     {
@@ -463,8 +463,8 @@
       "artifactId": "pipeline-graph-analysis",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-graph-analysis/1.7/pipeline-graph-analysis.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "qUh3re6kobfhBQCOcKg5lAtYMm46TGiHRGCyF4M6pSL/JlPWJaUCNG/RbpyjdUgjBysBDCUnXw1tekF0jQGMVg=="
+        "type": "sha256",
+        "signature": "mTTlGPVcC8i+J3dWIrDzvr7zVFULGZMf+kXftRpOOBw="
       }
     },
     {
@@ -472,8 +472,8 @@
       "artifactId": "pipeline-input-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-input-step/2.8/pipeline-input-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "BY2PznPSp0CnpWeievnSQWzEQDu+xbsE4C4lDK95UzWwQl7NK3LfF5ZJfJ3bZDorZ3vXT0EjxmaNUrvJQpeeQA=="
+        "type": "sha256",
+        "signature": "jp+hZU7AwOxybIlLB5goc3uM5tnqPQXNQ3jDeswyNds="
       }
     },
     {
@@ -481,8 +481,8 @@
       "artifactId": "pipeline-stage-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-stage-step/2.3/pipeline-stage-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "yD2ziKDLafqTjpwo3DuQKA2GdFB9z6VAOmxLPRLWWiRqG7vSchgJtmIjQZ8HDXJ/ediT+hr/w8W8YNpaoUkWWA=="
+        "type": "sha256",
+        "signature": "9sqrkHQmZCibDLV7J3VcO4uWPDdkiUEp+5VO+/eW0xA="
       }
     },
     {
@@ -490,8 +490,8 @@
       "artifactId": "pipeline-model-definition",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.3.1/pipeline-model-definition.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "u1zZmXUjaq87UYBhRyIYjDaxcxfor+bTYCGif2u8Tghkahf6GVXqpdAckJgD/wYxrf5R7M9Ugod3ftXKIG+Umg=="
+        "type": "sha256",
+        "signature": "G0iKSdaftWYePuBAZ5vGS51YnXb6U0amE2psulBVcdI="
       }
     },
     {
@@ -499,8 +499,8 @@
       "artifactId": "workflow-basic-steps",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-basic-steps/2.9/workflow-basic-steps.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "M7ek6MNtGEbmCKTYeqoZb68+7V0sdveUrQBf3c9G9SpcmjGgC+Ak6Vv2HT9lpbMfeGkqUgeb97XFq+jBbgOHKQ=="
+        "type": "sha256",
+        "signature": "P/kARj+ISxJjoKvNveo6xpirqSwHUgPb3iaoHckmK4Y="
       }
     },
     {
@@ -508,8 +508,8 @@
       "artifactId": "workflow-cps-global-lib",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-cps-global-lib/2.9/workflow-cps-global-lib.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "/KEXG9z/zhm7atLotYn9r/v2/+uq5yKv8KG8JI0GjKnn9HWcuobK5IHq6DB1jtedcU8jGgSkfK7HnQUxFrnEtQ=="
+        "type": "sha256",
+        "signature": "taFBxIlr4V4J12/Ftg3z/nAelNLC0gFamcpRR6eLCdE="
       }
     },
     {
@@ -517,8 +517,8 @@
       "artifactId": "git-server",
       "url": "http://updates.jenkins-ci.org/download/plugins/git-server/1.7/git-server.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "a3VC1e/PJcus2Eb5KCvdy1lD8PQ2T0AB/8T5kZttdcVZa0LNz0yHXPGtJ7cewv4hNMrAhhvMjNovcY+1Jlm56w=="
+        "type": "sha256",
+        "signature": "Gl3HM0lWgabRpq3OB+YU5Q9OXSJYDm+vvVyiYKpDZ/w="
       }
     },
     {
@@ -526,8 +526,8 @@
       "artifactId": "credentials-binding",
       "url": "http://updates.jenkins-ci.org/download/plugins/credentials-binding/1.16/credentials-binding.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "89VPMkRhda9csHm8mm5DtRJU7ihxkCoLW6clUTWc3Hsx9EqRpB1fWCbXyO5a0AF8AoE9ac82UQSaMyqLprRJOw=="
+        "type": "sha256",
+        "signature": "FLoXmsApI7eCGDQLVbjGID4WZMXkB/QCGphmU7qVZOI="
       }
     },
     {
@@ -535,8 +535,8 @@
       "artifactId": "docker-workflow",
       "url": "http://updates.jenkins-ci.org/download/plugins/docker-workflow/1.17/docker-workflow.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "QoFhrMGB3a0y2s7F8kUYXmjLM6q3XXsQjITwZEz3v6GCnH7U7Re8MS+hP4TAf3npTyEOGcKBQBvm3Nyj/nRDjA=="
+        "type": "sha256",
+        "signature": "LmYeiB2/cAyuCb+XUU6a0ThT4Ky73TZsFLFYTiiPXwQ="
       }
     },
     {
@@ -544,8 +544,8 @@
       "artifactId": "docker-commons",
       "url": "http://updates.jenkins-ci.org/download/plugins/docker-commons/1.13/docker-commons.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "rhoeVGgP8onX0P6sFyRcpbDRYGTmC6FS/ndBeV58pw5wGoVG4r33Ls5ORwV4hJd5tI4uUTRszUOLj7Vk66mxcw=="
+        "type": "sha256",
+        "signature": "MwOel32Trfb1eok40rnTclRk997c8kj+t1RDTU+gEEo="
       }
     },
     {
@@ -553,8 +553,8 @@
       "artifactId": "authentication-tokens",
       "url": "http://updates.jenkins-ci.org/download/plugins/authentication-tokens/1.3/authentication-tokens.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "4//v6bHh4xrKT25yOBV1RcSExC+ER1d3n0NzNjKcB5bHHsEewkoobVAltCm88FOUwwFFxpsvJ3EtqKFqvB0QsA=="
+        "type": "sha256",
+        "signature": "8Fc2vH2g3zu6XOtNiTCJcGgSztMTStsu3JrjQUZ/GuM="
       }
     },
     {
@@ -562,8 +562,8 @@
       "artifactId": "pipeline-model-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.3.1/pipeline-model-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "nCkKTuX3eJUifmZKwJJG7cZaukacNeVw7o/J4GbIFEfTFkMpmFXoIFHpCd2IdZ/bjfdObceMsbxOOA8mXL89MQ=="
+        "type": "sha256",
+        "signature": "XUxqa+2c3zUQx87IFSO1Q1OY4GVARTJlveO6rZlKi1c="
       }
     },
     {
@@ -571,8 +571,8 @@
       "artifactId": "pipeline-model-declarative-agent",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-declarative-agent/1.1.1/pipeline-model-declarative-agent.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "ZK0btcMYTmeDsyUQEGSpbXj1GGK5oTrja0Hip6s2UL9Ij7woOfL3TVVJfs63YgiTXogRQoQ9q55D3n93weraDg=="
+        "type": "sha256",
+        "signature": "1VQMOXO/X1aJEPk7OgAsQTFIudPdQhHOX69KKhIU1O8="
       }
     },
     {
@@ -580,8 +580,8 @@
       "artifactId": "pipeline-model-extensions",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-model-extensions/1.3.1/pipeline-model-extensions.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "ICA0lwdWMV8vkuj3I1qN2v29bHAPnVzMbs+6so1jc8KKYPxfw6b8S1arFFFglyDtJOaoPH5qUVyaD+S0V3ZMPA=="
+        "type": "sha256",
+        "signature": "wsVqgbqQRXd5U8bIckuVQ3sDzw6r3oWPMtTGXGhrvBM="
       }
     },
     {
@@ -589,8 +589,8 @@
       "artifactId": "pipeline-stage-tags-metadata",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-stage-tags-metadata/1.3.1/pipeline-stage-tags-metadata.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "MUnYHtwn6fBU3KMP7luKnpikkw9J0HFrxu/s5LvzB1SeTb/JofjpiiuFr6CbI19Nr4IMcgSrXEuy/4zBlImRCw=="
+        "type": "sha256",
+        "signature": "NJCLu9+VKxGfMhW9NlX6rk2lO1HsQRV/XYdM5ACLQ6U="
       }
     },
     {
@@ -598,8 +598,8 @@
       "artifactId": "cloudbees-bitbucket-branch-source",
       "url": "http://updates.jenkins-ci.org/download/plugins/cloudbees-bitbucket-branch-source/2.2.12/cloudbees-bitbucket-branch-source.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "uQt7ogv9XnmTnQxEgCit6lj6YZGhg5RPHKWck2YmaN8CsCGAwOqUsCnIXh+MneDGc2e9SEmiHgKWie29LcODCw=="
+        "type": "sha256",
+        "signature": "jCb4MsVVnVukoXSJ+kC3DwZFIyqc+B7gdfg7caJzSaQ="
       }
     },
     {
@@ -607,8 +607,8 @@
       "artifactId": "handy-uri-templates-2-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/handy-uri-templates-2-api/2.1.6-1.0/handy-uri-templates-2-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "GN+lJq7u8Gp5YMt1byKqg0mKNvNtXtYSLhl/5bp2W5fO4/vDR9/yEnUGPOKXSTqwkP62OTpewUgXIcMSjI8pVw=="
+        "type": "sha256",
+        "signature": "CURtOH9eh6hGRpM0V5KS8wR7PUyr890FzQV6LzSzmBQ="
       }
     },
     {
@@ -616,8 +616,8 @@
       "artifactId": "mercurial",
       "url": "http://updates.jenkins-ci.org/download/plugins/mercurial/2.4/mercurial.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "bay+kjEHGM87Fl2VpebmpxtpEB0T0er5oLaSz6LdGnJHzPBlE1oFzcvVr6Kfqn4dUVPZCqfxLEuKO6fkJ4aVUg=="
+        "type": "sha256",
+        "signature": "pF9nuWMynq4T60VOLVs/mFmvdt7K8eveqkM4+2qCDvg="
       }
     },
     {
@@ -625,8 +625,8 @@
       "artifactId": "blueocean-config",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-config/1.7.1/blueocean-config.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "Py9FIDMWlXJcATmDN08zAiDE/CgXgBHY7b1wOIIxOPq+DWPC/es2q1nyWSFlUaX3n6dJzvPYuuCUjypa8/AgAg=="
+        "type": "sha256",
+        "signature": "RnaF85gW0ygNAQCP2ksd50EqD1BATBJjSyrYVb/nCy4="
       }
     },
     {
@@ -634,8 +634,8 @@
       "artifactId": "blueocean-dashboard",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-dashboard/1.7.1/blueocean-dashboard.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "8Pr2m0OgFGTzS0+8mqc6YCMprjEGdPr5UWzuHD71abtQ4+xpkFmvCX4b7vdNCJrXCQfICzFYkKtQhKBGPxaEzg=="
+        "type": "sha256",
+        "signature": "Fh/Enn86MhoS0OoTFqETN8IHcLjPZ+m97Qew/sTjFnE="
       }
     },
     {
@@ -643,8 +643,8 @@
       "artifactId": "blueocean-events",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-events/1.7.1/blueocean-events.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "8Z2MY2PCvkESBIRt2Ao0Nd3mCCkh0c+h1EdYNsmWcnvk9t/wn0DtsWV3VNHpr09jrddk4lCFJnYB10uIflL56g=="
+        "type": "sha256",
+        "signature": "SVNpqXNqla/mQ4Va6qLEAblYFyYyiIeqtqTDtVFMmJ8="
       }
     },
     {
@@ -652,8 +652,8 @@
       "artifactId": "sse-gateway",
       "url": "http://updates.jenkins-ci.org/download/plugins/sse-gateway/1.15/sse-gateway.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "JreKtUFntzVJF6eR0Fyha56KtTA4GxrPQqJmJnM53kEvACT3eUWghigNXsBvdCFOrqlX5tmhjC/yDcQ2b8E16Q=="
+        "type": "sha256",
+        "signature": "VrGbekj2RtyCabrkrKQewR9xdW1hjTArH4udaIRBhQ8="
       }
     },
     {
@@ -661,8 +661,8 @@
       "artifactId": "blueocean-git-pipeline",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-git-pipeline/1.7.1/blueocean-git-pipeline.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "BrkQbXrcycZ3NG/LNVlauR5ife6jVgh51eHeKsiQTqE29EaWBDK96FF8gEYm9Zco9O8HRE8EuORZagGCrAsZjg=="
+        "type": "sha256",
+        "signature": "+3ZGQ62IzoC+NMtDY9a8KA9m+da1FOalA6xsLgMhosE="
       }
     },
     {
@@ -670,8 +670,8 @@
       "artifactId": "blueocean-github-pipeline",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-github-pipeline/1.7.1/blueocean-github-pipeline.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "k44WrUEN0YUwTqS/K7tUNOpirEUz6FpvbbTpMbEL6jsWhvzMeT4BHxzhQR+lPSc3VbryIp7aybqdTuEDmW9ihg=="
+        "type": "sha256",
+        "signature": "2iG3aQRqupG47KtqGo6FmNDcqByPHvfw9XzJP2s6TDQ="
       }
     },
     {
@@ -679,8 +679,8 @@
       "artifactId": "blueocean-i18n",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-i18n/1.7.1/blueocean-i18n.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "POtBGufM2WGRI/GmYkfZsqqoo1iNsQlqxGQqAzIEGMif42JxJevtLqHqb7s3r0LXS3e1WVBDccPQHZbArC6OQA=="
+        "type": "sha256",
+        "signature": "tRUdcWtvxAJJpSWt2v94XLVgyDJFzihY0iM5IJ9eZHw="
       }
     },
     {
@@ -688,8 +688,8 @@
       "artifactId": "blueocean-jira",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-jira/1.7.1/blueocean-jira.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "Fr0psFK6CAVbLfXizuM93DbGtsJy1h30GGVXsUcDYk32EIlnVlo8x+Fv8VhSpk5CErbxlxHwDKT943sIIVPOmA=="
+        "type": "sha256",
+        "signature": "ZotWY6Id6wRv3u0zktlcjurajVGsNt/+CfN2RA5rGZs="
       }
     },
     {
@@ -697,8 +697,8 @@
       "artifactId": "jira",
       "url": "http://updates.jenkins-ci.org/download/plugins/jira/3.0.0/jira.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "0qbcD7qpb/4oV+qCqCRbD70S40LjC8g99yzLZ5eCjr+Dx8JNEsGfCcJO3iNXMUiNNbpT33pdlcnSw6BiACEJZw=="
+        "type": "sha256",
+        "signature": "lrbtuEpqyNjV5oigfcd/BTDLMRAB51GxFt82qBfmTv0="
       }
     },
     {
@@ -706,8 +706,8 @@
       "artifactId": "blueocean-personalization",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-personalization/1.7.1/blueocean-personalization.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "qfTXXr/D1bCHv5GD60ZlEAufhIYwvsEZgyf0i7oumca7OKfokCDxTSzRv+jwviVkP6TBNSzjpc7nxme6GkdTRQ=="
+        "type": "sha256",
+        "signature": "L9lqDaovVfzKozFit29xtkM5afshARtcNrhAhmRapYg="
       }
     },
     {
@@ -715,8 +715,8 @@
       "artifactId": "blueocean-pipeline-editor",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-pipeline-editor/1.7.1/blueocean-pipeline-editor.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "XooL/u3uNEGpeD+tDHDR73gpWOxjY0tHp0b7XNec0GzqNpWpOplYPA4EQxzraT8XYRhTjfeY7+OmjygLpw39jQ=="
+        "type": "sha256",
+        "signature": "o+ynlXBRnhPWZPY1wy5lyLkHT4bHdDc87pqAzhrivCo="
       }
     },
     {
@@ -724,8 +724,8 @@
       "artifactId": "blueocean-autofavorite",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-autofavorite/1.2.2/blueocean-autofavorite.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "63s3GluUKLCa7U/ipFrE6Q58TI0HUVQFz1mRTONQBi2yqG28fWICBSwI4OeKnKeKq0F0gJqii8xdFaehCzZ73A=="
+        "type": "sha256",
+        "signature": "+w2u9mMIscOrA7oHu3DOA9iA9G55ZQ9/Mtj2V9RYVwA="
       }
     },
     {
@@ -733,8 +733,8 @@
       "artifactId": "blueocean-display-url",
       "url": "http://updates.jenkins-ci.org/download/plugins/blueocean-display-url/2.2.0/blueocean-display-url.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "jPBdoLMhcWz18Ye4XDOj4LCTSIK/4XvHTNO/RXKJsTi5pZtHrwqdMMyD2LSpjk6AFyzDhfI7Nq+fb3bEn38aUQ=="
+        "type": "sha256",
+        "signature": "Q5LP8/TXXGeKutt6rQQLeCvn6mHFyHvdXjpi+mM+EMo="
       }
     },
     {
@@ -742,8 +742,8 @@
       "artifactId": "pipeline-milestone-step",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-milestone-step/1.3.1/pipeline-milestone-step.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "YdwhFZz8zf3SEFU8O3jvs7AytQsYNL83EuwQzRtSR/fAkghmqTERkWyR6QRFr8CuaerZNbNt1hnh3dlegn2RrQ=="
+        "type": "sha256",
+        "signature": "06JmKbZWghxgoU/kA6uK/FDwhOM4QG28J+K2tAP3yyA="
       }
     },
     {
@@ -751,8 +751,8 @@
       "artifactId": "buildtriggerbadge",
       "url": "http://updates.jenkins-ci.org/download/plugins/buildtriggerbadge/2.9/buildtriggerbadge.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "y/rvw/ensI+8vJrG2C5rwQ0gH5ng/YFVB3UkaLVlRXiTMlyeiPS0OTymsAVr5UnX+QqqvwF7tl2by8hsOKum/A=="
+        "type": "sha256",
+        "signature": "12JLv+rkQsRn75+uqm8p4R1fOyN3TlAK98zdu500/DY="
       }
     },
     {
@@ -760,8 +760,8 @@
       "artifactId": "ssh-agent",
       "url": "http://updates.jenkins-ci.org/download/plugins/ssh-agent/1.15/ssh-agent.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "NLX1/7egxfHKbcAatq6PNYjPHNlf5/r0SXkZlt0MgATrRkMRXV6qs9CBzJbbqtCQ0ktDt+YrJY/QInk+yZmWzg=="
+        "type": "sha256",
+        "signature": "0clVuIOj6CUiobl/8ESBIZO8MlxesJXiO6hnPCsW4YE="
       }
     },
     {
@@ -769,8 +769,8 @@
       "artifactId": "bouncycastle-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/bouncycastle-api/2.16.3/bouncycastle-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "Dt7nxRnOomzwZzpLJbcTZhnPCh46/395zBlHnMuurWiF+h8c5HAtIDjnxq3L9Jr2wxcjwLLet/zczyvQ/JuLPw=="
+        "type": "sha256",
+        "signature": "AmHkDI5w6b+VOa8brliYlQw/xZcnmD+7yLqPCbRM8vA="
       }
     },
     {
@@ -778,8 +778,8 @@
       "artifactId": "workflow-aggregator",
       "url": "http://updates.jenkins-ci.org/download/plugins/workflow-aggregator/2.5/workflow-aggregator.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "2IPvTHQjm4QOJPKYBK1/xrvpKZPLKwd+sG48GL2lc9dI583gG0macr9K4oGqOK89xKdoNoALAfNhUzkfzOhjeg=="
+        "type": "sha256",
+        "signature": "9RIjd3aaXkPuTC2IxyDdiTBUw2WPxNKfIdNi6ryqyGo="
       }
     },
     {
@@ -787,8 +787,8 @@
       "artifactId": "pipeline-stage-view",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-stage-view/2.10/pipeline-stage-view.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "72Mg+KgwK+R2Vo/14/89Wd+kWBcGZdqVv/1VcW9WeZHD/6TJs2Ar4IEuj9GCBeye/yjl070MY8csRx/tScvxdA=="
+        "type": "sha256",
+        "signature": "u1UdHp5CGGik6LWKAVm1TjZg/fw7f4F4uS3qPQKeD5U="
       }
     },
     {
@@ -796,8 +796,8 @@
       "artifactId": "pipeline-rest-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/pipeline-rest-api/2.10/pipeline-rest-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "rAC0mNF+aoOExTI0L8x3Q+898BByxbC8Q8LTzb+1yMNAQWOqiCjqsCFRAN4dgwoF/kna/YFT+uc1oApOzuLGAw=="
+        "type": "sha256",
+        "signature": "Of8Uvd1AUZEAx7pLMbXFqgZ1Ye1bT4VxGPDskVwX6NQ="
       }
     },
     {
@@ -805,8 +805,8 @@
       "artifactId": "handlebars",
       "url": "http://updates.jenkins-ci.org/download/plugins/handlebars/1.1.1/handlebars.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "RuqHJvxCXgEeyCjTscrE7xaJzFN/zxr68J0pYJhr8cpMY9hKucOXbGHeimVHoJQyJTqkhGDrumaCmrbJGTCurQ=="
+        "type": "sha256",
+        "signature": "vFzHs+yhe6bOwKje+U86p4rXoZOHoZqjpW+FehiWavo="
       }
     },
     {
@@ -814,8 +814,8 @@
       "artifactId": "momentjs",
       "url": "http://updates.jenkins-ci.org/download/plugins/momentjs/1.1.1/momentjs.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "72eyC2DfEJZ/ji1V2zi827IGy4/0srqaamJ2w2WfaLzRAOuPEClAhuNtQkZ0qHihnTEI2LCN9PO9skiNq2hw5Q=="
+        "type": "sha256",
+        "signature": "yjwtJkz/VfcekA3H3h8TwL+//bmzQZuFTc4XW8uKSEg="
       }
     },
     {
@@ -823,8 +823,8 @@
       "artifactId": "metrics",
       "url": "http://updates.jenkins-ci.org/download/plugins/metrics/4.0.2.2/metrics.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "3bFR8GEKZmQQ65XjxQUxtcLjFRYiB4s9tlZqgKc7N8CpeplCj7eOW3iCOfBjlK8fzKVBE1vGEJakqQDiBmE0KQ=="
+        "type": "sha256",
+        "signature": "tgtJq5Rs2Llg+ZmHa32ogPrfnKB92VJPnwr2Ol0DQus="
       }
     },
     {
@@ -832,8 +832,8 @@
       "artifactId": "jdk-tool",
       "url": "http://updates.jenkins-ci.org/download/plugins/jdk-tool/1.1/jdk-tool.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "JADgKI+H6IZR2YaC5hR9kXs911/nx6fVAfxD1oImdXP3eMefpvav2Bn4iLcHnKzIuKSST7NxjqnOKYyMl5yN4A=="
+        "type": "sha256",
+        "signature": "h/+jVOs8ProRhdYIar3TLWDiL6vdmN+1LL66exoaPUw="
       }
     },
     {
@@ -841,8 +841,8 @@
       "artifactId": "ec2",
       "url": "http://updates.jenkins-ci.org/download/plugins/ec2/1.39/ec2.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "R4wnmEJ1Av2EyKsAEy88BU4HZ7HfJ13wxSsc4LcEQyka9Fh3pWVrl0+0ozj7shHcqamYlyked4ePs7xk4Pc7ug=="
+        "type": "sha256",
+        "signature": "/dhnCxpxvNrMXXo1j6Z/uMRO/G8uzHF9XlcsZpk0oKc="
       }
     },
     {
@@ -850,8 +850,8 @@
       "artifactId": "aws-java-sdk",
       "url": "http://updates.jenkins-ci.org/download/plugins/aws-java-sdk/1.11.341/aws-java-sdk.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "byKfbHc3k5cUWsrozpMl1nUOxi2LzszSQ3amcMWJVy2NeZAv1jRR/W+4vn374qNqKv1Gs8jz0JYAd+xlAilRdg=="
+        "type": "sha256",
+        "signature": "6+fMp3VdwCDROO9Tenv3th47utQffw9r5ABJF8B2kjg="
       }
     },
     {
@@ -859,8 +859,8 @@
       "artifactId": "aws-credentials",
       "url": "http://updates.jenkins-ci.org/download/plugins/aws-credentials/1.23/aws-credentials.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "lWCsfBdEU2NJmE5xBItOlHvK5po5ESIoQH/dcjFzRiiYWRT68tl193EQdmZGF6BMyHI+t/vVI2yEZa0BxJTv3w=="
+        "type": "sha256",
+        "signature": "IP5LXBJzruZrKK21BMzQ+7C0TiQLhL3HTvejh0nucm4="
       }
     },
     {
@@ -868,8 +868,8 @@
       "artifactId": "node-iterator-api",
       "url": "http://updates.jenkins-ci.org/download/plugins/node-iterator-api/1.5.0/node-iterator-api.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "uTAZ1ovZRPrgOPl6LZPotsiUF8QjuYPHVKISjZAX1tBf127kGuh6LtPTHOOTV1c3nIiSd1h+TjeuofZDIluxSg=="
+        "type": "sha256",
+        "signature": "UxsE8hh6CG4plj8/SpgjtxGyQuuiOT3fApA4pd633zk="
       }
     },
     {
@@ -877,8 +877,8 @@
       "artifactId": "aws-global-configuration",
       "url": "http://updates.jenkins-ci.org/download/plugins/aws-global-configuration/1.0/aws-global-configuration.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "2ZwvchK+epnpKCYowYz3k+YcDlrfGsy93MdH8zFQg9835bxmL76Ogw+ZSFItT1E5I9LIgdAxVR/oIc679J07uQ=="
+        "type": "sha256",
+        "signature": "7AOADIcOQN6SpCxeOX5ZiN31ZOj9SZ130O7G0sV1pPk="
       }
     },
     {
@@ -886,8 +886,8 @@
       "artifactId": "artifact-manager-s3",
       "url": "http://updates.jenkins-ci.org/download/plugins/artifact-manager-s3/1.1/artifact-manager-s3.hpi",
       "checksum": {
-        "type": "sha512",
-        "signature": "pU+/MNqgz1esfg/b5GblLIF9HSY8XnFOf7RPGr6bSR/iiRcuYC/iZyHD6GyK2cHUTL08svpbUBNrnheDk1qWbQ=="
+        "type": "sha256",
+        "signature": "w8NGcnL+vm98aVTMdqNvlt9sc/CqSaTOXkeLqsHVvyU="
       }
     }
   ],
@@ -899,8 +899,8 @@
           "artifactId": "docker-plugin",
           "url": "http://updates.jenkins-ci.org/download/plugins/docker-plugin/1.1.4/docker-plugin.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "XXkgaeP/Ln7d4LVRlM2fR3dmk4JPL8UtCM7PkXigwDeX/ngKT4gWJpVaAstGmzN1D8OveugBFcS4e9+BTIAFuA=="
+            "type": "sha256",
+            "signature": "dcgqyJQm0Mp0MqWiZ5khGw8jaWrJHYFWQUU54CTaLp8="
           }
         },
         {
@@ -908,8 +908,8 @@
           "artifactId": "docker-java-api",
           "url": "http://updates.jenkins-ci.org/download/plugins/docker-java-api/3.0.14/docker-java-api.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "HAE0wCftkYAWKSyQbGshb5cZETbytK8QQv7d8NwIR2m6vNu+4UTXi150J2n80CmOxetfT3kgJUH1/SjzgiAifA=="
+            "type": "sha256",
+            "signature": "FKSPkJKGPHaAyTnDFj2VOeO2b44nf75MDiamjMYMS6A="
           }
         },
         {
@@ -917,8 +917,8 @@
           "artifactId": "ssh-slaves",
           "url": "http://updates.jenkins-ci.org/download/plugins/ssh-slaves/1.26/ssh-slaves.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "3y15Ll2aFFnoHmut8CMWmEoDu3DWjfGgzYnopPZmB4WJDysr9kKbTpqp8Kd2MDejMCPa5yDsdWsnFqF3J77gvw=="
+            "type": "sha256",
+            "signature": "az0y+gKCp0nc8q09rG54B1hTPgK3MbqHhVo5cs9ncC0="
           }
         }
       ]
@@ -930,8 +930,8 @@
           "artifactId": "ec2",
           "url": "http://updates.jenkins-ci.org/download/plugins/ec2/1.39/ec2.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "R4wnmEJ1Av2EyKsAEy88BU4HZ7HfJ13wxSsc4LcEQyka9Fh3pWVrl0+0ozj7shHcqamYlyked4ePs7xk4Pc7ug=="
+            "type": "sha256",
+            "signature": "/dhnCxpxvNrMXXo1j6Z/uMRO/G8uzHF9XlcsZpk0oKc="
           }
         },
         {
@@ -939,8 +939,8 @@
           "artifactId": "aws-global-configuration",
           "url": "http://updates.jenkins-ci.org/download/plugins/aws-global-configuration/1.0/aws-global-configuration.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "2ZwvchK+epnpKCYowYz3k+YcDlrfGsy93MdH8zFQg9835bxmL76Ogw+ZSFItT1E5I9LIgdAxVR/oIc679J07uQ=="
+            "type": "sha256",
+            "signature": "7AOADIcOQN6SpCxeOX5ZiN31ZOj9SZ130O7G0sV1pPk="
           }
         },
         {
@@ -948,8 +948,8 @@
           "artifactId": "artifact-manager-s3",
           "url": "http://updates.jenkins-ci.org/download/plugins/artifact-manager-s3/1.1/artifact-manager-s3.hpi",
           "checksum": {
-            "type": "sha512",
-            "signature": "pU+/MNqgz1esfg/b5GblLIF9HSY8XnFOf7RPGr6bSR/iiRcuYC/iZyHD6GyK2cHUTL08svpbUBNrnheDk1qWbQ=="
+            "type": "sha256",
+            "signature": "w8NGcnL+vm98aVTMdqNvlt9sc/CqSaTOXkeLqsHVvyU="
           }
         }
       ]
