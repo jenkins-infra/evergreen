@@ -10,7 +10,10 @@ const errors = require('@feathersjs/errors');
 
 module.exports = function(context) {
   let authorization = context.params.headers.authorization;
-  let secret = context.app.get('internalAPI').secret;
+  /*
+   * Override the internalAPI secret if it has been provided by the environment
+   */
+  let secret = process.env.EVERGREEN_INTERNAL_API_SECRET || context.app.get('internalAPI').secret;
 
   if (authorization != secret) {
     throw new errors.NotAuthenticated('This API is unavailable');
