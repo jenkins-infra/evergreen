@@ -7,7 +7,7 @@ ARG gid=1000
 ARG http_port=8080
 ARG agent_port=50000
 
-ENV EVERGREEN_ENDPOINT=http://127.0.0.1:3030/
+ENV EVERGREEN_ENDPOINT=https://evergreen.jenkins.io/
 ENV EVERGREEN_HOME /evergreen
 
 ENV JENKINS_HOME ${EVERGREEN_HOME}/jenkins/home
