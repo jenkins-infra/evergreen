@@ -15,6 +15,14 @@ class Downloader {
   constructor() {
   }
 
+  static formatDuration(durationInMs) {
+    if (durationInMs < 1000) {
+      return `${durationInMs}ms`;
+    }
+    const seconds = Math.floor(durationInMs / 1000);
+    const millisecs = durationInMs - 1000 * seconds;
+    return `${seconds}.${millisecs}s`;
+  }
   static download(item, dir) {
     const itemUrl = url.parse(item);
     const itemUrlBaseName = path.basename(itemUrl.pathname);
@@ -41,9 +49,13 @@ class Downloader {
       retry: 3 // make it configurable?
     };
 
+    const startTime = Date.now();
     return new Promise( (resolve, reject) => {
       rp(options)
         .then( (response) => {
+
+          const elapsedString = Downloader.formatDuration(Date.now() - startTime);
+          logger.info  ('Download complete for', filename, `(Took ${elapsedString})`);
 
           const output = fs.createWriteStream(filename);
 
