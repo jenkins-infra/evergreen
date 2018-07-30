@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-27T17:48:32.783Z",
+  "timestamp": "2018-07-30T18:50:41.697Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -758,10 +758,10 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "ssh-agent",
-      "url": "http://updates.jenkins-ci.org/download/plugins/ssh-agent/1.15/ssh-agent.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/ssh-agent/1.16/ssh-agent.hpi",
       "checksum": {
         "type": "sha256",
-        "signature": "0clVuIOj6CUiobl/8ESBIZO8MlxesJXiO6hnPCsW4YE="
+        "signature": "GLqw/c9lzsIghmq9XKjflUGxCR4ah22ayzKDxqlpxHg="
       }
     },
     {
