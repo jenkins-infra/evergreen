@@ -54,7 +54,7 @@ app.configure(sequelize);
 /*
  * Initialize the Sentry backend integration for reporting error telemetry
  */
-sentry.initialize(app.get('sentry').url || process.env.SENTRY_URL);
+sentry.initialize(process.env.SENTRY_URL || app.get('sentry').url);
 
 if (process.env.NODE_ENV != 'production') {
   app.configure(swagger({
