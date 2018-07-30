@@ -96,7 +96,7 @@ class Update {
    * message
    */
   async fetchTo(url, outputPath) {
-    return Downloader.download(url, outputPath).then(s => logger.info('Download complete', s.path));
+    return Downloader.download(url, outputPath);
   }
 
   getCurrentLevel() {
