@@ -124,6 +124,11 @@ class Client {
 module.exports = Client;
 
 if (require.main === module) {
+  /*
+   * Allow the log level to be overridden in the environment for debugging
+   * purposes by the user
+   */
+  logger.level = process.env.LOG_LEVEL || 'warn';
   /* Main entrypoint for module */
   logger.info('Starting the evergreen-client..');
   let client = new Client();
