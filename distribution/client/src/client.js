@@ -99,9 +99,15 @@ class Client {
     const socketApp = feathers();
     socketApp.configure(socketio(this.socket));
 
+    logger.info('Registering listener for event: `update created`');
     socketApp.service('update').on('created', (message) => {
       logger.info('Received an Update `created` event, checking for updates', message);
       this.runUpdates();
+    });
+
+    logger.info('Registering listener for event: `status ping`');
+    socketApp.service('status').on('ping', (message) => {
+      logger.debug('Received ping', message);
     });
 
     this.reg.register().then((res, newRegistration) => {

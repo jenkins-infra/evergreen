@@ -128,4 +128,9 @@ app.configure(jwt({
   }
 }));
 
+setInterval(() => {
+  logger.info('Sending ping');
+  app.service('status').emit('ping', { 'timestamp' : (new Date()) });
+}, (1000 * 60));
+
 module.exports = app;

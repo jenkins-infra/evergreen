@@ -15,6 +15,7 @@ module.exports = function (app) {
   };
 
   let service = createService(options);
+  service.events = ['ping'];
   service.docs = {
     description: 'Manage and retrieve Update Levels for Evergreen clients',
     create: {
