@@ -136,7 +136,7 @@ class Update extends FeathersSequelize.Service {
       return computedManifest;
     }
 
-    if ((!instance.flavor) || (!record.manifest)) {
+    if ((!instance.flavor) || (!record.manifest) || (!record.manifest.environments)) {
       return computedManifest;
     }
 
