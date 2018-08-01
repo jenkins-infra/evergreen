@@ -65,7 +65,7 @@ class Update {
       'jenkins',
       'home');
 
-    if (updates.core.url) {
+    if ((updates.core) && (updates.core.url)) {
       tasks.push(this.fetchTo(updates.core.url, outputDir));
     }
 

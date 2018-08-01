@@ -50,4 +50,5 @@ module.exports = function(app) {
    * status to ensure that they get passed updates properly
    */
   app.service('update').publish('created', () => app.channel('anonymous'));
+  app.service('status').publish('ping', () => app.channel('anonymous'));
 };
