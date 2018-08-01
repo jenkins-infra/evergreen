@@ -69,7 +69,7 @@ describe('Status service acceptance tests', () => {
             method: 'POST',
             headers: { 'Authorization': this.token },
             json: true,
-            body: { uuid: 'fake out!' }
+            body: { uuid: 'fake out!', flavor: 'docker-cloud' }
           })
             .then(res => assert.fail(res))
             .catch(err => expect(err.statusCode).toEqual(401));
@@ -84,7 +84,7 @@ describe('Status service acceptance tests', () => {
             method: 'POST',
             headers: { Authorization: this.token },
             json: true,
-            body: { uuid: this.instanceId }
+            body: { uuid: this.instanceId, flavor: 'aws-ec2-cloud' }
           });
         });
 
