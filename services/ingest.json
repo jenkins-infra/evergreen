@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-07-30T18:50:41.697Z",
+  "timestamp": "2018-08-02T17:52:35.469Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -353,10 +353,10 @@
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "durable-task",
-      "url": "http://updates.jenkins-ci.org/download/plugins/durable-task/1.22/durable-task.hpi",
+      "url": "http://updates.jenkins-ci.org/download/plugins/durable-task/1.23/durable-task.hpi",
       "checksum": {
         "type": "sha256",
-        "signature": "1jfEZMXtaRT0nIRbzLP7ZS8GneTg7dW1WndctZF+aE0="
+        "signature": "w/1LFcgK7hGhY4StIYhD7smUNiJtjU6xnJGxTx/AvxU="
       }
     },
     {

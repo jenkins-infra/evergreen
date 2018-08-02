@@ -33,6 +33,12 @@ const app = express(feathers());
 // const SUCCESS = 'OK';
 const FAILURE = 'ERROR';
 
+/*
+  * Allow the log level to be overridden in the environment for debugging
+  * purposes by the user
+  */
+logger.level = process.env.LOG_LEVEL || 'warn';
+
 // Load app configuration
 app.configure(settings);
 // Enable CORS, security, compression, favicon and body parsing
@@ -129,8 +135,9 @@ app.configure(jwt({
 }));
 
 setInterval(() => {
-  logger.info('Sending ping');
-  app.service('status').emit('ping', { 'timestamp' : (new Date()) });
+  const now = Date.now();
+  logger.debug ('Sending ping at', now);
+  app.service('status').emit('ping', { 'timestamp' : now});
 }, (1000 * 60));
 
 module.exports = app;
