@@ -32,7 +32,7 @@ class Status {
     let api = this.app.service('status');
     let record = {
       uuid: this.uuid,
-      flavor: '',
+      flavor: 'docker-cloud',
       timezone: this.getTimezone(),
     };
     return api.create(record, {
