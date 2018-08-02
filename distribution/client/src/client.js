@@ -26,7 +26,7 @@ class Client {
   constructor() {
     this.app = feathers();
     this.reg = new Registration(this.app);
-    this.status = new Status(this.app);
+    this.status = new Status(this.app, {flavor: process.env.FLAVOR});
     this.update = new Update(this.app);
     this.errorTelemetry = new ErrorTelemetry(this.app);
     this.updating = false;
