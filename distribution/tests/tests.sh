@@ -208,4 +208,25 @@ test_docker_available_as_jenkins_user() {
   [[ "$ENVIRONMENT" = "docker-cloud" ]] || endSkipping
 }
 
+# JENKINS-52728
+test_no_maven_or_freestyle_jobs() {
+  topLevelDescriptor=$( curl --silent -u "admin:essentials" http://localhost:$TEST_PORT/essentials/api/xml )
+  assertEquals "Curl call to Essentials XML API should have succeeded" 0 "$?"
+
+  echo "$topLevelDescriptor" | grep -i WorkflowJob > /dev/null
+  assertEquals "WorkflowJob should have been found" 0 "$?"
+
+  echo "$topLevelDescriptor" | grep -i WorkflowMultiBranchProject > /dev/null
+  assertEquals "WorkflowMultiBranchProject should have been found" 0 "$?"
+
+  echo "$topLevelDescriptor" | grep -i OrganizationFolder > /dev/null
+  assertEquals "OrganizationFolder should have been found" 0 "$?"
+
+  echo "$topLevelDescriptor" | grep -i Maven > /dev/null
+  assertNotEquals "Maven should not have been found" 0 "$?"
+
+  echo "$topLevelDescriptor" | grep -i FreeStyle > /dev/null
+  assertNotEquals "FreeStyle jobs should not have been found" 0 "$?"
+
+}
 . ./shunit2/shunit2

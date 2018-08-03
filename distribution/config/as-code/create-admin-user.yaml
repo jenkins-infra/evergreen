@@ -1,0 +1,10 @@
+jenkins:
+  remotingSecurity:
+    enabled: false
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: ${ADMIN_PASSWORD:-essentials}
+  authorizationStrategy: loggedInUsersCanDoAnything

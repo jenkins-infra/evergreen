@@ -23,7 +23,8 @@ ENV JAVA_OPTS=\
 "-Djenkins.model.Jenkins.workspacesDir=${JENKINS_VAR}/jobs/\${ITEM_FULL_NAME}/workspace "\
 "-Djenkins.model.Jenkins.buildsDir=${JENKINS_VAR}/jobs/\${ITEM_FULL_NAME}/builds "\
 "-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs "\
-"-Djava.util.logging.config.file=$EVERGREEN_HOME/logging.properties "
+"-Djava.util.logging.config.file=$EVERGREEN_HOME/logging.properties "\
+"-Djenkins.install.runSetupWizard=false "
 
 ENV JENKINS_OPTS=\
 "--webroot=${JENKINS_VAR}/war "\
