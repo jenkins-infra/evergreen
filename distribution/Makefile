@@ -59,7 +59,7 @@ create-squid-cache-volume:
 	docker volume create ${SQUID_VOLUME_NAME}
 
 run: create-squid-cache-volume
-	$(COMPOSE) up
+	$(COMPOSE) -f docker-compose.yml -f docker-compose.squid-cache.yml up
 
 clean:
 	$(COMPOSE) down || true
