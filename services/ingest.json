@@ -1,5 +1,5 @@
 {
-  "timestamp": "2018-08-03T11:39:52.487Z",
+  "timestamp": "2018-08-03T12:15:48.041Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/latest/jenkins.war",
     "checksum": {
@@ -20,7 +20,7 @@
     {
       "groupId": "io.jenkins.plugins",
       "artifactId": "essentials",
-      "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/essentials/0.3-rc22.017590d92627/essentials-0.3-rc22.017590d92627.hpi",
+      "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/essentials/0.3-rc22.db3e99966ef0/essentials-0.3-rc22.db3e99966ef0.hpi",
       "checksum": {
         "type": "sha512",
         "signature": "e1cdf271eabed428c2198c4f7a49c5dea7fc8850987bcf63b87b74936a3cc426896a4b7c9c974f0fe3abd61071ea5a2238538af9f9266f2d37696856809d697a"
