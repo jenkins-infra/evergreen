@@ -53,6 +53,8 @@
     "winston": "^2.4.3"
   },
   "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "compare-versions": "^3.3.0",
     "eslint": "^4.19.1",
     "hoek": "^5.0.3",
     "jest": "^22.4.4",

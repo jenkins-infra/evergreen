@@ -1,0 +1,191 @@
+#!/usr/bin/env node
+
+const fs      = require('fs');
+const path    = require('path');
+const yaml    = require('js-yaml');
+const logger  = require('winston');
+const request = require('request-promise');
+const cheerio = require('cheerio')
+
+const compareVersions = require('compare-versions');
+
+const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
+const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
+const essentials   = yaml.safeLoad(fs.readFileSync('./essentials.yaml'));
+
+logger.level = process.env.LOG_LEVEL || 'info';
+
+// Arbitrary bucket to wait for promises to resolve at the end of the script
+let tasks = [];
+// Resulting manifest to be output as JSON
+let ingest = {
+  timestamp: (new Date()).toISOString(),
+  core: {
+    url: `http://mirrors.jenkins.io/war/${essentials.spec.core.version}/jenkins.war`,
+    checksum: {},
+  },
+  plugins: [],
+  environments: {},
+}
+
+
+/*
+ * processManifest will parse the Plugin-Dependencies out of the
+ * META-INF/MANIFEST.MF files fetched from Artifactory
+ */
+const processManifest = (manifest) => {
+  let dependencies = [];
+  // Set to true if the next line is awrapped set of dependencies
+  let depWrap = false;
+  manifest.split('\n').forEach((line) => {
+    if ((depWrap) && (!line.startsWith(' '))) {
+      depWrap = false;
+    }
+
+    const matches = line.match(/^Plugin-Dependencies: (.*)?/);
+
+    if (matches) {
+      dependencies.push(matches[1])
+      depWrap = true;
+    }
+    else if (depWrap) {
+      dependencies.push(line.trim());
+    }
+  });
+
+  dependencies = dependencies.join('').split(',');
+
+  // Returning an array of dependency tuples [artifactId, version]
+  return dependencies
+    .filter(entry => !entry.match(/\=optional/))
+    .map(entry => entry.split(':'));
+};
+
+/*
+ * Fetch a specified plugin manifest
+ *
+ * @return Promise
+ */
+const fetchPluginManifest = async (pluginUrl) => {
+  try {
+    let start = Date.now();
+    const response = await request(`${pluginUrl}!META-INF/MANIFEST.MF`);
+    logger.info(`Fetching ${pluginUrl} took ${Date.now() - start}`);
+    return processManifest(response);
+  } catch (err) {
+    if (err.statusCode == 404) {
+      logger.error(`Could not find ${pluginUrl}`);
+    }
+    else {
+      logger.warn(err);
+    }
+    return null;
+  }
+};
+
+/*
+ * processPlugin will generate the appropriate ingest metadata for the given
+ * plugin based on its version
+ */
+const processPlugin = (plugin, into) => {
+  logger.info('Processing', plugin.artifactId);
+
+  const pluginFilename = path.join(plugin.artifactId, plugin.version, `${plugin.artifactId}-${plugin.version}.hpi`);
+  const groupPath = plugin.groupId.replace(/\./g, '/');
+  let url = `${RELEASES}${groupPath}/`;
+
+  if (plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/)) {
+    logger.debug(`${plugin.artifactId} looks incremental`);
+    url = `${INCREMENTALS}${groupPath}/`;
+  }
+  url = url + pluginFilename;
+
+  into.push({
+      groupId: plugin.groupId,
+      artifactId: plugin.artifactId,
+      url: url,
+      checksum: {},
+  });
+
+  return fetchPluginManifest(url).then(d => d);
+};
+
+// The plugin name map will help us later determine what has been specified in
+// the ssentials.yaml compared to an implied dependency
+const pluginNameMap = new Map(essentials.spec.plugins.map(entry => [entry.artifactId, entry]));
+// Perform a first pass on the plugins needed for all Evergreen installations
+const firstPass = essentials.spec.plugins.map(plugin => processPlugin(plugin, ingest.plugins));
+
+// Collection of plugins which are needed but not specified in essentials.yaml
+let needed = {};
+
+
+const filterPluginsDependencies = (plugins, inventory) => {
+  plugins.filter(d => d).forEach((deps) => {
+    deps.forEach((dep) => {
+      let [name, version] = dep;
+      if (!pluginNameMap[name]) {
+        // We need to grab a dependency, first let's see if we already need it
+        if (inventory[name]) {
+          // version compare what we need already
+          if (compareVersions(version, inventory[name])) {
+            logger.debug('upgrade to', name, version);
+            inventory[name] = version;
+          }
+        }
+        else {
+          logger.debug(`Need to download ${name}`);
+          inventory[name] = version;
+        }
+      }
+    })
+  });
+  return inventory;
+};
+
+Promise.all(firstPass).then(response => filterPluginsDependencies(response, needed))
+.then((inventory) => {
+  logger.info('Consolidate!');
+  Object.keys(inventory).forEach((name) => {
+    ingest.plugins.push({
+        groupId: 'unknown',
+        artifactId: name,
+        url: `https://updates.jenkins.io/download/plugins/${name}/${inventory[name]}/${name}.hpi`,
+        checksum: {}
+    });
+  });
+
+  /*
+   * At this point, ingest.plugins is well consolidated and we can process the
+   * environments to grab the environment specific plugins and their
+   * dependencies
+   */
+   essentials.spec.environments.forEach((env) => {
+     logger.debug(`Processing environment ${env.name}`);
+     let inventory = {};
+     let envDeps = {
+         plugins: [],
+     }
+     ingest.environments[env.name] = envDeps;
+
+     tasks.push(
+       Promise.all(env.plugins.map(plugin => processPlugin(plugin, envDeps.plugins)))
+       .then(plugins => filterPluginsDependencies(plugins, inventory))
+       .then((inv) => {
+          Object.keys(inv).forEach((name) => {
+            envDeps.plugins.push({
+                groupId: 'unknown',
+                artifactId: name,
+                url: `https://updates.jenkins.io/download/plugins/${name}/${inv[name]}/${name}.hpi`,
+                checksum: {}
+            });
+          });
+     }));
+    });
+
+}).then(() => {
+  Promise.all(tasks).then(() => {
+    fs.writeFileSync('ingest.json', JSON.stringify(ingest, undefined, 2));
+  });
+});
+
