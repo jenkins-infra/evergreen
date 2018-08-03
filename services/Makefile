@@ -86,9 +86,9 @@ container-check: container
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
-ingest-update-center: essentials.yaml ingest-update-center
+ingest-update-center: essentials.yaml process-dependencies
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
-	node ./ingest-update-center
+	node ./process-dependencies
 
 clean:
 	$(COMPOSE) down || true
