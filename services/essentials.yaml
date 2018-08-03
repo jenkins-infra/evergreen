@@ -50,7 +50,7 @@ spec:
 
     - groupId: 'org.jenkins-ci.plugins'
       artifactId: 'jdk-tool'
-      version: '2.73'
+      version: '1.1'
 
 # FIXME: delete the deps below for AWS once JENKINS-51766 is done
     - groupId: 'org.jenkins-ci.plugins'

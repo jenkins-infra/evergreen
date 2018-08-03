@@ -11,6 +11,7 @@ const compareVersions = require('compare-versions');
 
 const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
 const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
+const updates      = JSON.parse(fs.readFileSync('./update-center.json'));
 const essentials   = yaml.safeLoad(fs.readFileSync('./essentials.yaml'));
 
 logger.level = process.env.LOG_LEVEL || 'info';
@@ -120,32 +121,36 @@ const firstPass = essentials.spec.plugins.map(plugin => processPlugin(plugin, in
 let needed = {};
 
 
+const resolvePlugin = (name, inventory) => {
+  // We don't have the plugin in essentials.yaml, so it's dependencies
+  // should be resolved through the update center unless otherwise
+  // specified
+  if (!pluginNameMap[name]) {
+    let releasedPlugin = updates.plugins[name];
+    inventory[name] = releasedPlugin.version;
+    let found = [];
+    found.concat(releasedPlugin.dependencies
+      .filter(d => (d.optional == false))
+      .forEach(d => resolvePlugin(d.name, inventory)));
+    return found;
+  }
+  return [];
+};
+
 const filterPluginsDependencies = (plugins, inventory) => {
-  plugins.filter(d => d).forEach((deps) => {
-    deps.forEach((dep) => {
-      let [name, version] = dep;
-      if (!pluginNameMap[name]) {
-        // We need to grab a dependency, first let's see if we already need it
-        if (inventory[name]) {
-          // version compare what we need already
-          if (compareVersions(version, inventory[name])) {
-            logger.debug('upgrade to', name, version);
-            inventory[name] = version;
-          }
-        }
-        else {
-          logger.debug(`Need to download ${name}`);
-          inventory[name] = version;
-        }
-      }
-    })
-  });
+  plugins
+    .filter(d => d)
+    .forEach((depends) => {
+      depends.filter(d => (d.length == 2)).forEach((depend) => {
+        let [name, version] = depend;
+        resolvePlugin(name, inventory);
+      });
+    });
   return inventory;
 };
 
 Promise.all(firstPass).then(response => filterPluginsDependencies(response, needed))
 .then((inventory) => {
-  logger.info('Consolidate!');
   Object.keys(inventory).forEach((name) => {
     ingest.plugins.push({
         groupId: 'unknown',
@@ -173,12 +178,14 @@ Promise.all(firstPass).then(response => filterPluginsDependencies(response, need
        .then(plugins => filterPluginsDependencies(plugins, inventory))
        .then((inv) => {
           Object.keys(inv).forEach((name) => {
-            envDeps.plugins.push({
-                groupId: 'unknown',
-                artifactId: name,
-                url: `https://updates.jenkins.io/download/plugins/${name}/${inv[name]}/${name}.hpi`,
-                checksum: {}
-            });
+            if (!ingest.plugins.find(p => p.artifactId == name)) {
+              envDeps.plugins.push({
+                  groupId: 'unknown',
+                  artifactId: name,
+                  url: `https://updates.jenkins.io/download/plugins/${name}/${inv[name]}/${name}.hpi`,
+                  checksum: {}
+              });
+            }
           });
      }));
     });
