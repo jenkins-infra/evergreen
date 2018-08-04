@@ -1,621 +1,930 @@
 {
-  "timestamp": "2018-08-03T22:33:16.820Z",
+  "timestamp": "2018-08-04T15:18:27.072Z",
   "core": {
     "url": "http://mirrors.jenkins.io/war/2.135/jenkins.war",
-    "checksum": {}
+    "checksum": {
+      "signature": "d682c43b381898fde9ace47892bdf9277ed2389f15299356e20e1a85720cdeb0",
+      "type": "sha256"
+    }
   },
   "plugins": [
     {
       "groupId": "io.jenkins",
       "artifactId": "configuration-as-code",
       "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/configuration-as-code/0.11-alpha-rc362.942711740b07/configuration-as-code-0.11-alpha-rc362.942711740b07.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "5e0d07f6bc86ea23dbe6f2b40d15fe8759aa43470a45d9ee09d90f415e007575"
+      }
     },
     {
       "groupId": "io.jenkins.plugins",
       "artifactId": "essentials",
       "url": "https://repo.jenkins-ci.org/incrementals/io/jenkins/plugins/essentials/0.3-rc20.a3f76cdd1348/essentials-0.3-rc20.a3f76cdd1348.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "392f0a30de31dadcaa2a06b8e07ff721bcf8fe37eb520d5a669dd5a8cdb17301"
+      }
     },
     {
       "groupId": "io.jenkins.blueocean",
       "artifactId": "blueocean",
       "url": "https://repo.jenkins-ci.org/releases/io/jenkins/blueocean/blueocean/1.7.1/blueocean-1.7.1.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "38e74d4f4f5f63caa76eb17821b02bae023a75c338788183ee739b6b551f50bd"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "git",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/git/3.8.0/git-3.8.0.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "a881fb1d75deeb3ef291d89401d4e2ea7f8766a1c3b29731816ae86ec40e3cd7"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "buildtriggerbadge",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/buildtriggerbadge/2.9/buildtriggerbadge-2.9.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "d7624bbfeae442c467ef9faeaa6f29e11d5f3b23774e500af7ccddbb9d34fc36"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "junit",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/junit/1.24/junit-1.24.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "9a65d385aa88705f9639777f326c5a0f8052ef4367c440d23e3430e1e42803fa"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "mailer",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/mailer/1.20/mailer-1.20.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "e78b7bb32957d11dcf58e57f2d7b60903bf31ace7858d19febb3b11a374a1187"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "ssh-agent",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/ssh-agent/1.15/ssh-agent-1.15.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "d1c955b883a3e82522a1b97ff044812193bc325c5eb095e23ba8673c2b16e181"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins.workflow",
       "artifactId": "workflow-aggregator",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/workflow/workflow-aggregator/2.5/workflow-aggregator-2.5.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "f5122377769a5e43ee4c2d88c720dd893054c3658fc4d29f21d362eabcaac86a"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "metrics",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/metrics/4.0.2.2/metrics-4.0.2.2.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "b60b49ab946cd8b960f999876b7da880fadf9ca07dd9524f9f0af63a5d0342eb"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "jdk-tool",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/jdk-tool/1.1/jdk-tool-1.1.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "87ffa354eb3c3eba1185d6086abdd32d60e22fabdd98dfb52cbeba7b1a1a3d4c"
+      }
     },
     {
       "groupId": "org.jenkins-ci.plugins",
       "artifactId": "ec2",
       "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/ec2/1.39/ec2-1.39.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "fdd8670b1a71bcdacc5d7a358fa67fb8c44efc6f2ecc717d5e572c669934a0a7"
+      }
     },
     {
       "groupId": "io.jenkins.plugins",
       "artifactId": "aws-global-configuration",
       "url": "https://repo.jenkins-ci.org/releases/io/jenkins/plugins/aws-global-configuration/1.0/aws-global-configuration-1.0.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "ec03800c870e40de92a42c5e397e5988ddf564e8fd499d77d0eec6d2c575a4f9"
+      }
     },
     {
       "groupId": "io.jenkins.plugins",
       "artifactId": "artifact-manager-s3",
       "url": "https://repo.jenkins-ci.org/releases/io/jenkins/plugins/artifact-manager-s3/1.1/artifact-manager-s3-1.1.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "c3c3467272febe6f7c6954cc76a36f96df6c73f0aa49a4ce5e478baac1d5bf25"
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "structs",
       "url": "https://updates.jenkins.io/download/plugins/structs/1.14/structs.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Q6J0iP1Y+Vr/3vB2ZXC75wWsjDn+EdOzgggoLCHKxYs="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-bitbucket-pipeline",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-bitbucket-pipeline/1.7.1/blueocean-bitbucket-pipeline.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "uYyuaMY6pVg5rlfcUT6Nub9NvOUqlQaiMi3AzoPD22k="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-pipeline-api-impl",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-pipeline-api-impl/1.7.1/blueocean-pipeline-api-impl.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "q4yL3H9ko6aHa+f/Bh8QdqVXvM1FCBDl4kSH+/IinXc="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-pipeline-scm-api",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-pipeline-scm-api/1.7.1/blueocean-pipeline-scm-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "0zYPwytWNZW2ZcQyWoYBkr4yDagSCMtvU/bdm7wEb38="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-rest",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-rest/1.7.1/blueocean-rest.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "cK3bDp8TU7Map9yyEMtTfJWE/DDX6Now/PEb0uBeyzY="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-commons",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-commons/1.7.1/blueocean-commons.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "wWo2yAFCcQr1qnBBYj1kRrcs2vDYbrcm6tRZX8j4buE="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "jackson2-api",
       "url": "https://updates.jenkins.io/download/plugins/jackson2-api/2.8.11.3/jackson2-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "o20H6mk8J/ZYxhNZYTQig6q5hp7EIZxLrb8MlSo1bKg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-multibranch",
       "url": "https://updates.jenkins.io/download/plugins/workflow-multibranch/2.20/workflow-multibranch.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "wyruQK/QaE/WTcSxPqKSZn4mozVSwp/ooC9y1XxtHho="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-api",
       "url": "https://updates.jenkins.io/download/plugins/workflow-api/2.29/workflow-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "9MyeqT/3f1HhYXPx4MPjZG6S8UZ7vEfwi0V0s4CpOzI="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-step-api",
       "url": "https://updates.jenkins.io/download/plugins/workflow-step-api/2.16/workflow-step-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "1kKkCZ1JvjyscScOUlZaNnNIx+1FzeTZ4y7QYkx4dZ8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "scm-api",
       "url": "https://updates.jenkins.io/download/plugins/scm-api/2.2.7/scm-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "nFUPha2FcLnXd6PJiAGI+wDoTL31s3BJd+Gj4+3HOkc="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-cps",
       "url": "https://updates.jenkins.io/download/plugins/workflow-cps/2.54/workflow-cps.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "jSMzKlTYp0S9FaR9LuzQIgaLLUC2K8UbbItN/a9IiU4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-scm-step",
       "url": "https://updates.jenkins.io/download/plugins/workflow-scm-step/2.6/workflow-scm-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "o4KGStrw/IDVgkNWgVehRQAo5tBQOgO4ERHUxN6CddA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-support",
       "url": "https://updates.jenkins.io/download/plugins/workflow-support/2.19/workflow-support.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "k8EewImpaZ9kjSfsnB0oxkI8bJyNONklGSf0b+razws="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "script-security",
       "url": "https://updates.jenkins.io/download/plugins/script-security/1.44/script-security.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "g3ou04Bp2LwInFNw6qWFjtxRlDOAGUn9a4TQVETxOv4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "ace-editor",
       "url": "https://updates.jenkins.io/download/plugins/ace-editor/1.1/ace-editor.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "q8lwKIk8inFYGl9VnqSOjh8aZRZPrultq/7Z6V6autI="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "jquery-detached",
       "url": "https://updates.jenkins.io/download/plugins/jquery-detached/1.2.1/jquery-detached.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "oFJzzSDBFVf/y33LdRUPIdNdyL4oNVVIuDHClg1/EcA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-job",
       "url": "https://updates.jenkins.io/download/plugins/workflow-job/2.23/workflow-job.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "el40mbwblU8nrhFrWzT7j0AkiCJbFyPMAS6k5/bO5xI="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "branch-api",
       "url": "https://updates.jenkins.io/download/plugins/branch-api/2.0.20/branch-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "fI1IkLUSV9elLaIwfpik27Ee9k+zU+PAxMt/RXm8Xp4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "cloudbees-folder",
       "url": "https://updates.jenkins.io/download/plugins/cloudbees-folder/6.5.1/cloudbees-folder.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "aRYryC3F6oOpOGlxlCrYbKPR3Y15nuOYrdj6arCfRe0="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "credentials",
       "url": "https://updates.jenkins.io/download/plugins/credentials/2.1.18/credentials.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "UKY6oGM9w5pRqXnYlS3htqxCT3ZATTMzDmaTXIGA/M4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pubsub-light",
       "url": "https://updates.jenkins.io/download/plugins/pubsub-light/1.12/pubsub-light.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Zmy8V52ChJvvjQOWpXM1yZlCIuiwulLwe+dtq5+1bEA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-rest-impl",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-rest-impl/1.7.1/blueocean-rest-impl.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "yHpCvIj+IHJ1iKWXHuZKFJq2WsGinw+wDAsi2ebm66g="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-jwt",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-jwt/1.7.1/blueocean-jwt.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "C52uXgEv3DgebvgnMsVT7TGtjelO/Yg4udpPVy4LLJc="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "mailer",
       "url": "https://updates.jenkins.io/download/plugins/mailer/1.21/mailer.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "I6z1yQkQ7YA9K6xLM+69qUCX0mWVyPyP4JrG0pdQoLo="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "display-url-api",
       "url": "https://updates.jenkins.io/download/plugins/display-url-api/2.2.0/display-url-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "+aessJoMZJ0s/iXtUtapdOZk86AOdtnczyT4RdILt1Q="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-web",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-web/1.7.1/blueocean-web.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "DgJiPJ6wWT+YN+A+zLGuCF7OiCvoB1v7w8yLRcKE2f4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-core-js",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-core-js/1.7.1/blueocean-core-js.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "i5uNsm/J8T2p+ktq+99jpFwWXmaDustYCyJnn1Ff3Fg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "jenkins-design-language",
       "url": "https://updates.jenkins.io/download/plugins/jenkins-design-language/1.7.1/jenkins-design-language.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "SWpDJKsxSobmLIGJuCbh6yvAOxv+tgyQ1ePpBLbAefA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "variant",
       "url": "https://updates.jenkins.io/download/plugins/variant/1.1/variant.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "lxiT+wXaITYxuOqXejKl1JU/HLerb73skCDVA1UCdf8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "junit",
       "url": "https://updates.jenkins.io/download/plugins/junit/1.24/junit.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "mmXThaqIcF+WOXd/MmxaD4BS70NnxEDSPjQw4eQoA/o="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "favorite",
       "url": "https://updates.jenkins.io/download/plugins/favorite/2.3.2/favorite.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "1RVj3fRUHiD7VoqB0rZGMrlA6qAzjQHkHI/1H+w1wbM="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "matrix-project",
       "url": "https://updates.jenkins.io/download/plugins/matrix-project/1.13/matrix-project.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "612Y4FUgMY+jSKj0G/AzxgaEnqGi4zAcIXxaHDIorxM="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "token-macro",
       "url": "https://updates.jenkins.io/download/plugins/token-macro/2.5/token-macro.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "xlddAw724LQW2tOAlDVe7TDoYK3jh1n/Cnbi9Yg1Dms="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-durable-task-step",
       "url": "https://updates.jenkins.io/download/plugins/workflow-durable-task-step/2.19/workflow-durable-task-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "UmsrDbsk2QtW4v0AKsjBYFfEzGYjfbLE7rQRG9O2K64="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "durable-task",
       "url": "https://updates.jenkins.io/download/plugins/durable-task/1.23/durable-task.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "w/1LFcgK7hGhY4StIYhD7smUNiJtjU6xnJGxTx/AvxU="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "git",
       "url": "https://updates.jenkins.io/download/plugins/git/3.9.1/git.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "sX9P1geKo2yzzyLg8sVz3zof9lbEXkQCLaW18ob7Fh4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "git-client",
       "url": "https://updates.jenkins.io/download/plugins/git-client/2.7.3/git-client.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "4d3JJR/bl4gS5UrJ0pfpNPCu5PPQ0jOAZ8Yx9E9tZd8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "apache-httpcomponents-client-4-api",
       "url": "https://updates.jenkins.io/download/plugins/apache-httpcomponents-client-4-api/4.5.5-3.0/apache-httpcomponents-client-4-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "WnBIEHDYeql3FZRQA4xU93rT4R6Ml+PpFcTgrGaL3ec="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "jsch",
       "url": "https://updates.jenkins.io/download/plugins/jsch/0.1.54.2/jsch.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "8piPtNj98d/zlbTNqWal1ULrJa+lRpwUSuuQMfSyji8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "ssh-credentials",
       "url": "https://updates.jenkins.io/download/plugins/ssh-credentials/1.14/ssh-credentials.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "9fwR4wbND+Crsl/89AAU1rw8MTGOnS0zCellMg393jQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "github-branch-source",
       "url": "https://updates.jenkins.io/download/plugins/github-branch-source/2.3.6/github-branch-source.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "hKadz5gd0lO2+NT+eReKPrWPRMriSjUkZIjZyo8rEY8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "github",
       "url": "https://updates.jenkins.io/download/plugins/github/1.29.2/github.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "P0s/MQxAXzTNZyxZ2NxuRTx4gTgPy0yywZlKbg5z4SE="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "github-api",
       "url": "https://updates.jenkins.io/download/plugins/github-api/1.92/github-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "FQiqRCtAuu93e3pIuMfHsMRBOc+EPBHHopR9SpaCp+I="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "plain-credentials",
       "url": "https://updates.jenkins.io/download/plugins/plain-credentials/1.4/plain-credentials.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Txg0+Z/9fyp9sZcv5G7kLQavgZsnKXGTrInrM6FCktg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "htmlpublisher",
       "url": "https://updates.jenkins.io/download/plugins/htmlpublisher/1.16/htmlpublisher.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "SoFT+XkeCM0H0LzD7lfZfiHzjBXVeDEfboBcZQAppcU="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-build-step",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-build-step/2.7/pipeline-build-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "0C/SeYgyhDXAvEIR5ORf7oiyi11jPDu85stNypSAqcs="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-graph-analysis",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-graph-analysis/1.7/pipeline-graph-analysis.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "mTTlGPVcC8i+J3dWIrDzvr7zVFULGZMf+kXftRpOOBw="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-input-step",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-input-step/2.8/pipeline-input-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "jp+hZU7AwOxybIlLB5goc3uM5tnqPQXNQ3jDeswyNds="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-stage-step",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-stage-step/2.3/pipeline-stage-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "9sqrkHQmZCibDLV7J3VcO4uWPDdkiUEp+5VO+/eW0xA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-model-definition",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-model-definition/1.3.1/pipeline-model-definition.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "G0iKSdaftWYePuBAZ5vGS51YnXb6U0amE2psulBVcdI="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-basic-steps",
       "url": "https://updates.jenkins.io/download/plugins/workflow-basic-steps/2.9/workflow-basic-steps.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "P/kARj+ISxJjoKvNveo6xpirqSwHUgPb3iaoHckmK4Y="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "workflow-cps-global-lib",
       "url": "https://updates.jenkins.io/download/plugins/workflow-cps-global-lib/2.9/workflow-cps-global-lib.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "taFBxIlr4V4J12/Ftg3z/nAelNLC0gFamcpRR6eLCdE="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "git-server",
       "url": "https://updates.jenkins.io/download/plugins/git-server/1.7/git-server.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Gl3HM0lWgabRpq3OB+YU5Q9OXSJYDm+vvVyiYKpDZ/w="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "credentials-binding",
       "url": "https://updates.jenkins.io/download/plugins/credentials-binding/1.16/credentials-binding.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "FLoXmsApI7eCGDQLVbjGID4WZMXkB/QCGphmU7qVZOI="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "docker-workflow",
       "url": "https://updates.jenkins.io/download/plugins/docker-workflow/1.17/docker-workflow.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "LmYeiB2/cAyuCb+XUU6a0ThT4Ky73TZsFLFYTiiPXwQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "docker-commons",
       "url": "https://updates.jenkins.io/download/plugins/docker-commons/1.13/docker-commons.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "MwOel32Trfb1eok40rnTclRk997c8kj+t1RDTU+gEEo="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "authentication-tokens",
       "url": "https://updates.jenkins.io/download/plugins/authentication-tokens/1.3/authentication-tokens.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "8Fc2vH2g3zu6XOtNiTCJcGgSztMTStsu3JrjQUZ/GuM="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-model-api",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-model-api/1.3.1/pipeline-model-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "XUxqa+2c3zUQx87IFSO1Q1OY4GVARTJlveO6rZlKi1c="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-model-declarative-agent",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-model-declarative-agent/1.1.1/pipeline-model-declarative-agent.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "1VQMOXO/X1aJEPk7OgAsQTFIudPdQhHOX69KKhIU1O8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-model-extensions",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-model-extensions/1.3.1/pipeline-model-extensions.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "wsVqgbqQRXd5U8bIckuVQ3sDzw6r3oWPMtTGXGhrvBM="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-stage-tags-metadata",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-stage-tags-metadata/1.3.1/pipeline-stage-tags-metadata.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "NJCLu9+VKxGfMhW9NlX6rk2lO1HsQRV/XYdM5ACLQ6U="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "cloudbees-bitbucket-branch-source",
       "url": "https://updates.jenkins.io/download/plugins/cloudbees-bitbucket-branch-source/2.2.12/cloudbees-bitbucket-branch-source.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "jCb4MsVVnVukoXSJ+kC3DwZFIyqc+B7gdfg7caJzSaQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "handy-uri-templates-2-api",
       "url": "https://updates.jenkins.io/download/plugins/handy-uri-templates-2-api/2.1.6-1.0/handy-uri-templates-2-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "CURtOH9eh6hGRpM0V5KS8wR7PUyr890FzQV6LzSzmBQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "mercurial",
       "url": "https://updates.jenkins.io/download/plugins/mercurial/2.4/mercurial.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "pF9nuWMynq4T60VOLVs/mFmvdt7K8eveqkM4+2qCDvg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-config",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-config/1.7.1/blueocean-config.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "RnaF85gW0ygNAQCP2ksd50EqD1BATBJjSyrYVb/nCy4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-dashboard",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-dashboard/1.7.1/blueocean-dashboard.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Fh/Enn86MhoS0OoTFqETN8IHcLjPZ+m97Qew/sTjFnE="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-events",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-events/1.7.1/blueocean-events.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "SVNpqXNqla/mQ4Va6qLEAblYFyYyiIeqtqTDtVFMmJ8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "sse-gateway",
       "url": "https://updates.jenkins.io/download/plugins/sse-gateway/1.15/sse-gateway.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "VrGbekj2RtyCabrkrKQewR9xdW1hjTArH4udaIRBhQ8="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-git-pipeline",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-git-pipeline/1.7.1/blueocean-git-pipeline.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "+3ZGQ62IzoC+NMtDY9a8KA9m+da1FOalA6xsLgMhosE="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-github-pipeline",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-github-pipeline/1.7.1/blueocean-github-pipeline.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "2iG3aQRqupG47KtqGo6FmNDcqByPHvfw9XzJP2s6TDQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-i18n",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-i18n/1.7.1/blueocean-i18n.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "tRUdcWtvxAJJpSWt2v94XLVgyDJFzihY0iM5IJ9eZHw="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-jira",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-jira/1.7.1/blueocean-jira.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "ZotWY6Id6wRv3u0zktlcjurajVGsNt/+CfN2RA5rGZs="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "jira",
       "url": "https://updates.jenkins.io/download/plugins/jira/3.0.0/jira.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "lrbtuEpqyNjV5oigfcd/BTDLMRAB51GxFt82qBfmTv0="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-personalization",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-personalization/1.7.1/blueocean-personalization.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "L9lqDaovVfzKozFit29xtkM5afshARtcNrhAhmRapYg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-pipeline-editor",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-pipeline-editor/1.7.1/blueocean-pipeline-editor.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "o+ynlXBRnhPWZPY1wy5lyLkHT4bHdDc87pqAzhrivCo="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-autofavorite",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-autofavorite/1.2.2/blueocean-autofavorite.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "+w2u9mMIscOrA7oHu3DOA9iA9G55ZQ9/Mtj2V9RYVwA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "blueocean-display-url",
       "url": "https://updates.jenkins.io/download/plugins/blueocean-display-url/2.2.0/blueocean-display-url.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Q5LP8/TXXGeKutt6rQQLeCvn6mHFyHvdXjpi+mM+EMo="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-milestone-step",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-milestone-step/1.3.1/pipeline-milestone-step.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "06JmKbZWghxgoU/kA6uK/FDwhOM4QG28J+K2tAP3yyA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "bouncycastle-api",
       "url": "https://updates.jenkins.io/download/plugins/bouncycastle-api/2.16.3/bouncycastle-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "AmHkDI5w6b+VOa8brliYlQw/xZcnmD+7yLqPCbRM8vA="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-stage-view",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-stage-view/2.10/pipeline-stage-view.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "u1UdHp5CGGik6LWKAVm1TjZg/fw7f4F4uS3qPQKeD5U="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "pipeline-rest-api",
       "url": "https://updates.jenkins.io/download/plugins/pipeline-rest-api/2.10/pipeline-rest-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "Of8Uvd1AUZEAx7pLMbXFqgZ1Ye1bT4VxGPDskVwX6NQ="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "handlebars",
       "url": "https://updates.jenkins.io/download/plugins/handlebars/1.1.1/handlebars.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "vFzHs+yhe6bOwKje+U86p4rXoZOHoZqjpW+FehiWavo="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "momentjs",
       "url": "https://updates.jenkins.io/download/plugins/momentjs/1.1.1/momentjs.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "yjwtJkz/VfcekA3H3h8TwL+//bmzQZuFTc4XW8uKSEg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "aws-java-sdk",
       "url": "https://updates.jenkins.io/download/plugins/aws-java-sdk/1.11.341/aws-java-sdk.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "6+fMp3VdwCDROO9Tenv3th47utQffw9r5ABJF8B2kjg="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "aws-credentials",
       "url": "https://updates.jenkins.io/download/plugins/aws-credentials/1.23/aws-credentials.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "IP5LXBJzruZrKK21BMzQ+7C0TiQLhL3HTvejh0nucm4="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "node-iterator-api",
       "url": "https://updates.jenkins.io/download/plugins/node-iterator-api/1.5.0/node-iterator-api.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "UxsE8hh6CG4plj8/SpgjtxGyQuuiOT3fApA4pd633zk="
+      }
     },
     {
       "groupId": "unknown",
       "artifactId": "aws-global-configuration",
       "url": "https://updates.jenkins.io/download/plugins/aws-global-configuration/1.0/aws-global-configuration.hpi",
-      "checksum": {}
+      "checksum": {
+        "type": "sha256",
+        "signature": "7AOADIcOQN6SpCxeOX5ZiN31ZOj9SZ130O7G0sV1pPk="
+      }
     }
   ],
   "environments": {
@@ -625,7 +934,10 @@
           "groupId": "io.jenkins.docker",
           "artifactId": "docker-plugin",
           "url": "https://repo.jenkins-ci.org/releases/io/jenkins/docker/docker-plugin/1.1.4/docker-plugin-1.1.4.hpi",
-          "checksum": {}
+          "checksum": {
+            "type": "sha256",
+            "signature": "75c82ac89426d0ca7432a5a26799211b0f23696ac91d8156414539e024da2e9f"
+          }
         },
         {
           "groupId": "unknown",
@@ -647,19 +959,28 @@
           "groupId": "org.jenkins-ci.plugins",
           "artifactId": "ec2",
           "url": "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/ec2/1.39/ec2-1.39.hpi",
-          "checksum": {}
+          "checksum": {
+            "type": "sha256",
+            "signature": "fdd8670b1a71bcdacc5d7a358fa67fb8c44efc6f2ecc717d5e572c669934a0a7"
+          }
         },
         {
           "groupId": "io.jenkins.plugins",
           "artifactId": "aws-global-configuration",
           "url": "https://repo.jenkins-ci.org/releases/io/jenkins/plugins/aws-global-configuration/1.0/aws-global-configuration-1.0.hpi",
-          "checksum": {}
+          "checksum": {
+            "type": "sha256",
+            "signature": "ec03800c870e40de92a42c5e397e5988ddf564e8fd499d77d0eec6d2c575a4f9"
+          }
         },
         {
           "groupId": "io.jenkins.plugins",
           "artifactId": "artifact-manager-s3",
           "url": "https://repo.jenkins-ci.org/releases/io/jenkins/plugins/artifact-manager-s3/1.1/artifact-manager-s3-1.1.hpi",
-          "checksum": {}
+          "checksum": {
+            "type": "sha256",
+            "signature": "c3c3467272febe6f7c6954cc76a36f96df6c73f0aa49a4ce5e478baac1d5bf25"
+          }
         }
       ]
     }

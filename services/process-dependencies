@@ -29,6 +29,17 @@ let ingest = {
   environments: {},
 }
 
+// Fetch and fill out the core checksum
+tasks.push(
+  request(`http://mirrors.jenkins.io/war/${essentials.spec.core.version}/jenkins.war.sha256`)
+    .then((res) => {
+      Object.assign(ingest.core.checksum, {
+          signature: res.split(' ')[0],
+          type: 'sha256',
+      })
+    })
+);
+
 
 /*
  * processManifest will parse the Plugin-Dependencies out of the
@@ -101,12 +112,27 @@ const processPlugin = (plugin, into) => {
   }
   url = url + pluginFilename;
 
-  into.push({
-      groupId: plugin.groupId,
-      artifactId: plugin.artifactId,
-      url: url,
-      checksum: {},
-  });
+  let record = {
+    groupId: plugin.groupId,
+    artifactId: plugin.artifactId,
+    url: url,
+    checksum: {},
+  };
+
+  into.push(record);
+
+  tasks.push(
+    request({
+        method: 'HEAD',
+        uri: url,
+        resolveWithFullResponse: true,
+    }).then((response) => {
+      Object.assign(record.checksum, {
+          type: 'sha256',
+          signature: response.headers['x-checksum-sha256'],
+      });
+    })
+  );
 
   return fetchPluginManifest(url).then(d => d);
 };
@@ -156,7 +182,10 @@ Promise.all(firstPass).then(response => filterPluginsDependencies(response, need
         groupId: 'unknown',
         artifactId: name,
         url: `https://updates.jenkins.io/download/plugins/${name}/${inventory[name]}/${name}.hpi`,
-        checksum: {}
+        checksum: {
+          type: 'sha256',
+          signature: updates.plugins[name].sha256,
+        },
     });
   });
 
