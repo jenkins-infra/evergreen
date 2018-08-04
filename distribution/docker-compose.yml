@@ -31,6 +31,7 @@ services:
     environment:
       - 'EVERGREEN_ENDPOINT=http://backend:3030'
       - 'LOG_LEVEL=info'
+      - 'INSECURE_SHOW_ADMIN_PASSWORD=yes'
     ports:
       - '8080:8080'
     depends_on:

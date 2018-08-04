@@ -210,7 +210,10 @@ test_docker_available_as_jenkins_user() {
 
 # JENKINS-52728
 test_no_maven_or_freestyle_jobs() {
-  topLevelDescriptor=$( curl --silent -u "admin:essentials" http://localhost:$TEST_PORT/essentials/api/xml )
+  # shellcheck disable=SC2016
+  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
+
+  topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/essentials/api/xml )
   assertEquals "Curl call to Essentials XML API should have succeeded" 0 "$?"
 
   echo "$topLevelDescriptor" | grep -i WorkflowJob > /dev/null

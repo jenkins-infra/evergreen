@@ -14,6 +14,7 @@ lint: shunit2
 	../tools/yamllint -s docker-compose*.yml
 	../tools/yamllint -s config/as-code/*.yaml
 	../tools/shellcheck -x tests/tests.sh
+	../tools/shellcheck -x scripts/jenkins-essentials.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
 
