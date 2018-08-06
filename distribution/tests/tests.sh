@@ -121,15 +121,15 @@ test_jenkins_logs_is_found_on_disk() {
 test_essentials_telemetry_logging_is_found_on_disk() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_VAR/logs/essentials.log.0' )
-  assertEquals "0" "$?"
+  assertEquals "ls essentials.log.0 didn't work: $result" "0" "$?"
 
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/essentials.log.0 | tail -1' )
-  assertEquals "0" "$?"
-  assertNotEquals "" "$result"
+  assertEquals "cat essentials.log.0 | tail -1 didn't work: $result" "0" "$?"
+  assertNotEquals "last line of log is empty" "" "$result"
 
   echo "$result" | jsonlint > /dev/null
-  assertEquals "0" "$?"
+  assertEquals "last line of log is not valid json: $result" "0" "$?"
 }
 
 # not used for health-checking anymore, but kept for smoke testing
