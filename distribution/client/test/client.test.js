@@ -6,7 +6,17 @@ describe('The base client module', () => {
     assert(Client);
   });
 
+  describe('flavorCheck', () => {
+    it('should throw an error with no flavor defined', () => {
+      expect(() => {
+        delete process.env.FLAVOR;
+        new Client();
+      }).toThrow();
+    });
+  });
+
   describe('isOffline()', () => {
+    process.env.FLAVOR = 'docker-cloud';
     let client = new Client();
 
     it('should default to false', () => {

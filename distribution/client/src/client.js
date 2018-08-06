@@ -24,6 +24,10 @@ const Update         = require('./lib/update');
  */
 class Client {
   constructor() {
+    if (!process.env.FLAVOR) {
+      logger.error('Fatal error encountered while trying to start, no flavor set, exiting the client');
+      throw new Error('Missing flavor definition');
+    }
     this.app = feathers();
     this.reg = new Registration(this.app);
     this.status = new Status(this.app, {flavor: process.env.FLAVOR});
