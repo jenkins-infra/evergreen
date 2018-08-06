@@ -23,7 +23,15 @@ class Downloader {
     const millisecs = durationInMs - 1000 * seconds;
     return `${seconds}.${millisecs}s`;
   }
-  static download(item, dir) {
+
+  /*
+   * Download the specified URL to the directory as the filename
+   *
+   * @param {string} the full URL
+   * @param {string} a full output directory
+   * @param {string} the filename to output at
+   */
+  static download(item, dir, fileNameToWrite) {
     const itemUrl = url.parse(item);
     const itemUrlBaseName = path.basename(itemUrl.pathname);
     if (!itemUrlBaseName) {
@@ -31,7 +39,7 @@ class Downloader {
     }
 
     mkdirp.sync(dir);
-    const filename = [dir, itemUrlBaseName].join(path.sep);
+    const filename = [dir, fileNameToWrite].join(path.sep);
 
     logger.info('Fetching %s and saving to %s', item, filename);
 

@@ -119,6 +119,7 @@ class Update extends FeathersSequelize.Service {
     record.manifest.plugins.forEach((plugin) => {
       computedManifest.plugins.updates.push({
         url: plugin.url,
+        artifactId: plugin.artifactId,
         checksum: plugin.checksum,
       });
     });
@@ -145,6 +146,7 @@ class Update extends FeathersSequelize.Service {
       flavor.plugins.forEach((plugin) => {
         computedManifest.plugins.updates.push({
           url: plugin.url,
+          artifactId: plugin.artifactId,
           checksum: plugin.checksum,
         });
       });
