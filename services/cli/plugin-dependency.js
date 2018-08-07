@@ -7,6 +7,8 @@ const logger = require('winston');
  */
  class PluginDependency {
    constructor() {
+     this.artifactId = null;
+     this.version = null;
      this.optional = false;
    }
 
@@ -30,8 +32,8 @@ const logger = require('winston');
 
      // credentials:2.1.16;resolution:=optional
      const [spec, unused] = line.split(';');
-     const [name, version] = spec.split(':');
-     dependency.name = name;
+     const [artifactId, version] = spec.split(':');
+     dependency.artifactId = artifactId;
      dependency.version = version;
      return dependency;
    }

@@ -16,38 +16,59 @@ const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
  */
 class ManifestResolver {
   constructor(plugins) {
-    this.plugins = plugins;
+    this.processedNames = {};
+    this.sharedDependencies = {};
+    this.resolved = false;
   }
 
-  resolve() {
-    const loadData = this.plugins.map((plugin) => {
-      return this.fetchManifestForPlugin(plugin).then((data) => {
-        return PluginManifest.load(plugin, data).parse();
-      });
-    });
+  resolve(plugins) {
+    const self = this;
 
     /*
-     * Collect all our manifests and discover our common dependencies
+     * Reach out to Artifactory and grab all the first level dependency
+     * MANIFEST.MF files and process them
      */
-    return Promise.all(loadData).then((manifests) => {
-      let sharedDependencies = {};
+    const loadData = plugins
+      .filter(plugin => !self.processedNames[plugin.artifactId]) /* avoid processing anything already handled */
+      .map((plugin) => {
+        return this.fetchManifestForPlugin(plugin).then((data) => {
+          // TODO: convert this to a Plugin object
+          self.processedNames[plugin.artifactId] = plugin;
 
-      manifests.forEach((manifest) => {
-        manifest.pluginDependencies.forEach((dependency) => {
-          if (!sharedDependencies[dependency.name]) {
-            sharedDependencies[dependency.name] = [];
-          }
-          sharedDependencies[dependency.name].push(dependency);
+          const manifest = PluginManifest.load(plugin, data).parse();
+
+          /* XXX no group id for dependencies from manifests... */
+
+          manifest.pluginDependencies
+            .filter(dependency => !dependency.optional)
+            .forEach((dependency) => {
+              if (!self.sharedDependencies[dependency.artifactId]) {
+                self.sharedDependencies[dependency.artifactId] = [];
+              }
+              self.sharedDependencies[dependency.artifactId].push(dependency);
+          });
+          return manifest;
         });
-      });
-
-      // Sort all the versions we need
-      Object.values(sharedDependencies)
-      .map(dependencies => dependencies.sort((left, right) => compareVersions(left.version, right.version)));
-
-      // Grab the latest version for each plugin we require
-      return Object.values(sharedDependencies).map(dependencies => dependencies.pop());
     });
+
+    return Promise.all(loadData).then((manifests) => {
+      return manifests.map(manifest => this.resolve(manifest.pluginDependencies))
+    })
+      .then(() => {
+        this.resolved = true;
+        return this;
+    });
+  }
+
+  getResolutions() {
+    if (!this.resolved) {
+      throw new Error('cannot getResolutions() until resolve() has completed');
+    }
+
+    let resolutions = Object.values(this.sharedDependencies)
+    .map(dependencies => dependencies.sort((a, b) => { return compareVersions(a.version, b.version); }).pop());
+
+    return resolutions.concat(this.plugins);
   }
 
   /*
