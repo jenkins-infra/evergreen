@@ -40,7 +40,7 @@ yargs.command('save',
     logger.info('Resolving dependencies and saving');
     const manifest = Manifest.loadFile();
     const resolver = new ManifestResolver(manifest.getPlugins());
-    resolver.resolve();
+    resolver.resolve().then(depends => logger.info(depends));
   }
 );
 yargs.command('genreate-ingest',

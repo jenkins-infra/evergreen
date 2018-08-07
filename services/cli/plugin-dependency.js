@@ -1,5 +1,7 @@
 'use strict';
 
+const logger = require('winston');
+
 /*
  * Representation of a plugin dependency defined by a plugin's manifest
  */
@@ -16,11 +18,21 @@
     *
     * @param {string} Entry from the comma separated list
     * @return {PluginDependency}
+    * @return {null} if there is no dependency
     */
    static fromEntry(line) {
+     if (!line) {
+       return null;
+     }
+
      let dependency = new PluginDependency();
-     dependency.optional = entry.match(/\=optional/)
-     [dependency.name, dependency.version] = line.split(':');
+     dependency.optional = !! line.match(/\=optional/)
+
+     // credentials:2.1.16;resolution:=optional
+     const [spec, unused] = line.split(';');
+     const [name, version] = spec.split(':');
+     dependency.name = name;
+     dependency.version = version;
      return dependency;
    }
  }

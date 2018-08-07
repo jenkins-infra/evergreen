@@ -3,7 +3,9 @@
 const path    = require('path');
 const logger  = require('winston');
 const request = require('request-promise');
+const compareVersions = require('compare-versions');
 
+const PluginManifest = require('./plugin-manifest');
 
 const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
 const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
@@ -18,17 +20,34 @@ class ManifestResolver {
   }
 
   resolve() {
-    this.plugins.forEach((plugin) => {
-      if (this.isIncremental(plugin)) {
-        logger.info(`${plugin.artifactId} is an incremental`);
-      }
-      else {
-        logger.info(plugin.artifactId);
-      }
-      this.fetchManifestForPlugin(plugin);
+    const loadData = this.plugins.map((plugin) => {
+      return this.fetchManifestForPlugin(plugin).then((data) => {
+        return PluginManifest.load(plugin, data).parse();
+      });
     });
 
-    return this;
+    /*
+     * Collect all our manifests and discover our common dependencies
+     */
+    return Promise.all(loadData).then((manifests) => {
+      let sharedDependencies = {};
+
+      manifests.forEach((manifest) => {
+        manifest.pluginDependencies.forEach((dependency) => {
+          if (!sharedDependencies[dependency.name]) {
+            sharedDependencies[dependency.name] = [];
+          }
+          sharedDependencies[dependency.name].push(dependency);
+        });
+      });
+
+      // Sort all the versions we need
+      Object.values(sharedDependencies)
+      .map(dependencies => dependencies.sort((left, right) => compareVersions(left.version, right.version)));
+
+      // Grab the latest version for each plugin we require
+      return Object.values(sharedDependencies).map(dependencies => dependencies.pop());
+    });
   }
 
   /*
@@ -40,7 +59,7 @@ class ManifestResolver {
   fetchManifestForPlugin(plugin) {
     const start = Date.now();
     return request({
-      uri: this.computeUrlForPlugin(plugin)
+      uri: `${this.computeUrlForPlugin(plugin)}!META-INF/MANIFEST.MF`,
     }).then((res) => {
       logger.info(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
       return res;

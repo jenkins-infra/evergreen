@@ -8,22 +8,21 @@ const PluginDependency = require('./plugin-dependency');
  * Representation of a plugin's MANIFEST.MF
  */
 class PluginManifest {
-  constructor(fileName) {
-    this.fileName = fileName;
-    this.manifest = null;
+  constructor(plugin, data) {
+    this.plugin = plugin;
+    this.data = data;
     this.pluginDependencies = [];
   }
 
-  load() {
-    this.manifest = fs.readFileSync(this.fileName);
-    return this;
+  static load(plugin, data) {
+    return new PluginManifest(plugin, data);
   }
 
   parse() {
     let dependencies = [];
     // Set to true if the next line is awrapped set of dependencies
     let depWrap = false;
-    this.manifest.split('\n').forEach((line) => {
+    this.data.split('\n').forEach((line) => {
       if ((depWrap) && (!line.startsWith(' '))) {
         depWrap = false;
       }
@@ -41,9 +40,9 @@ class PluginManifest {
 
     dependencies = dependencies.join('').split(',');
 
-    this.pluginDependencies.concat(
-      dependencies.map(entry => PluginDependency.fromEntry(entry))
-    );
+    this.pluginDependencies = dependencies
+      .map(entry => PluginDependency.fromEntry(entry))
+      .filter(d => d);
     return this;
   }
 }
