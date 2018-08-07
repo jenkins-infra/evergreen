@@ -5,7 +5,6 @@ const path    = require('path');
 const yaml    = require('js-yaml');
 const logger  = require('winston');
 const request = require('request-promise');
-const cheerio = require('cheerio')
 
 const compareVersions = require('compare-versions');
 
