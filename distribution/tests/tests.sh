@@ -64,6 +64,9 @@ test_jenkins_failed_startup() {
   determine_container_name
   docker logs "$container_under_test" | grep "Missing flavor definition" > /dev/null
   assertEquals "Missing flavor error not found" "0" $?
+  if [[ -n "${ENVIRONMENT}" ]]; then
+    endSkipping
+  fi
 }
 
 test_smoke() {
