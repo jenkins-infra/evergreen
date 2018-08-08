@@ -7,8 +7,9 @@ const logger          = require('winston');
 const request         = require('request-promise');
 const yargs           = require('yargs');
 
-const Manifest = require('./cli/manifest');
+const Manifest         = require('./cli/manifest');
 const ManifestResolver = require('./cli/manifest-resolver');
+const UpdateCenter     = require('./cli/update-center');
 
 
 logger.level = process.env.LOG_LEVEL || 'info';
@@ -40,8 +41,9 @@ yargs.command('save',
     logger.info('Resolving dependencies and saving');
     const manifest = Manifest.loadFile();
     const resolver = new ManifestResolver();
-    resolver.resolve(manifest.getPlugins()).then(() => {
-      resolver.getResolutions().forEach(plugin => logger.info(plugin.artifactId, plugin.version));
+    const uc = UpdateCenter.fromFile('./update-center.json')
+    resolver.resolve(manifest.getPlugins(), uc.plugins).then(() => {
+      resolver.getResolutions().forEach(plugin => logger.info(`Should install: ${plugin.artifactId}:${plugin.version}`));
     });
   }
 );

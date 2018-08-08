@@ -21,7 +21,17 @@ class ManifestResolver {
     this.resolved = false;
   }
 
-  resolve(plugins) {
+  /*
+   * Recursively resolve the PluginDependencys for the given array of
+   * PluginsManifests
+   *
+   * @param {Array} of PluginManifest compatible objects
+   * @param {Map} Optional registry data which contains info such as
+   *  groupId<->artifactId mappings, etc.
+   *
+   * @return {Array}
+   */
+  resolve(plugins, registryData) {
     const self = this;
 
     /*
@@ -31,6 +41,25 @@ class ManifestResolver {
     const loadData = plugins
       .filter(plugin => !self.processedNames[plugin.artifactId]) /* avoid processing anything already handled */
       .map((plugin) => {
+        /*
+         * Second-order dependencies not directly specified in the
+         * essentials.yaml will lack groupIds due to the nature of the
+         * Plugin-Dependencies metadata in MANIFEST.MF.
+         *
+         * By providing `registryData`, typically from the Update Center, we
+         * can guarantee a mapping from an artifactId to its groupId, which is
+         * necessary for finding the artifact in Artifactory
+         */
+        if (!plugin.groupId) {
+          logger.info(`Looking up ${plugin.artifactId} in the registry`);
+          const groupFromRegistry = registryData[plugin.artifactId].groupId;
+          if  (!groupFromRegistry) {
+            throw new Error(
+              `Lacking the groupId information for '${plugin.artifactId}' necessary to complete full resolution`);
+          }
+          plugin.groupId = groupFromRegistry;
+        }
+
         return this.fetchManifestForPlugin(plugin).then((data) => {
           // TODO: convert this to a Plugin object
           self.processedNames[plugin.artifactId] = plugin;
@@ -39,20 +68,43 @@ class ManifestResolver {
 
           /* XXX no group id for dependencies from manifests... */
 
-          manifest.pluginDependencies
+          manifest.pluginDependencies = manifest.pluginDependencies
             .filter(dependency => !dependency.optional)
-            .forEach((dependency) => {
+            .map((dependency) => {
               if (!self.sharedDependencies[dependency.artifactId]) {
-                self.sharedDependencies[dependency.artifactId] = [];
+                self.sharedDependencies[dependency.artifactId] = dependency;
+                return dependency;
               }
-              self.sharedDependencies[dependency.artifactId].push(dependency);
+              else {
+                /*
+                 * Only add the dependency if the version is newer than what we
+                 * already have
+                 */
+                 const existing = self.sharedDependencies[dependency.artifactId];
+                 if (compareVersions(dependency.version, existing.version)) {
+                   self.sharedDependencies[dependency.artifactId] = dependency;
+                   /*
+                    * This newer version might have newer dependencies, purge
+                    * it from the processed list
+                    */
+                   self.processedNames[dependency.artifactId] = null;
+                   return dependency;
+                 }
+                 else {
+                   /*
+                    * If the existing dependency is the one we already know
+                    * about, return that as our dependency
+                    */
+                    return self.sharedDependencies[dependency.artifactId];
+                 }
+              }
           });
           return manifest;
         });
     });
 
     return Promise.all(loadData).then((manifests) => {
-      return manifests.map(manifest => this.resolve(manifest.pluginDependencies))
+      return manifests.map(manifest => this.resolve(manifest.pluginDependencies, registryData))
     })
       .then(() => {
         this.resolved = true;
@@ -64,11 +116,7 @@ class ManifestResolver {
     if (!this.resolved) {
       throw new Error('cannot getResolutions() until resolve() has completed');
     }
-
-    let resolutions = Object.values(this.sharedDependencies)
-    .map(dependencies => dependencies.sort((a, b) => { return compareVersions(a.version, b.version); }).pop());
-
-    return resolutions.concat(this.plugins);
+    return Object.values(this.sharedDependencies).concat(this.plugins);
   }
 
   /*
