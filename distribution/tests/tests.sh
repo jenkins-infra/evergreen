@@ -35,9 +35,35 @@ oneTimeSetUp() {
 
   upload_update_level
 
-  wait_for_jenkins
+  if [[ -n "$ENVIRONMENT" ]]; then
+    wait_for_jenkins
+  fi
   # shellcheck disable=SC2016
   JENKINS_HOME="$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )"
+}
+
+setUp() {
+  if [[ -z "$ENVIRONMENT" ]]; then
+    echo "Skipping test..."
+    startSkipping
+  fi
+}
+
+tearDown() {
+  if [[ -z "$ENVIRONMENT" ]]; then
+    endSkipping
+  fi
+}
+
+test_jenkins_failed_startup() {
+  if [[ -z "${ENVIRONMENT}" ]]; then
+    endSkipping
+  else
+    startSkipping
+  fi
+  determine_container_name
+  docker logs "$container_under_test" | grep "Missing flavor definition" > /dev/null
+  assertEquals "Missing flavor error not found" "0" $?
 }
 
 test_smoke() {
