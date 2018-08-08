@@ -28,7 +28,7 @@
     "EC2EssentialsInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "ImageId": "ami-0b32af9c4a966ea17",
+        "ImageId": "ami-cfe4b2b0",
         "InstanceType": {"Ref": "InstanceTypeParameter"},
         "IamInstanceProfile": {"Ref": "MasterInstanceProfile"},
         "BlockDeviceMappings": [
@@ -50,10 +50,16 @@
           "Fn::Base64" : {
             "Fn::Join" : ["", [
               "#!/bin/bash -v\n",
+              "# Install Docker to be able to start the Jenkins Essentials container\n",
+              "sudo yum update -y\n",
+              "sudo yum install -y docker\n",
+              "sudo service docker start\n",
+              "sudo usermod -a -G docker ec2-user # not strictly necessary\n",
+              "# Now the Essentials specific part\n",
               "export DOCKER_IMAGE=jenkins/evergreen:aws-ec2-cloud\n",
               "echo \"", { "Ref": "PrivateKey"}, "\" > ssh-agents-private-key\n",
-              "docker pull $DOCKER_IMAGE\n",
-              "docker run -d -p 8080:8080 -p 50000:50000 ",
+              "sudo docker pull $DOCKER_IMAGE\n",
+              "sudo docker run -d -p 8080:8080 -p 50000:50000 ",
               " --name jenkins-essentials",
               " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
