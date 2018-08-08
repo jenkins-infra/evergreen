@@ -41,9 +41,16 @@ yargs.command('save',
     logger.info('Resolving dependencies and saving');
     const manifest = Manifest.loadFile();
     const resolver = new ManifestResolver();
+    /*
+     * UpdateCenter metadata is required for finding metadata about dependent
+     * plugins
+     */
     const uc = UpdateCenter.fromFile('./update-center.json')
+
     resolver.resolve(manifest.getPlugins(), uc.plugins).then(() => {
-      resolver.getResolutions().forEach(plugin => logger.info(`Should install: ${plugin.artifactId}:${plugin.version}`));
+      const resolutions = resolver.getResolutions();
+      logger.info(`Need total of ${resolutions.length} plugins`,
+        resolutions.map(r => `${r.artifactId}:${r.version}`).join(', '));
     });
   }
 );

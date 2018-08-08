@@ -10,6 +10,7 @@ const logger = require('winston');
      this.artifactId = null;
      this.version = null;
      this.optional = false;
+     this.dependencies = [];
    }
 
    isOptional() { return this.optional; }
@@ -35,6 +36,15 @@ const logger = require('winston');
      const [artifactId, version] = spec.split(':');
      dependency.artifactId = artifactId;
      dependency.version = version;
+     return dependency;
+   }
+
+   static fromRecord(record) {
+     let dependency = new PluginDependency();
+     dependency.version = record.version;
+     dependency.groupId = record.groupId;;
+     dependency.artifactId= record.artifactId
+
      return dependency;
    }
  }

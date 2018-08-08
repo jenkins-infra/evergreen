@@ -5,7 +5,8 @@ const logger  = require('winston');
 const request = require('request-promise');
 const compareVersions = require('compare-versions');
 
-const PluginManifest = require('./plugin-manifest');
+const PluginManifest   = require('./plugin-manifest');
+const PluginDependency = require('./plugin-dependency');
 
 const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
 const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
@@ -16,8 +17,8 @@ const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
  */
 class ManifestResolver {
   constructor(plugins) {
-    this.processedNames = {};
-    this.sharedDependencies = {};
+    this.needed = {};
+    this.depCache = {};
     this.resolved = false;
   }
 
@@ -29,18 +30,24 @@ class ManifestResolver {
    * @param {Map} Optional registry data which contains info such as
    *  groupId<->artifactId mappings, etc.
    *
-   * @return {Array}
+   * @return {Promise}
    */
   resolve(plugins, registryData) {
-    const self = this;
+    return Promise.all(
+      this.resolveTree(
+        plugins.map(r => PluginDependency.fromRecord(r)),
+        registryData
+      )
+    )
+      .then(() => { this.resolved = true; });
+  }
 
-    /*
-     * Reach out to Artifactory and grab all the first level dependency
-     * MANIFEST.MF files and process them
-     */
-    const loadData = plugins
-      .filter(plugin => !self.processedNames[plugin.artifactId]) /* avoid processing anything already handled */
-      .map((plugin) => {
+  resolveTree(tree, registryData) {
+    return tree
+      .filter(plugin => !plugin.optional)
+      .map(async (plugin) => {
+        logger.debug(`Resolving ${plugin.artifactId}:${plugin.version}`);
+
         /*
          * Second-order dependencies not directly specified in the
          * essentials.yaml will lack groupIds due to the nature of the
@@ -51,7 +58,6 @@ class ManifestResolver {
          * necessary for finding the artifact in Artifactory
          */
         if (!plugin.groupId) {
-          logger.info(`Looking up ${plugin.artifactId} in the registry`);
           const groupFromRegistry = registryData[plugin.artifactId].groupId;
           if  (!groupFromRegistry) {
             throw new Error(
@@ -60,63 +66,43 @@ class ManifestResolver {
           plugin.groupId = groupFromRegistry;
         }
 
-        return this.fetchManifestForPlugin(plugin).then((data) => {
-          // TODO: convert this to a Plugin object
-          self.processedNames[plugin.artifactId] = plugin;
+        const artifactId = plugin.artifactId;
+        if (this.needed[artifactId]) {
+          // The plugin version requested is lower than one we already have.
+          if (compareVersions(this.needed[artifactId].version, plugin.version)) {
+            return null
+          }
+        }
 
-          const manifest = PluginManifest.load(plugin, data).parse();
+        this.needed[plugin.artifactId] = plugin;
 
-          /* XXX no group id for dependencies from manifests... */
+        const cacheKey = `${plugin.artifactId}:${plugin.version}`;
+        let manifest = this.depCache[cacheKey];
 
-          manifest.pluginDependencies = manifest.pluginDependencies
-            .filter(dependency => !dependency.optional)
-            .map((dependency) => {
-              if (!self.sharedDependencies[dependency.artifactId]) {
-                self.sharedDependencies[dependency.artifactId] = dependency;
-                return dependency;
-              }
-              else {
-                /*
-                 * Only add the dependency if the version is newer than what we
-                 * already have
-                 */
-                 const existing = self.sharedDependencies[dependency.artifactId];
-                 if (compareVersions(dependency.version, existing.version)) {
-                   self.sharedDependencies[dependency.artifactId] = dependency;
-                   /*
-                    * This newer version might have newer dependencies, purge
-                    * it from the processed list
-                    */
-                   self.processedNames[dependency.artifactId] = null;
-                   return dependency;
-                 }
-                 else {
-                   /*
-                    * If the existing dependency is the one we already know
-                    * about, return that as our dependency
-                    */
-                    return self.sharedDependencies[dependency.artifactId];
-                 }
-              }
-          });
-          return manifest;
-        });
-    });
+        if (!this.depCache[cacheKey]) {
+          logger.debug(`Cache miss on ${cacheKey}`);
+          const data = await this.fetchManifestForPlugin(plugin);
+          manifest = PluginManifest.load(plugin, data).parse();
+          this.depCache[cacheKey] = manifest;
+        }
+        else {
+          logger.debug(`Cache hit ${cacheKey}`);
+        }
 
-    return Promise.all(loadData).then((manifests) => {
-      return manifests.map(manifest => this.resolve(manifest.pluginDependencies, registryData))
-    })
-      .then(() => {
-        this.resolved = true;
-        return this;
-    });
+        if (manifest.pluginDependencies) {
+          plugin.dependencies = (await Promise.all(
+              this.resolveTree(manifest.pluginDependencies, registryData))).filter(d => d);
+        }
+        return plugin;
+      });
   }
+
 
   getResolutions() {
     if (!this.resolved) {
       throw new Error('cannot getResolutions() until resolve() has completed');
     }
-    return Object.values(this.sharedDependencies).concat(this.plugins);
+    return Object.values(this.needed);
   }
 
   /*
@@ -130,7 +116,7 @@ class ManifestResolver {
     return request({
       uri: `${this.computeUrlForPlugin(plugin)}!META-INF/MANIFEST.MF`,
     }).then((res) => {
-      logger.info(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
+      logger.debug(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
       return res;
     });
   }
