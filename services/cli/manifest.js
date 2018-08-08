@@ -31,8 +31,17 @@ const DEFAULT_FILENAME = './essentials.yaml'
     );
    }
 
+   saveSync() {
+     return fs.writeFileSync(this.fileName,
+       yaml.safeDump(this.data));
+   }
+
    getPlugins() {
      return this.data.spec.plugins;
+   }
+
+   setStatus(status) {
+     this.data.status = status;
    }
 
    getEnvironments() {

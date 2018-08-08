@@ -38,9 +38,10 @@ yargs.command('save',
   'Resolve dependencies specified essentials.yaml and re-save the file',
   () => {},
   (argv) => {
-    logger.info('Resolving dependencies and saving');
+    logger.info('Resolving dependencies...');
     const manifest = Manifest.loadFile();
     const resolver = new ManifestResolver();
+
     /*
      * UpdateCenter metadata is required for finding metadata about dependent
      * plugins
@@ -49,8 +50,28 @@ yargs.command('save',
 
     resolver.resolve(manifest.getPlugins(), uc.plugins).then(() => {
       const resolutions = resolver.getResolutions();
-      logger.info(`Need total of ${resolutions.length} plugins`,
-        resolutions.map(r => `${r.artifactId}:${r.version}`).join(', '));
+
+      let bomStatus = {
+        core: {},
+        plugins: [],
+        environments: [],
+      }
+      bomStatus.plugins = resolutions
+        .sort((a, b) => {
+          if (a.artifactId < b.artifactId) { return -1; }
+          if (a.artifactId > b.artifactId) { return 1; }
+          return 0;
+        })
+        .map((plugin) => {
+          return {
+            groupId:    plugin.groupId,
+            artifactId: plugin.artifactId,
+            version:    plugin.version,
+          };
+      });
+      manifest.setStatus(bomStatus);
+      logger.info(`Writing updates to ${manifest.fileName}`);
+      manifest.saveSync();
     });
   }
 );
