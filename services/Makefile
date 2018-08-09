@@ -27,6 +27,7 @@ fix-formatting: depends
 
 unit: depends
 	NODE_ENV=test npm run jest
+	NODE_ENV=test node jest -i -b --forceExit cli-test/
 
 debug-unit:
 	NODE_ENV=test node --inspect-brk=9229 jest -i -b --forceExit test/

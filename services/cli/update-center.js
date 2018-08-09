@@ -13,6 +13,7 @@ class UpdateCenter {
      * process the 'gav' to make the components independently useful
      */
     Object.values(data.plugins).forEach((plugin) => {
+      // eslint-disable-next-line no-unused-vars
       const [group, artifact, version] = plugin.gav.split(':');
       plugin.groupId = group;
       plugin.artifactId = artifact;

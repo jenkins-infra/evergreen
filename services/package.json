@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "npm run eslint && npm run jest",
-    "eslint": "eslint src/. test/. acceptance/. --config .eslintrc.json",
+    "eslint": "eslint src/. test/. acceptance/. cli-test/. cli/. --config .eslintrc.json",
     "start": "node src/",
     "jest": "jest --bail --forceExit ./test",
     "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance"

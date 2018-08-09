@@ -16,7 +16,7 @@ const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
  * their embedded information to generate a dependency tree
  */
 class ManifestResolver {
-  constructor(plugins) {
+  constructor() {
     this.needed = {};
     this.depCache = {};
     this.resolved = false;
@@ -39,7 +39,9 @@ class ManifestResolver {
         registryData
       )
     )
-      .then(() => { this.resolved = true; });
+      .then(() => {
+        this.resolved = true;
+      });
   }
 
   resolveTree(tree, registryData) {
@@ -70,7 +72,7 @@ class ManifestResolver {
         if (this.needed[artifactId]) {
           // The plugin version requested is lower than one we already have.
           if (compareVersions(this.needed[artifactId].version, plugin.version)) {
-            return null
+            return null;
           }
         }
 
@@ -84,14 +86,13 @@ class ManifestResolver {
           const data = await this.fetchManifestForPlugin(plugin);
           manifest = PluginManifest.load(plugin, data).parse();
           this.depCache[cacheKey] = manifest;
-        }
-        else {
+        } else {
           logger.debug(`Cache hit ${cacheKey}`);
         }
 
         if (manifest.pluginDependencies) {
           plugin.dependencies = (await Promise.all(
-              this.resolveTree(manifest.pluginDependencies, registryData))).filter(d => d);
+            this.resolveTree(manifest.pluginDependencies, registryData))).filter(d => d);
         }
         return plugin;
       });

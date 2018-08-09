@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-
 const PluginDependency = require('./plugin-dependency');
 
 /*
@@ -30,10 +28,9 @@ class PluginManifest {
       const matches = line.match(/^Plugin-Dependencies: (.*)?/);
 
       if (matches) {
-        dependencies.push(matches[1])
+        dependencies.push(matches[1]);
         depWrap = true;
-      }
-      else if (depWrap) {
+      } else if (depWrap) {
         dependencies.push(line.trim());
       }
     });
