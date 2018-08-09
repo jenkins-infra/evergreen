@@ -33,7 +33,7 @@ container-check: base-container-check docker-cloud-container-check aws-cloud-con
 
 base-container-check: containers container-check-prereqs
 	./tests/offline-tests.sh
-	./tests/tests.sh
+	./tests/noenv-tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
