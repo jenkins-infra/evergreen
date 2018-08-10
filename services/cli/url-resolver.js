@@ -4,6 +4,7 @@ const path = require('path');
 
 const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
 const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
+const WAR_MIRROR   = 'http://mirrors.jenkins.io/war/';
 
 
 /*
@@ -11,6 +12,17 @@ const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
  * a plugin
  */
 class UrlResolver {
+  /*
+   * Compute the mirrored or Artifactory URL for the given core record
+   * @param {object} corerecord from essentials.yaml
+   * @return {string} URL to Mirrors/Artifactory
+   */
+  static artifactForCore(core) {
+    if (this.isIncremental(core)) {
+      return `${INCREMENTALS}org/jenkins-ci/main/jenkins-war/${core.version}/jenkins-war-${core.version}.war`;
+    }
+    return `${WAR_MIRROR}${core.version}/jenkins.war`;
+  };
   /*
    * Compute the Artifactory URL for the given plugin record
    *

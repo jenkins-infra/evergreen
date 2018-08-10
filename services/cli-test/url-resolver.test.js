@@ -1,6 +1,23 @@
 const UrlResolver = require('../cli/url-resolver');
 
 describe('UrlResolver', () => {
+  describe('artifactForCore()', () => {
+    it('should return a mirrored URL for normal releases', () => {
+      const core = {
+        version: '2.135',
+      };
+      const expectedUrl = 'http://mirrors.jenkins.io/war/2.135/jenkins.war';
+      expect(UrlResolver.artifactForCore(core)).toEqual(expectedUrl);
+    });
+
+    it('should return an incremental URL for an incremental version', () => {
+      const core = {
+        version: '2.137-rc15096.84158a22fc46',
+      };
+      const expectedUrl = 'https://repo.jenkins-ci.org/incrementals/org/jenkins-ci/main/jenkins-war/2.137-rc15096.84158a22fc46/jenkins-war-2.137-rc15096.84158a22fc46.war';
+      expect(UrlResolver.artifactForCore(core)).toEqual(expectedUrl);
+    });
+  });
   describe('artifactForPlugin()', () => {
     it('should handle an incremental version properly', () => {
       const plugin = {
