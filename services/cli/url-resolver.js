@@ -22,7 +22,7 @@ class UrlResolver {
       return `${INCREMENTALS}org/jenkins-ci/main/jenkins-war/${core.version}/jenkins-war-${core.version}.war`;
     }
     return `${WAR_MIRROR}${core.version}/jenkins.war`;
-  };
+  }
   /*
    * Compute the Artifactory URL for the given plugin record
    *
@@ -38,7 +38,6 @@ class UrlResolver {
       url = `${INCREMENTALS}${groupPath}/`;
     }
     return url + pluginFilename;
-    return null;
   }
 
   /*

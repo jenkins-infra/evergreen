@@ -112,3 +112,4 @@ $RECYCLE.BIN/
 # Others
 lib/
 data/
+ingest.json

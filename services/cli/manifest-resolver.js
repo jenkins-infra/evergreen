@@ -1,8 +1,7 @@
 'use strict';
 
-const path    = require('path');
-const logger  = require('winston');
-const request = require('request-promise');
+const logger          = require('winston');
+const request         = require('request-promise');
 const compareVersions = require('compare-versions');
 
 const PluginManifest   = require('./plugin-manifest');
@@ -137,7 +136,7 @@ class ManifestResolver {
   fetchManifestForPlugin(plugin) {
     const start = Date.now();
     return request({
-        uri: `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`,
+      uri: `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`,
     }).then((res) => {
       logger.debug(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
       return res;

@@ -1,31 +1,14 @@
 #!/usr/bin/env node
 
-const path    = require('path');
-
-const compareVersions = require('compare-versions');
 const logger          = require('winston');
-const request         = require('request-promise');
 const yargs           = require('yargs');
 
+const Ingest           = require('./cli/ingest');
 const Manifest         = require('./cli/manifest');
 const ManifestResolver = require('./cli/manifest-resolver');
 const UpdateCenter     = require('./cli/update-center');
 
 logger.level = process.env.LOG_LEVEL || 'info';
-
-const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
-
-
-/*
- * Workflows:
- *
- * Propose changes: consult the latest changes from the update center to see if
- * there are updated released versions available
- *
- * save: take the specified dependencies and save the status of the file
- *
- * generate-ingest: generate the ingest.json based off of what is in the save?
- */
 
 yargs.command('propose-updates',
   'Fetch the latest Update Center and propose updates',
@@ -34,6 +17,7 @@ yargs.command('propose-updates',
     logger.error('This command has not yet been implemented');
   }
 );
+
 yargs.command('save',
   'Resolve dependencies specified essentials.yaml and re-save the file',
   () => {},
@@ -76,25 +60,15 @@ yargs.command('save',
     });
   }
 );
+
 yargs.command('generate-ingest',
   'Generate the ingest.json for upload based on essentials.yaml',
   () => {},
   (argv) => {
+    const manifest = Manifest.loadFile();
+    const ingest = new Ingest(manifest);
+    ingest.resolveReferences().then(() => { ingest.saveSync(); });
   }
 );
 /* parse the commands */
 yargs.argv;
-
-const UPDATE_CENTER = 'https://updates.jenkins.io/update-center.actual.json';
-
-let tasks = [];
-
-//let r = request({
-//  url: UPDATE_CENTER,
-//  json: true,
-//}).then((uc) => {
-//  Object.keys(uc.plugins).forEach(n => logger.info(n));
-//});
-//tasks.push(r);
-//
-//Promise.all(tasks).then(r => logger.info('Finished!'));
