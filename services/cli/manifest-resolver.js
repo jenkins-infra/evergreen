@@ -82,7 +82,7 @@ class ManifestResolver {
         if (!this.depCache[cacheKey]) {
           logger.debug(`Cache miss on ${cacheKey}`);
           const data = await this.fetchManifestForPlugin(plugin);
-          manifest = PluginManifest.load(plugin, data).parse();
+          manifest = PluginManifest.load(data).parse();
           this.depCache[cacheKey] = manifest;
         } else {
           logger.debug(`Cache hit ${cacheKey}`);
