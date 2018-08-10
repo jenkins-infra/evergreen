@@ -7,9 +7,7 @@ const compareVersions = require('compare-versions');
 
 const PluginManifest   = require('./plugin-manifest');
 const PluginDependency = require('./plugin-dependency');
-
-const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
-const RELEASES     = 'https://repo.jenkins-ci.org/releases/';
+const UrlResolver      = require('./url-resolver');
 
 /*
  * ManifestResolver is a simple class which takes a series of plugins and uses
@@ -90,9 +88,9 @@ class ManifestResolver {
           logger.debug(`Cache hit ${cacheKey}`);
         }
 
-        if (manifest.pluginDependencies) {
+        if (manifest.dependencies) {
           plugin.dependencies = (await Promise.all(
-            this.resolveTree(manifest.pluginDependencies, registryData))).filter(d => d);
+            this.resolveTree(manifest.dependencies, registryData))).filter(d => d);
         }
         return plugin;
       });
@@ -115,39 +113,11 @@ class ManifestResolver {
   fetchManifestForPlugin(plugin) {
     const start = Date.now();
     return request({
-      uri: `${this.computeUrlForPlugin(plugin)}!META-INF/MANIFEST.MF`,
+        uri: `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`,
     }).then((res) => {
       logger.debug(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
       return res;
     });
-  }
-
-  /*
-   * Compute the Artifactory URL for the given plugin record
-   *
-   * @param {object} plugin record from essentials.yaml
-   * @return {string} URL to Artifactory
-   */
-  computeUrlForPlugin(plugin) {
-    const pluginFilename = path.join(plugin.artifactId, plugin.version, `${plugin.artifactId}-${plugin.version}.hpi`);
-    const groupPath = plugin.groupId.replace(/\./g, '/');
-    let url = `${RELEASES}${groupPath}/`;
-
-    if (this.isIncremental(plugin)) {
-      url = `${INCREMENTALS}${groupPath}/`;
-    }
-    return url + pluginFilename;
-  }
-
-  /*
-   * Determine whether the given plugin record represents an incremental plugin
-   * or not
-   *
-   * @param {object} plugin record from the essentials.yaml
-   * @return {boolean}
-   */
-  isIncremental(plugin) {
-    return !! plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/);
   }
 }
 

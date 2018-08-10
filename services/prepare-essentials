@@ -11,7 +11,6 @@ const Manifest         = require('./cli/manifest');
 const ManifestResolver = require('./cli/manifest-resolver');
 const UpdateCenter     = require('./cli/update-center');
 
-
 logger.level = process.env.LOG_LEVEL || 'info';
 
 const INCREMENTALS = 'https://repo.jenkins-ci.org/incrementals/';
@@ -75,7 +74,7 @@ yargs.command('save',
     });
   }
 );
-yargs.command('genreate-ingest',
+yargs.command('generate-ingest',
   'Generate the ingest.json for upload based on essentials.yaml',
   () => {},
   (argv) => {

@@ -6,14 +6,13 @@ const PluginDependency = require('./plugin-dependency');
  * Representation of a plugin's MANIFEST.MF
  */
 class PluginManifest {
-  constructor(plugin, data) {
-    this.plugin = plugin;
+  constructor(data) {
     this.data = data;
-    this.pluginDependencies = [];
+    this.dependencies = [];
   }
 
-  static load(plugin, data) {
-    return new PluginManifest(plugin, data);
+  static load(data) {
+    return new PluginManifest(data);
   }
 
   parse() {
@@ -37,7 +36,7 @@ class PluginManifest {
 
     dependencies = dependencies.join('').split(',');
 
-    this.pluginDependencies = dependencies
+    this.dependencies = dependencies
       .map(entry => PluginDependency.fromEntry(entry))
       .filter(d => d);
     return this;

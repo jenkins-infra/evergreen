@@ -40,6 +40,12 @@ class PluginDependency {
     return dependency;
   }
 
+  /*
+   * Return an object based on the record from essentials.yaml
+   *
+   * @param {object} plugin record from the essentials.yaml format
+   * @return {PluginDependency}
+   */
   static fromRecord(record) {
     let dependency = new PluginDependency();
     dependency.version = record.version;
