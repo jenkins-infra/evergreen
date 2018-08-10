@@ -44,7 +44,6 @@ class ManifestResolver {
 
   resolveTree(tree, registryData) {
     return tree
-      .filter(plugin => !plugin.optional)
       .map(async (plugin) => {
         logger.debug(`Resolving ${plugin.artifactId}:${plugin.version}`);
 
@@ -58,6 +57,16 @@ class ManifestResolver {
          * necessary for finding the artifact in Artifactory
          */
         if (!plugin.groupId) {
+
+          /*
+           * Some plugins list optional dependencies which have since been
+           * removed from the Update Center, e.g. the `perforce` plugin
+           */
+          if ((plugin.optional) && (!registryData[plugin.artifactId])) {
+            logger.info(`Optional plugin which is not resolvable being dropped: ${plugin.artifactId} ${plugin.version}`);
+            return null;
+          }
+
           const groupFromRegistry = registryData[plugin.artifactId].groupId;
           if  (!groupFromRegistry) {
             throw new Error(
@@ -68,8 +77,20 @@ class ManifestResolver {
 
         const artifactId = plugin.artifactId;
         if (this.needed[artifactId]) {
+          if (!this.needed[artifactId].optional) {
+            plugin.optional = false;
+          }
+
           // The plugin version requested is lower than one we already have.
-          if (compareVersions(this.needed[artifactId].version, plugin.version)) {
+          if (compareVersions(this.needed[artifactId].version, plugin.version) == 1) {
+            if (!plugin.optional) {
+              /*
+              * If version of the plugin which is already present is considered
+              * non-optional, and the _newer_ version is optional, we need to
+              * toggle the optional flag
+              */
+              this.needed[artifactId].optional = false;
+            }
             return null;
           }
         }
@@ -101,7 +122,10 @@ class ManifestResolver {
     if (!this.resolved) {
       throw new Error('cannot getResolutions() until resolve() has completed');
     }
-    return Object.values(this.needed);
+    /*
+     * Filter out all the optional dependencies which we no longer need
+     */
+    return Object.values(this.needed).filter(p => !p.optional);
   }
 
   /*
