@@ -31,6 +31,7 @@ yargs.command('propose-updates',
   'Fetch the latest Update Center and propose updates',
   () => {},
   (argv) => {
+    logger.error('This command has not yet been implemented');
   }
 );
 yargs.command('save',
@@ -55,6 +56,7 @@ yargs.command('save',
         plugins: [],
         environments: [],
       }
+      Object.assign(bomStatus.core, manifest.getCore());
       bomStatus.plugins = resolutions
         .sort((a, b) => {
           if (a.artifactId < b.artifactId) { return -1; }

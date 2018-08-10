@@ -38,6 +38,10 @@ class Manifest {
     return this.data.spec.plugins;
   }
 
+  getCore() {
+    return this.data.spec.core;
+  }
+
   setStatus(status) {
     this.data.status = status;
   }
