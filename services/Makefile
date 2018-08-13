@@ -26,12 +26,12 @@ fix-formatting: depends
 
 unit: depends
 	NODE_ENV=test npm run jest
-	NODE_ENV=test node jest -i -b --forceExit cli-test/
+	NODE_ENV=test node jest -b --coverage=false --forceExit cli-test/
 
 debug-unit:
 	NODE_ENV=test node --inspect-brk=9229 jest -i -b --forceExit test/
 
-acceptance:
+acceptance: generate-ingest
 	NODE_ENV=test npm run acceptance
 
 debug-acceptance:
@@ -87,8 +87,11 @@ container-check: container
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
-prepare-ingest: essentials.yaml prepare-essentials
+generate-essentials: essentials.yaml prepare-essentials
 	node ./prepare-essentials save
+
+generate-ingest: essentials.yaml prepare-essentials
+	node ./prepare-essentials generate-ingest
 
 clean:
 	$(COMPOSE) down || true
@@ -104,4 +107,4 @@ publish: container
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
-	ingest-update-center publish
+	generate-ingest generate-essentials publish
