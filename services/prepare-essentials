@@ -31,16 +31,18 @@ yargs.command('save',
      * plugins
      */
     const uc = UpdateCenter.fromFile('./update-center.json')
+    let bomStatus = {
+      core: {},
+      plugins: [],
+      environments: {},
+    }
+    Object.assign(bomStatus.core, manifest.getCore());
 
     resolver.resolve(manifest.getPlugins(), uc.plugins).then(() => {
       const resolutions = resolver.getResolutions();
-
-      let bomStatus = {
-        core: {},
-        plugins: [],
-        environments: [],
-      }
-      Object.assign(bomStatus.core, manifest.getCore());
+      /*
+       * Alphabetically sorting the plugins by name to make reviewing easier
+       */
       bomStatus.plugins = resolutions
         .sort((a, b) => {
           if (a.artifactId < b.artifactId) { return -1; }
@@ -54,9 +56,31 @@ yargs.command('save',
             version:    plugin.version,
           };
       });
-      manifest.setStatus(bomStatus);
-      logger.info(`Writing updates to ${manifest.fileName}`);
-      manifest.saveSync();
+      resolver.resolveEnvironments(manifest.getEnvironments(), uc.plugins, resolutions).then(() => {
+        const envResolutions = resolver.getEnvironmentResolutions();
+
+        Object.keys(envResolutions).map((environment) => {
+          logger.info(`Preparing resolutions to ${environment}`);
+          const r = envResolutions[environment];
+
+          bomStatus.environments[environment] = Object.values(r)
+            .sort((a, b) => {
+              if (a.artifactId < b.artifactId) { return -1; }
+              if (a.artifactId > b.artifactId) { return 1; }
+              return 0;
+            })
+            .map((plugin) => {
+              return {
+                groupId:    plugin.groupId,
+                artifactId: plugin.artifactId,
+                version:    plugin.version,
+              };
+          });
+        });
+        manifest.setStatus(bomStatus);
+        logger.info(`Writing updates to ${manifest.fileName}`);
+        manifest.saveSync();
+      });
     });
   }
 );

@@ -15,6 +15,7 @@ const UrlResolver      = require('./url-resolver');
 class ManifestResolver {
   constructor() {
     this.needed = {};
+    this.environmentNeeded = {};
     this.depCache = {};
     this.resolved = false;
   }
@@ -30,18 +31,21 @@ class ManifestResolver {
    * @return {Promise}
    */
   resolve(plugins, registryData) {
+    let needed = {};
     return Promise.all(
       this.resolveTree(
         plugins.map(r => PluginDependency.fromRecord(r)),
-        registryData
+        registryData,
+        needed
       )
     )
       .then(() => {
         this.resolved = true;
+        this.needed = needed;
       });
   }
 
-  resolveTree(tree, registryData) {
+  resolveTree(tree, registryData, needed) {
     return tree
       .map(async (plugin) => {
         logger.debug(`Resolving ${plugin.artifactId}:${plugin.version}`);
@@ -75,26 +79,26 @@ class ManifestResolver {
         }
 
         const artifactId = plugin.artifactId;
-        if (this.needed[artifactId]) {
-          if (!this.needed[artifactId].optional) {
+        if (needed[artifactId]) {
+          if (!needed[artifactId].optional) {
             plugin.optional = false;
           }
 
           // The plugin version requested is lower than one we already have.
-          if (compareVersions(this.needed[artifactId].version, plugin.version) == 1) {
+          if (compareVersions(needed[artifactId].version, plugin.version) == 1) {
             if (!plugin.optional) {
               /*
               * If version of the plugin which is already present is considered
               * non-optional, and the _newer_ version is optional, we need to
               * toggle the optional flag
               */
-              this.needed[artifactId].optional = false;
+              needed[artifactId].optional = false;
             }
             return null;
           }
         }
 
-        this.needed[plugin.artifactId] = plugin;
+        needed[plugin.artifactId] = plugin;
 
         const cacheKey = `${plugin.artifactId}:${plugin.version}`;
         let manifest = this.depCache[cacheKey];
@@ -110,7 +114,7 @@ class ManifestResolver {
 
         if (manifest.dependencies) {
           plugin.dependencies = (await Promise.all(
-            this.resolveTree(manifest.dependencies, registryData))).filter(d => d);
+            this.resolveTree(manifest.dependencies, registryData, needed))).filter(d => d);
         }
         return plugin;
       });
@@ -127,6 +131,45 @@ class ManifestResolver {
     return Object.values(this.needed).filter(p => !p.optional);
   }
 
+  getEnvironmentResolutions() {
+    return this.environmentNeeded;
+  }
+
+
+  /*
+   * resolveEnvironments() will start with the base resolutions, and create a
+   * supplemental list of plugins required for that environment
+   */
+  resolveEnvironments(environments, registryData, baseResolutions) {
+    if (!this.resolved) {
+      throw new Error('resolveEnvironments() can only be called after the first pass on resolve() has completed');
+    }
+    let needed = {};
+    const baseMap = {};
+    baseResolutions.forEach(r => baseMap[r.artifactId] = r);
+
+    return Promise.all(environments.map((entry) => {
+      const name = entry.name;
+      needed[name] = Object.assign({}, baseMap);
+
+      return Promise.all(this.resolveTree(
+        entry.plugins.map(r => PluginDependency.fromRecord(r)),
+        registryData,
+        needed[name]));
+    }))
+    .then((tree) => {
+      Object.keys(needed).forEach((environment) => {
+        const deps = needed[environment];
+        let envNeeds = {}
+        Object.keys(deps).filter(d => !baseMap[d]).forEach((dep) => {
+          envNeeds[dep] = deps[dep];
+          logger.info(`The ${environment} environment also needs ${dep}`);
+        });
+        this.environmentNeeded[environment] = envNeeds;
+      });
+    });
+  }
+
   /*
    * Fetch the MANIFEST.MF for the given plugin record
    *
@@ -135,12 +178,14 @@ class ManifestResolver {
    */
   fetchManifestForPlugin(plugin) {
     const start = Date.now();
+    const url = `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`;
+
     return request({
-      uri: `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`,
+      uri: url,
     }).then((res) => {
       logger.debug(`Fetching ${plugin.artifactId} took ${Date.now() - start}`);
       return res;
-    });
+    }).catch((err) => logger.error(`Failed to fetch ${url}: ${err}`));
   }
 }
 

@@ -47,9 +47,7 @@ class Manifest {
   }
 
   getEnvironments() {
-  }
-
-  getRealizedPlugins() {
+    return this.data.spec.environments;
   }
 }
 
