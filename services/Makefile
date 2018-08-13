@@ -19,7 +19,6 @@ check: depends lint migrate
 lint: depends
 	../tools/yamllint -s docker-compose*.yml
 	../tools/yamllint -s essentials.yaml
-	../tools/jsonlint --quiet ingest.json
 	npm run eslint
 
 fix-formatting: depends
@@ -27,11 +26,12 @@ fix-formatting: depends
 
 unit: depends
 	NODE_ENV=test npm run jest
+	NODE_ENV=test node jest -b --coverage=false --forceExit cli-test/
 
 debug-unit:
 	NODE_ENV=test node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest -i -b --forceExit test/
 
-acceptance:
+acceptance: generate-ingest
 	NODE_ENV=test npm run acceptance
 
 debug-acceptance:
@@ -79,6 +79,7 @@ dump: stop migrate
 
 container: depends Dockerfile
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
+	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
 	$(MAKE) container-migration
 
 container-check: container
@@ -86,9 +87,11 @@ container-check: container
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
-ingest-update-center: essentials.yaml ingest-update-center
-	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
-	node ./ingest-update-center
+generate-essentials: essentials.yaml prepare-essentials
+	node ./prepare-essentials save
+
+generate-ingest: essentials.yaml prepare-essentials
+	node ./prepare-essentials generate-ingest
 
 clean:
 	$(COMPOSE) down || true
@@ -104,4 +107,4 @@ publish: container
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
-	ingest-update-center publish
+	generate-ingest generate-essentials publish

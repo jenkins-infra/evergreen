@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "npm run eslint && npm run jest",
-    "eslint": "eslint src/. test/. acceptance/. --config .eslintrc.json",
+    "eslint": "eslint src/. test/. acceptance/. cli-test/. cli/. --config .eslintrc.json",
     "start": "node src/",
     "jest": "jest --bail --forceExit ./test",
     "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance"
@@ -53,12 +53,15 @@
     "winston": "^2.4.3"
   },
   "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "compare-versions": "^3.3.0",
     "eslint": "^4.19.1",
     "hoek": "^5.0.3",
     "jest": "^22.4.4",
     "js-yaml": "^3.12.0",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "yargs": "^12.0.1"
   },
   "jest": {
     "collectCoverage": true,

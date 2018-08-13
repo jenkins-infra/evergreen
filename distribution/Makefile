@@ -27,7 +27,7 @@ fix-formatting:
 container-prereqs: build/jenkins-support build/jenkins.sh
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
-	$(MAKE) -C ../services dump
+	$(MAKE) -C ../services dump generate-ingest
 
 container-check: base-container-check docker-cloud-container-check aws-cloud-container-check
 

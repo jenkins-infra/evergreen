@@ -146,6 +146,38 @@ describe('update service class', () => {
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates');
       });
+
+      it('should handle flavors which have superceding plugins', async () => {
+        let plugin = {
+          artifactId: 'jest',
+          url: 'https://jest/1.0',
+        };
+        let computed = {
+          plugins: {
+            updates: [
+              {
+                artifactId: 'jest',
+                url: 'https://jest/0.1',
+              }
+            ],
+          },
+        };
+
+        let record = {
+          manifest: {
+            environments: {
+              'docker-cloud': {
+                plugins: [plugin],
+              }
+            }
+          }
+        };
+
+        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        expect(result).toBe(computed);
+        expect(result).toHaveProperty('plugins.updates');
+        expect(result.plugins.updates[0].url).toEqual('https://jest/1.0');
+      });
     });
   });
 

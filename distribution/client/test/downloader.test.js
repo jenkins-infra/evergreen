@@ -15,7 +15,7 @@ describe('the Downloader class', () => {
     });
 
     it('should return promise', async () => {
-      let response = Downloader.download(`${item}/index.html`, dir);
+      let response = Downloader.download(`${item}/index.html`, dir, 'index.html');
       expect(response instanceof Promise).toBeTruthy();
       await response;
 
@@ -37,7 +37,7 @@ describe('the Downloader class', () => {
       const expectedSha1 = '39ed0947dcd9b414769ae28b3eb955643e25d5e0';
 
       jest.setTimeout(50000); // default is 5 seconds, could be bigger because of the file size
-      await Downloader.download(toDownload, dir);
+      await Downloader.download(toDownload, dir, 'ace-editor.hpi');
 
       expect(checksum(fs.readFileSync(`${dir}/ace-editor.hpi`))).toBe(expectedSha1);
     });

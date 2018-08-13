@@ -119,6 +119,7 @@ class Update extends FeathersSequelize.Service {
     record.manifest.plugins.forEach((plugin) => {
       computedManifest.plugins.updates.push({
         url: plugin.url,
+        artifactId: plugin.artifactId,
         checksum: plugin.checksum,
       });
     });
@@ -143,10 +144,22 @@ class Update extends FeathersSequelize.Service {
     let flavor = record.manifest.environments[instance.flavor];
     if ((flavor) && (flavor.plugins)) {
       flavor.plugins.forEach((plugin) => {
-        computedManifest.plugins.updates.push({
+        /*
+         * In the case where a flavor has a newer version of the plugin, we
+         * must replace that instead of adding
+         */
+        let existingIndex = computedManifest.plugins.updates.findIndex((el) => el.artifactId == plugin.artifactId);
+        let record = {
           url: plugin.url,
+          artifactId: plugin.artifactId,
           checksum: plugin.checksum,
-        });
+        };
+
+        if (existingIndex != -1) {
+          computedManifest.plugins.updates[existingIndex] = record;
+        } else {
+          computedManifest.plugins.updates.push(record);
+        }
       });
     }
     return computedManifest;

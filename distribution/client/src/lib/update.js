@@ -66,7 +66,7 @@ class Update {
       'home');
 
     if ((updates.core) && (updates.core.url)) {
-      tasks.push(this.fetchTo(updates.core.url, outputDir));
+      tasks.push(Downloader.download(updates.core.url, outputDir, 'jenkins.war'));
     }
 
     if ((!updates.plugins) || (!updates.plugins.updates)) {
@@ -79,7 +79,10 @@ class Update {
      */
     updates.plugins.updates.forEach((plugin) => {
       let pluginsPath = path.join(outputDir, 'plugins');
-      tasks.push(this.fetchTo(plugin.url, pluginsPath));
+      logger.info('Downloading', plugin);
+      tasks.push(Downloader.download(plugin.url,
+        pluginsPath,
+        `${plugin.artifactId}.hpi`));
     });
 
     return Promise.all(tasks).then(() => {
@@ -89,14 +92,6 @@ class Update {
       this.updateInProgress = null;
       return true;
     });
-  }
-
-  /*
-   * Fetch the given URL and download it into the output path with a log
-   * message
-   */
-  async fetchTo(url, outputPath) {
-    return Downloader.download(url, outputPath);
   }
 
   getCurrentLevel() {

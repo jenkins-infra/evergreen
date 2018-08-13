@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+
+const logger          = require('winston');
+const yargs           = require('yargs');
+
+const Ingest           = require('./cli/ingest');
+const Manifest         = require('./cli/manifest');
+const ManifestResolver = require('./cli/manifest-resolver');
+const UpdateCenter     = require('./cli/update-center');
+
+logger.level = process.env.LOG_LEVEL || 'info';
+
+yargs.command('propose-updates',
+  'Fetch the latest Update Center and propose updates',
+  () => {},
+  (argv) => {
+    logger.error('This command has not yet been implemented');
+  }
+);
+
+yargs.command('save',
+  'Resolve dependencies specified essentials.yaml and re-save the file',
+  () => {},
+  (argv) => {
+    logger.info('Resolving dependencies...');
+    const manifest = Manifest.loadFile();
+    const resolver = new ManifestResolver();
+
+    /*
+     * UpdateCenter metadata is required for finding metadata about dependent
+     * plugins
+     */
+    const uc = UpdateCenter.fromFile('./update-center.json')
+    let bomStatus = {
+      core: {},
+      plugins: [],
+      environments: [],
+    }
+    Object.assign(bomStatus.core, manifest.getCore());
+
+    resolver.resolve(manifest.getPlugins(), uc.plugins).then(() => {
+      const resolutions = resolver.getResolutions();
+      /*
+       * Alphabetically sorting the plugins by name to make reviewing easier
+       */
+      bomStatus.plugins = resolutions
+        .sort((a, b) => {
+          if (a.artifactId < b.artifactId) { return -1; }
+          if (a.artifactId > b.artifactId) { return 1; }
+          return 0;
+        })
+        .map((plugin) => {
+          return {
+            groupId:    plugin.groupId,
+            artifactId: plugin.artifactId,
+            version:    plugin.version,
+          };
+      });
+      resolver.resolveEnvironments(manifest.getEnvironments(), uc.plugins, resolutions).then(() => {
+        const envResolutions = resolver.getEnvironmentResolutions();
+
+        Object.keys(envResolutions).map((environment) => {
+          logger.info(`Preparing resolutions to ${environment}`);
+          const r = envResolutions[environment];
+          let envRecord = {
+            name: environment,
+            plugins: [],
+          };
+
+          envRecord.plugins = Object.values(r)
+            .sort((a, b) => {
+              if (a.artifactId < b.artifactId) { return -1; }
+              if (a.artifactId > b.artifactId) { return 1; }
+              return 0;
+            })
+            .map((plugin) => {
+              return {
+                groupId:    plugin.groupId,
+                artifactId: plugin.artifactId,
+                version:    plugin.version,
+              };
+          });
+          bomStatus.environments.push(envRecord);
+        });
+        manifest.setStatus(bomStatus);
+        logger.info(`Writing updates to ${manifest.fileName}`);
+        manifest.saveSync();
+      });
+    });
+  }
+);
+
+yargs.command('generate-ingest',
+  'Generate the ingest.json for upload based on essentials.yaml',
+  () => {},
+  (argv) => {
+    const manifest = Manifest.loadFile();
+    const ingest = new Ingest(manifest);
+    ingest.resolveReferences().then(() => { ingest.saveSync(); });
+  }
+);
+/* parse the commands */
+yargs.argv;
