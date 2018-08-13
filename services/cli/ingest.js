@@ -40,24 +40,25 @@ class Ingest {
     tasks.push(
       request(`${coreUrl}.sha256`)
         .then((res) => {
-          Object.assign(this.ingest.core.checksum,
-            {
-              type: 'sha256',
-              signature: res.split(' ')[0]
+          Object.assign(this.ingest.core.checksum, {
+            type: 'sha256',
+            signature: res.split(' ')[0]
           });
-    }));
+        })
+    );
 
     this.manifest.data.status.plugins.forEach((plugin) => {
+      const url = UrlResolver.artifactForPlugin(plugin);
       let record = Object.assign(plugin, {
+        url: url,
         checksum: {},
       });
-      const url = UrlResolver.artifactForPlugin(plugin);
 
       tasks.push(
         this.fetchHeadersFor(url).then((res) => {
           Object.assign(record.checksum, {
-              type: 'sha256',
-              signature: res.headers['x-checksum-sha256'],
+            type: 'sha256',
+            signature: res.headers['x-checksum-sha256'],
           });
         })
       );
