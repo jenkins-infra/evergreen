@@ -391,6 +391,12 @@ status:
     - name: docker-cloud
       plugins:
         - groupId: org.jenkins-ci.plugins
+          artifactId: bouncycastle-api
+          version: 2.16.2
+        - groupId: org.jenkins-ci.plugins
+          artifactId: docker-commons
+          version: '1.9'
+        - groupId: org.jenkins-ci.plugins
           artifactId: docker-java-api
           version: 3.0.14
         - groupId: io.jenkins.docker
@@ -399,5 +405,8 @@ status:
         - groupId: org.jenkins-ci.plugins
           artifactId: ssh-slaves
           version: '1.22'
+        - groupId: org.jenkins-ci.plugins
+          artifactId: token-macro
+          version: '2.3'
     - name: aws-ec2-cloud
       plugins: []

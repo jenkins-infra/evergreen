@@ -52,12 +52,13 @@ class Ingest {
         this.ingest.plugins.push(this.fetchDataForPlugin(tasks, plugin));
       });
 
-    const environments = this.manifest.getEnvironments();
+    const environments = this.manifest.data.status.environments;
     environments.forEach((environment) => {
       let env = {
         plugins: [],
       };
       this.ingest.environments[environment.name] = env;
+
       if (environment.plugins) {
         environment.plugins.forEach((plugin) => {
           env.plugins.push(this.fetchDataForPlugin(tasks, plugin));

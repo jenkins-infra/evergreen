@@ -162,7 +162,28 @@ class ManifestResolver {
           const deps = needed[environment];
           let envNeeds = {};
 
-          Object.keys(deps).filter(d => !baseMap[d]).forEach((dep) => {
+          Object.keys(deps).filter((dep) => {
+            const baseDep = baseMap[dep];
+            const envDep = deps[dep];
+
+            // Keep this if there's no base dependency
+            if (!baseDep) {
+              return true;
+            }
+
+            // Do not keep this if the version is identical
+            //  (this is helpful to filter out incrementals before
+            //    compareVersions() below)
+            if (baseDep.version == envDep.version) {
+              return false;
+            }
+
+            // Keep this if our environmental dependency is greater than base
+            if (compareVersions(envDep.version, baseDep.version) == 1) {
+              return true;
+            }
+            return false;
+          }).forEach((dep) => {
             envNeeds[dep] = deps[dep];
             logger.info(`The ${environment} environment also needs ${dep}`);
           });
