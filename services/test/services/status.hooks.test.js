@@ -1,8 +1,38 @@
 const assert   = require('assert');
 const feathers = require('@feathersjs/feathers');
+const errors   = require('@feathersjs/errors');
 const hooks    = require('../../src/services/status/status.hooks');
+const validateRequiredFields = require('../../src/services/status/status.hooks').validateRequiredFields;
 
 describe('status service hooks', () => {
+  it('should pass with required fields', () => {
+    const goodQuery = {
+      data: {
+        'flavor':'value',
+      },
+    };
+    expect(() => {
+      validateRequiredFields(goodQuery);
+    }).not.toThrow(errors.BadRequest);
+  });
+
+  describe('rejection of missing fields', () => {
+    let context = { data: {} };
+
+    it('should reject an empty data payload', () => {
+      expect(() => {
+        validateRequiredFields(context);
+      }).toThrow(errors.BadRequest);
+    });
+
+    it('should reject a missing flavor', () => {
+      context.data = { 'uuid' : 'value' };
+      expect(() => {
+        validateRequiredFields(context);
+      }).toThrow(errors.BadRequest);
+    });
+  });
+
   describe('get hooks', () => {
     let app;
 

@@ -1,5 +1,8 @@
 FROM jenkins/evergreen
 
+ARG FLAVOR=null
+ENV FLAVOR ${FLAVOR}
+
 COPY config/as-code/* /usr/share/jenkins/ref/configuration/
 
 # Need to override the default certificates to add the ones for EC2 and S3 auto-detection
