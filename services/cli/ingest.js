@@ -47,25 +47,43 @@ class Ingest {
         })
     );
 
-    this.manifest.data.status.plugins.forEach((plugin) => {
-      const url = UrlResolver.artifactForPlugin(plugin);
-      let record = Object.assign(plugin, {
-        url: url,
-        checksum: {},
+    this.manifest.data.status.plugins
+      .forEach((plugin) => {
+        this.ingest.plugins.push(this.fetchDataForPlugin(tasks, plugin));
       });
 
-      tasks.push(
-        this.fetchHeadersFor(url).then((res) => {
-          Object.assign(record.checksum, {
-            type: 'sha256',
-            signature: res.headers['x-checksum-sha256'],
-          });
-        })
-      );
-      this.ingest.plugins.push(record);
+    const environments = this.manifest.getEnvironments();
+    environments.forEach((environment) => {
+      let env = {
+        plugins: [],
+      };
+      this.ingest.environments[environment.name] = env;
+      if (environment.plugins) {
+        environment.plugins.forEach((plugin) => {
+          env.plugins.push(this.fetchDataForPlugin(tasks, plugin));
+        });
+      }
     });
 
     return Promise.all(tasks);
+  }
+
+  fetchDataForPlugin(tasks, plugin) {
+    const url = UrlResolver.artifactForPlugin(plugin);
+    let record = Object.assign(plugin, {
+      url: url,
+      checksum: {},
+    });
+
+    tasks.push(
+      this.fetchHeadersFor(url).then((res) => {
+        Object.assign(record.checksum, {
+          type: 'sha256',
+          signature: res.headers['x-checksum-sha256'],
+        });
+      })
+    );
+    return record;
   }
 
   fetchHeadersFor(url) {

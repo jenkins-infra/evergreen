@@ -388,14 +388,16 @@ status:
       artifactId: workflow-support
       version: '2.18'
   environments:
-    docker-cloud:
-      - groupId: org.jenkins-ci.plugins
-        artifactId: docker-java-api
-        version: 3.0.14
-      - groupId: io.jenkins.docker
-        artifactId: docker-plugin
-        version: 1.1.5
-      - groupId: org.jenkins-ci.plugins
-        artifactId: ssh-slaves
-        version: '1.22'
-    aws-ec2-cloud: []
+    - name: docker-cloud
+      plugins:
+        - groupId: org.jenkins-ci.plugins
+          artifactId: docker-java-api
+          version: 3.0.14
+        - groupId: io.jenkins.docker
+          artifactId: docker-plugin
+          version: 1.1.5
+        - groupId: org.jenkins-ci.plugins
+          artifactId: ssh-slaves
+          version: '1.22'
+    - name: aws-ec2-cloud
+      plugins: []

@@ -157,17 +157,18 @@ class ManifestResolver {
         registryData,
         needed[name]));
     }))
-    .then((tree) => {
-      Object.keys(needed).forEach((environment) => {
-        const deps = needed[environment];
-        let envNeeds = {}
-        Object.keys(deps).filter(d => !baseMap[d]).forEach((dep) => {
-          envNeeds[dep] = deps[dep];
-          logger.info(`The ${environment} environment also needs ${dep}`);
+      .then(() => {
+        Object.keys(needed).forEach((environment) => {
+          const deps = needed[environment];
+          let envNeeds = {};
+
+          Object.keys(deps).filter(d => !baseMap[d]).forEach((dep) => {
+            envNeeds[dep] = deps[dep];
+            logger.info(`The ${environment} environment also needs ${dep}`);
+          });
+          this.environmentNeeded[environment] = envNeeds;
         });
-        this.environmentNeeded[environment] = envNeeds;
       });
-    });
   }
 
   /*
