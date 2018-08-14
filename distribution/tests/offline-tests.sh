@@ -31,7 +31,7 @@ test_docker_CLI_available() {
 # JENKINS-50195
 test_not_root() {
   username=$( docker exec "$container_under_test" whoami )
-  assertEquals "root" "$username"
+  assertEquals "Username should be root" "root" "$username"
 
   docker exec "$container_under_test" ps -o user= -o comm= | \
     grep -E 'jenkins|npm' | \
@@ -47,11 +47,11 @@ test_not_root() {
 # https://github.com/jenkins-infra/evergreen/pull/60#discussion_r182666012
 test_npm_5_plus() {
   result=$( docker exec "$container_under_test" npm --version )
-  assertEquals "5." "${result:0:2}"
+  assertEquals "Result should be 5." "5." "${result:0:2}"
 }
 test_node_version() {
   result=$( docker exec "$container_under_test" node --version )
-  assertEquals "v8." "${result:0:3}"
+  assertEquals "Result should be v8." "v8." "${result:0:3}"
 }
 
 # Ensure that we can successfully connect to only Let's Encrypt authorized

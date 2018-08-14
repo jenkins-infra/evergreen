@@ -85,20 +85,20 @@ test_no_node_error_in_logs() {
 test_no_executor() {
   numExecutors=$( docker exec "$container_under_test" cat "$JENKINS_HOME/config.xml" | \
       grep '<numExecutors>0</numExecutors>' | tr -d ' ' )
-  assertEquals "<numExecutors>0</numExecutors>" "$numExecutors"
+  assertEquals "numExecutors in config.xml should be 0" "<numExecutors>0</numExecutors>" "$numExecutors"
 }
 
 # JENKINS-49406 check data segregation
 test_plugins_are_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins | grep -v hpi' )
-  assertEquals "" "$result"
+  assertEquals "hpi should not be found in plugins dir" "" "$result"
 }
 test_war_is_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/war' 2>&1 )
-  assertNotEquals "0" "$?"
-  assertEquals "ls: /evergreen/jenkins/home/war: No such file or directory" "$result"
+  assertNotEquals "war directory should not be found" "0" "$?"
+  assertEquals "ls should not find war directory" "ls: /evergreen/jenkins/home/war: No such file or directory" "$result"
 }
 test_logs_are_not_under_jenkins_home() {
 
@@ -106,8 +106,8 @@ test_logs_are_not_under_jenkins_home() {
   startSkipping
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/logs' 2>&1 )
-  assertNotEquals "0" "$?"
-  assertEquals "ls: /evergreen/jenkins/home/logs: No such file or directory" "$result"
+  assertNotEquals "ls should return non zero for logs dir" "0" "$?"
+  assertEquals "ls should not find logs directory" "ls: /evergreen/jenkins/home/logs: No such file or directory" "$result"
   endSkipping
 }
 
@@ -115,7 +115,7 @@ test_jenkins_logs_is_found_on_disk() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/jenkins.log.0' | \
             grep 'Jenkins is fully up and running' )
-  assertEquals "0" "$?"
+  assertEquals "log message not found for Jenkins full up" "0" "$?"
 }
 
 test_essentials_telemetry_logging_is_found_on_disk() {
@@ -135,28 +135,28 @@ test_essentials_telemetry_logging_is_found_on_disk() {
 # not used for health-checking anymore, but kept for smoke testing
 test_login_http_200() {
   status_code=$( curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:$TEST_PORT/login" )
-  assertEquals "0" "$?"
-  assertEquals "200" "$status_code"
+  assertEquals "curl login did not return success" "0" "$?"
+  assertEquals "login did not return success http status code" "200" "$status_code"
 }
 # JENKINS-50294 Health checking
 test_instance_identity_http_200() {
   status_code=$( curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:$TEST_PORT/instance-identity/" )
-  assertEquals "0" "$?"
-  assertEquals "200" "$status_code"
+  assertEquals "curl instance-identity did not return success" "0" "$?"
+  assertEquals "instance-identity did not return success http status code" "200" "$status_code"
 }
 test_metrics_health_check() {
   output=/tmp/output$RANDOM.json
   status_code=$( curl --silent --output $output --write-out "%{http_code}" "http://localhost:$TEST_PORT/metrics/evergreen/healthcheck" )
-  assertEquals "0" "$?"
-  assertEquals "200" "$status_code"
+  assertEquals "curl healthcheck did not return success" "0" "$?"
+  assertEquals "healthcheck did not return success http status code" "200" "$status_code"
 
   # Check output is json
   jsonlint < $output > /dev/null
-  assertEquals "0" "$?"
+  assertEquals "output was not valid json" "0" "$?"
 
   # Check things are all healthy
   result=$( jq '.[].healthy' < $output | sort -u )
-  assertEquals "true" "$result"
+  assertEquals "healthy checks were not all true" "true" "$result"
 }
 
 # JENKINS-49811
