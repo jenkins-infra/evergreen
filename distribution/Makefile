@@ -14,6 +14,7 @@ lint: shunit2
 	../tools/yamllint -s docker-compose*.yml
 	../tools/yamllint -s config/as-code/*.yaml
 	../tools/shellcheck -x tests/tests.sh
+	../tools/shellcheck -x scripts/jenkins-essentials.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
 
@@ -59,7 +60,7 @@ create-squid-cache-volume:
 	docker volume create ${SQUID_VOLUME_NAME}
 
 run: create-squid-cache-volume
-	$(COMPOSE) up
+	$(COMPOSE) -f docker-compose.yml -f docker-compose.squid-cache.yml up
 
 clean:
 	$(COMPOSE) down || true

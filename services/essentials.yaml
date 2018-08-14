@@ -11,7 +11,7 @@ spec:
       version: 0.11-alpha-rc362.942711740b07
     - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.3-rc20.a3f76cdd1348
+      version: 0.3-rc22.db3e99966ef0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
       version: 1.7.1
@@ -21,6 +21,9 @@ spec:
     - groupId: org.jenkins-ci.plugins
       artifactId: buildtriggerbadge
       version: '2.9'
+    - groupId: org.jenkins-ci.plugins
+      artifactId: bouncycastle-api
+      version: 2.16.3
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
       version: '1.24'
@@ -155,7 +158,7 @@ status:
       version: 1.7.1
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
-      version: 1.648.3
+      version: 2.16.3
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
       version: 2.0.20
@@ -200,7 +203,7 @@ status:
       version: '1.39'
     - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.3-rc20.a3f76cdd1348
+      version: 0.3-rc22.db3e99966ef0
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
       version: 2.3.1
@@ -390,9 +393,6 @@ status:
   environments:
     - name: docker-cloud
       plugins:
-        - groupId: org.jenkins-ci.plugins
-          artifactId: bouncycastle-api
-          version: 2.16.2
         - groupId: org.jenkins-ci.plugins
           artifactId: docker-commons
           version: '1.9'
