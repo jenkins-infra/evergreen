@@ -30,6 +30,18 @@ pipeline {
           }
         }
 
+        stage('Confirm Dependencies') {
+            steps {
+                sh 'make -C services generate-ingest'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'services/ingest.json', fingerprint: true
+                    archiveArtifacts artifacts: 'services/essentials.yaml', fingerprint: true
+                }
+            }
+        }
+
         stage('Verifications') {
             parallel {
                 stage('Evergreen Client') {
