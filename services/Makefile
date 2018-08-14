@@ -88,6 +88,7 @@ container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
 generate-essentials: essentials.yaml prepare-essentials
+	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
 	node ./prepare-essentials save
 
 generate-ingest: essentials.yaml prepare-essentials
@@ -97,6 +98,7 @@ clean:
 	$(COMPOSE) down || true
 	rm -rf node_modules
 	rm -f $(DB_DUMP)
+	rm -f update-center.json
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 
 publish: container
