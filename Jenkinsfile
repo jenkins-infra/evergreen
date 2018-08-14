@@ -30,14 +30,29 @@ pipeline {
           }
         }
 
-        stage('Confirm Dependencies') {
+        stage('Validate essentials.yaml') {
+            steps {
+                dir('services') {
+                    sh 'make generate-essentials && git diff --quiet essentials.yaml'
+                }
+            }
+            post {
+                failure {
+                    echo 'Please ensure that updates to essentials.yaml are committed!'
+                }
+                always {
+                    archiveArtifacts artifacts: 'services/essentials.yaml', fingerprint: true
+                }
+            }
+        }
+
+        stage('Prepare ingest') {
             steps {
                 sh 'make -C services generate-ingest'
             }
             post {
                 success {
                     archiveArtifacts artifacts: 'services/ingest.json', fingerprint: true
-                    archiveArtifacts artifacts: 'services/essentials.yaml', fingerprint: true
                 }
             }
         }
