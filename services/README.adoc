@@ -124,7 +124,7 @@ should create a new `Update` record.
 
 Where there is room for non-trivial data growth is with `Instance`,
 `Connection`, `Capabilities`, and `Version` which should all have a single
-record for each Jenkins Essentials instance.
+record for each Jenkins Evergreen instance.
 
 
 ==== Models

@@ -8,12 +8,10 @@ _if you prefer IRC, check out link:https://irc.gitter.im/[irc.gitter.im]_
 link:https://issues.jenkins-ci.org/secure/RapidBoard.jspa?rapidView=406[*Issue Tracker*]
 
 Evergreen is an automatically updating rolling distribution system for
-"<<essentials>>." It consists of server-side, and client-side components to
+Jenkins It consists of server-side, and client-side components to
 support a Chrome-like upgrade experience for Jenkins users.
 
-[[essentials]]
-== Jenkins Essentials
-Jenkins Essentials provides the end-user with a
+Jenkins Evergreen provides the end-user with a
 pre-assembled collection of legos that can be immediately used to implement CI
 footnoteref:[ci, https://en.wikipedia.org/wiki/Continuous_integration]
 and CD
@@ -24,39 +22,39 @@ bugs, more rapidly than before.
 
 === Milestones
 
-Jenkins Essentials is currently pre-release software, with a few upcoming
+Jenkins Evergreen is currently pre-release software, with a few upcoming
 milestones of development.
 
 ==== Milestone One
 
-The first milestone of Jenkins Essentials is to provide the first
+The first milestone of Jenkins Evergreen is to provide the first
 full-update-cycle of the Evergreen distribution mechanism. Like the first wire
 stretched across
 link:https://en.wikipedia.org/wiki/Suspension_bridge#Construction_sequence_(wire_strand_cable_type)[suspension bridges]
 the goal of Milestone One is to build the tooling necessary to deliver the
-"bigger parts" of Jenkins Essentials.
+"bigger parts" of Jenkins Evergreen.
 
 The bare minimum components to support subsequent continuously delivered
 milestones as:
 
 * Packaged Jenkins + `evergreen-client` inside of a Docker container.
-* Safe upgrade system implemented for Jenkins Essentials to tolerate
+* Safe upgrade system implemented for Jenkins Evergreen to tolerate
   <<deployment>> failures.
 * Minimum Evergreen backend services necessary to coordinate new upgrades for
-  connected Jenkins Essentials Instances, including:
+  connected Jenkins Evergreen Instances, including:
 ** Capturing basic error telemetry to determine whether a new <<deployment>> was successful.
 ** Maintaining long-lived connections with Instances
 ** Storing "Status" information for connected Instances.
-* Basic demonstration of pre-configuration of Jenkins Essentials with
+* Basic demonstration of pre-configuration of Jenkins Evergreen with
   "automatically sane defaults"
 * Development workflow for identifying and managing new "versions" of Jenkins
-  Essentials for <<deployment>>.
+  Evergreen for <<deployment>>.
 
 ==== Milestone Two
 
 **Currently unplanned**
 
-The second milestone for Jenkins Essentials is much more focused on the
+The second milestone for Jenkins Evergreen is much more focused on the
 end-user experience while exercising the continuous delivery process built out
 in Milestone One.
 
@@ -71,17 +69,17 @@ in Milestone One.
 
 == Design Documents
 
-Evergreen and Jenkins Essentials are both captured in the following design
+Evergreen and Jenkins Evergreen are both captured in the following design
 documents:
 
 |===
 | JEP | Title
 
 | JEP-300
-| link:https://github.com/jenkinsci/jep/tree/master/jep/300[Jenkins Essentials]
+| link:https://github.com/jenkinsci/jep/tree/master/jep/300[Jenkins Evergreen]
 
 | JEP-301
-| link:https://github.com/jenkinsci/jep/tree/master/jep/301[Evergreen packaging for Jenkins Essentials]
+| link:https://github.com/jenkinsci/jep/tree/master/jep/301[Evergreen packaging for Jenkins Evergreen]
 
 | JEP-302
 | link:https://github.com/jenkinsci/jep/tree/master/jep/302[Evergreen snapshotting data safety system]
@@ -90,25 +88,25 @@ documents:
 | link:https://github.com/jenkinsci/jep/blob/master/jep/303[Evergreen Client Registration and Authentication]
 
 | JEP-304
-| link:https://github.com/jenkinsci/jep/tree/master/jep/304[Essentials Client Error Telemetry Logging]
+| link:https://github.com/jenkinsci/jep/tree/master/jep/304[Evergreen Client Error Telemetry Logging]
 
 | JEP-305
 | link:https://github.com/jenkinsci/jep/tree/master/jep/305[Publishing incremental commits as Maven releases]
 
 | JEP-306
-| link:https://github.com/jenkinsci/jep/tree/master/jep/306[Essentials Instance Client Health Checking]
+| link:https://github.com/jenkinsci/jep/tree/master/jep/306[Evergreen Instance Client Health Checking]
 
 | JEP-307
 | link:https://github.com/jenkinsci/jep/blob/master/jep/307[Evergreen Update Client/Server Lifecycle]
 
 | JEP-308
-| link:https://github.com/jenkinsci/jep/blob/master/jep/308[Essentials Error Telemetry API]
+| link:https://github.com/jenkinsci/jep/blob/master/jep/308[Evergreen Error Telemetry API]
 
 | JEP-309
 | link:https://github.com/jenkinsci/jep/blob/master/jep/309[Bill of Materials]
 
 | JEP-310
-| link:https://github.com/jenkinsci/jep/blob/master/jep/310 [Essentials AWS auto-configuration]
+| link:https://github.com/jenkinsci/jep/blob/master/jep/310 [Evergreen AWS auto-configuration]
 
 |===
 
@@ -118,18 +116,18 @@ documents:
 The model applied with the Evergreen distribution system is one similar to
 "deploying" Software-as-a-Service, without having a centralized "production"
 environment. When documentation refers to a "Deployment", that entails a new
-"Upgrade" of Jenkins Essentials being made available in the Evergreen hosted
+"Upgrade" of Jenkins Evergreen being made available in the Evergreen hosted
 service layer, and the backend orchestration necessary to ping connected
 Instances to initiate their local upgrade process.
 
 A Deployment is then considered successful when all connected Jenkins
-Essentials Instances are running that new version of Jenkins Essentials.
+Evergreen Instances are running that new version of Jenkins Evergreen.
 
 == The Four Opens
 
 Inspired by the Openstack project
 footnote:[https://governance.openstack.org/tc/reference/opens.html]
-_Jenkins Essentials_ follows "The Four Opens":
+_Jenkins Evergreen_ follows "The Four Opens":
 
 === Open Source
 
