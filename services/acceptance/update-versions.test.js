@@ -43,7 +43,7 @@ describe('versions/updates interaction acceptance tests', () => {
       headers: { 'Authorization': this.settings.internalAPI.secret },
       json: true,
       body: {
-        commit: '0xdeadbeef',
+        commit: Date.now().toString(),
         manifest: this.ingest,
       },
     });

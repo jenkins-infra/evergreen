@@ -1,10 +1,11 @@
-
 const dbtimestamp        = require('../../hooks/dbtimestamp');
 const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const internalOnly       = require('../../hooks/internalonly');
 const authentication     = require('@feathersjs/authentication');
 const internalApi        = require('../../hooks/internalapi');
 const errors             = require('@feathersjs/errors');
+
+const SKIP = require('@feathersjs/feathers').SKIP;
 
 class UpdateHooks {
   constructor() {
@@ -29,6 +30,24 @@ class UpdateHooks {
     // TODO add required field validation once we know what the required fields are
   }
 
+  preventRedundantCommits(context) {
+    return context.app.service('update').find({
+      query: {
+        channel: context.data.channel,
+        commit: context.data.commit,
+      },
+    })
+      .then((records) => {
+        if (records.length > 0) {
+          context.statusCode = 304;
+          context.result = {
+            error: 'Politely declining to create a redudant Update for this commit',
+          };
+          return SKIP;
+        }
+      });
+  }
+
   getHooks() {
     return {
       before: {
@@ -46,6 +65,7 @@ class UpdateHooks {
           this.checkUpdateFormat,
           dbtimestamp('createdAt'),
           this.defaultChannel,
+          this.preventRedundantCommits,
         ],
         update: [],
         patch: [],
