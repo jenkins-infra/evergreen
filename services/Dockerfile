@@ -20,6 +20,7 @@ COPY migrations ${APP_DIR}/migrations
 COPY config ${APP_DIR}/config
 COPY assets ${APP_DIR}/assets
 COPY public ${APP_DIR}/public
+COPY views ${APP_DIR}/views
 
 EXPOSE 3030
 
