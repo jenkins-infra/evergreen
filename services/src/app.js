@@ -15,6 +15,7 @@ const socketio       = require('@feathersjs/socketio');
 const authentication = require('@feathersjs/authentication');
 const jwt            = require('@feathersjs/authentication-jwt');
 
+const homepage       = require('./homepage');
 const middleware     = require('./middleware');
 const models         = require('./models');
 const services       = require('./services');
@@ -49,7 +50,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use('/', express.static(app.get('public')));
+app.use('/public', express.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(express.rest());
@@ -77,6 +78,8 @@ For more details and reasoning behind these APIs, please refer to the [Evergreen
   }));
 }
 
+app.set('view engine', 'ejs');
+
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(models);
@@ -84,6 +87,8 @@ app.configure(models);
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
+
+app.use('/', homepage(app));
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
