@@ -50,6 +50,7 @@
     "sequelize": "^4.38.0",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "^2.5.0",
+    "url-parse": "^1.4.3",
     "uuid": "^3.3.2",
     "winston": "^2.4.3"
   },
