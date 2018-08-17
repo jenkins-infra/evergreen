@@ -1,6 +1,8 @@
 const hooks  = require('../../src/services/update/update.hooks');
 const errors = require('@feathersjs/errors');
 
+const SKIP = require('@feathersjs/feathers').SKIP;
+
 describe('update service hooks', () => {
   describe('defaultChannel()', () => {
     let context = {
@@ -16,10 +18,50 @@ describe('update service hooks', () => {
 
   describe('getHooks()', () => {
     it('should have before/after/error properties', () => {
-      let result = hooks.getHooks();
+      const result = hooks.getHooks();
       expect(result).toHaveProperty('before');
       expect(result).toHaveProperty('after');
       expect(result).toHaveProperty('error');
+    });
+  });
+
+  describe('preventRedundantCommits()', () => {
+    let context = {
+      app: {
+        service: {}
+      },
+      data: {
+        channel: 'general',
+        commit: '0x0',
+      }
+    };
+
+    it('should not skip on zero records from find()', async () => {
+      context.app.service = () => {
+        return {
+          find: () => {
+            return new Promise((resolve) => {
+              resolve([]);
+            });
+          },
+        };
+      };
+      const result = await hooks.preventRedundantCommits(context);
+      expect(result).not.toBe(SKIP);
+    });
+
+    it('skip on records from the find()', async () => {
+      context.app.service = () => {
+        return {
+          find: () => {
+            return new Promise((resolve) => {
+              resolve([1, 2]);
+            });
+          },
+        };
+      };
+      await hooks.preventRedundantCommits(context);
+      expect(context.statusCode).toEqual(304);
     });
   });
 
