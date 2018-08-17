@@ -36,21 +36,21 @@ describe('update service hooks', () => {
       }
     };
 
-    it('should not skip on single records from find()', async () => {
+    it('should not skip on zero records from find()', async () => {
       context.app.service = () => {
         return {
           find: () => {
             return new Promise((resolve) => {
-              resolve([1]);
+              resolve([]);
             });
           },
         };
       };
       const result = await hooks.preventRedundantCommits(context);
-      expect(result).toBe(SKIP);
+      expect(result).not.toBe(SKIP);
     });
 
-    it('skip on multiple records from the find()', async () => {
+    it('skip on records from the find()', async () => {
       context.app.service = () => {
         return {
           find: () => {

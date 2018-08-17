@@ -45,6 +45,7 @@ class UpdateHooks {
           };
           return SKIP;
         }
+        return context;
       });
   }
 
