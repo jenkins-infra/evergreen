@@ -92,24 +92,24 @@ app.use('/', async (req, res) => {
   const Instance = app.get('models').instance;
 
   const rc = await Instance.findAll({
-      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'num_instances']]
+    attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'num_instances']]
   });
 
 
   app.service('update').find({
-      query: {
-        $limit: 5,
-        $sort: {
-          createdAt: -1,
-        }
-      },
-    }).then((updates) => {
-      res.render('index', {
-          updates: updates,
-          instances: rc,
-          connections: app.channel('anonymous').length,
-      });
+    query: {
+      $limit: 5,
+      $sort: {
+        createdAt: -1,
+      }
+    },
+  }).then((updates) => {
+    res.render('index', {
+      updates: updates,
+      instances: rc,
+      connections: app.channel('anonymous').length,
     });
+  });
 });
 
 // Configure a middleware for 404s and the error handler
