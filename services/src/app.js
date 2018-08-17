@@ -49,7 +49,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use('/', express.static(app.get('public')));
+app.use('/public', express.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(express.rest());
@@ -77,6 +77,8 @@ For more details and reasoning behind these APIs, please refer to the [Evergreen
   }));
 }
 
+app.set('view engine', 'ejs');
+
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(models);
@@ -84,6 +86,30 @@ app.configure(models);
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
+
+app.use('/', async (req, res) => {
+  const sequelize = app.get('sequelizeClient');
+  const Instance = app.get('models').instance;
+
+  const rc = await Instance.findAll({
+      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'num_instances']]
+  });
+
+
+  app.service('update').find({
+      query: {
+        $limit: 5,
+        $sort: {
+          createdAt: -1,
+        }
+      },
+    }).then((updates) => {
+      res.render('index', {
+          updates: updates,
+          instances: rc,
+      });
+    });
+});
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
