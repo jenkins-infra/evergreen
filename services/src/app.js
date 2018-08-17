@@ -15,6 +15,7 @@ const socketio       = require('@feathersjs/socketio');
 const authentication = require('@feathersjs/authentication');
 const jwt            = require('@feathersjs/authentication-jwt');
 
+const homepage       = require('./homepage');
 const middleware     = require('./middleware');
 const models         = require('./models');
 const services       = require('./services');
@@ -87,30 +88,7 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
-app.use('/', async (req, res) => {
-  const sequelize = app.get('sequelizeClient');
-  const Instance = app.get('models').instance;
-
-  const rc = await Instance.findAll({
-    attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'num_instances']]
-  });
-
-
-  app.service('update').find({
-    query: {
-      $limit: 5,
-      $sort: {
-        createdAt: -1,
-      }
-    },
-  }).then((updates) => {
-    res.render('index', {
-      updates: updates,
-      instances: rc,
-      connections: app.channel('anonymous').length,
-    });
-  });
-});
+app.use('/', homepage(app));
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());

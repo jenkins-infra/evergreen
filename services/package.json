@@ -68,7 +68,8 @@
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/sequelize-swagger.js",
-      "<rootDir>/src/sequelize.js"
+      "<rootDir>/src/sequelize.js",
+      "<rootDir>/src/homepage.js"
     ],
     "coverageReporters": [
       "json",
