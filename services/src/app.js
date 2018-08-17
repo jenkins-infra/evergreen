@@ -107,6 +107,7 @@ app.use('/', async (req, res) => {
       res.render('index', {
           updates: updates,
           instances: rc,
+          connections: app.channel('anonymous').length,
       });
     });
 });
