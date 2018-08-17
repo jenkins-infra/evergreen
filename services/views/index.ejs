@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Welcome to Evergreen</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+        font-weight: 400;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .center-text {
+        text-align: center;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      img.logo {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        font-size: 2em;
+        font-weight: 100;
+      }
+
+      footer p {
+        font-weight: 300;
+        font-size: 1.0em;
+      }
+
+      a {
+        color: #31D8A0;
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus {
+        color: #31D8A0;
+      }
+
+      td {
+          padding: 0.2rem;
+        }
+
+    </style>
+  </head>
+  <body>
+    <main class="container">
+        <h2 class="center-text"><em>Evergreen</em>, the automatically self-updating Jenkins distribution</h2>
+
+        <hr/>
+
+        <div class="clients">
+            Known instances: <%= instances[0].get('num_instances') %>
+        </div>
+
+        <div class="container updates">
+            <h3>
+                Latest Update Levels
+            </h3>
+            <table>
+                <thead>
+                    <td>
+                        Commit
+                    </td>
+                    <td>
+                        Distribution Channel
+                    </td>
+                    <td>
+                        Update Manifest
+                    </td>
+                </thead>
+                <tbody>
+                    <% updates.forEach((update) => { %>
+                        <tr>
+                            <!--
+                              Record:   <%= update.id %>
+                            -->
+                            <td>
+                                <a href="https://github.com/jenkins-infra/evergreen/commit/<%= update.commit %>" target="_blank">
+                                <%= update.commit %>
+                            </a>
+                            </td>
+                            <td align="center">
+                                <%= update.channel %>
+                            </td>
+                            <td>
+                                <textarea cols="80" rows="4"><%= JSON.stringify(update.manifest) %></textarea>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+
+      <footer>
+          <p class="center-text">For more information on Evergreen see <a href="https://github.com/jenkins-infra/evergreen" title="Evergreen on GitHub" target="_blank">jenkins-infra/evergreen</a>.</p>
+      </footer>
+    </main>
+  </body>
+</html>
+<!-- vim: set ft=html -->
