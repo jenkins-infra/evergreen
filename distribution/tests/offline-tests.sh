@@ -75,11 +75,11 @@ test_INSECURE_SHOW_ADMIN_PASSWORD_can_be_unset() {
   # and final expected error line is "Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war"
   assertNotEquals "Should have failed to start up (war is absent)" "0" "$?"
 
-  cat "$result" | grep '[admin password] '
-  assertEquals "Line with generated password should have been found" "0" "$?"
+  cat "$result" | grep -v '[admin password] '
+  assertEquals "Line with generated password should not have been found" "0" "$?"
 
-  cat "$result" | tail -1 | grep 'Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war'
-  assertEquals "Last line should be about the missing jenkins.war" "0" "$?"
+  cat "$result" | grep 'Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war'
+  assertEquals "Should not have been able to start jenkins.war" "0" "$?"
 }
 
 . ./shunit2/shunit2
