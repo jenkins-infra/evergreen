@@ -68,4 +68,19 @@ test_jep_307() {
   assertEquals "everything else should not validate" "60" "$?"
 }
 
+# JENKINS-53059
+test_INSECURE_SHOW_ADMIN_PASSWORD_can_be_unset() {
+  result=$( docker run jenkins/evergreen:$ENVIRONMENT jenkins-essentials.sh )
+  # Expected to fail, but because war is missing. Admin password must have been generated,
+  # and final expected error line is "Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war"
+  assertNotEquals "Should have failed to start up (war is absent)" "0" "$?"
+
+  echo "$result" | grep -v '[admin password] '
+  assertEquals "Line with generated password should not have been found" "0" "$?"
+
+  result=$( docker logs "$container_under_test" |
+    grep -e '^Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war')
+  assertEquals "Should not have been able to start jenkins.war" "0" "$?"
+}
+
 . ./shunit2/shunit2
