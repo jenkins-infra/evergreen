@@ -31,6 +31,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
+                            Created At
+                        </th>
+                        <th>
                             Commit
                         </th>
                         <th>
@@ -47,10 +50,13 @@
                             <!--
                               Record:   <%= update.id %>
                             -->
+                            <td align="center">
+                                <%= update.createdAt %>
+                            </td>
                             <td>
                                 <a href="https://github.com/jenkins-infra/evergreen/commit/<%= update.commit %>" target="_blank">
                                 <%= update.commit %>
-                            </a>
+                                </a>
                             </td>
                             <td align="center">
                                 <%= update.channel %>
