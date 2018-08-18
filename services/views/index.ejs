@@ -31,6 +31,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
+                            Created At
+                        </th>
+                        <th>
                             Commit
                         </th>
                         <th>
@@ -47,16 +50,19 @@
                             <!--
                               Record:   <%= update.id %>
                             -->
+                            <td align="center">
+                                <%= update.createdAt %>
+                            </td>
                             <td>
                                 <a href="https://github.com/jenkins-infra/evergreen/commit/<%= update.commit %>" target="_blank">
                                 <%= update.commit %>
-                            </a>
+                                </a>
                             </td>
                             <td align="center">
                                 <%= update.channel %>
                             </td>
                             <td>
-                                <textarea cols="80" rows="4"><%= JSON.stringify(update.manifest) %></textarea>
+                                <textarea readonly cols="80" rows="4"><%= JSON.stringify(update.manifest) %></textarea>
                             </td>
                         </tr>
                     <% }) %>
