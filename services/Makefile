@@ -87,8 +87,13 @@ container-check: container
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
-generate-essentials: essentials.yaml prepare-essentials
+update-center.json:
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
+
+propose-updates: update-center.json
+	node ./prepare-essentials propose-updates
+
+generate-essentials: essentials.yaml prepare-essentials update-center.json
 	node ./prepare-essentials save
 
 generate-ingest: essentials.yaml prepare-essentials
