@@ -76,7 +76,7 @@ class Client {
     cron.runHourly('post-status', () => {
       // TODO: update status
     });
-    cron.runDaily('check-for-updates', () => {
+    cron.runHourly('check-for-updates', () => {
       this.runUpdates();
     });
 
