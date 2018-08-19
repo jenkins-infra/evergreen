@@ -20,6 +20,55 @@ At the same time, this focus on end-users success in these well-defined scenario
 will help the Jenkins project develop new features, and fix
 bugs, more rapidly than before.
 
+== Getting Started
+
+Evergreen is currently in _alpha_ and is **not** recommended for production
+just yet.  
+
+=== Getting started with a Docker-based installation
+
+The easiest way to get started with Jenkins Evergreen is to use the Docker
+image which has already been auto-configured for running workloads on Docker
+itself. When `jenkins/evergreen:docker-cloud` is launched, it will
+automatically download the latest version of Jenkins and the most essential
+plugins and automatically configure some basic authentication, Docker settings
+and Jenkins Pipeline.
+
+In the example below, Jenkins Evergreen will be made available on port `8080`
+and persist its data in `$PWD/jenkins-home`, allowing the container to be
+restarted if necessary.
+
+.Starting Jenkins Evergreen
+[source,bash]
+----
+mkdir $PWD/jenkins-home && \
+docker run --name evergreen \
+    -p 8080:8080 \
+    -u 0 \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $PWD/jenkins-home:/evergreen/jenkins/home \
+    -e LOG_LEVEL=debug \
+    jenkins/evergreen:docker-cloud
+----
+
+==== Fetching the administrator password
+
+Once Jenkins has been configured and run, you will need to fetch the
+dynamically generated administrator password in order to log in.
+
+[source,bash]
+----
+docker exec evergreen cat /evergreen/jenkins/home/secrets/initialAdminPassword
+----
+
+
+=== Getting started with an AWS-baesd installation
+
+[NOTE]
+====
+This documentation is coming soon.
+====
+
 === Milestones
 
 Jenkins Evergreen is currently pre-release software, with a few upcoming
