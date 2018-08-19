@@ -99,7 +99,12 @@ class Client {
     this.app.configure(restClient.fetch(fetch));
 
     logger.info('Configuring the client for socket.io off %s', endpoint);
-    this.socket = io(process.env.EVERGREEN_ENDPOINT);
+    this.socket = io(process.env.EVERGREEN_ENDPOINT, {
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax : 5000,
+      reconnectionAttempts: Infinity
+    });
     const socketApp = feathers();
     socketApp.configure(socketio(this.socket));
 
