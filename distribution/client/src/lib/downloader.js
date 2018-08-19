@@ -53,8 +53,8 @@ class Downloader {
       simple: true,
       resolveWithFullResponse: true,
       encoding: null,
-      timeout: 10 * 1000,
-      retry: 3 // make it configurable?
+      timeout: 120 * 1000,
+      retry: 10
     };
 
     const startTime = Date.now();
