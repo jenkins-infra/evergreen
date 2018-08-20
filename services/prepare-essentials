@@ -2,6 +2,7 @@
 
 const logger          = require('winston');
 const yargs           = require('yargs');
+const compareVersions = require('compare-versions')
 
 const Ingest           = require('./cli/ingest');
 const Manifest         = require('./cli/manifest');
@@ -14,7 +15,15 @@ yargs.command('propose-updates',
   'Fetch the latest Update Center and propose updates',
   () => {},
   (argv) => {
-    logger.error('This command has not yet been implemented');
+    const uc = UpdateCenter.fromFile('./update-center.json')
+    const manifest = Manifest.loadFile();
+    manifest.getPlugins().forEach((plugin) => {
+      const updated = uc.plugins[plugin.artifactId]
+      if ((!plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/)) &&
+        (compareVersions(updated.version, plugin.version) == 1)) {
+        logger.info(`The update center has a newer ${plugin.artifactId}: ${updated.version}`);
+      }
+    });
   }
 );
 
