@@ -21,10 +21,14 @@ class Update extends FeathersSequelize.Service {
      * Undefining some APIs which we don't want/need.
      */
     this.update = undefined;
-    this.patch = undefined;
     this.remove = undefined;
   }
 
+  /*
+   * Return the latest update level for the given parameters
+   *
+   * Typically will not be called with an `id`, and is directly
+   */
   async get(id, params) {
     let findParams = {
       query: params.query, /* copy the original query parameters over */
