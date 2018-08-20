@@ -215,7 +215,7 @@ status:
       version: '1.39'
     - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.3-rc22.db3e99966ef0
+      version: 0.3-rc23.7230a0298a47
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
       version: 2.3.1
