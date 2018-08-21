@@ -31,6 +31,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
+                            Status
+                        </th>
+                        <th>
                             Created At
                         </th>
                         <th>
@@ -51,10 +54,21 @@
                               Record:   <%= update.id %>
                             -->
                             <td align="center">
+                                <% if (update.tainted) { %>
+                                    <div class="alert alert-danger" role="alert">
+                                        tainted
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-success" role="alert">
+                                        available
+                                    </div>
+                                <% } %>
+                            </td>
+                            <td align="center">
                                 <%= update.createdAt %>
                             </td>
                             <td>
-                                <a href="https://github.com/jenkins-infra/evergreen/commit/<%= update.commit %>" target="_blank">
+                                <a href="https://github.com/jenkins-infra/evergreen/blob/<%= update.commit %>/services/essentials.yaml" target="_blank">
                                 <%= update.commit %>
                                 </a>
                             </td>

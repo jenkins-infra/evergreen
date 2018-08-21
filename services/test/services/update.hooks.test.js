@@ -90,4 +90,43 @@ describe('update service hooks', () => {
       }).toThrow(errors.BadRequest);
     });
   });
+
+  describe('patchByCommitAndChannel', () => {
+    let find = jest.fn();
+    let context = {
+      data: {},
+      app: {
+        service: () => {
+          return {
+            find: find,
+          };
+        },
+      },
+    };
+
+    it('should look up based on commit and channel', () => {
+      find.mockResolvedValue(context);
+      expect(hooks.patchByCommitAndChannel(context)).resolves.toBe(context);
+      expect(find).toHaveBeenCalled();
+    });
+
+    it('should throw an error to the caller if there are more than one records', async () => {
+      find.mockResolvedValue([1, 2, 3]);
+      await expect(hooks.patchByCommitAndChannel(context)).rejects.toThrow(errors.GeneralError);
+      expect(find).toHaveBeenCalled();
+      expect.assertions(2);
+    });
+
+    it('should assign the discovered id if it has been found', async () => {
+      find.mockResolvedValue([
+        {
+          id: 1337,
+        }
+      ]);
+      await expect(hooks.patchByCommitAndChannel(context)).resolves.toBe(context);
+      expect(find).toHaveBeenCalled();
+      expect(context.data.id).toEqual(1337);
+      expect.assertions(3);
+    });
+  });
 });

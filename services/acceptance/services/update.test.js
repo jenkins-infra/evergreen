@@ -10,7 +10,11 @@ const request  = require('request-promise');
 const h        = require('../helpers');
 
 describe('Update service acceptance tests', () => {
-  beforeAll(done => h.startApp(done));
+  beforeAll((done) => {
+    this.ingest = JSON.parse(fs.readFileSync('./ingest.json'));
+    this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
+    h.startApp(done);
+  });
   afterAll(done => h.stopApp(done));
 
   beforeEach(async () => {
@@ -20,11 +24,6 @@ describe('Update service acceptance tests', () => {
   });
 
   describe('PUT /update', () => {
-    beforeEach(() => {
-      this.ingest = JSON.parse(fs.readFileSync('./ingest.json'));
-      this.settings = JSON.parse(fs.readFileSync(`./config/${process.env.NODE_ENV}.json`));
-    });
-
     it('should treat an empty `create` as invalid', () => {
       return request({
         url: h.getUrl('/update'),
@@ -96,6 +95,40 @@ describe('Update service acceptance tests', () => {
           expect(res.body.id).toBeGreaterThan(0);
         })
         .catch((err) => assert.fail(err));
+    });
+  });
+
+  describe('PATCHing an existing update level', () => {
+    beforeEach(() => {
+      this.commit = `patch-${Date.now().toString()}`;
+      this.ingest = JSON.parse(fs.readFileSync('./ingest.json'));
+
+      return request({
+        url: h.getUrl('/update'),
+        method: 'POST',
+        headers: { 'Authorization': this.settings.internalAPI.secret },
+        json: true,
+        body: {
+          commit: this.commit,
+          manifest: this.ingest,
+        },
+      });
+    });
+
+    it('should allow tainting', async () => {
+      const response = await request({
+        url: h.getUrl('/update'),
+        method: 'PATCH',
+        headers: { 'Authorization': this.settings.internalAPI.secret },
+        json: true,
+        resolveWithFullResponse: true,
+        body: {
+          commit: this.commit,
+          channel: 'general',
+          tainted: true,
+        }
+      });
+      expect(response.statusCode).toEqual(200);
     });
   });
 });
