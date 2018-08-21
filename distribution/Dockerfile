@@ -87,7 +87,7 @@ RUN /usr/local/sbin/generate-ca-certificates
 
 RUN mkdir -p /usr/local/bin
 COPY build/jenkins.sh /usr/local/bin/
-COPY scripts/jenkins-essentials.sh /usr/local/bin/
+COPY scripts/jenkins-evergreen.sh /usr/local/bin/
 COPY build/jenkins-support /usr/local/bin/
 
 # FIXME (?): what if the end users touches the config value?
