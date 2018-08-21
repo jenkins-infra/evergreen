@@ -1,8 +1,8 @@
-= AWS EC2 flavor for Jenkins Essentials
+= AWS EC2 flavor for Jenkins Evergreen
 
 CAUTION: Work in progress
 
-This directory contains the bits needed to create a flavor of Jenkins Essentials which will be auto-configured when running in AWS.
+This directory contains the bits needed to create a flavor of Jenkins Evergreen which will be auto-configured when running in AWS.
 
 It will configure Jenkins to provision EC2 VMs for agents.
 The artifact management will be using S3, instead of sending back archives or Pipeline stashes to the master as usual.
@@ -46,7 +46,7 @@ aws cloudformation create-stack \
 
 This will display a json output like the following:
 
-[source,json,title=Jenkins Essentials stack creation command output]
+[source,json,title=Jenkins Evergreen stack creation command output]
 {
     "StackId": "arn:aws:cloudformation:us-east-1:372953910679:stack/evergreen-test18717/269933c0-88b6-11e8-aac6-503aca4a58fd"
 }
@@ -62,7 +62,7 @@ This should display something like the following:
 {
     "StackResourceSummaries": [
         {
-            "LogicalResourceId": "EC2EssentialsInstance",
+            "LogicalResourceId": "EC2EvergreenInstance",
             "PhysicalResourceId": "i-09acbba4df83bcc59",
             "ResourceType": "AWS::EC2::Instance",
             "LastUpdatedTimestamp": "2018-07-16T05:23:36.996Z",
@@ -70,22 +70,22 @@ This should display something like the following:
             "ResourceStatusReason": "Resource creation Initiated"
         },
         {
-            "LogicalResourceId": "EssentialsAgentSecurityGroup",
-            "PhysicalResourceId": "evergreen-test17793-EssentialsAgentSecurityGroup-2538QM8PAIPN",
+            "LogicalResourceId": "EvergreenAgentSecurityGroup",
+            "PhysicalResourceId": "evergreen-test17793-EvergreenAgentSecurityGroup-2538QM8PAIPN",
             "ResourceType": "AWS::EC2::SecurityGroup",
             "LastUpdatedTimestamp": "2018-07-16T05:21:20.708Z",
             "ResourceStatus": "CREATE_COMPLETE"
         },
         {
-            "LogicalResourceId": "EssentialsMasterRole",
-            "PhysicalResourceId": "evergreen-test17793-EssentialsMasterRole-120MK7UAUWEYO",
+            "LogicalResourceId": "EvergreenMasterRole",
+            "PhysicalResourceId": "evergreen-test17793-EvergreenMasterRole-120MK7UAUWEYO",
             "ResourceType": "AWS::IAM::Role",
             "LastUpdatedTimestamp": "2018-07-16T05:21:29.926Z",
             "ResourceStatus": "CREATE_COMPLETE"
         },
         {
-            "LogicalResourceId": "EssentialsMasterSecurityGroup",
-            "PhysicalResourceId": "evergreen-test17793-EssentialsMasterSecurityGroup-L2O7JE3F1LLR",
+            "LogicalResourceId": "EvergreenMasterSecurityGroup",
+            "PhysicalResourceId": "evergreen-test17793-EvergreenMasterSecurityGroup-L2O7JE3F1LLR",
             "ResourceType": "AWS::EC2::SecurityGroup",
             "LastUpdatedTimestamp": "2018-07-16T05:21:21.057Z",
             "ResourceStatus": "CREATE_COMPLETE"
@@ -107,7 +107,7 @@ This should display something like the following:
     ]
 }
 
-For the `EC2EssentialsInstance`, if the creation is complete enough, there will be also a `PhysicalResourceId`, here `i-09acbba4df83bcc59` in the example above.
+For the `EC2EvergreenInstance`, if the creation is complete enough, there will be also a `PhysicalResourceId`, here `i-09acbba4df83bcc59` in the example above.
 
 Use this to retrieve the instance IP address:
 
@@ -125,7 +125,7 @@ This should display the Jenkins Install Wizard, asking for a secret to unlock th
 To retrieve it, use the IP retrieved above in the following command:
 
 [source,shell]
-ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-essentials cat /evergreen/jenkins/home/secrets/initialAdminPassword
+ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-evergreen cat /evergreen/jenkins/home/secrets/initialAdminPassword
 The authenticity of host '35.173.187.174 (35.173.187.174)' can't be established.
 ECDSA key fingerprint is SHA256:/q51fyKpC+EvWTKqO8W/oEycTbCn0FZFA6lMV3pnpdQ.
 ECDSA key fingerprint is MD5:e2:3b:e3:eb:b7:da:7b:68:09:dd:c6:3a:2c:13:7f:e9.
@@ -137,7 +137,7 @@ Then, you will see the _Getting Started_ wizard, click on the right cross on the
 
 Congrats, you can now use Jenkins.
 
-NOTE: This documentation will be completed with fuller explanations on how to build and deploy projects once we finalize Jenkins Essentials core developments.
+NOTE: This documentation will be completed with fuller explanations on how to build and deploy projects once we finalize Jenkins Evergreen core developments.
 
 == How does it work
 
@@ -146,7 +146,7 @@ This is aiming more at making it easy for users to quickly grasp what is going t
 
 We use link:https://aws.amazon.com/cloudformation/[AWS CloudFormation] to create the set of resources we need.
 
-In short, the Jenkins Essentials instance is going to run as a single EC2 VM, running in a custom _link:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html[Instance Profile]_.
+In short, the Jenkins Evergreen instance is going to run as a single EC2 VM, running in a custom _link:https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html[Instance Profile]_.
 
 This Instance Profile is set up to be only allowed to:
 

@@ -10,7 +10,7 @@ The purpose of `evergreen-client` is to facilitate the following:
   instructed by the Evergreen hosted services layer.
 * Collect and deliver telemetry as necessary to the Evergreen hosted services
   layer.
-* Additional capabilities as the needs by Jenkins Essentials evolve.
+* Additional capabilities as the needs by Jenkins Evergreen evolve.
 
 
 == Design
@@ -43,7 +43,7 @@ NOTE: This is still a work in progress
 Types of upgrades `evergreen-client` should be responsible for:
 
 * An evergreen manifest (i.e. Jenkins core and plugins), including adding and
-  removing plugins as the needs of Jenkins Essentials changes
+  removing plugins as the needs of Jenkins Evergreen changes
 * Configuration as Code to manage the "automatic sane defaults" aspect of
-  Jenkins Essentials.
+  Jenkins Evergreen.
 * `evergreen-client` releases itself.

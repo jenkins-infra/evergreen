@@ -118,7 +118,7 @@ test_jenkins_logs_is_found_on_disk() {
   assertEquals "log message not found for Jenkins full up" "0" "$?"
 }
 
-test_essentials_telemetry_logging_is_found_on_disk() {
+test_evergreen_telemetry_logging_is_found_on_disk() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_VAR/logs/essentials.log.0' )
   assertEquals "ls essentials.log.0 didn't work: $result" "0" "$?"
@@ -214,7 +214,7 @@ test_no_maven_or_freestyle_jobs() {
   adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
 
   topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/essentials/api/xml )
-  assertEquals "Curl call to Essentials XML API should have succeeded" 0 "$?"
+  assertEquals "Curl call to Evergreen XML API should have succeeded" 0 "$?"
 
   echo "$topLevelDescriptor" | grep -i WorkflowJob > /dev/null
   assertEquals "WorkflowJob should have been found" 0 "$?"

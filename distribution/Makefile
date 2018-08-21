@@ -14,7 +14,7 @@ lint: shunit2
 	../tools/yamllint -s docker-compose*.yml
 	../tools/yamllint -s config/as-code/*.yaml
 	../tools/shellcheck -x tests/tests.sh
-	../tools/shellcheck -x scripts/jenkins-essentials.sh
+	../tools/shellcheck -x scripts/jenkins-evergreen.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
 
@@ -67,8 +67,6 @@ clean:
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
 	$(MAKE) -C client $@
 	rm -f build/docker-compose
-	rm -rf build/configuration-as-code/target
-	rm -rf build/essentials/target
 	docker volume rm ${SQUID_VOLUME_NAME} || echo "Volume already removed?"
 
 #################
