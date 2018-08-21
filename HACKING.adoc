@@ -37,7 +37,7 @@ To fix most, if not all, of the formatting issues, use `make fix-formatting`.
 
 === Tests
 
-Automated testing is exceptionally important for the Jenkins Essentials effort.
+Automated testing is exceptionally important for the Jenkins Evergreen effort.
 Code should not be introduced without some form of automated testing to ensure
 that it it works as specified, and continues to do so.
 

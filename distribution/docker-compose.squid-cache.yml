@@ -1,7 +1,7 @@
 # This file is docker-compose override file, cf.
 # https://docs.docker.com/compose/extends/#adding-and-overriding-configuration
 # It is use in conjunction with docker-compose.yml core file to add a specific configuration
-# to set up an Squid proxy to accelerate plugins downloads during Essentials development.
+# to set up an Squid proxy to accelerate plugins downloads during Evergreen development.
 # This file is automatically used by the tests/*tests.sh files.
 #
 # To disable it, define the "DISABLE_PROXY_CACHE" environment variable as follows:

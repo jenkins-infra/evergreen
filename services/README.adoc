@@ -52,7 +52,7 @@ up-to-date representation of the fleet.
 The model below is obviously, and intentionally, relational. Most of the data
 which <<status>> requires is relational, and the service must manage various
 transitions along those relationships. For example, when a new version of the
-"Essentials manifest" (`essentials.yaml`) is created, a new `Update` record
+"Evergreen manifest" (`essentials.yaml`) is created, a new `Update` record
 must be created for each `Instance` to relate to.
 
 Non-relational data is, however, contained in the data model below within the

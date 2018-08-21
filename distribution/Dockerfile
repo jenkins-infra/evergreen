@@ -44,7 +44,7 @@ EXPOSE ${agent_port}
 
 # Add the system dependencies for running Jenkins effectively
 #
-# The only dependencies for Jenkins Essentials are:
+# The only dependencies for Jenkins Evergreen are:
 #   * supervisor
 #   * nodejs
 RUN apk add --no-cache git \

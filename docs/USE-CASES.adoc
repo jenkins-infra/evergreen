@@ -1,8 +1,8 @@
-= _Essentials_ Use Cases
+= _Evergreen_ Use Cases
 :toc:
 :sectnums:
 
-This document summarizes the Priority 1 use cases for _Jenkins Essentials_.
+This document summarizes the Priority 1 use cases for _Jenkins Evergreen_.
 
 NOTE: This is still early work.
 To help the thought process, the cases definition and analysis was done by thinking about what a demonstration would need to go through.
@@ -23,7 +23,7 @@ To help the thought process, the cases definition and analysis was done by think
 ** Check the evergreen-client does reconnect automatically when back.
 * it the unavailability happens just after a failed upgrade, can we rollback offline?
 
-=== Starting in a given cloud environment, Essentials is auto-configured and ready to build with it
+=== Starting in a given cloud environment, Evergreen is auto-configured and ready to build with it
 
 Concrete examples:
 

@@ -16,7 +16,7 @@
       "Description" : "The private key for the keypair specified above (required to access agents from master)."
     },
     "SSHLocation" : {
-      "Description" : "The IP address range that can be used to SSH to the EC2 instance for your Jenkins Essentials instance.",
+      "Description" : "The IP address range that can be used to SSH to the EC2 instance for your Jenkins Evergreen instance.",
       "Type": "String",
       "MinLength": "9",
       "MaxLength": "18",
@@ -25,7 +25,7 @@
     }
   },
   "Resources": {
-    "EC2EssentialsInstance": {
+    "EC2EvergreenInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "ImageId": "ami-cfe4b2b0",
@@ -41,21 +41,21 @@
         ],
         "KeyName" : { "Ref" : "KeyNameParameter" },
         "SecurityGroups": [
-          { "Ref": "EssentialsMasterSecurityGroup"}
+          { "Ref": "EvergreenMasterSecurityGroup"}
         ],
         "Tags" : [
-            {"Key" : "Name", "Value" : "Jenkins Essentials Master"}
+            {"Key" : "Name", "Value" : "Jenkins Evergreen Master"}
         ],
         "UserData": {
           "Fn::Base64" : {
             "Fn::Join" : ["", [
               "#!/bin/bash -v\n",
-              "# Install Docker to be able to start the Jenkins Essentials container\n",
+              "# Install Docker to be able to start the Jenkins Evergreen container\n",
               "sudo yum update -y\n",
               "sudo yum install -y docker\n",
               "sudo service docker start\n",
               "sudo usermod -a -G docker ec2-user # not strictly necessary\n",
-              "# Now the Essentials specific part\n",
+              "# Now the Evergreen specific part\n",
               "export DOCKER_IMAGE=jenkins/evergreen:aws-ec2-cloud\n",
               "echo \"", { "Ref": "PrivateKey"}, "\" > ssh-agents-private-key\n",
               "sudo docker pull $DOCKER_IMAGE\n",
@@ -64,7 +64,7 @@
               " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
-              " -e AGENT_SECURITY_GROUP=", {"Ref":"EssentialsAgentSecurityGroup"},
+              " -e AGENT_SECURITY_GROUP=", {"Ref":"EvergreenAgentSecurityGroup"},
               " $DOCKER_IMAGE\n"
               ]
             ]
@@ -72,7 +72,7 @@
         }
       }
     },
-    "EssentialsMasterSecurityGroup" : {
+    "EvergreenMasterSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable HTTP access via port 8080 and JNLP port (TODO: restrict agent port)",
@@ -83,7 +83,7 @@
         ]
       }
     },
-    "EssentialsAgentSecurityGroup" : {
+    "EvergreenAgentSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable HTTP access via port 8080 and JNLP port (TODO: restrict agent port)",
@@ -95,10 +95,10 @@
     "MasterInstanceProfile": {
        "Type": "AWS::IAM::InstanceProfile",
        "Properties": {
-          "Roles": [ { "Ref": "EssentialsMasterRole" } ]
+          "Roles": [ { "Ref": "EvergreenMasterRole" } ]
        }
     },
-    "EssentialsMasterRole": {
+    "EvergreenMasterRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {

@@ -2,7 +2,7 @@
 OUTPUT=/etc/ca-certificates.conf
 
 # Clear out the old file
-echo "# Only trusted certificates by Jenkins Essentials allowed" > $OUTPUT
+echo "# Only trusted certificates by Jenkins Evergreen allowed" > $OUTPUT
 
 for cert in $(ls /usr/share/ca-certificates/mozilla); do
     if [ "${cert}" = "DST_Root_CA_X3.crt" ]; then
