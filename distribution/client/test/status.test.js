@@ -35,7 +35,7 @@ describe('The status module', () => {
         };
       }
     };
-    it("should invoke the create api", async () => {
+    it('should invoke the create api', async () => {
       create.mockResolvedValue('response');
       const status = new Status(mockApp);
       const response = await status.create();
@@ -55,13 +55,13 @@ describe('The status module', () => {
     });
   });
 
-  describe("collectVersions()", () => {
-    it("should contain a node version", () => {
+  describe('collectVersions()', () => {
+    it('should contain a node version', () => {
       const versions = (new Status(app)).collectVersions();
       expect(versions.container.tools.node).toBeTruthy();
     });
 
-    describe("when there's a jenkins.war present", () => {
+    describe('when there is a jenkins.war present', () => {
       beforeEach(() => {
         mkdirp.sync('/evergreen/jenkins/home');
         fs.writeFileSync('/evergreen/jenkins/home/jenkins.war', 'jest!');
@@ -73,7 +73,7 @@ describe('The status module', () => {
       });
     });
 
-    describe("When there are plugins present", () => {
+    describe('When there are plugins present', () => {
       beforeEach(() => {
         mkdirp.sync('/evergreen/jenkins/home/plugins');
         fs.writeFileSync('/evergreen/jenkins/home/plugins/git.hpi', 'jest!');
@@ -86,18 +86,18 @@ describe('The status module', () => {
     });
   });
 
-  describe("signatureFromFile", () => {
+  describe('signatureFromFile', () => {
     const validFile = '/jest-test';
 
     beforeEach(() => {
       fs.writeFileSync(validFile, 'hello world');
     });
 
-    it("should return a string", () => {
+    it('should return a string', () => {
       expect(Status.signatureFromFile(validFile)).toBeTruthy();
     });
 
-    it("should return null for a non-existent file", () => {
+    it('should return null for a non-existent file', () => {
       expect(Status.signatureFromFile('/tmp/no-way-this-file.ever.exists/i-hope')).toBeFalsy();
     });
   });

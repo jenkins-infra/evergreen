@@ -68,6 +68,22 @@ class Status {
       });
   }
 
+  reportVersions() {
+    logger.debug('Reporting versions to the backend');
+    return this.app.service('versions').create({
+      uuid: this.uuid,
+      manifest: this.collectVersions(),
+    }, {
+      headers: { Authorization: this.token },
+    })
+      .then((res) => {
+        logger.debug('successfully reported versions', res);
+      })
+      .catch((err) => {
+        logger.error('Failed to report versions', err);
+      });
+  }
+
   /*
    * Collect and report the versions of the software installed on the instance
    */

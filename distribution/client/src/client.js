@@ -54,13 +54,16 @@ class Client {
       return false;
     }
 
-    return this.update.query().then(updates => this.update.applyUpdates(updates)).catch((err) => {
-      if (err.type == 'invalid-json') {
-        logger.warn('Received non-JSON response from the Update service');
-      } else {
-        logger.error('Failed to query updates', err, err.code, err.data, err.error);
-      }
-    });
+    return this.update.query()
+      .then(updates => this.update.applyUpdates(updates))
+      .then(() => this.status.reportVersions())
+      .catch((err) => {
+        if (err.type == 'invalid-json') {
+          logger.warn('Received non-JSON response from the Update service');
+        } else {
+          logger.error('Failed to query updates', err, err.code, err.data, err.error);
+        }
+      });
   }
 
   runloop(app) {
@@ -73,8 +76,8 @@ class Client {
 
     this.runUpdates();
 
-    cron.runHourly('post-status', () => {
-      // TODO: update status
+    cron.runDaily('post-status', () => {
+      this.status.reportVersions();
     });
     cron.runHourly('check-for-updates', () => {
       this.runUpdates();

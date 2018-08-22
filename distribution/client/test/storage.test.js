@@ -10,8 +10,8 @@ describe('The storage module', () => {
     });
   });
 
-  describe("jenkinsHome()", () => {
-    it("should return a path", () => {
+  describe('jenkinsHome()', () => {
+    it('should return a path', () => {
       const home = Storage.jenkinsHome();
 
       // this should look like a path
@@ -20,8 +20,8 @@ describe('The storage module', () => {
     });
   });
 
-  describe("pluginsDirectory()", () => {
-    it("should return a path", () => {
+  describe('pluginsDirectory()', () => {
+    it('should return a path', () => {
       const plugins = Storage.pluginsDirectory();
 
       // this should look like a path
