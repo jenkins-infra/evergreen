@@ -15,7 +15,11 @@ generateNewAdminPassword() {
   echo "Done. Password value stored in $passwordFileLocation file."
 }
 
-generateNewAdminPassword
+if [[ -f $passwordFileLocation ]]; then
+  echo "Password file already exists, not generating a new one."
+else
+  generateNewAdminPassword
+fi
 
 JENKINS_ADMIN_PASSWORD="$( cat "$passwordFileLocation" )"
 
