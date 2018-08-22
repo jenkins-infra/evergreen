@@ -5,13 +5,17 @@ set -euo pipefail
 passwordFileLocation="$JENKINS_HOME/secrets/initialAdminPassword"
 passwordFileLocationDirectory="$( dirname "$passwordFileLocation" )"
 
-echo -n "Creating $passwordFileLocationDirectory... "
-mkdir -p "$passwordFileLocationDirectory"
-echo "Done."
+generateNewAdminPassword() {
+  echo -n "Creating $passwordFileLocationDirectory... "
+  mkdir -p "$passwordFileLocationDirectory"
+  echo "Done."
 
-echo -n "Generating admin password... "
-echo $RANDOM | md5sum | cut -d ' ' -f 1 > "$passwordFileLocation"
-echo "Done. Password value stored in $passwordFileLocation file."
+  echo -n "Generating admin password... "
+  echo $RANDOM | md5sum | cut -d ' ' -f 1 > "$passwordFileLocation"
+  echo "Done. Password value stored in $passwordFileLocation file."
+}
+
+generateNewAdminPassword
 
 JENKINS_ADMIN_PASSWORD="$( cat "$passwordFileLocation" )"
 
