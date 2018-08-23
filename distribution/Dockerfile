@@ -1,4 +1,4 @@
-FROM openjdk:8u171-jre-alpine3.8
+FROM node:9-alpine
 
 ARG user=jenkins
 ARG group=jenkins
@@ -52,12 +52,15 @@ RUN apk add --no-cache git \
                         openssh-client \
                         unzip \
                         bash \
+                        openjdk8 \
                         supervisor \
-                        nodejs \
-                        nodejs-npm \
                         ttf-dejavu \
                         curl \
-                        socat
+                        socat \
+                        wget
+
+# Ensure the latest npm is available
+RUN npm install npm@latest -g
 
 # TODO: add a checksum check?
 RUN cd /tmp && \
@@ -72,8 +75,9 @@ COPY config/logging.properties $EVERGREEN_HOME/logging.properties
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
-RUN addgroup -g ${gid} ${group} \
-    && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
+RUN deluser node && \
+    addgroup -g ${gid} ${group} && \
+    adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
 
 
 # Ensure that only the right CA root certificates are present on the system
