@@ -124,6 +124,7 @@ describe('Update service acceptance tests', () => {
         resolveWithFullResponse: true,
         body: {
           commit: this.commit,
+          manifest: this.ingest,
           channel: 'general',
           tainted: true,
         }
