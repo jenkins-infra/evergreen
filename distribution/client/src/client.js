@@ -119,6 +119,11 @@ class Client {
       logger.debug('Received ping', message);
     });
 
+    this.socket.on('reconnect', () => {
+      logger.info('Reconnecting the socket.io channel, and checking for updates');
+      this.runUpdates();
+    });
+
     this.reg.register().then((res, newRegistration) => {
       logger.debug('Registration returned', res);
       this.status.authenticate(this.reg.uuid, this.reg.token);
