@@ -8,6 +8,10 @@ const ensureMatchingUUID = require('../../hooks/ensureuuid');
 const internalOnly       = require('../../hooks/internalonly');
 const internalApi        = require('../../hooks/internalapi');
 
+const updateApiRequiredFields = [
+  'commit',
+  'manifest'
+];
 
 class UpdateHooks {
   constructor() {
@@ -26,10 +30,11 @@ class UpdateHooks {
     if (!(hook.data) || !Object.keys(hook.data).length) {
       throw new errors.BadRequest('Missing data');
     }
-    if (!(hook.data.commit)) {
-      throw new errors.BadRequest('Missing commit field');
-    }
-    // TODO add required field validation once we know what the required fields are
+    updateApiRequiredFields.forEach( field => {
+      if (!hook.data[field]) {
+        throw new errors.BadRequest(`Missing required field '${field}'`);
+      }
+    });
   }
 
   preventRedundantCommits(context) {

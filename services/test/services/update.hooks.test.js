@@ -84,7 +84,17 @@ describe('update service hooks', () => {
       expect(() => {
         hooks.checkUpdateFormat({
           data: {
-            commit: '',
+            manifest: 'manifest',
+          }
+        });
+      }).toThrow(errors.BadRequest);
+    });
+
+    it('should throw a BadRequest if the manifest field is missing or empty', () => {
+      expect(() => {
+        hooks.checkUpdateFormat({
+          data: {
+            commit: 'commit',
           }
         });
       }).toThrow(errors.BadRequest);
