@@ -1,11 +1,17 @@
+'use strict';
+
+const crypto = require('crypto');
+const fs     = require('fs');
+const path   = require('path');
+
+const logger  = require('winston');
+const Storage = require('./storage');
+
+
 /*
  * The status module is responsible for collecting and reporting the current
  * state of this instance to the Evergreen backend `Status` service
  */
-
-const logger    = require('winston');
-const StreamZip = require('node-stream-zip');
-
 class Status {
   constructor(app, options) {
     this.options = options || {};
@@ -28,6 +34,9 @@ class Status {
     return this;
   }
 
+  /*
+   * Create a status record in the backend for this particular instance
+   */
   async create() {
     let api = this.app.service('status');
     let record = {
@@ -40,6 +49,7 @@ class Status {
     })
       .then((res) => {
         logger.info('Created a Status record with server side ID %d', res.id);
+        return true;
       })
       .catch((err) => {
         /* 400 errors are most likely attempts to recreate the same Status for
@@ -54,50 +64,92 @@ class Status {
         } else {
           logger.debug('Status record not changed');
         }
+        return false;
       });
   }
 
-  async manifestFromZip(zipArchive, options) {
-    options = options || {};
-    let manifestName = options.manifestName || 'META-INF/MANIFEST.MF';
-    let self = this;
-
-    return new Promise((resolve, reject) => {
-      const zip = new StreamZip({ file: zipArchive });
-
-      zip.on('ready', () => {
-        zip.stream(manifestName, (err, stream) => {
-          if (err) {
-            reject(err);
-          }
-          let buffer = '';
-          stream.on('data', chunk => buffer += chunk );
-          stream.on('end', () => {
-            zip.close();
-            resolve(self.parseRawManifest(buffer));
-          });
-        });
+  reportVersions() {
+    logger.debug('Reporting versions to the backend');
+    return this.app.service('versions').create({
+      uuid: this.uuid,
+      manifest: this.collectVersions(),
+    }, {
+      headers: { Authorization: this.token },
+    })
+      .then((res) => {
+        logger.debug('successfully reported versions', res);
+      })
+      .catch((err) => {
+        logger.error('Failed to report versions', err);
       });
-    });
   }
 
   /*
-   * Convert a MANIFEST.MF type file into an object with keys and values
-   *
-   * The MANIFEST.MF string is expected to be \r\n separated like a real
-   * MANIFEST.MF file
-   *
-   * @return Object
+   * Collect and report the versions of the software installed on the instance
    */
-  parseRawManifest(manifest) {
-    let result = {};
-    manifest.split('\r\n').forEach((line) => {
-      if (line) {
-        let parts = line.split(': ');
-        result[parts[0]] = parts[1];
+  collectVersions() {
+    let versions = {
+      schema: 1,
+      container: {
+        commit: null,
+        tools: {
+          java: null,
+        },
+      },
+      client: {
+        version: null,
+      },
+      jenkins: {
+        core: null,
+        plugins: {
+        }
       }
-    });
-    return result;
+    };
+
+    Object.assign(versions.container.tools, process.versions);
+
+    versions.jenkins.core = Status.signatureFromFile(path.join(Storage.jenkinsHome(), 'jenkins.war'));
+
+    try {
+      const files = fs.readdirSync(Storage.pluginsDirectory());
+      files.forEach((file) => {
+        const matched = file.match(/^(.*).hpi$/);
+        if (matched) {
+          const name = matched[1];
+          const fullPath = path.join(Storage.pluginsDirectory(), file);
+          versions.jenkins.plugins[name] = Status.signatureFromFile(fullPath);
+        }
+      });
+    } catch (err) {
+      if (err.code == 'ENOENT') {
+        logger.warn('No plugins found from which to report versions');
+      } else {
+        throw err;
+      }
+    }
+
+    return versions;
+  }
+
+  /*
+   * Generate a SHA-256 checksum signature from the provided relative or
+   * absolute file path
+   *
+   * @param {string} Properly formed path to file
+   * @return {string} hex-encoded sha256 signature
+   */
+  static signatureFromFile(filePath) {
+    try {
+      return crypto.createHash('sha256')
+        .update(fs.readFileSync(filePath))
+        .digest('hex');
+    } catch (err) {
+      if (err.code == 'ENOENT') {
+        logger.error('The file path does not exist and cannot provide a signature', filePath);
+        return null;
+      }
+      throw err;
+    }
   }
 }
 

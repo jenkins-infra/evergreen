@@ -9,7 +9,7 @@ const path    = require('path');
 const mkdirp  = require('mkdirp');
 const logger  = require('winston');
 
-const storage     = require('./storage');
+const Storage     = require('./storage');
 const Downloader  = require('./downloader');
 const Supervisord = require('./supervisord');
 
@@ -61,12 +61,8 @@ class Update {
     this.updateInProgress = new Date();
     let tasks = [];
 
-    const outputDir = path.join(storage.homeDirectory(),
-      'jenkins',
-      'home');
-
     if ((updates.core) && (updates.core.url)) {
-      tasks.push(Downloader.download(updates.core.url, outputDir, 'jenkins.war'));
+      tasks.push(Downloader.download(updates.core.url, Storage.jenkinsHome(), 'jenkins.war'));
     }
 
     if ((!updates.plugins) || (!updates.plugins.updates)) {
@@ -78,10 +74,9 @@ class Update {
      * Queue up all the downloads simultaneously, we need updates ASAP!
      */
     updates.plugins.updates.forEach((plugin) => {
-      let pluginsPath = path.join(outputDir, 'plugins');
       logger.info('Downloading', plugin);
       tasks.push(Downloader.download(plugin.url,
-        pluginsPath,
+        Storage.pluginsDirectory(),
         `${plugin.artifactId}.hpi`));
     });
 
@@ -135,13 +130,13 @@ class Update {
    * @return String
    */
   updatePath() {
-    const dir = path.join(storage.homeDirectory(), 'updates.json');
+    const dir = path.join(Storage.homeDirectory(), 'updates.json');
 
     try {
       fs.statSync(dir);
     } catch (err) {
       if (err.code == 'ENOENT') {
-        mkdirp.sync(storage.homeDirectory());
+        mkdirp.sync(Storage.homeDirectory());
       } else {
         throw err;
       }
