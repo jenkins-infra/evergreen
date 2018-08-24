@@ -80,8 +80,8 @@ class ErrorTelemetry {
 
   fileToWatch() {
     if (!process.env.ESSENTIALS_LOG_FILE) {
-      logger.debug('Defaulting to essentials.log.0');
-      return '/evergreen/jenkins/var/logs/essentials.log.0';
+      logger.debug('Defaulting to evergreen.log.0');
+      return '/evergreen/jenkins/var/logs/evergreen.log.0';
     }
     return process.env.ESSENTIALS_LOG_FILE;
   }

@@ -14,7 +14,7 @@ including `evergreen-client` and Jenkins itself.
 
 A Log4J configuration file to customize the logging output from Jenkins in
 conjunction with the
-link:https://github.com/jenkinsci/essentials-plugin[Evergreen plugin].
+link:https://github.com/jenkinsci/evergreen-plugin[Evergreen plugin].
 
 == `jenkins-configuration.yaml`
 

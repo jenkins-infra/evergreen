@@ -24,7 +24,7 @@ describe('Error Telemetry Logging', () => {
     const errorTelemetryService = new ErrorTelemetry();
 
     let logsDir = '/evergreen/jenkins/war/logs';
-    let logFile = path.join(logsDir, 'essentials.log.0');
+    let logFile = path.join(logsDir, 'evergreen.log.0');
 
     beforeEach(() => {
       // Set up the directories needed
@@ -34,7 +34,7 @@ describe('Error Telemetry Logging', () => {
     });
 
     // FIXME: only hackish, the end goal is definitely not to forward to another file
-    it('writing to essentials logging file should forward to another', done => {
+    it('writing to evergreen logging file should forward to another', done => {
       const forwardedLines = [];
 
       errorTelemetryService.callErrorTelemetryService = (app,jsonObject) => {
