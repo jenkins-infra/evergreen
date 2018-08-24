@@ -252,37 +252,45 @@ describe('update service class', () => {
         };
 
         describe('when the client has no plugins', () => {
-          it('should leave the plugins in the manifest', async () => {
+          /*
+           * This is the behavior when there is an empty, but existing,
+           * versions record.
+           *
+           * In the case of a flavored instance, filterVersionsForClient will
+           * already have plugins prepared for it
+           */
+          it('should not override the plugins already computed', async () => {
             let updateManifest = {
               core: {},
-              plugins: {},
+              plugins: {
+                updates: [
+                  { url: 'https://docker.io', checksum: { signature: '0xdeadbeef' } },
+                  { url: 'http://jenkins.io', checksum: { signature: '0xdeedee' } },
+                ],
+              },
             };
             let result = await this.service.filterVersionsForClient(1, update, updateManifest);
             expect(result).toBeTruthy();
-            expect(updateManifest.plugins.updates).toHaveLength(1);
+            expect(updateManifest.plugins.updates).toHaveLength(2);
           });
         });
 
         describe('when the client has plugins', () => {
           beforeEach(() => {
+            const manifest = {
+              jenkins: {
+                core: 'signature',
+                plugins: {
+                  'git-client' : 'sha256-for-git-client.hpi',
+                },
+              }
+            };
+
             this.app.service = () => {
               return {
                 find: () => {
                   return [{
-                    manifest: {
-                      jenkins: {
-                        core: 'signature',
-                        plugins: [
-                          {
-                            /*
-                             * stub just for testing, we only check the
-                             * signatures anyways
-                             */
-                            signature: '0xdeadbeef',
-                          },
-                        ],
-                      },
-                    },
+                    manifest: manifest,
                   }];
                 },
               };

@@ -91,9 +91,7 @@ class Update extends FeathersSequelize.Service {
       computedManifest.core = {};
     }
 
-    if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length === 0) {
-      computedManifest.plugins.updates = record.manifest.plugins;
-    } else {
+    if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length != 0) {
       let signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
       let updates = [];
       record.manifest.plugins.forEach((plugin) => {
