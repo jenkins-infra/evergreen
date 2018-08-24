@@ -41,12 +41,13 @@ restarted if necessary.
 .Starting Jenkins Evergreen
 [source,bash]
 ----
-mkdir $PWD/jenkins-home && \
+docker volume create jenkins-evergreen-data && \
 docker run --name evergreen \
+    --restart=always \
+    -ti \
     -p 8080:8080 \
-    -u 0 \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $PWD/jenkins-home:/evergreen/jenkins/home \
+    -v jenkins-evergreen-data:/evergreen/ \
     -e LOG_LEVEL=debug \
     jenkins/evergreen:docker-cloud
 ----
@@ -62,7 +63,7 @@ docker exec evergreen cat /evergreen/jenkins/home/secrets/initialAdminPassword
 ----
 
 
-=== Getting started with an AWS-baesd installation
+=== Getting started with an AWS-based installation
 
 [NOTE]
 ====
@@ -155,7 +156,7 @@ documents:
 | link:https://github.com/jenkinsci/jep/blob/master/jep/309[Bill of Materials]
 
 | JEP-310
-| link:https://github.com/jenkinsci/jep/blob/master/jep/310 [Evergreen AWS auto-configuration]
+| link:https://github.com/jenkinsci/jep/blob/master/jep/310[Evergreen AWS auto-configuration]
 
 |===
 
