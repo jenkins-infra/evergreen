@@ -68,6 +68,7 @@ clean:
 	$(MAKE) -C client $@
 	rm -f build/docker-compose
 	docker volume rm ${SQUID_VOLUME_NAME} || echo "Volume already removed?"
+	rm -rf build/
 
 #################
 
