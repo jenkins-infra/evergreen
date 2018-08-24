@@ -47,11 +47,11 @@ test_not_root() {
 # https://github.com/jenkins-infra/evergreen/pull/60#discussion_r182666012
 test_npm_5_plus() {
   result=$( docker exec "$container_under_test" npm --version )
-  assertEquals "Result should be 5." "5." "${result:0:2}"
+  assertEquals "Result should be 6." "6." "${result:0:2}"
 }
 test_node_version() {
   result=$( docker exec "$container_under_test" node --version )
-  assertEquals "Result should be v8." "v8." "${result:0:3}"
+  assertEquals "Result should be v9." "v9." "${result:0:3}"
 }
 
 # Ensure that we can successfully connect to only Let's Encrypt authorized
