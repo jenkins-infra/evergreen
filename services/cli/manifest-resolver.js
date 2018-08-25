@@ -39,9 +39,10 @@ class ManifestResolver {
         needed
       )
     )
-      .then(() => {
+      .then((values) => {
         this.resolved = true;
         this.needed = needed;
+        this.tree = values;
       });
   }
 
@@ -115,11 +116,28 @@ class ManifestResolver {
         if (manifest.dependencies) {
           plugin.dependencies = (await Promise.all(
             this.resolveTree(manifest.dependencies, registryData, needed))).filter(d => d);
+          plugin.nonOptional = plugin.dependencies.filter(p => !p.optional);
         }
         return plugin;
       });
   }
 
+
+  /*
+   * Taking the graph into consideration, return an Array of artifactIds for
+   * all the non-optional plugins
+   */
+  collapseNonOptional(tree, output) {
+    tree.map((pluginDependency) => {
+      output[pluginDependency.artifactId] = pluginDependency;
+
+      pluginDependency.nonOptional.map((dep) => {
+        output[dep.artifactId] = dep;
+        this.collapseNonOptional(dep.nonOptional, output);
+      });
+    });
+    return output;
+  }
 
   getResolutions() {
     if (!this.resolved) {
@@ -128,7 +146,8 @@ class ManifestResolver {
     /*
      * Filter out all the optional dependencies which we no longer need
      */
-    return Object.values(this.needed).filter(p => !p.optional);
+    const required = this.collapseNonOptional(this.tree, {});
+    return Object.values(this.needed).filter(p => required.hasOwnProperty(p.artifactId));
   }
 
   getEnvironmentResolutions() {
