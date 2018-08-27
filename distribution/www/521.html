@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="refresh" content="3"/>
+        <title>
+            Welcome to Jenkins Evergreen
+        </title>
+        <style type="text/css">
+            body {
+                font-family: "Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+                font-size: 1.2rem;
+            }
+            .centered {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            @media(min-width: 1024px) {
+                main {
+                    max-width: 55%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                footer {
+                    margin-left: auto;
+                    margin-right: auto;
+                    margin-top: 2rem;
+                    padding-top: 1rem;
+                    border-top: 2px solid #e9e9e9;
+                    max-width: 55%;
+                    text-align: center;
+                }
+            }
+            img {
+                max-width: 100%;
+            }
+            li {
+                margin: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <header>
+                <div class="centered">
+                    <img src="evergreen-static/magician_256.png"
+                            title="Jenkins Evergreen"
+                            alt="Jenkins Evergreen is magical!"/>
+                    <h1>
+                        Jenkins Evergreen is getting started..
+                    </h2>
+                </div>
+            </header>
+
+            <main>
+                <div>
+                    <p>
+                        Jenkins Evergreen is an automatically updating rolling
+                        distribution system for Jenkins It consists of
+                        server-side, and client-side components to support a
+                        Chrome-like upgrade experience for Jenkins users.`
+                    </p>
+
+                    <p>
+                        Evergreen is connecting to the <a
+                                href="https://evergreen.jenkins.io"
+                                target="_blank">update server</a>, and
+                        downloading the latest version of software. And will
+                        reload <a href="/"><em>this page</em></a> automatically once
+                        Jenkins has been downloaded and starts.
+                    </p>
+
+                    <p>
+                        You may view the progress using the
+                        <strong>
+                            <a href="/evergren">
+                                Evergreen Status
+                            </a>
+                        </strong>
+                        page.
+                    </p>
+                </div>
+
+            </main>
+
+            <footer>
+                <a href="https://github.com/jenkins-infra/evergreen">
+                    Browse on GitHub
+                </a>
+                &middot;
+                <a href="https://twitter.com/jenkinsci">
+                    Twitter
+                </a>
+            </footer>
+        </div>
+    </body>
+</html>

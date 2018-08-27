@@ -1,4 +1,4 @@
-FROM node:9-alpine
+FROM node:10-alpine
 
 ARG user=jenkins
 ARG group=jenkins
@@ -39,6 +39,7 @@ RUN mkdir -p /usr/share/jenkins/ref/ && \
 
 # for main web interface:
 EXPOSE ${http_port}
+EXPOSE 80
 # will be used by attached agents:
 EXPOSE ${agent_port}
 
@@ -57,10 +58,21 @@ RUN apk add --no-cache git \
                         ttf-dejavu \
                         curl \
                         socat \
-                        wget
+                        wget \
+                        nginx
 
 # Ensure the latest npm is available
 RUN npm install npm@latest -g
+
+#######################
+## Prepare the nginx default user interface
+#######################
+RUN mkdir -p /run/nginx
+COPY config/nginx.conf /etc/nginx/conf.d/default.conf
+COPY www/ /var/www/localhost/htdocs/
+RUN chown -R nginx:www-data /var/www
+#######################
+#######################
 
 # TODO: add a checksum check?
 RUN cd /tmp && \

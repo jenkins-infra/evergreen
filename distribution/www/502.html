@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>
+            Uh oh!
+        </title>
+        <style type="text/css">
+            body {
+                font-family: "Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+                font-size: 1.2rem;
+            }
+            .centered {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            @media(min-width: 1024px) {
+                main {
+                    max-width: 55%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                footer {
+                    margin-left: auto;
+                    margin-right: auto;
+                    margin-top: 2rem;
+                    padding-top: 1rem;
+                    border-top: 2px solid #e9e9e9;
+                    max-width: 55%;
+                    text-align: center;
+                }
+            }
+            img {
+                max-width: 100%;
+            }
+            li {
+                margin: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <header>
+                <div class="centered">
+                    <img src="evergreen-static/demon_256.png"
+                            title="Jenkins Evergreen Error!"
+                            alt="Jenkins Evergreen isn't too magical!"/>
+                    <h1>
+                        Jenkins Evergreen experienced an error!
+                    </h2>
+                </div>
+            </header>
+
+            <main>
+                <div>
+                    <p>
+                        Something went wrong and Jenkins does not appear to be online!
+                    </p>
+                    <p>
+                        You may view the debug information using the
+                        <strong>
+                            <a href="/evergren">
+                                Evergreen Status
+                            </a>
+                        </strong>
+                        page.
+                    </p>
+                </div>
+
+            </main>
+
+            <footer>
+                <a href="https://github.com/jenkins-infra/evergreen">
+                    Browse on GitHub
+                </a>
+                &middot;
+                <a href="https://twitter.com/jenkinsci">
+                    Twitter
+                </a>
+            </footer>
+        </div>
+    </body>
+</html>
