@@ -84,6 +84,11 @@ class Update {
       logger.info('All downloads completed, restarting Jenkins');
       this.saveUpdateSync(updates);
       Supervisord.restartProcess('jenkins');
+      // TODO: This should really only be set once the instance is back online
+      // and servicing requests
+      setTimeout(() => {
+        Storage.removeBootingFlag();
+      }, 5000);
       this.updateInProgress = null;
       return true;
     });

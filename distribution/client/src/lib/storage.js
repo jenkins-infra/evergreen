@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-
+const fs   = require('fs');
 
 /*
  * The Storage module simply contains common functions necessary for the
@@ -43,6 +43,21 @@ class Storage {
   static pluginsDirectory() {
     return path.join(Storage.jenkinsHome(),
       'plugins');
+  }
+
+  static getBootingFlagFile() {
+    return path.join(Storage.homeDirectory(), 'booting.txt');
+  }
+
+  static setBootingFlag() {
+    return fs.writeFileSync(Storage.getBootingFlagFile(), Date.now().toString());
+  }
+
+  static removeBootingFlag() {
+    const filePath = Storage.getBootingFlagFile();
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
   }
 }
 

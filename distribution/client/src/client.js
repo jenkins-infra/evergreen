@@ -15,6 +15,7 @@ const createCron     = require('./lib/periodic');
 const ErrorTelemetry = require('./lib/error-telemetry');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
+const Storage        = require('./lib/storage');
 const Update         = require('./lib/update');
 
 
@@ -152,6 +153,7 @@ if (require.main === module) {
    * purposes by the user
    */
   logger.level = process.env.LOG_LEVEL || 'warn';
+  Storage.setBootingFlag();
   /* Main entrypoint for module */
   logger.info('Starting the evergreen-client..');
   let client = new Client();
