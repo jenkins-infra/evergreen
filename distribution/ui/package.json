@@ -1,0 +1,36 @@
+{
+  "name": "evergreen-ui",
+  "version": "1.0.0",
+  "description": "Evergreen UI for rendering client-side status information",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "eslint": "eslint src/. test/. --config .eslintrc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jenkins-infra/evergreen.git"
+  },
+  "author": "R Tyler Croy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jenkins-infra/evergreen/issues"
+  },
+  "homepage": "https://github.com/jenkins-infra/evergreen#readme",
+  "devDependencies": {
+    "css-loader": "^1.0.0",
+    "eslint": "^5.4.0",
+    "eslint-cli": "^1.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.5.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.6"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^3.1.7",
+    "@feathersjs/socketio-client": "^1.1.0"
+  }
+}
