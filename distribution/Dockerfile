@@ -115,7 +115,7 @@ COPY --chown=jenkins:jenkins client ${EVERGREEN_HOME}/client
 
 # Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
 # which immediately crashes if the file is missing, even if we use the `follow` switch
-RUN touch ${JENKINS_VAR}/logs/essentials.log.0
+RUN touch ${JENKINS_VAR}/logs/evergreen.log.0
 
 # Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades

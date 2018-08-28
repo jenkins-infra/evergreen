@@ -10,8 +10,11 @@ spec:
       artifactId: configuration-as-code
       version: 0.11-alpha-rc362.942711740b07
     - groupId: io.jenkins.plugins
+      artifactId: evergreen
+      version: 1.0-rc50.78d526a2ba0f
+    - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.3-rc23.7230a0298a47
+      version: 0.5.1
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
       version: 1.8.2
@@ -218,7 +221,10 @@ status:
       version: '1.39'
     - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.3-rc23.7230a0298a47
+      version: 0.5.1
+    - groupId: io.jenkins.plugins
+      artifactId: evergreen
+      version: 1.0-rc50.78d526a2ba0f
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
       version: 2.3.1

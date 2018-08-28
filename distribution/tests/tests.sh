@@ -61,8 +61,8 @@ test_required_plugins_are_here() {
 
   # workaround for JENKINS-52197
   # shellcheck disable=SC2016
-  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/essentials*.hpi'
-  assertEquals "The essentials plugin should be installed" 0 "$?"
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/evergreen*.hpi'
+  assertEquals "The evergreen plugin should be installed" 0 "$?"
 
   # shellcheck disable=SC2016
   docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.hpi'
@@ -120,12 +120,12 @@ test_jenkins_logs_is_found_on_disk() {
 
 test_evergreen_telemetry_logging_is_found_on_disk() {
   # shellcheck disable=SC2016
-  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_VAR/logs/essentials.log.0' )
-  assertEquals "ls essentials.log.0 didn't work: $result" "0" "$?"
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_VAR/logs/evergreen.log.0' )
+  assertEquals "ls evergreen.log.0 didn't work: $result" "0" "$?"
 
   # shellcheck disable=SC2016
-  result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/essentials.log.0 | tail -1' )
-  assertEquals "cat essentials.log.0 | tail -1 didn't work: $result" "0" "$?"
+  result=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_VAR/logs/evergreen.log.0 | tail -1' )
+  assertEquals "cat evergreen.log.0 | tail -1 didn't work: $result" "0" "$?"
   assertNotEquals "last line of log is empty" "" "$result"
 
   echo "$result" | jsonlint > /dev/null
@@ -172,9 +172,9 @@ test_logs_are_propagated() {
   assertEquals "File $error_logging_filename should exist" "0" "$?"
   assertNotEquals "File $error_logging_filename should not be empty" "" "$result"
 
-  # Depends on https://github.com/jenkinsci/essentials-plugin/blob/0d7ee52820db08f5790d79c189a88e2237cfe902/src/main/java/io/jenkins/plugins/essentials/logging/EssentialsLoggingConfigurer.java#L34 being the first
-  echo "$result" | grep EssentialsLoggingConfigurer > /dev/null
-  assertEquals "$result should contain the log from the Essentials Jenkins plugin" "0" "$?"
+  # Depends on https://github.com/jenkinsci/evergreen-plugin/blob/69ee85fa5e9ad2ca46ca4b357453151745ec89c9/src/main/java/io/jenkins/plugins/evergreen/logging/EvergreenLoggingConfigurer.java#L35 being the first
+  echo "$result" | grep EvergreenLoggingConfigurer > /dev/null
+  assertEquals "$result should contain the log from the Evergreen Jenkins plugin" "0" "$?"
 }
 
 # Test everything under /evergreen is owned by the jenkins user
@@ -213,7 +213,7 @@ test_no_maven_or_freestyle_jobs() {
   # shellcheck disable=SC2016
   adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
 
-  topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/essentials/api/xml )
+  topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/evergreen/api/xml )
   assertEquals "Curl call to Evergreen XML API should have succeeded" 0 "$?"
 
   echo "$topLevelDescriptor" | grep -i WorkflowJob > /dev/null

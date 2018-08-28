@@ -33,7 +33,7 @@ cleanup () {
   do
     docker logs $container > $testRunDirectory/${container}.log 2>&1
   done
-  docker cp "$container_under_test":/evergreen/jenkins/var/logs/essentials.log.0 $testRunDirectory/essentials.log.0
+  docker cp "$container_under_test":/evergreen/jenkins/var/logs/evergreen.log.0 $testRunDirectory/evergreen.log.0
   echo "Done getting logs for $containers"
 
   echo -n "Cleaning up... "
