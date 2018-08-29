@@ -23,7 +23,7 @@ ENV JAVA_OPTS=\
 "-Djenkins.model.Jenkins.workspacesDir=${JENKINS_VAR}/jobs/\${ITEM_FULL_NAME}/workspace "\
 "-Djenkins.model.Jenkins.buildsDir=${JENKINS_VAR}/jobs/\${ITEM_FULL_NAME}/builds "\
 "-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs "\
-"-Djava.util.logging.config.file=$EVERGREEN_HOME/logging.properties "\
+"-Djava.util.logging.config.file=$EVERGREEN_HOME/config/logging.properties "\
 "-Djenkins.install.runSetupWizard=false "
 
 ENV JENKINS_OPTS=\
@@ -81,8 +81,6 @@ RUN cd /tmp && \
     rmdir docker && \
     rm docker.tar.gz
 
-COPY config/logging.properties $EVERGREEN_HOME/logging.properties
-
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
@@ -99,30 +97,16 @@ RUN /usr/local/sbin/generate-ca-certificates
 #######################
 ## Construct the image
 #######################
-
-RUN mkdir -p /usr/local/bin
-COPY build/jenkins.sh /usr/local/bin/
-COPY scripts/jenkins-evergreen.sh /usr/local/bin/
-COPY build/jenkins-support /usr/local/bin/
-
-# FIXME (?): what if the end users touches the config value?
-# as is, we'll override it.
-COPY config/as-code/ /usr/share/jenkins/ref/configuration/
-ENV CASC_JENKINS_CONFIG=$JENKINS_HOME/configuration/
-
-# Ensure the supervisord configuration is copied and executed by default such
-# that the Jenkins and evergreen-client processes both execute properly
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+ENV CASC_JENKINS_CONFIG=$EVERGREEN_HOME/config/as-code/
 
 WORKDIR $EVERGREEN_HOME
 
 RUN time chown -R $user:$group $EVERGREEN_HOME
 USER $user
 
-# Prepare the evergreen-client configuration
+# Prepare the evergreen distributionj
 # Sigh https://github.com/moby/moby/issues/35018, cannot use $user below
-COPY --chown=jenkins:jenkins client ${EVERGREEN_HOME}/client
+COPY --chown=jenkins:jenkins build/evergreen $EVERGREEN_HOME
 
 # Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
 # which immediately crashes if the file is missing, even if we use the `follow` switch
@@ -131,7 +115,11 @@ RUN touch ${JENKINS_VAR}/logs/evergreen.log.0
 # Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 # Important: this must be done *after* the chown
-
 VOLUME ${EVERGREEN_HOME}
 
 USER root
+# The externally sourced jenkins.sh expects jenkins-support to be in
+# /usr/local/bin
+RUN ln -s /evergreen/scripts/jenkins-support /usr/local/bin
+
+CMD /usr/bin/supervisord -c $EVERGREEN_HOME/config/supervisord.conf

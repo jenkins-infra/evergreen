@@ -6,6 +6,8 @@ DOWNLOAD=curl -sSL
 SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
 SQUID_VOLUME_NAME=squid-cache
 
+DIST_DIR=build/evergreen
+
 ### Phony targets
 #################
 all: check container
@@ -21,6 +23,18 @@ lint: shunit2
 check: lint
 	$(MAKE) -C client $@
 	$(MAKE) container-check
+
+
+## Distribution
+distribution: build/jenkins-support build/jenkins.sh
+	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
+	rsync -avm --delete --files-from=packaging-list.client.txt . $(DIST_DIR)/client
+	rsync -avm --delete --include-from=packaging-list.config.txt --exclude="*" ./config/ $(DIST_DIR)/config
+	rsync -avm --delete --include-from=packaging-list.www.txt --exclude="*" ./client/public/ $(DIST_DIR)/www
+	# Incorporate our local and downloaded scripts
+	rsync -avm --delete --include-from=packaging-list.scripts.txt --exclude="*" ./scripts/ $(DIST_DIR)/scripts
+	rsync -avm --include-from=packaging-list.scripts.txt --exclude="*" ./build/ $(DIST_DIR)/scripts
+############################
 
 fix-formatting:
 	$(MAKE) -C client $@
