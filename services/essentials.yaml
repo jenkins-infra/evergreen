@@ -79,14 +79,8 @@ spec:
       artifactId: icon-shim
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
-      artifactId: javadoc
-      version: '1.4'
-    - groupId: org.jenkins-ci.plugins
       artifactId: jsch
       version: 0.1.54.2
-    - groupId: org.jenkins-ci.main
-      artifactId: maven-plugin
-      version: 3.1.2
   environments:
     - name: docker-cloud
       plugins:
@@ -280,9 +274,6 @@ status:
       artifactId: jackson2-api
       version: 2.8.11.2
     - groupId: org.jenkins-ci.plugins
-      artifactId: javadoc
-      version: '1.4'
-    - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
       version: '1.1'
     - groupId: io.jenkins.blueocean
@@ -309,9 +300,6 @@ status:
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
       version: 1.7.1
-    - groupId: org.jenkins-ci.main
-      artifactId: maven-plugin
-      version: 3.1.2
     - groupId: org.jenkins-ci.plugins
       artifactId: mercurial
       version: '2.4'
