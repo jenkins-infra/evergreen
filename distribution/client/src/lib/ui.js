@@ -44,9 +44,6 @@ class UI {
     app.configure(configuration());
     app.configure(express.rest());
     app.configure(socketio());
-    app.use('/', express.static(__dirname + app.get('public')));
-
-    app.use(express.notFound());
     app.use('messages', new MessageService(app));
 
     /*
@@ -71,6 +68,8 @@ class UI {
   }
 
   serve() {
+    this.app.use('/', express.static(this.app.get('public')));
+    this.app.use(express.notFound());
     this.server = this.app.listen(this.app.get('port'));
     return this;
   }

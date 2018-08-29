@@ -89,6 +89,7 @@ class Update {
       // TODO: This should really only be set once the instance is back online
       // and servicing requests
       setTimeout(() => {
+        UI.publish('Jenkins should now be online');
         Storage.removeBootingFlag();
       }, 5000);
       this.updateInProgress = null;

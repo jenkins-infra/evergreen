@@ -67,6 +67,7 @@ class Downloader {
 
           const elapsedString = Downloader.formatDuration(Date.now() - startTime);
           logger.info  ('Download complete for', filename, `(Took ${elapsedString})`);
+          UI.publish(`Fetched ${filename} in ${elapsedString}s`);
 
           const output = fs.createWriteStream(filename);
 

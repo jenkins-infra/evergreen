@@ -67,11 +67,9 @@ RUN npm install npm@latest -g
 #######################
 ## Prepare the nginx default user interface
 #######################
-RUN mkdir -p /run/nginx /evergreen/ui
+RUN mkdir -p /run/nginx /evergreen/www
 COPY config/nginx.conf /etc/nginx/conf.d/default.conf
-COPY ui/public/ /evergreen/ui/
-COPY ui/build/ /evergreen/ui/
-RUN chown -R nginx:www-data /evergreen/ui/
+COPY client/public/5*.html /evergreen/www/
 #######################
 #######################
 

@@ -151,13 +151,13 @@ class Client {
 module.exports = Client;
 
 if (require.main === module) {
+  Storage.setBootingFlag();
   UI.serve();
   /*
    * Allow the log level to be overridden in the environment for debugging
    * purposes by the user
    */
   logger.level = process.env.LOG_LEVEL || 'warn';
-  Storage.setBootingFlag();
   /* Main entrypoint for module */
   UI.publish('Starting the evergreen-client..', { log: 'info' });
   let client = new Client();
