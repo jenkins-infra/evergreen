@@ -28,7 +28,7 @@ check: lint
 ## Distribution
 distribution: build/jenkins-support build/jenkins.sh
 	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
-	rsync -avm --delete --files-from=packaging-list.client.txt . $(DIST_DIR)/client
+	rsync -avm --delete --files-from=packaging-list.client.txt . $(DIST_DIR)/
 	rsync -avm --delete --include-from=packaging-list.config.txt --exclude="*" ./config/ $(DIST_DIR)/config
 	rsync -avm --delete --include-from=packaging-list.www.txt --exclude="*" ./client/public/ $(DIST_DIR)/www
 	# Incorporate our local and downloaded scripts
