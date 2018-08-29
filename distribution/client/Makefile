@@ -3,6 +3,7 @@ include ../../node.mk
 PATH:=./node_modules/.bin:../../tools:$(PATH)
 
 build: depends
+	node ./scripts/render-docs
 	webpack-cli
 
 run: depends build
