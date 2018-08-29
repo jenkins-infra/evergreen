@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>
+            Welcome to Jenkins Evergreen
+        </title>
+        <style type="text/css">
+            body {
+                font-family: "Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+                font-size: 1.2rem;
+            }
+            .centered {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            a {
+                color: #006a27;
+            }
+
+            .status-indicator {
+                float: right;
+                width: 1rem;
+            }
+            .disconnected  {
+                background-color: red;
+            }
+            .connected {
+                background-color: #006a27;
+            }
+
+
+            @media(min-width: 800px) {
+                .midcontainer {
+                    max-width: 55%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                nav {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                }
+                nav a {
+                    font-weight: bold;
+                }
+                footer {
+                    font-size: 0.9rem;
+                    margin-top: 2rem;
+                    padding-top: 1rem;
+                    border-top: 2px solid #e9e9e9;
+                    text-align: center;
+                }
+            }
+            img {
+                max-width: 100%;
+            }
+            li {
+                margin: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <header>
+                <div class="centered">
+                    <img src="static/magician_256.png"
+                            title="Jenkins Evergreen"
+                            alt="Jenkins Evergreen is magical!"/>
+                    <h1>
+                        Welcome to Jenkins Evergreen
+                    </h2>
+                </div>
+            </header>
+
+            <nav class="midcontainer">
+                <a href="/">Return to Jenkins</a>
+                &middot;
+                <a href="docs/">Built-in Documentation</a>
+            </nav>
+
+            <main class="midcontainer">
+                <div class="status-indicator disconnected">
+                    &nbsp;
+                </div>
+                <div>
+                    <h3>
+                        Messages
+                    </h3>
+                    <div class="messages">
+                    </div>
+                </div>
+            </main>
+
+            <footer class="midcontainer">
+                <a href="https://github.com/jenkins-infra/evergreen">Discuss on Gitter</a>
+                &middot;
+                <a href="https://github.com/jenkins-infra/evergreen">Browse on GitHub</a>
+                &middot;
+                <a href="https://twitter.com/jenkinsci">Follow on Twitter</a>
+            </footer>
+        </div>
+    <script type="text/javascript" src="main.js"></script></body>
+</html>

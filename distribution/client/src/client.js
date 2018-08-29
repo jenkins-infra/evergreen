@@ -15,6 +15,8 @@ const createCron     = require('./lib/periodic');
 const ErrorTelemetry = require('./lib/error-telemetry');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
+const Storage        = require('./lib/storage');
+const UI             = require('./lib/ui');
 const Update         = require('./lib/update');
 
 
@@ -54,6 +56,8 @@ class Client {
       return false;
     }
 
+    UI.publish(`Checking for updates from ${process.env.EVERGREEN_ENDPOINT}`);
+
     return this.update.query()
       .then(updates => this.update.applyUpdates(updates))
       .then(() => this.status.reportVersions())
@@ -61,7 +65,7 @@ class Client {
         if (err.type == 'invalid-json') {
           logger.warn('Received non-JSON response from the Update service');
         } else {
-          logger.error('Failed to query updates', err, err.code, err.data, err.error);
+          UI.publish('Failed to query for updates!', { log: 'error', error: err });
         }
       });
   }
@@ -128,7 +132,7 @@ class Client {
     });
 
     this.reg.register().then((res, newRegistration) => {
-      logger.debug('Registration returned', res);
+      UI.publish('Registered this Evergreen instance', { log: 'debug', error: res} );
       this.status.authenticate(this.reg.uuid, this.reg.token);
       this.update.authenticate(this.reg.uuid, this.reg.token);
       this.errorTelemetry.authenticate(this.reg.uuid, this.reg.token);
@@ -138,7 +142,7 @@ class Client {
         this.runloop(this.app);
       });
     }).catch((err) => {
-      logger.info('Fatal error encountered while trying to register, exiting the client and will restart and retry', err);
+      UI.publish('Fatal error encountered while trying to register, exiting the client and will restart and retry', { log: 'error', error: err });
       process.exit(1);
     });
   }
@@ -147,13 +151,15 @@ class Client {
 module.exports = Client;
 
 if (require.main === module) {
+  Storage.setBootingFlag();
+  UI.serve();
   /*
    * Allow the log level to be overridden in the environment for debugging
    * purposes by the user
    */
   logger.level = process.env.LOG_LEVEL || 'warn';
   /* Main entrypoint for module */
-  logger.info('Starting the evergreen-client..');
+  UI.publish('Starting the evergreen-client..', { log: 'info' });
   let client = new Client();
   client.bootstrap();
 }

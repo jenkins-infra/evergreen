@@ -12,14 +12,24 @@
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
   "devDependencies": {
+    "asciidoctor.js": "^1.5.7-rc.1",
+    "css-loader": "^1.0.0",
     "eslint": "^4.19.1",
     "hoek": "^5.0.4",
+    "html-webpack-plugin": "^3.2.0",
     "jest": "^22.4.4",
-    "memfs": "^2.9.4"
+    "memfs": "^2.9.4",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "@feathersjs/configuration": "^2.0.0",
+    "@feathersjs/express": "^1.2.3",
     "@feathersjs/feathers": "^3.1.7",
     "@feathersjs/rest-client": "^1.4.1",
+    "@feathersjs/socketio": "^3.2.2",
     "@feathersjs/socketio-client": "^1.1.0",
     "checksum": "^0.1.1",
     "cron": "^1.3.0",
@@ -40,6 +50,10 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/ui/index.js",
+      "<rootDir>/src/lib/ui.js"
+    ],
     "coverageReporters": [
       "json",
       "lcov",

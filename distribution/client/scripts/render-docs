@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const fs          = require('fs');
+const path        = require('path');
+const logger      = require('winston');
+const Asciidoctor = require('asciidoctor.js');
+
+logger.LEVEL = 'debug';
+const docsDir = path.join(__dirname, '../docs');
+const outputDir = path.join(__dirname, '../public/docs');
+
+const doctor = new Asciidoctor();
+
+fs.readdirSync(docsDir).filter(f => f.endsWith('.adoc')).forEach((fileName) => {
+  logger.info('Converting', fileName);
+  doctor.convertFile(path.join(docsDir, fileName));
+});
+
+fs.readdirSync(docsDir).filter(f => f.endsWith('.html')).forEach((fileName) => {
+  fs.renameSync(path.join(docsDir, fileName), path.join(outputDir, fileName));
+});
