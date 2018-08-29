@@ -61,6 +61,7 @@ pipeline {
             parallel {
                 stage('Evergreen Client') {
                     steps {
+                        sh 'make -C distribution/ui check'
                         sh 'make -C distribution/client check'
                     }
                     post {

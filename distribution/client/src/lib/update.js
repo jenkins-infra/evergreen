@@ -12,6 +12,7 @@ const logger  = require('winston');
 const Storage     = require('./storage');
 const Downloader  = require('./downloader');
 const Supervisord = require('./supervisord');
+const UI          = require('./ui');
 
 class Update {
   constructor(app, options) {
@@ -56,7 +57,8 @@ class Update {
     if (this.updateInProgress || (!updates)) {
       return false;
     }
-    logger.debug('applying updates', updates);
+
+    UI.publish('Starting to apply updates');
     // Setting this to a timestamp to make a timeout in the future
     this.updateInProgress = new Date();
     let tasks = [];
@@ -81,7 +83,7 @@ class Update {
     });
 
     return Promise.all(tasks).then(() => {
-      logger.info('All downloads completed, restarting Jenkins');
+      UI.publish('All downloads completed, restarting Jenkins');
       this.saveUpdateSync(updates);
       Supervisord.restartProcess('jenkins');
       // TODO: This should really only be set once the instance is back online

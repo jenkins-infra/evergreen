@@ -5,6 +5,9 @@ module.exports = {
   entry: {
     main: './src/index.js',
   },
+  devServer: {
+    contentBase: path.join(__dirname, 'public'),
+  },
   devtool: 'source-map',
   module: {
     rules: [

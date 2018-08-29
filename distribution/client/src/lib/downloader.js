@@ -11,6 +11,8 @@ const rp      = require('promise-request-retry');
 const logger  = require('winston');
 const mkdirp  = require('mkdirp');
 
+const UI = require('./ui');
+
 class Downloader {
   constructor() {
   }
@@ -41,6 +43,7 @@ class Downloader {
     mkdirp.sync(dir);
     const filename = [dir, fileNameToWrite].join(path.sep);
 
+    UI.publish(`Fetching ${filename}`);
     logger.info('Fetching %s and saving to %s', item, filename);
 
     let options = {
