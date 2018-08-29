@@ -39,7 +39,7 @@ distribution: build/jenkins-support build/jenkins.sh
 fix-formatting:
 	$(MAKE) -C client $@
 
-container-prereqs: build/jenkins-support build/jenkins.sh
+container-prereqs: distribution
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C ../services dump generate-ingest
