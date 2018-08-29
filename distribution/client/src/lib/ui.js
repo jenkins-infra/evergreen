@@ -5,6 +5,7 @@
  */
 
 const feathers      = require('@feathersjs/feathers');
+const express       = require('@feathersjs/express');
 const socketio      = require('@feathersjs/socketio');
 const configuration = require('@feathersjs/configuration');
 const logger        = require('winston');
@@ -16,6 +17,10 @@ class MessageService {
   constructor(app) {
     this.app = app;
     this.recent = [];
+  }
+
+  async find() {
+    return this.recent;
   }
 
   async create(data, params) {
@@ -33,11 +38,15 @@ class MessageService {
 
 class UI {
   constructor() {
-    const app = feathers();
+    const app = express(feathers());
     this.app = app;
-    app.configure(configuration());
-    app.configure(socketio());
 
+    app.configure(configuration());
+    app.configure(express.rest());
+    app.configure(socketio());
+    app.use('/', express.static(__dirname + app.get('public')));
+
+    app.use(express.notFound());
     app.use('messages', new MessageService(app));
 
     /*

@@ -1,2 +1,4 @@
 node_modules/
 coverage/
+public/main.js
+public/main.js.map

@@ -1,5 +1,5 @@
 
-const index = require('../src/index');
+const index = require('../ui/index');
 
 describe('Application root', () => {
   it('should be an object', () => {

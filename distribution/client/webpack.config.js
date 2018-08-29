@@ -1,9 +1,8 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: './src/index.js',
+    main: './ui/index.js',
   },
   devServer: {
     contentBase: path.join(__dirname, 'public'),
@@ -21,17 +20,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      excludeChunks: [
-      ],
-    }),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json']
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'public'),
   }
 };
 
