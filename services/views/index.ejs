@@ -31,6 +31,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
+                            ID
+                        </th>
+                        <th>
                             Status
                         </th>
                         <th>
@@ -50,9 +53,9 @@
                 <tbody>
                     <% updates.forEach((update) => { %>
                         <tr>
-                            <!--
-                              Record:   <%= update.id %>
-                            -->
+                            <td align="center">
+                              <%= update.id %>
+                            </td>
                             <td align="center">
                                 <% if (update.tainted) { %>
                                     <div class="alert alert-danger" role="alert">
