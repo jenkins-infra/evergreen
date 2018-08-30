@@ -16,9 +16,6 @@
                 Instances
             </h3>
             <div>
-                <%= instances[0].get('num_instances') %> total
-            </div>
-            <div>
                 <%= connections %> actively connected
             </div>
         </div>
@@ -31,7 +28,13 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
+                            Total Instances
+                        </th>
+                        <th>
                             Status
+                        </th>
+                        <th>
+                            ID
                         </th>
                         <th>
                             Created At
@@ -50,9 +53,9 @@
                 <tbody>
                     <% updates.forEach((update) => { %>
                         <tr>
-                            <!--
-                              Record:   <%= update.id %>
-                            -->
+                            <td align="center">
+                                <%= levels[update.id] %>
+                            </td>
                             <td align="center">
                                 <% if (update.tainted) { %>
                                     <div class="alert alert-danger" role="alert">
@@ -63,6 +66,9 @@
                                         available
                                     </div>
                                 <% } %>
+                            </td>
+                            <td align="center">
+                              <%= update.id %>
                             </td>
                             <td align="center">
                                 <%= update.createdAt %>

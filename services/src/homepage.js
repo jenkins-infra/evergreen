@@ -6,8 +6,15 @@ module.exports = (app) => {
     const sequelize = app.get('sequelizeClient');
     const Instance = app.get('models').instance;
     const instances = await Instance.findAll({
-      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'num_instances']]
+      attributes: [
+        'updateId',
+        [sequelize.fn('COUNT', sequelize.col('id')), 'num_instances'],
+      ],
+      group: ['updateId']
     });
+
+    let levels = {};
+    instances.map(r => levels[r.get('updateId')] = r.get('num_instances'));
 
     app.service('update').find({
       query: {
@@ -19,6 +26,7 @@ module.exports = (app) => {
     }).then((updates) => {
       res.render('index', {
         updates: updates,
+        levels: levels,
         instances: instances,
         connections: app.channel('anonymous').length,
       });
