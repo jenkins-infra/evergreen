@@ -30,7 +30,8 @@ class ErrorTelemetry {
 
     const payload = {
       log: logDataObject,
-      uuid: this.uuid
+      uuid: this.uuid,
+      flavor: this.options.flavor,
     };
 
     return api.create(payload,
