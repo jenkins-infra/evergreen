@@ -34,6 +34,10 @@ distribution: build/jenkins-support build/jenkins.sh
 	# Incorporate our local and downloaded scripts
 	rsync -avm --delete --include-from=packaging-list.scripts.txt --exclude="*" ./scripts/ $(DIST_DIR)/scripts
 	rsync -avm --include-from=packaging-list.scripts.txt --exclude="*" ./build/ $(DIST_DIR)/scripts
+
+	# Once the tree has been put into place, node_modules must be generated for
+	# the distribution
+	(cd $(DIST_DIR)/client && $(PWD)/../tools/npm install --production)
 ############################
 
 fix-formatting:
