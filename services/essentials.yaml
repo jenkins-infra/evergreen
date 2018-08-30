@@ -8,7 +8,7 @@ spec:
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: 0.11-alpha-rc362.942711740b07
+      version: 1.0-rc3-rc482.5bd56df3080e
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc50.78d526a2ba0f
@@ -188,7 +188,7 @@ status:
       version: '2.18'
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: 0.11-alpha-rc362.942711740b07
+      version: 1.0-rc3-rc482.5bd56df3080e
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
       version: 2.1.17
@@ -270,9 +270,6 @@ status:
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.21'
-    - groupId: org.jenkins-ci.plugins
-      artifactId: matrix-auth
-      version: '2.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
       version: 1.7.1
