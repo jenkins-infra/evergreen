@@ -1,5 +1,6 @@
+ROOT_DIR="$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/../"
 IMAGE_NAME:=jenkins/evergreen
-COMPOSE:=../tools/compose
+COMPOSE:=$(ROOT_DIR)/tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
@@ -13,10 +14,10 @@ DIST_DIR=build/evergreen
 all: check container
 
 lint: shunit2
-	../tools/yamllint -s docker-compose*.yml
-	../tools/yamllint -s config/as-code/*.yaml
-	../tools/shellcheck -x tests/tests.sh
-	../tools/shellcheck -x scripts/jenkins-evergreen.sh
+	$(ROOT_DIR)/tools/yamllint -s docker-compose*.yml
+	$(ROOT_DIR)/tools/yamllint -s config/as-code/*.yaml
+	$(ROOT_DIR)/tools/shellcheck -x tests/tests.sh
+	$(ROOT_DIR)/tools/shellcheck -x scripts/jenkins-evergreen.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
 
@@ -26,7 +27,9 @@ check: lint
 
 
 ## Distribution
-distribution: build/jenkins-support build/jenkins.sh
+distribution: build/evergreen.zip
+
+prepare-distribution: build/jenkins-support build/jenkins.sh
 	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
 	rsync -avm --delete --files-from=packaging-list.client.txt . $(DIST_DIR)/
 	rsync -avm --delete --include-from=packaging-list.config.txt --exclude="*" ./config/ $(DIST_DIR)/config
@@ -37,8 +40,13 @@ distribution: build/jenkins-support build/jenkins.sh
 
 	# Once the tree has been put into place, node_modules must be generated for
 	# the distribution
-	(cd $(DIST_DIR)/client && $(PWD)/../tools/npm install --production)
+	(cd $(DIST_DIR)/client && $(ROOT_DIR)/tools/npm install --production)
+
+build/evergreen.zip: prepare-distribution
+	(cd build && \
+		zip -r evergreen.zip evergreen)
 ############################
+
 
 fix-formatting:
 	$(MAKE) -C client $@
@@ -109,4 +117,5 @@ shunit2:
 
 .PHONY: all check clean container container-check container-prereqs \
 	container-check-prereqs base-container-check \
-	docker-cloud-container-check create-squid-cache-volume
+	docker-cloud-container-check create-squid-cache-volume \
+	distribution prepare-distribution
