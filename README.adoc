@@ -42,6 +42,7 @@ restarted if necessary.
 [source,bash]
 ----
 docker volume create jenkins-evergreen-data && \
+docker pull jenkins/evergreen:docker-cloud && \
 docker run --name evergreen \
     --restart=always \
     -ti \
