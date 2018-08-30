@@ -4,7 +4,7 @@ metadata:
   annotations: null
 spec:
   core:
-    version: '2.138'
+    version: 2.141-rc27251.3d1bbb807af9
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
@@ -94,7 +94,7 @@ spec:
           version: 1.5.0
 status:
   core:
-    version: '2.138'
+    version: 2.141-rc27251.3d1bbb807af9
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
