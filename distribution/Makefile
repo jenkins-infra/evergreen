@@ -24,6 +24,7 @@ check: lint
 	$(MAKE) -C client $@
 	$(MAKE) container-check
 
+
 ## Distribution
 distribution: build/jenkins-support build/jenkins.sh
 	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
