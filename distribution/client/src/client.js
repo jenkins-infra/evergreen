@@ -32,9 +32,9 @@ class Client {
     }
     this.app = feathers();
     this.reg = new Registration(this.app);
-    this.status = new Status(this.app, {flavor: process.env.FLAVOR});
+    this.status = new Status(this.app, { flavor: process.env.FLAVOR });
     this.update = new Update(this.app);
-    this.errorTelemetry = new ErrorTelemetry(this.app);
+    this.errorTelemetry = new ErrorTelemetry(this.app, { flavor: process.env.FLAVOR });
     this.updating = false;
     // This should be overridden on bootstrap
     this.socket = null;

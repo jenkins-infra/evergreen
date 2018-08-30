@@ -30,26 +30,22 @@ class Sentry {
       logger.error('Missing data.');
       return;
     }
+
+    const errorData = {
+      level: data.log.level.toLowerCase(),
+      logger: data.log.name,
+      extra: {
+        id: data.uuid,
+        uuid: data.uuid,
+        source: data.log,
+        flavor: data.flavor,
+      },
+    };
+
     if (data.log.exception) {
-      Raven.captureException(new Error(data.log.message), {
-        level: data.log.level.toLowerCase(),
-        logger: data.log.name,
-        extra: {
-          id: data.uuid,
-          uuid: data.uuid,
-          source: data.log
-        }
-      });
+      Raven.captureException(new Error(data.log.message), errorData);
     } else {
-      Raven.captureMessage(data.log.message, {
-        level: data.log.level.toLowerCase(),
-        logger: data.log.name,
-        extra: {
-          id: data.uuid,
-          uuid: data.uuid,
-          source: data.log
-        }
-      });
+      Raven.captureMessage(data.log.message, errorData);
     }
   }
 }
