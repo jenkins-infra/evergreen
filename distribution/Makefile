@@ -45,7 +45,7 @@ aws-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=aws-ec2-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
-	$(MAKE) -C client unit build
+	$(MAKE) -C client build
 	docker build -t ${IMAGE_NAME}:latest .
 	$(MAKE) -C environments $@
 

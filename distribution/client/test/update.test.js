@@ -75,6 +75,9 @@ describe('The update module', () => {
       let manifest = {
         core: {
           url: 'https://jenkins.io/index.html',
+          checksum: {
+            signature: '0xdeadbeef',
+          }
         },
         plugins: {},
       };
