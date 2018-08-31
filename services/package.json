@@ -57,7 +57,7 @@
   "devDependencies": {
     "@feathersjs/socketio-client": "^1.1.0",
     "cheerio": "^1.0.0-rc.2",
-    "compare-versions": "^3.3.0",
+    "compare-versions": "^3.4.0",
     "eslint": "^4.19.1",
     "hoek": "^5.0.4",
     "jest": "^22.4.4",
