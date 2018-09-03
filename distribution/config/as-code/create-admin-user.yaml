@@ -1,6 +1,7 @@
 jenkins:
+  # Agent to master security
   remotingSecurity:
-    enabled: false
+    enabled: true
   securityRealm:
     local:
       allowsSignup: false
@@ -8,3 +9,10 @@ jenkins:
         - id: "admin"
           password: ${JENKINS_ADMIN_PASSWORD}
   authorizationStrategy: loggedInUsersCanDoAnything
+  #CSRF issuer
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+security:
+  remotingCLI:
+    enabled: false

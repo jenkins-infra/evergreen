@@ -232,4 +232,23 @@ test_no_maven_or_freestyle_jobs() {
   assertNotEquals "FreeStyle jobs should not have been found" 0 "$?"
 
 }
+
+# JENKINS-53215
+test_secure_defaults_ootb() {
+  # shellcheck disable=SC2016
+  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
+  managePage=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/manage )
+  assertEquals "Curl call to /manage should have succeeded" 0 "$?"
+
+  echo "/manage content: ***$managePage***"
+
+  echo "$managePage" | grep 'Allowing Jenkins CLI to work in -remoting mode is considered dangerous' > /dev/null
+  assertNotEquals "CLI in remoting mode should be disabled" 0 "$?"
+
+  echo "$managePage" | grep 'You have not configured the CSRF issuer. This could be a security issue.' > /dev/null
+  assertNotEquals "CSRF issuer should be configured" 0 "$?"
+
+  echo "$managePage" | grep 'Agent to master security subsystem is currently off.' > /dev/null
+  assertNotEquals "Agent to master security should be enabled" 0 "$?"
+}
 . ./shunit2/shunit2
