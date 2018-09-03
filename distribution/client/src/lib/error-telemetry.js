@@ -39,7 +39,7 @@ class ErrorTelemetry {
         headers: { Authorization: this.token }
       }
     )
-      .then(res => logger.debug('Pushed error as', res))
+      .then(res => logger.debug(`Pushed error log (message='${logDataObject.message}'). Backend response:`, res))
       .catch(err => logger.error('Failed to push log', err));
   }
 
