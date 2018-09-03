@@ -162,10 +162,7 @@ test_metrics_health_check() {
 # JENKINS-49811
 test_logs_are_propagated() {
 
-  # shellcheck disable=SC2016
-  error_logging_filename=$( $COMPOSE exec -T backend sh -c 'echo $ERROR_LOGGING_FILE' )
-  assertEquals "ERROR_LOGGING_FILE env variable should be defined" "0" "$?"
-  assertNotEquals "Env var value should not not be empty" "" "$error_logging_filename"
+  error_logging_filename='/tmp/error-telemetry-testing.log';
 
   result=$( $COMPOSE exec -T backend cat "$error_logging_filename" )
 

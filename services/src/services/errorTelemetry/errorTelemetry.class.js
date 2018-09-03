@@ -4,22 +4,19 @@ const path   = require('path');
 const mkdirp = require('mkdirp');
 const sentry = require('../../libs/sentry');
 
-const DEFAULT_ERROR_LOGGING_FILE = '/srv/evergreen/error-logging.json';
-
 class ErrorTelemetryService {
   constructor() {
-    this.loggingFile = process.env.ERROR_LOGGING_FILE;
-    if (!this.loggingFile) {
-      logger.warn(`No ERROR_LOGGING_FILE environment variable found, defaulting to ${DEFAULT_ERROR_LOGGING_FILE}`);
-      this.loggingFile = DEFAULT_ERROR_LOGGING_FILE;
+    if (process.env.NODE_ENV == 'production') {
+      logger.info('production mode: no file used for error telemetry logging');
+    } else {
+      this.loggingFile = '/tmp/error-telemetry-testing.log';
+      const baseDirectory = path.dirname(this.loggingFile);
+      if (!fs.existsSync(baseDirectory)) {
+        logger.warn(`${baseDirectory} does not exist, trying to create it.`);
+        mkdirp(baseDirectory);
+      }
+      logger.warn(`Testing mode: ${baseDirectory} will push received logs to ${this.loggingFile} file`);
     }
-
-    const baseDirectory = path.dirname(this.loggingFile);
-    if (!fs.existsSync(baseDirectory)) {
-      logger.warn(`${baseDirectory} does not exist, trying to create it.`);
-      mkdirp(baseDirectory);
-    }
-    logger.info(`Server: ${baseDirectory} will push received logs to ${this.loggingFile}`);
   }
   create(data) {
     // Should be impossible because it passed the hooks step
@@ -27,8 +24,11 @@ class ErrorTelemetryService {
       return Promise.reject({status:'KO'});
     }
 
-    const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
-    fs.appendFileSync(this.loggingFile, toWrite);
+    // Only for testing, file logging of error telemetry is disabled in production
+    if (this.loggingFile) {
+      const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
+      fs.appendFileSync(this.loggingFile, toWrite);
+    }
     sentry.sendOutput(data);
 
     return Promise.resolve({status:'OK'});

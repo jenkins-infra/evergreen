@@ -26,7 +26,6 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -e DB_TRACING=$DB_TRACING \
     -e LOG_LEVEL=$LOG_LEVEL \
     -e FLAVOR=$FLAVOR \
-    -e ERROR_LOGGING_FILE=/tmp/evergreen-errosr.json \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
     node:9-alpine \
