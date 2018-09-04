@@ -64,14 +64,8 @@ RUN apk add --no-cache git \
 # Ensure the latest npm is available
 RUN npm install npm@latest -g
 
-#######################
-## Prepare the nginx default user interface
-#######################
-RUN mkdir -p /run/nginx /evergreen/www
-COPY config/nginx.conf /etc/nginx/conf.d/default.conf
-COPY client/public/5*.html /evergreen/www/
-#######################
-#######################
+## the nginx alpine package doesn't make this directory properly
+RUN mkdir -p /run/nginx
 
 # TODO: add a checksum check?
 RUN cd /tmp && \
@@ -104,18 +98,9 @@ WORKDIR $EVERGREEN_HOME
 RUN time chown -R $user:$group $EVERGREEN_HOME
 USER $user
 
-# Prepare the evergreen distributionj
-# Sigh https://github.com/moby/moby/issues/35018, cannot use $user below
-COPY --chown=jenkins:jenkins build/evergreen $EVERGREEN_HOME
-
 # Even if empty, the file needs to exist as we use at least for now https://github.com/lucagrulla/node-tail
 # which immediately crashes if the file is missing, even if we use the `follow` switch
 RUN touch ${JENKINS_VAR}/logs/evergreen.log.0
-
-# Jenkins directory is a volume, so configuration and build history
-# can be persisted and survive image upgrades
-# Important: this must be done *after* the chown
-VOLUME ${EVERGREEN_HOME}
 
 USER root
 # The externally sourced jenkins.sh expects jenkins-support to be in

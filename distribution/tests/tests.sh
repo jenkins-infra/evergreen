@@ -237,8 +237,6 @@ test_secure_defaults_ootb() {
   managePage=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/manage )
   assertEquals "Curl call to /manage should have succeeded" 0 "$?"
 
-  echo "/manage content: ***$managePage***"
-
   echo "$managePage" | grep 'Allowing Jenkins CLI to work in -remoting mode is considered dangerous' > /dev/null
   assertNotEquals "CLI in remoting mode should be disabled" 0 "$?"
 

@@ -27,7 +27,7 @@ check: lint
 
 
 ## Distribution
-distribution: build/evergreen.zip
+distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip
 
 prepare-distribution: build/jenkins-support build/jenkins.sh
 	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
@@ -42,9 +42,29 @@ prepare-distribution: build/jenkins-support build/jenkins.sh
 	# the distribution
 	(cd $(DIST_DIR)/client && $(ROOT_DIR)/tools/npm install --production)
 
+prepare-docker-cloud-distribution: prepare-distribution
+	mkdir -p build/evergreen-docker-cloud/evergreen
+	rsync -avm --delete environments/docker-cloud/config ./build/evergreen-docker-cloud/evergreen
+
+prepare-aws-ec2-cloud-distribution:
+	mkdir -p build/evergreen-aws-ec2-cloud/evergreen
+	rsync -avm --delete environments/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
+
+build/evergreen-aws-ec2-cloud.zip: prepare-aws-ec2-cloud-distribution
+	(cd build && \
+		zip -q -r evergreen-aws-ec2-cloud.zip evergreen && \
+		cd evergreen-aws-ec2-cloud && \
+		zip -q -r ../evergreen-aws-ec2-cloudd.zip ./evergreen)
+
+build/evergreen-docker-cloud.zip: prepare-docker-cloud-distribution
+	(cd build && \
+		zip -q -r evergreen-docker-cloud.zip evergreen && \
+		cd evergreen-docker-cloud && \
+		zip -q -r ../evergreen-docker-cloud.zip ./evergreen)
+
 build/evergreen.zip: prepare-distribution
 	(cd build && \
-		zip -r evergreen.zip evergreen)
+		zip -q -r evergreen.zip evergreen)
 ############################
 
 
