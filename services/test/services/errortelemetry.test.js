@@ -58,7 +58,7 @@ describe('Error Telemetry', () => {
     assert.ok(response, 'A log should have been stored');
     assert.equal(response.status, 'OK', 'The log should have been stored');
 
-    const fileContent = fs.readFileSync(process.env.ERROR_LOGGING_FILE);
+    const fileContent = fs.readFileSync('/tmp/error-telemetry-testing.log');
     assert.notEqual(fileContent, '', 'Log file should not be empty');
 
   });
