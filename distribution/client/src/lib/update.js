@@ -72,6 +72,7 @@ class Update {
 
     if ((!updates.plugins) || (!updates.plugins.updates)) {
       logger.debug('No plugins available in the response');
+      this.updateInProgress = null;
       return false;
     }
 
