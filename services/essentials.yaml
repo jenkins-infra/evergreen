@@ -20,7 +20,7 @@ spec:
       version: 1.8.2
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '2.18'
+      version: '3.0'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.16'
@@ -32,7 +32,7 @@ spec:
       version: '2.9'
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
-      version: 2.16.3
+      version: '2.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
       version: '1.24'
@@ -170,7 +170,7 @@ status:
       version: 1.8.2
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
-      version: 2.16.3
+      version: '2.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
       version: 2.0.20
@@ -185,7 +185,7 @@ status:
       version: '6.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '2.18'
+      version: '3.0'
     - groupId: io.jenkins
       artifactId: configuration-as-code
       version: 1.0-rc3-rc482.5bd56df3080e
