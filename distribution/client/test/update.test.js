@@ -69,6 +69,7 @@ describe('The update module', () => {
 
     it('should not run if there are no updates available', () => {
       expect(update.applyUpdates()).resolves.toBeFalsy();
+      expect(update.updateInProgress).toBeFalsy();
     });
 
     it('should not reject on no plugin updates', async () => {
@@ -83,6 +84,7 @@ describe('The update module', () => {
       };
       let response = await update.applyUpdates(manifest);
       expect(response).toBeFalsy();
+      expect(update.updateInProgress).toBeFalsy();
     });
   });
 });
