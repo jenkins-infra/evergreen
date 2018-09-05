@@ -34,7 +34,7 @@ describe('the Downloader class', () => {
       // FIXME: introduce assume() + env var to allow disabling this?
       beforeEach(() => {
         // default is 5 seconds, could be bigger because of the file size
-        jest.setTimeout(50000);
+        jest.setTimeout(120000);
       });
 
       it('should fail on an invalid signature', async () => {
@@ -43,10 +43,10 @@ describe('the Downloader class', () => {
             dir,
             'index.html',
             'bogus-signature');
+          expect(true).toBeFalsy();
         } catch (err) {
           expect(err.message.startsWith('Signature verification')).toBeTruthy();
         }
-        expect.assertions(1);
       });
 
       it('should manage to download a decently big file, retrying if needed', async () => {
