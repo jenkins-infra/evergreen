@@ -1,4 +1,4 @@
-FROM jenkins/evergreen
+FROM jenkins/evergreen:base
 
 ARG FLAVOR=null
 ENV FLAVOR ${FLAVOR}
@@ -14,3 +14,4 @@ RUN rm -f evergreen-${FLAVOR}.zip
 # Important: this must be done *after* all file system changes have been made
 # by the Dockerfile
 VOLUME ${EVERGREEN_HOME}
+CMD /usr/bin/supervisord -c $EVERGREEN_HOME/config/supervisord.conf

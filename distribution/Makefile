@@ -54,7 +54,7 @@ build/evergreen-aws-ec2-cloud.zip: prepare-aws-ec2-cloud-distribution
 	(cd build && \
 		zip -q -r evergreen-aws-ec2-cloud.zip evergreen && \
 		cd evergreen-aws-ec2-cloud && \
-		zip -q -r ../evergreen-aws-ec2-cloudd.zip ./evergreen)
+		zip -q -r ../evergreen-aws-ec2-cloud.zip ./evergreen)
 
 build/evergreen-docker-cloud.zip: prepare-docker-cloud-distribution
 	(cd build && \
@@ -80,7 +80,6 @@ container-check: base-container-check docker-cloud-container-check aws-cloud-con
 
 base-container-check: containers container-check-prereqs
 	./tests/offline-tests.sh
-	./tests/noenv-tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
@@ -92,14 +91,14 @@ aws-cloud-container-check: containers container-check-prereqs
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client build
-	docker build -t ${IMAGE_NAME}:latest .
+	docker build -t ${IMAGE_NAME}:base .
 	$(MAKE) -C environments $@
 
 containers: container
 	$(MAKE) -C ../services container
 
 publish: container
-	docker push ${IMAGE_NAME}:latest
+	docker push ${IMAGE_NAME}:base
 	$(MAKE) -C environments $@
 
 create-squid-cache-volume:
