@@ -62,6 +62,7 @@ describe('The update module', () => {
     beforeEach(() => {
       update.updateInProgress = false;
     });
+
     it('should not run if the instance is already updating', () => {
       update.updateInProgress = true;
       expect(update.applyUpdates()).resolves.toBeFalsy();
@@ -74,12 +75,6 @@ describe('The update module', () => {
 
     it('should not reject on no plugin updates', async () => {
       let manifest = {
-        core: {
-          url: 'https://jenkins.io/index.html',
-          checksum: {
-            signature: '0xdeadbeef',
-          }
-        },
         plugins: {},
       };
       let response = await update.applyUpdates(manifest);
