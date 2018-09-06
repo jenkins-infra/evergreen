@@ -1,0 +1,7 @@
+# Avoid including our development mode squid conf
+- squid.conf
+# Include our background process configurations
+*.conf
+logging.properties
+# Include our configuration as code
+as-code***

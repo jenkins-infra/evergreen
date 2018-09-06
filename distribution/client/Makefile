@@ -12,4 +12,4 @@ run: depends build
 		FLAVOR=docker-cloud \
 		npm run client
 
-.PHONY: run
+.PHONY: run build
