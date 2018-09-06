@@ -85,6 +85,17 @@ pipeline {
             }
         }
 
+        stage('Build Distribution') {
+            steps {
+                sh 'make -C distribution distribution'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'distribution/build/*.zip', fingerprint: true
+                }
+            }
+        }
+
         stage('Build images') {
             parallel {
                 stage('jenkins/evergreen') {

@@ -1,0 +1,4 @@
+# Include static error pages for nginx to show before the app boots
+[[:digit:]]*.html
+# Include our static assets just to be sure nginx can show them if it needs to
+static***

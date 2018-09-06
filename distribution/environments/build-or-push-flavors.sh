@@ -3,11 +3,15 @@ set -euo pipefail
 
 IMAGE_NAME=jenkins/evergreen
 
+set -xe
+
 if [[ "$1" == "build" ]]; then
   for dir in *-cloud
   do
     echo "Building $dir directory"
-    docker build --build-arg FLAVOR="$dir" -t "$IMAGE_NAME:$dir" "$dir"
+    # Changing up a directory to ensure we have the full build context
+    (cd ../ && \
+        docker build --build-arg FLAVOR="$dir" -t "$IMAGE_NAME:$dir" -f "environments/$dir/Dockerfile" .)
   done
 elif [[ "$1" == "push" ]]; then
   for dir in *-cloud
