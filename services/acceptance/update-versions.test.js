@@ -164,6 +164,7 @@ describe('versions/updates interaction acceptance tests', () => {
         */
         let pluginManifest = this.ingest.plugins[0];
         this.pluginName = pluginManifest.artifactId;
+        this.invalidPluginName = 'no-longer-valid';
 
         let versions = {
           schema: 1,
@@ -175,6 +176,7 @@ describe('versions/updates interaction acceptance tests', () => {
           },
         };
         versions.jenkins.plugins[this.pluginName] = pluginManifest.checksum.signature;
+        versions.jenkins.plugins[this.invalidPluginName] = 'random_checksum';
 
         await request({
           url: h.getUrl('/versions'),
@@ -204,11 +206,18 @@ describe('versions/updates interaction acceptance tests', () => {
 
         let found = false;
         this.response.plugins.updates.forEach((plugin) => {
-          if (plugin.url.match(this.pluginName)) {
+          if (plugin.artifactId == this.pluginName) {
             found = true;
           }
         });
         expect(found).not.toBeTruthy();
+      });
+
+      it('should be given no longer used plugins in deletes', () => {
+        expect(this.response).toBeTruthy();
+        expect(this.response).toHaveProperty('plugins.deletes');
+        expect(this.response.plugins.deletes).toHaveLength(1);
+        expect(this.response.plugins.deletes).toEqual(expect.arrayContaining([this.invalidPluginName]));
       });
     });
   });

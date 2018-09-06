@@ -93,13 +93,21 @@ class Update extends FeathersSequelize.Service {
 
     if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length != 0) {
       let signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
+      let artifactIds = record.manifest.plugins.map(p => p.artifactId);
       let updates = [];
+      let deletes = [];
       record.manifest.plugins.forEach((plugin) => {
         if (!signatures.includes(plugin.checksum.signature)) {
           updates.push(plugin);
         }
       });
+      Object.keys(latestClientVersion.manifest.jenkins.plugins).forEach((artifactId) => {
+        if (!artifactIds.includes(artifactId)) {
+          deletes.push(artifactId);
+        }
+      });
       computedManifest.plugins.updates = updates;
+      computedManifest.plugins.deletes = deletes;
     }
 
     return true;
