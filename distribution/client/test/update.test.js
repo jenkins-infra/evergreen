@@ -1,18 +1,24 @@
-jest.mock('fs');
-
 const assert   = require('assert');
+const tmp      = require('tmp');
 const fs       = require('fs');
 const feathers = require('@feathersjs/feathers');
 const Update   = require('../src/lib/update');
+const Storage  = require('../src/lib/storage');
+const mkdirp   = require('mkdirp');
 
 
 describe('The update module', () => {
-  let app = feathers();
-  let update = new Update(app);
 
-  beforeEach(() => {
-    /* Make sure memfs is flushed every time */
-    fs.volume.reset();
+  let app = null;
+  let update = null;
+  beforeEach( () => {
+    const evergreenHome = tmp.dirSync({unsafeCleanup: true}).name;
+    Storage.homeDirectory = (() => evergreenHome );
+    mkdirp.sync(Storage.jenkinsHome());
+
+    app = feathers();
+    update = new Update(app);
+
   });
 
   describe('authenticate()', () => {

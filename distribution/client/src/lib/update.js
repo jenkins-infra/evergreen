@@ -13,6 +13,7 @@ const Storage     = require('./storage');
 const Downloader  = require('./downloader');
 const Supervisord = require('./supervisord');
 const UI          = require('./ui');
+const Snapshotter = require('./snapshotter');
 
 class Update {
   constructor(app, options) {
@@ -23,6 +24,8 @@ class Update {
     this.manifest = null;
     this.updateInProgress = null;
     this.fileOptions = { encoding: 'utf8' };
+    this.snapshotter = new Snapshotter();
+    this.snapshotter.init(Storage.jenkinsHome());
   }
 
   authenticate(uuid, token) {
@@ -63,6 +66,7 @@ class Update {
     this.updateInProgress = new Date();
     let tasks = [];
 
+
     if ((updates.core) && (updates.core.url)) {
       tasks.push(Downloader.download(updates.core.url,
         Storage.jenkinsHome(),
@@ -76,6 +80,8 @@ class Update {
       return false;
     }
 
+    // FIXME: check updates.meta.level is specified
+
     /*
      * Queue up all the downloads simultaneously, we need updates ASAP!
      */
@@ -88,6 +94,7 @@ class Update {
     });
 
     return Promise.all(tasks).then(() => {
+      this.snapshotter.snapshot(`UL{this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       UI.publish('All downloads completed, restarting Jenkins');
       this.saveUpdateSync(updates);
       Supervisord.restartProcess('jenkins');
@@ -113,7 +120,7 @@ class Update {
   }
 
   saveUpdateSync(manifest) {
-    logger.info('Saving a new manifest..');
+    logger.info('Saving a new manifest.. into ' + this.updatePath());
     fs.writeFileSync(
       this.updatePath(),
       JSON.stringify(manifest),
@@ -122,6 +129,7 @@ class Update {
   }
 
   loadUpdateSync() {
+    logger.info('Loading a new manifest.. from ' + this.updatePath());
     try {
       fs.statSync(this.updatePath());
     } catch (err) {
