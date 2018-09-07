@@ -38,7 +38,6 @@ RUN mkdir -p /usr/share/jenkins/ref/ && \
     mkdir ${JENKINS_VAR}/logs
 
 # for main web interface:
-EXPOSE ${http_port}
 EXPOSE 80
 # will be used by attached agents:
 EXPOSE ${agent_port}

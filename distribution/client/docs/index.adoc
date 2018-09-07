@@ -1,3 +1,65 @@
 = Evergreen User Guide
 
-This is still a work in progress :)
+:toc:
+:sectanchors:
+:description: Jenkins Evergreen built-in User Guide
+:author: R Tyler Croy
+
+**Thank you for installing Jenkins Evergreen!**
+
+Jenkins Evergreen is an automatically updating rolling distribution system for
+Jenkins It consists of server-side, and client-side components to support a
+Chrome-like upgrade experience for Jenkins users.
+
+== Introduction
+
+[NOTE]
+====
+This built-in documentation is still a work in progress and can be improved by
+contributing to the link:https://github.com/jenkins-infra/evergreen[Evergreen
+GitHub repository] or by suggesting edits to
+link:https://github.com/jenkins-infra/evergreen/edit/master/distribution/client/docs/index.adoc[this
+document].
+====
+
+
+== Features
+
+
+== For Existing Jenkins Users
+
+[[managing-plugins]]
+=== Managing Plugins
+
+Evergreen is a curated distribution of a large collection of useful features
+provided by Evergreen, Jenkins core, and plugins. This entire distribution is tested and deployed together as a cohesive artifact.
+
+To ensure the stability of the instance, Evergreen intentionally disables the
+ability to install or remove additional plugins to the instance.
+
+[[managing-tools]]
+=== Configuring Tools
+
+Jenkins Evergreen is designed for
+link:https://jenkins.io/doc/book/pipeline[Jenkins Pipeline]
+first and foremost, including the
+link:https://jenkins.io/doc/book/pipeline/docker/[built-in Docker support]
+which makes using custom tools for a Pipeline much easier, for example:
+
+[source,grooy]
+----
+pipeline {
+    agent {
+        docker { image 'node:7-alpine' }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
+----
+
+Accordingly, configuring legacy "Tools" in Jenkins has been disabled.
