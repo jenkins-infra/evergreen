@@ -94,7 +94,7 @@ class Update {
     });
 
     return Promise.all(tasks).then(() => {
-      this.snapshotter.snapshot(`UL{this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
+      this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       UI.publish('All downloads completed, restarting Jenkins');
       this.saveUpdateSync(updates);
       Supervisord.restartProcess('jenkins');
