@@ -46,7 +46,7 @@ class Snapshotter {
           }
         });
     } else {
-      logger.info(`${LOG_PREFIX} ${this.getDotGitDirectory()} already initialized, moving on`);
+      logger.debug(`${LOG_PREFIX} ${this.getDotGitDirectory()} already initialized, moving on`);
     }
     this.updateGitIgnore();
   }
