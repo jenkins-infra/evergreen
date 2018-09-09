@@ -247,4 +247,15 @@ test_secure_defaults_ootb() {
   assertNotEquals "Agent to master security should be enabled" 0 "$?"
 }
 
+# JENKINS-53273
+test_git_history_is_present() {
+  commitCount=$( docker exec -w "$JENKINS_HOME" "$container_under_test" git rev-list --count HEAD )
+  assertEquals "git call to count commits should have succeeded" 0 "$?"
+  assertEquals "commit count should be 4" 4 "$commitCount"
+
+  docker exec -w "$JENKINS_HOME" "$container_under_test" git log --pretty=format:%s HEAD~..HEAD | \
+                grep 'UL1->UL2' > /dev/null
+  assertEquals "git call to retrieve last subject should have succeeded" 0 "$?"
+}
+
 . ./shunit2/shunit2
