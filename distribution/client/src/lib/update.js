@@ -94,8 +94,9 @@ class Update {
     });
 
     return Promise.all(tasks).then(() => {
+      UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
-      UI.publish('All downloads completed, restarting Jenkins');
+      UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
       this.saveUpdateSync(updates);
       Supervisord.restartProcess('jenkins');
       // TODO: This should really only be set once the instance is back online
