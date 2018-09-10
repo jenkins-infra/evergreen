@@ -79,7 +79,7 @@ class Snapshotter {
       logger.info(`${LOG_PREFIX} .gitignore outdated or absent, updating.`);
       fs.writeFileSync(gitignorePath, GITIGNORE_CONTENT);
       this.git('add', '.gitignore');
-      this.git('commit', '--message', 'Update.gitignore content to latest');
+      this.git('commit', '--message', 'Update .gitignore content to latest');
     } else {
       logger.info(`${LOG_PREFIX} .gitignore up to date already.`);
     }
