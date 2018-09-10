@@ -251,10 +251,12 @@ test_secure_defaults_ootb() {
 test_git_history_is_present() {
   commitCount=$( docker exec -w "$JENKINS_HOME" "$container_under_test" git rev-list --count HEAD )
   assertEquals "git call to count commits should have succeeded" 0 "$?"
-  assertEquals "commit count should be 4" 4 "$commitCount"
+  # Depending on if ingest.json is pushed to backend before or after the client first
+  # polls the backend, we'll get 3 or 4 commits...
+  assertTrue "[ $commitCount -ge 3 ]"
 
   docker exec -w "$JENKINS_HOME" "$container_under_test" git log --pretty=format:%s HEAD~..HEAD | \
-                grep 'UL1->UL2' > /dev/null
+                grep 'Snapshot after downloads completed, before Jenkins restart' > /dev/null
   assertEquals "git call to retrieve last subject should have succeeded" 0 "$?"
 }
 
