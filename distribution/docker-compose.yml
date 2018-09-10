@@ -33,9 +33,7 @@ services:
       - 'LOG_LEVEL=debug'
       - 'INSECURE_SHOW_ADMIN_PASSWORD=true'
     ports:
-      - '8080:8080'
-      - '8081:8081'
-      - '80:80'
+      - '8080:80'
     depends_on:
       - backend
     volumes:
