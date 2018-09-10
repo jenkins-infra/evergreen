@@ -210,7 +210,7 @@ test_no_maven_or_freestyle_jobs() {
   # shellcheck disable=SC2016
   adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
 
-  topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/evergreen/api/xml )
+  topLevelDescriptor=$( curl --silent -u "admin:$adminPassword" http://localhost:$TEST_PORT/jenkins/evergreen/api/xml )
   assertEquals "Curl call to Evergreen XML API should have succeeded" 0 "$?"
 
   echo "$topLevelDescriptor" | grep -i WorkflowJob > /dev/null
