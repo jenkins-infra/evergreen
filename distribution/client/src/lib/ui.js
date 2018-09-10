@@ -27,7 +27,7 @@ class MessageService {
     if (params.log) {
       logger[params.log](data, params.error);
     } else {
-      logger.debug('Publishing to the UI:', data, params);
+      logger.debug(`Publishing to the UI: message='${JSON.stringify(data)}, params='${JSON.stringify(params)}'`);
     }
     this.recent.push(data);
     // Only keep the last 100 items
