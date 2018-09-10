@@ -253,6 +253,7 @@ test_git_history_is_present() {
   assertEquals "git call to count commits should have succeeded" 0 "$?"
   # Depending on if ingest.json is pushed to backend before or after the client first
   # polls the backend, we'll get 3 or 4 commits...
+  # See JENKINS-53499
   assertTrue "[ $commitCount -ge 3 ]"
 
   docker exec -w "$JENKINS_HOME" "$container_under_test" git log --pretty=format:%s HEAD~..HEAD | \
