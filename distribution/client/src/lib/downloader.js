@@ -70,7 +70,7 @@ class Downloader {
       rp(options)
         .then((response) => {
           const elapsedString = Downloader.formatDuration(Date.now() - startTime);
-          logger.info  ('Download complete for', filename, `(Took ${elapsedString})`);
+          logger.info ('Download complete for', filename, `(Took ${elapsedString})`);
           UI.publish(`Fetched ${filename} in ${elapsedString}s`);
 
           const output = fs.createWriteStream(filename);
@@ -78,7 +78,7 @@ class Downloader {
           output.on('close', () => {
             logger.debug('Downloaded %s (%d bytes)', filename, output.bytesWritten);
             if (sha256) {
-              logger.error('Verifying signature for', filename);
+              logger.debug('Verifying signature for', filename);
               const downloaded = Checksum.signatureFromFile(filename);
 
               if (sha256 != downloaded) {
@@ -86,6 +86,8 @@ class Downloader {
                 UI.publish('Jenkins may fail to start properly! Please check your network connection');
                 UI.publish(`Signature verification failed for ${filename}! (${downloaded} != ${sha256})`, { log: 'error' });
                 return reject(new Error(`Signature verification failed for ${filename}`));
+              } else {
+                logger.debug(`Correct checksum (${sha256}) for`, filename);
               }
             }
             return resolve(output);
