@@ -257,5 +257,15 @@ test_manage_plugins_restricted() {
   assertEquals "/pluginManager did not properly redirect! ${result}" 0 "$?"
 }
 
+test_blueocean_default_redirect() {
+  # shellcheck disable=SC2016
+  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
+  # Follow the redirecs and make sure we end up on a proper page
+  result=$( curl -v -L -u "admin:$adminPassword" http://localhost:$TEST_PORT/ 2>&1 )
+  rc=$?
+  echo "$result"
+
+  assertEquals "curl call to /should have succeeeded" 0 "$rc"
+}
 
 . ./shunit2/shunit2
