@@ -247,15 +247,4 @@ test_secure_defaults_ootb() {
   assertNotEquals "Agent to master security should be enabled" 0 "$?"
 }
 
-test_manage_plugins_restricted() {
-  # shellcheck disable=SC2016
-  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
-  result=$( curl -v -u "admin:$adminPassword" http://localhost/pluginManager/ 2>&1 )
-  assertEquals "curl call to /pluginManager should have succeeeded" 0 "$?"
-
-  echo "${result}" | grep "< Location: http://localhost/evergreen/docs/#managing-plugins"
-  assertEquals "/pluginManager did not properly redirect! ${result}" 0 "$?"
-}
-
-
 . ./shunit2/shunit2
