@@ -24,8 +24,8 @@ ENV JAVA_OPTS=\
 "-Djenkins.model.Jenkins.buildsDir=${JENKINS_VAR}/jobs/\${ITEM_FULL_NAME}/builds "\
 "-Dhudson.triggers.SafeTimerTask.logsTargetDir=$JENKINS_VAR/logs "\
 "-Djava.util.logging.config.file=$EVERGREEN_HOME/config/logging.properties "\
-"-Dhudson.udp=-1"\
-"-Dhudson.DNSMultiCast.disabled=true"\
+"-Dhudson.udp=-1 "\
+"-Dhudson.DNSMultiCast.disabled=true "\
 "-Djenkins.install.runSetupWizard=false "
 
 ENV JENKINS_OPTS=\
