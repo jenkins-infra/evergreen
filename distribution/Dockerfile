@@ -58,7 +58,8 @@ RUN apk add --no-cache git \
                         curl \
                         socat \
                         wget \
-                        nginx
+                        nginx \
+                        git # JEP-302
 
 # Ensure the latest npm is available
 RUN npm install npm@latest -g

@@ -28,5 +28,5 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -e FLAVOR=$FLAVOR \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
-    node:9-alpine \
+    node:10 \
     ${COMMAND}

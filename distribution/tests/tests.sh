@@ -266,6 +266,20 @@ test_blueocean_default_redirect() {
   echo "$result"
 
   assertEquals "curl call to /should have succeeeded" 0 "$rc"
+
+}
+
+test_git_history_is_present() {
+  commitCount=$( docker exec -w "$JENKINS_HOME" "$container_under_test" git rev-list --count HEAD )
+  assertEquals "git call to count commits should have succeeded" 0 "$?"
+  # Depending on if ingest.json is pushed to backend before or after the client first
+  # polls the backend, we'll get 3 or 4 commits...
+  # See JENKINS-53499
+  assertTrue "[ $commitCount -ge 3 ]"
+
+  docker exec -w "$JENKINS_HOME" "$container_under_test" git log --pretty=format:%s HEAD~..HEAD | \
+                grep 'Snapshot after downloads completed, before Jenkins restart' > /dev/null
+  assertEquals "git call to retrieve last subject should have succeeded" 0 "$?"
 }
 
 . ./shunit2/shunit2
