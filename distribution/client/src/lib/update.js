@@ -94,6 +94,10 @@ class Update {
         plugin.checksum.signature));
     });
 
+    if (updates.plugins.deletes) {
+      Storage.removePlugins(updates.plugins.deletes);
+    }
+
     return Promise.all(tasks).then(() => {
       UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
