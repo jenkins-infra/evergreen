@@ -72,6 +72,9 @@ spec:
     - groupId: org.jenkins-ci.plugins
       artifactId: jsch
       version: 0.1.54.2
+    - groupId: org.jenkins-ci.plugins
+      artifactId: script-security
+      version: '1.45'
   environments:
     - name: docker-cloud
       plugins:
@@ -329,7 +332,7 @@ status:
       version: 2.2.7
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.42'
+      version: '1.45'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.15'
