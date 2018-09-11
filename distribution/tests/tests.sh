@@ -247,7 +247,28 @@ test_secure_defaults_ootb() {
   assertNotEquals "Agent to master security should be enabled" 0 "$?"
 }
 
-# JENKINS-53273
+test_manage_plugins_restricted() {
+  # shellcheck disable=SC2016
+  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
+  result=$( curl -v -u "admin:$adminPassword" http://localhost:$TEST_PORT/pluginManager/ 2>&1 )
+  assertEquals "curl call to /pluginManager should have succeeeded" 0 "$?"
+
+  echo "${result}" | grep "< Location: http://localhost:$TEST_PORT/evergreen/docs/#managing-plugins"
+  assertEquals "/pluginManager did not properly redirect! ${result}" 0 "$?"
+}
+
+test_blueocean_default_redirect() {
+  # shellcheck disable=SC2016
+  adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
+  # Follow the redirecs and make sure we end up on a proper page
+  result=$( curl -v -L -u "admin:$adminPassword" http://localhost:$TEST_PORT/ 2>&1 )
+  rc=$?
+  echo "$result"
+
+  assertEquals "curl call to /should have succeeeded" 0 "$rc"
+
+}
+
 test_git_history_is_present() {
   commitCount=$( docker exec -w "$JENKINS_HOME" "$container_under_test" git rev-list --count HEAD )
   assertEquals "git call to count commits should have succeeded" 0 "$?"
