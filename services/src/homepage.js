@@ -1,6 +1,8 @@
 /*
  * Simple express handler for generating a dynamic home page
  */
+const fs = require('fs');
+
 module.exports = (app) => {
   return async (req, res) => {
     const sequelize = app.get('sequelizeClient');
@@ -29,6 +31,7 @@ module.exports = (app) => {
         levels: levels,
         instances: instances,
         connections: app.channel('anonymous').length,
+        commit: fs.readFileSync('./commit.txt'),
       });
     });
   };

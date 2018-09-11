@@ -21,6 +21,7 @@ COPY config ${APP_DIR}/config
 COPY assets ${APP_DIR}/assets
 COPY public ${APP_DIR}/public
 COPY views ${APP_DIR}/views
+COPY commit.txt ${APP_DIR}/
 
 EXPOSE 3030
 

@@ -74,7 +74,7 @@
                                 <%= update.createdAt %>
                             </td>
                             <td>
-                                <a href="https://github.com/jenkins-infra/evergreen/blob/<%= update.commit %>/services/essentials.yaml" target="_blank">
+                                <a href="https://github.com/jenkins-infra/evergreen/tree/<%= update.commit %>" target="_blank">
                                 <%= update.commit %>
                                 </a>
                             </td>
@@ -93,6 +93,11 @@
     <div class="container">
         <footer>
             <p class="center-text">For more information on Evergreen see <a href="https://github.com/jenkins-infra/evergreen" title="Evergreen on GitHub" target="_blank">jenkins-infra/evergreen</a>.</p>
+            <hr/>
+            <div class="center-text">
+                Build
+                <a href="https://github.com/jenkins-infra/evergreen/tree/<%= commit %>"><%= commit %></a>
+            </div>
         </footer>
     </div>
   </body>
