@@ -106,7 +106,7 @@ app.use((err, req, res, next) => {
   /* Avoid cluttering the test logs with expected errors and exceptions */
   if (process.env.NODE_ENV != 'test') {
     logger.error(err.stack);
-    logger.debug('statusCode: ' + err.statusCode + ' message: ' + err.message);
+    logger.debug(`statusCode: ${err.statusCode} message: ${err.message}`);
   }
   res.status(err.statusCode);
   res.json({ status: FAILURE, message: err.message });

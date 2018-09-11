@@ -121,7 +121,7 @@ class Update {
   }
 
   saveUpdateSync(manifest) {
-    logger.info('Saving a new manifest.. into ' + this.updatePath());
+    logger.info(`Saving a new manifest.. into ${this.updatePath()}`);
     fs.writeFileSync(
       this.updatePath(),
       JSON.stringify(manifest),
@@ -130,7 +130,7 @@ class Update {
   }
 
   loadUpdateSync() {
-    logger.info('Loading a new manifest.. from ' + this.updatePath());
+    logger.info(`Loading a new manifest.. from ${this.updatePath()}`);
     try {
       fs.statSync(this.updatePath());
     } catch (err) {

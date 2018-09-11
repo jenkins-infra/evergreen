@@ -39,6 +39,7 @@
     "template-tag-spacing": "error",
     "curly": "error",
     "brace-style": "error",
-    "no-trailing-spaces": "error"
+    "no-trailing-spaces": "error",
+    "prefer-template": "error"
   }
 }
