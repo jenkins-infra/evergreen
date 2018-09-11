@@ -61,6 +61,7 @@ class Client {
     return this.update.query()
       .then(updates => this.update.applyUpdates(updates))
       .then(() => this.status.reportVersions())
+      .then(() => this.status.reportLevel(this.update.getCurrentLevel()))
       .catch((err) => {
         if (err.type == 'invalid-json') {
           logger.warn('Received non-JSON response from the Update service');
