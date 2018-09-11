@@ -8,16 +8,16 @@ spec:
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: 1.0-rc3-rc482.5bd56df3080e
+      version: '1.0-rc3-rc482.5bd56df3080e'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
-      version: 1.0-rc52.83b6596bf05e
+      version: '1.0-rc52.83b6596bf05e'
     - groupId: io.jenkins.plugins
       artifactId: essentials
-      version: 0.5.1
+      version: '0.5.1'
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.8.2
+      version: '1.8.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: '3.0'
@@ -26,7 +26,7 @@ spec:
       version: '1.16'
     - groupId: org.jenkins-ci.plugins
       artifactId: git
-      version: 3.9.1
+      version: '3.9.1'
     - groupId: org.jenkins-ci.plugins
       artifactId: buildtriggerbadge
       version: '2.9'
@@ -38,10 +38,10 @@ spec:
       version: '1.24'
     - groupId: com.coravy.hudson.plugins.github
       artifactId: github
-      version: 1.29.2
+      version: '1.29.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
-      version: 2.3.6
+      version: '2.3.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: htmlpublisher
       version: '1.16'
@@ -68,13 +68,13 @@ spec:
       version: '1.3'
     - groupId: org.jenkins-ci.plugins.icon-shim
       artifactId: icon-shim
-      version: 2.0.3
+      version: '2.0.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: jsch
-      version: 0.1.54.2
+      version: '0.1.54.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.45'
+      version: '1.47-rc766.cbcb5e5e6008'
   environments:
     - name: docker-cloud
       plugins:
@@ -332,7 +332,7 @@ status:
       version: 2.2.7
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.45'
+      version: '1.47-rc766.cbcb5e5e6008'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.15'
