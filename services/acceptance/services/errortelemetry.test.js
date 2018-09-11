@@ -123,7 +123,7 @@ describe('Error Telemetry service acceptance tests', () => {
         })
           .then(res => {
             assert.ok(res);
-            assert.equal(res.status, 'OK', 'response.status should be OK but got: ' + res.status);
+            assert.equal(res.status, 'OK', `response.status should be OK but got: ${res.status}`);
           })
           .catch(err => assert.fail(err));
       });
