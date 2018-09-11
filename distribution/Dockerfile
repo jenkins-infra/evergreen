@@ -88,6 +88,8 @@ RUN deluser node && \
 COPY scripts/generate-ca-certificates /usr/local/sbin/
 RUN /usr/local/sbin/generate-ca-certificates
 
+COPY commit.txt /
+
 #######################
 ## Construct the image
 #######################

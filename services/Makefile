@@ -9,7 +9,25 @@ endif
 
 all: check docs container
 
-check: depends lint migrate
+# Checking to see if the directory exists because npm install updates the
+# directory every time it runs, busting the GNU/Make cache causing rebuilds
+depends: package.json
+	@if [ ! -d node_modules ]; then \
+		npm install; \
+	fi;
+
+docs: depends
+
+store-commit:
+	git rev-parse HEAD > commit.txt
+
+run: migrate store-commit
+	nodemon src/
+
+
+## VALIDATION TARGETS
+##############################################################
+check: depends lint migrate store-commit
 	if [ -z "$${SKIP_TESTS}" ]; then \
         $(MAKE) unit acceptance; \
 	else \
@@ -28,28 +46,33 @@ unit: depends
 	NODE_ENV=test npm run jest
 	NODE_ENV=test node jest -b --coverage=false --forceExit cli-test/
 
-debug-unit:
-	NODE_ENV=test node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest -i -b --forceExit test/
-
 acceptance: generate-ingest
 	NODE_ENV=test npm run acceptance
+
+watch:
+	NODE_ENV=test jest --bail --watchAll test/
+##############################################################
+##
+
+## DEBUG TARGETS
+##############################################################
+debug-unit:
+	NODE_ENV=test node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest -i -b --forceExit test/
 
 debug-acceptance:
 	NODE_ENV=test node --inspect-brk=0.0.0.0:9229 node_modules/.bin/jest -i -b --forceExit acceptance/
 
-watch:
-	NODE_ENV=test jest --bail --watchAll test/
+debug-run: migrate store-commit
+	node --inspect-brk=0.0.0.0:9229 src/
+
+debug-db:
+	$(COMPOSE) run --rm db psql -h db -U postgres -d evergreen_development
+##############################################################
+##
 
 
-# Checking to see if the directory exists because npm install updates the
-# directory every time it runs, busting the GNU/Make cache causing rebuilds
-depends: package.json
-	@if [ ! -d node_modules ]; then \
-		npm install; \
-	fi;
-
-docs: depends
-
+## DATABASE RELATED TARGETS
+##############################################################
 migrate: depends
 	$(COMPOSE) up -d db
 	./scripts/check-psql
@@ -62,22 +85,18 @@ migrate: depends
 		NODE_ENV=$$env sequelize db:seed:all; \
 	done;
 
-run: migrate
-	npm run start
-
-debug-run:
-	node --inspect-brk=0.0.0.0:9229 src/
-
-stop:
-	$(COMPOSE) stop
-
 dump: stop migrate
 	$(COMPOSE) run --rm db pg_dump \
 		--inserts \
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
 	$(MAKE) stop
+##############################################################
+##
 
-container: depends Dockerfile
+
+## DOCKER RELATED TARGETS
+##############################################################
+container: depends Dockerfile store-commit
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
 	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
 	$(MAKE) container-migration
@@ -87,6 +106,17 @@ container-check: container
 container-migration: Dockerfile.migrations
 	docker build -t $(IMAGE_NAME)-migrations:$(IMAGE_TAG) -f Dockerfile.migrations .
 
+publish: container
+	docker push ${IMAGE_NAME}:$(IMAGE_TAG)
+	docker push ${IMAGE_NAME}-migrations:$(IMAGE_TAG)
+	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
+	docker push $(IMAGE_NAME):latest
+##############################################################
+##
+
+
+## ESSENTIALS.YAML MANAGEMENT TARGETS
+##############################################################
 update-center.json:
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
 
@@ -98,6 +128,14 @@ generate-essentials: essentials.yaml prepare-essentials update-center.json
 
 generate-ingest: essentials.yaml prepare-essentials
 	node ./prepare-essentials generate-ingest
+##############################################################
+##
+
+
+## CLEANUP TARGETS
+##############################################################
+stop:
+	$(COMPOSE) stop
 
 clean:
 	$(COMPOSE) down || true
@@ -105,12 +143,9 @@ clean:
 	rm -f $(DB_DUMP)
 	rm -f update-center.json
 	docker rmi $$(docker images -q -f "reference=$(IMAGE_NAME)") || true
+##############################################################
+##
 
-publish: container
-	docker push ${IMAGE_NAME}:$(IMAGE_TAG)
-	docker push ${IMAGE_NAME}-migrations:$(IMAGE_TAG)
-	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
-	docker push $(IMAGE_NAME):latest
 
 .PHONY: all check clean container depends migrate unit acceptance run run-detach \
 	dump debug-unit debug-run debug-acceptance \
