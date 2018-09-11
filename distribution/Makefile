@@ -26,6 +26,9 @@ check: lint
 	$(MAKE) container-check
 
 
+store-commit:
+	git rev-parse HEAD > commit.txt
+
 ## Distribution
 distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip
 
@@ -71,7 +74,7 @@ build/evergreen.zip: prepare-distribution
 fix-formatting:
 	$(MAKE) -C client $@
 
-container-prereqs: distribution
+container-prereqs: distribution store-commit
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C ../services dump generate-ingest
