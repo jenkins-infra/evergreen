@@ -90,6 +90,13 @@ dump: stop migrate
 		--inserts \
 		-h db -U postgres -d evergreen_development > $(DB_DUMP)
 	$(MAKE) stop
+
+
+seed-ingest:
+	curl --data-raw '{"commit":"$(shell date)","manifest":$(shell cat ../services/ingest.json)}' \
+	-H 'Authorization: the API calls are coming from inside the house' \
+	-H 'Content-Type: application/json' \
+	http://localhost:3030/update
 ##############################################################
 ##
 
