@@ -1,7 +1,8 @@
 metadata:
   labels:
     name: jenkins-evergreen
-  annotations: null
+  annotations:
+    test: this is a test of JENKINS-53040
 spec:
   core:
     version: 2.142-rc27262.2652a1b1eb90
