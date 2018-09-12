@@ -107,7 +107,6 @@ class UpdateHooks {
         ],
         patch: [
           internalApi,
-          this.checkUpdateFormat,
           this.patchByCommitAndChannel,
           dbtimestamp('updatedAt'),
         ],
