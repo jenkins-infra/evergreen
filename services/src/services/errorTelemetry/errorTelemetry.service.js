@@ -8,9 +8,9 @@
  */
 
 const hooks                 = require('./errorTelemetry.hooks');
-const createErrorTelemetry = require('./errorTelemetry.class');
+const ErrorTelemetryService = require('./errorTelemetry.class');
 
 module.exports = function (app) {
-  app.use('/telemetry/error', createErrorTelemetry());
+  app.use('/telemetry/error', new ErrorTelemetryService(app));
   app.service('telemetry/error').hooks(hooks.getHooks());
 };
