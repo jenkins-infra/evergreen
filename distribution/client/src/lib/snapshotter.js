@@ -22,6 +22,13 @@ class Snapshotter {
     this.options = options || {};
   }
 
+  /**
+   * @returns boolean false if EVERGREEN_DISABLE_SNAPSHOT is set
+   */
+  isEnabled() {
+    return ! process.env.EVERGREEN_DISABLE_SNAPSHOT;
+  }
+
   init(workingDirectory) {
     if (!workingDirectory) {
       throw new Error('workingDirectory parameter is required');
@@ -72,6 +79,10 @@ class Snapshotter {
    * No-Op if already containing the expected content.
    */
   updateGitIgnore() {
+    if (!this.isEnabled()) {
+      logger.info('Snapshotting is disabled, avoiding an update to .gitignore');
+      return;
+    }
     const gitignorePath = `${this.workingDirectory}/.gitignore`;
 
     if (!fs.existsSync(gitignorePath) ||
@@ -95,6 +106,11 @@ class Snapshotter {
    Will throw an Error if the command failed or timed out.
    */
   git(...args) {
+    if (!this.isEnabled()) {
+      logger.info('Snapshotting has been disabled, ignoring request to run', args);
+      return;
+    }
+
     const options = {
       cwd: this.workingDirectory,
       encoding: 'utf-8',

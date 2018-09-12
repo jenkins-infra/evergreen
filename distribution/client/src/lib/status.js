@@ -68,6 +68,26 @@ class Status {
       });
   }
 
+  reportLevel(updateLevel) {
+    let api = this.app.service('status');
+    let record = {
+      uuid: this.uuid,
+      updateId: updateLevel,
+    };
+    return api.patch(null, record, {
+      query: {
+        uuid: this.uuid,
+      },
+      headers: { Authorization: this.token }
+    })
+      .then(() => {
+        logger.info(`Updated the UL on the backend to ${updateLevel}`);
+      })
+      .catch((err) => {
+        logger.error('Failed to update the Status record with the current level', err);
+      });
+  }
+
   reportVersions() {
     logger.debug('Reporting versions to the backend');
     return this.app.service('versions').create({

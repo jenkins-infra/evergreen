@@ -77,6 +77,7 @@ class Update {
     if ((!updates.plugins) || (!updates.plugins.updates)) {
       logger.debug('No plugins available in the response');
       this.updateInProgress = null;
+      this.saveUpdateSync(updates);
       return false;
     }
 
@@ -96,8 +97,8 @@ class Update {
     return Promise.all(tasks).then(() => {
       UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
-      UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
       this.saveUpdateSync(updates);
+      UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
       Supervisord.restartProcess('jenkins');
       // TODO: This should really only be set once the instance is back online
       // and servicing requests
