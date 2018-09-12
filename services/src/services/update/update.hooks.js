@@ -1,6 +1,5 @@
 const authentication = require('@feathersjs/authentication');
 const errors         = require('@feathersjs/errors');
-const logger         = require('winston');
 const SKIP           = require('@feathersjs/feathers').SKIP;
 
 const dbtimestamp        = require('../../hooks/dbtimestamp');
@@ -56,34 +55,6 @@ class UpdateHooks {
       });
   }
 
-  /*
-   * Allow the PATCH to be executed with simply the commit rather than the
-   * update level ID
-   */
-  patchByCommitAndChannel(context) {
-    return context.app.service('update').find({
-      query: {
-        commit: context.data.commit,
-        channel: context.data.channel,
-      }
-    })
-      .then((records) => {
-        if (records.length == 1) {
-          context.data.id = records[0].id;
-          return context;
-        }
-        return Promise.reject(new errors.GeneralError('Discovered too many records matching'));
-      })
-      .catch((err) => {
-        if (err.type == 'FeathersError') {
-          throw err;
-        }
-
-        logger.error('Failed to look up the commit and channel', err);
-        throw new errors.BadRequest('Missing valid information');
-      });
-  }
-
   getHooks() {
     return {
       before: {
@@ -107,8 +78,6 @@ class UpdateHooks {
         ],
         patch: [
           internalApi,
-          this.checkUpdateFormat,
-          this.patchByCommitAndChannel,
           dbtimestamp('updatedAt'),
         ],
         remove: [
