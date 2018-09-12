@@ -84,7 +84,7 @@ class Status {
         logger.info(`Updated the UL on the backend to ${updateLevel}`);
       })
       .catch((err) => {
-        logger.error('Failted to update the Status record with the current level', err);
+        logger.error('Failed to update the Status record with the current level', err);
       });
   }
 
