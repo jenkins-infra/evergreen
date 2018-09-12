@@ -23,7 +23,7 @@ const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
 const sequelize      = require('./sequelize');
 
-const sentry           = require('./libs/sentry');
+const Sentry           = require('./libs/sentry');
 
 const swagger          = require('feathers-swagger');
 const sequelizeSwagger = require('./sequelize-swagger');
@@ -31,14 +31,28 @@ const sequelizeSwagger = require('./sequelize-swagger');
 const settings = configuration();
 const app = express(feathers());
 
+
 // const SUCCESS = 'OK';
 const FAILURE = 'ERROR';
 
 /*
-  * Allow the log level to be overridden in the environment for debugging
-  * purposes by the user
-  */
+ * Allow the log level to be overridden in the environment for debugging
+ * purposes by the user
+ */
 logger.level = process.env.LOG_LEVEL || 'warn';
+
+
+/*
+ * Configure Sentry integration only we have a SENTRY_DSN environment
+ */
+if (process.env.SENTRY_DSN) {
+  logger.info('Configuring Sentry for backend errors..');
+  const Raven = require('raven');
+  Raven.config(process.env.SENTRY_DSN).install();
+  app.use(Raven.requestHandler());
+  app.use(Raven.errorHandler());
+  logger.info('..Sentry middleware installed');
+}
 
 // Load app configuration
 app.configure(settings);
@@ -61,7 +75,7 @@ app.configure(sequelize);
 /*
  * Initialize the Sentry backend integration for reporting error telemetry
  */
-sentry.initialize(process.env.SENTRY_URL || app.get('sentry').url);
+app.set('sentry', new Sentry(process.env.SENTRY_URL || app.get('sentry').url));
 
 if (process.env.NODE_ENV != 'production') {
   app.configure(swagger({

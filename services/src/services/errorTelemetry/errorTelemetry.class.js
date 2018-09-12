@@ -2,10 +2,10 @@ const fs     = require('fs');
 const logger = require('winston');
 const path   = require('path');
 const mkdirp = require('mkdirp');
-const sentry = require('../../libs/sentry');
 
 class ErrorTelemetryService {
-  constructor() {
+  constructor(app) {
+    this.app = app;
     if (process.env.NODE_ENV == 'production') {
       logger.info('production mode: no file used for error telemetry logging');
     } else {
@@ -29,13 +29,10 @@ class ErrorTelemetryService {
       const toWrite = `${new Date()} => ${JSON.stringify(data)}\n\n`;
       fs.appendFileSync(this.loggingFile, toWrite);
     }
-    sentry.sendOutput(data);
+    this.app.get('sentry').sendOutput(data);
 
     return Promise.resolve({status:'OK'});
   }
 }
 
-module.exports = function() {
-  return new ErrorTelemetryService();
-};
-module.exports.ErrorTelemetryService = ErrorTelemetryService;
+module.exports = ErrorTelemetryService;

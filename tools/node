@@ -26,6 +26,7 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -e DB_TRACING=$DB_TRACING \
     -e LOG_LEVEL=$LOG_LEVEL \
     -e FLAVOR=$FLAVOR \
+    -e SENTRY_DSN=$SENTRY_DSN \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
     node:10 \

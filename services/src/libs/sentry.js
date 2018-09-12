@@ -13,19 +13,20 @@ class Sentry {
    *
    * @param {string} sentryUrl
    */
-  static initialize(sentryUrl) {
+  constructor(sentryUrl) {
     if (!sentryUrl) {
       logger.error('No sentry url defined.');
       return;
     }
-    Raven.config(sentryUrl).install();
+    this.raven = new Raven.Client();
+    this.raven.config(sentryUrl);
   }
 
   /**
    * Send the JSON output to Sentry.io.  JSON format is from the Error Telemetry API.
    * @param {json} data
    */
-  static sendOutput(data) {
+  sendOutput(data) {
     if (!data) {
       logger.error('Missing data.');
       return;
@@ -34,6 +35,9 @@ class Sentry {
     const errorData = {
       level: data.log.level.toLowerCase(),
       logger: data.log.name,
+      user: {
+        uuid: data.uuid,
+      },
       extra: {
         id: data.uuid,
         uuid: data.uuid,
@@ -43,9 +47,9 @@ class Sentry {
     };
 
     if (data.log.exception) {
-      Raven.captureException(new Error(data.log.message), errorData);
+      this.raven.captureException(new Error(data.log.message), errorData);
     } else {
-      Raven.captureMessage(data.log.message, errorData);
+      this.raven.captureMessage(data.log.message, errorData);
     }
   }
 }
