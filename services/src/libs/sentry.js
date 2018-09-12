@@ -36,7 +36,12 @@ class Sentry {
       level: data.log.level.toLowerCase(),
       logger: data.log.name,
       user: {
-        uuid: data.uuid,
+        /*
+         * Different docs on sentry.io suggest different fields here, so why
+         * not both?
+         */
+        id: data.uuid,
+        name: data.uuid,
       },
       extra: {
         id: data.uuid,
