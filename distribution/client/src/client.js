@@ -5,11 +5,12 @@
 const process = require('process');
 
 const feathers = require('@feathersjs/feathers');
-const fetch    = require('node-fetch');
 const logger   = require('winston');
 const rest     = require('@feathersjs/rest-client');
 const socketio = require('@feathersjs/socketio-client');
+const auth     = require('@feathersjs/authentication-client');
 const io       = require('socket.io-client');
+const request  = require('request');
 
 const createCron     = require('./lib/periodic');
 const ErrorTelemetry = require('./lib/error-telemetry');
@@ -19,6 +20,8 @@ const Storage        = require('./lib/storage');
 const UI             = require('./lib/ui');
 const Update         = require('./lib/update');
 
+
+const { LocalStorage } = require('node-localstorage');
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
@@ -104,7 +107,26 @@ class Client {
     const restClient = rest(endpoint);
 
     logger.info('Configuring the client to use the endpoint %s', endpoint);
-    this.app.configure(restClient.fetch(fetch));
+    const requestWithDefaults = request.defaults({
+      headers: {
+        'User-Agent' : 'evergreen-client/1.0',
+      },
+      strictSSL: true,
+      time: true,
+    });
+    /*
+     * Feathers at this time doesn't support passing in request-promise here
+     */
+    this.app.configure(restClient.request(requestWithDefaults));
+
+    this.app.configure(auth({
+      path: '/authentication',
+      storage: new LocalStorage('./store'),
+    }));
+
+    this.app.on('reauthentication-error', (error) => {
+      logger.error('FAILED TO AUTH', error);
+    });
 
     logger.info('Configuring the client for socket.io off %s', endpoint);
     this.socket = io(process.env.EVERGREEN_ENDPOINT, {

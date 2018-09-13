@@ -45,7 +45,6 @@ class Status {
       timezone: this.getTimezone(),
     };
     return api.create(record, {
-      headers: { Authorization: this.token }
     })
       .then((res) => {
         logger.info('Created a Status record with server side ID %d', res.id);
@@ -78,7 +77,6 @@ class Status {
       query: {
         uuid: this.uuid,
       },
-      headers: { Authorization: this.token }
     })
       .then(() => {
         logger.info(`Updated the UL on the backend to ${updateLevel}`);
@@ -94,7 +92,6 @@ class Status {
       uuid: this.uuid,
       manifest: this.collectVersions(),
     }, {
-      headers: { Authorization: this.token },
     })
       .then((res) => {
         logger.debug('successfully reported versions', res);
