@@ -25,6 +25,7 @@ exec docker run --net host --rm ${TTY_ARGS} \
     -e LANG=C.UTF-8 \
     -e DB_TRACING=$DB_TRACING \
     -e LOG_LEVEL=$LOG_LEVEL \
+    -e DEBUG=$DEBUG \
     -e FLAVOR=$FLAVOR \
     -e SENTRY_DSN=$SENTRY_DSN \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
