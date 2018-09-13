@@ -262,11 +262,7 @@ test_blueocean_default_redirect() {
   adminPassword=$( docker exec "$container_under_test" bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword' )
   # Follow the redirecs and make sure we end up on a proper page
   result=$( curl -v -L -u "admin:$adminPassword" http://localhost:$TEST_PORT/ 2>&1 )
-  rc=$?
-  echo "$result"
-
-  assertEquals "curl call to /should have succeeeded" 0 "$rc"
-
+  assertEquals "curl call to /should have succeeeded" 0 "$?"
 }
 
 test_git_history_is_present() {
