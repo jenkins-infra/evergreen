@@ -15,12 +15,12 @@ module.exports = function(context) {
   /*
    * If we have no UUID provided by the JWT, bail early
    */
-  if (!context.params.payload) {
+  if (!context.params.user) {
     throw new errors.BadRequest('Missing token with request');
   }
 
   if (context.method == 'get') {
-    if (context.id != context.params.payload.uuid) {
+    if (context.id != context.params.user.uuid) {
       throw new errors.NotAuthenticated('Invalid UUID');
     }
     return context;
@@ -30,7 +30,7 @@ module.exports = function(context) {
     if (!context.params.query.uuid) {
       throw new errors.BadRequest('Invalid UUID in query parameters');
     }
-    if (context.params.query.uuid != context.params.payload.uuid) {
+    if (context.params.query.uuid != context.params.user.uuid) {
       throw new errors.NotAuthenticated('Invalid UUID');
     }
     return context;
@@ -41,10 +41,10 @@ module.exports = function(context) {
     throw new errors.BadRequest('Invalid UUID in data body');
   }
 
-  if (context.data.uuid != context.params.payload.uuid) {
+  if (context.data.uuid != context.params.user.uuid) {
     logger.error('Receiving a request with a UUID not matching the token (%s/%s)',
       context.data.uuid,
-      context.params.payload.uuid);
+      context.params.user.uuid);
     throw new errors.NotAuthenticated('Invalid UUID');
   }
 

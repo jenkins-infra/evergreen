@@ -24,7 +24,10 @@ class Helpers {
   }
 
   port() {
-    return app.get('port') || 3030;
+    /* offset a bit so `make run` and `make acceptance` can be run at the same
+     * time
+     */
+    return (app.get('port') || 3030) + 24;
   }
 
   getUrl(pathname) {
@@ -68,15 +71,17 @@ class Helpers {
     this.reg = await this.register(this.keys);
 
     const signature = this.keys.sign(this.reg.uuid);
-    this.token = await request({
+    const response = await request({
       url: this.getUrl('/authentication'),
       method: 'POST',
       json: true,
       body: {
+        strategy: 'local',
         uuid: this.reg.uuid,
         signature: signature
       }
     });
+    this.token = response.accessToken;
 
     return { token: this.token, uuid: this.reg.uuid };
   }

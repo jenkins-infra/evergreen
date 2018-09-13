@@ -6,7 +6,7 @@ describe('ensureuuid hook', () => {
     this.context = {
       params: {
         provider: 'rest',
-        payload: {},
+        user: {},
         query: {},
       },
       data: {},
@@ -21,7 +21,7 @@ describe('ensureuuid hook', () => {
 
   it('should fail if the JWT uuid and the given UUID are identical', () => {
     this.context.data.uuid = 'who i want to be';
-    this.context.params.payload = { uuid: 'who i be' };
+    this.context.params.user = { uuid: 'who i be' };
     expect(() => {
       ensureMatchingUUID(this.context);
     }).toThrow(errors.NotAuthenticated);
@@ -51,7 +51,7 @@ describe('ensureuuid hook', () => {
     it('should allow the request with a matching `uuid` query param', () => {
       let uuid = 'jest-uuid';
       /* This is the property name that JWT would extract to */
-      this.context.params.payload.uuid = uuid;
+      this.context.params.user.uuid = uuid;
       this.context.params.query = { uuid: uuid };
 
       expect(ensureMatchingUUID(this.context));
@@ -60,7 +60,7 @@ describe('ensureuuid hook', () => {
     it('should fail without matching token and query param `uuid`s', () => {
       let uuid = 'jest-uuid';
       /* This is the property name that JWT would extract to */
-      this.context.params.payload.uuid = uuid;
+      this.context.params.user.uuid = uuid;
       this.context.params.query = { uuid: 'pickles', };
 
       expect(() => {
@@ -75,7 +75,7 @@ describe('ensureuuid hook', () => {
     beforeEach(() => {
       this.context.method = 'get';
       /* This is the property name that JWT would extract to */
-      this.context.params.payload.uuid = uuid;
+      this.context.params.user.uuid = uuid;
     });
 
     it('should be NotAuthenticated when the `id` doesn\'t match the JWT', () => {
