@@ -1,8 +1,9 @@
 jest.mock('fs');
 
 const fs      = require('fs');
-const mkdirp     = require('mkdirp');
+const mkdirp  = require('mkdirp');
 const path    = require('path');
+const h       = require('./helpers');
 const Storage = require('../src/lib/storage');
 
 describe('The storage module', () => {
@@ -50,17 +51,16 @@ describe('The storage module', () => {
       await expect(Storage.removePlugins(['not-found']));
     });
     it('should remove all files in a list', async () => {
-      let checkFileExists = s => new Promise(r=>fs.access(s, fs.F_OK, e => r(!e)));
       const filenames = ['first', 'second', 'third', 'fourth'];
       const pluginPath = Storage.pluginsDirectory();
       mkdirp.sync(pluginPath);
       filenames.forEach((filename) => {
-        fs.closeSync(fs.openSync(`${pluginPath}/${filename}.hpi`, 'w'));
-        expect(checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
+        h.touchFile(`${pluginPath}/${filename}.hpi`);
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
       });
       await Storage.removePlugins(filenames);
       filenames.forEach((filename) => {
-        expect(checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.not.toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
       });
     });
   });

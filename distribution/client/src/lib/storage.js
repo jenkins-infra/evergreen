@@ -67,12 +67,14 @@ class Storage {
       return;
     }
     let pluginPath = this.pluginsDirectory();
+    let retArray = [];
     plugins.forEach((plugin) => {
-      fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
+      retArray.push(fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
         logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
         UI.publish(`Deleted ${plugin}.hpi`);
-      });
+      }));
     });
+    return retArray;
   }
 }
 
