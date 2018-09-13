@@ -1,5 +1,5 @@
 const logger        = require('winston');
-const rp            = require('request-promise');// require('promise-request-retry');
+const rp            = require('promise-request-retry');
 
 const INSTANCE_IDENTITY_URL = '/instance-identity/';
 const METRICS_URL           = '/metrics/evergreen/healthcheck';
@@ -46,7 +46,7 @@ class HealthChecker {
       resolveWithFullResponse: true,
       encoding: 'utf-8',
       timeout: 3 * 1000,
-      retry: 2
+      retry: 10
     };
     logger.debug('Checking instance identity URL');
     return rp(options)
@@ -75,7 +75,7 @@ class HealthChecker {
       resolveWithFullResponse: true,
       encoding: 'utf-8',
       timeout: 3 * 1000,
-      retry: 2
+      retry: 10
     };
 
     logger.debug('Checking metrics Evergreen healthchecking URL');

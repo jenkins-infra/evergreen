@@ -13,6 +13,8 @@ services:
     environment:
       - 'HTTP_PROXY=http://cache:3128'
       - 'http_proxy=http://cache:3128'
+      - 'NO_PROXY=localhost,127.0.0.1'
+      - 'no_proxy=localhost,127.0.0.1'
 
   cache:
     image: sameersbn/squid:3.3.8-23

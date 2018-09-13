@@ -14,6 +14,7 @@ const Downloader  = require('./downloader');
 const Supervisord = require('./supervisord');
 const UI          = require('./ui');
 const Snapshotter = require('./snapshotter');
+const HealthChecker = require('./healthchecker');
 
 class Update {
   constructor(app, options) {
@@ -26,6 +27,7 @@ class Update {
     this.fileOptions = { encoding: 'utf8' };
     this.snapshotter = new Snapshotter();
     this.snapshotter.init(Storage.jenkinsHome());
+    this.healthChecker = new HealthChecker('http://127.0.0.1:8080'); // FIXME: define a process.env var?
   }
 
   authenticate(uuid, token) {
@@ -65,7 +67,6 @@ class Update {
     this.updateInProgress = new Date();
     let tasks = [];
 
-
     if ((updates.core) && (updates.core.url)) {
       tasks.push(Downloader.download(updates.core.url,
         Storage.jenkinsHome(),
@@ -104,16 +105,87 @@ class Update {
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       this.saveUpdateSync(updates);
       UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
-      Supervisord.restartProcess('jenkins');
-      // TODO: This should really only be set once the instance is back online
-      // and servicing requests
-      setTimeout(() => {
-        UI.publish('Jenkins should now be online');
-        Storage.removeBootingFlag();
-      }, 5000);
+      this.restartJenkins();
       this.updateInProgress = null;
       return true;
     });
+  }
+
+  /*
+   * From outside, this method is responsible for restarting Jenkins,
+   * and have it back.
+
+   * Meaning, it will either be able to start, or will automatically
+     revert to the previous state,
+   * i.e. before any updates were applied.
+   * 1) restart Jenkins
+   * 2) Check health
+   * 3) if OK, continue
+   * 4) if KO, rollback state + go back to previous UL.
+   *
+   * But what if Jenkins does not restart even after rollback?
+     we will not try to go back further. But the client will stay
+
+     Open questions:
+     * how to avoid going again through this UL that borked the system,
+       while it's not been yet marked as tainted in the backend?
+     * how to report that borked case in a clear way
+  */
+  restartJenkins(rollingBack) { // Add param to stop recursion?
+    Supervisord.restartProcess('jenkins');
+
+    const options = {
+      timeoutInSeconds: 60
+    };
+    UI.publish('Jenkins should now be online, health checking');// (timeout=${options.timeoutInSeconds})`);
+
+    logger.info('Jenkins has restarted, now healthchecking!');
+
+    // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
+    // consistent promise usage UX here.
+    // checking healthState.health value is possibly a bit convoluted (?)
+    this.healthChecker.check(options)
+      .then( healthState => {
+        if (healthState.healthy) {
+          logger.info('Jenkins healthcheck after restart succeeded! Yey.');
+        } else {
+
+          if (rollingBack) {
+
+            // if things are wrong twice, stop trying and just holler for help
+            // Quick notice sketch, but I do think we need a very complete and informative message
+            const failedToRollbackMessage =
+              'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
+              'upgrade, but even after the automated rollback we were unable to bring ' +
+              'to life. Please report this issue to the Jenkins Evergreen team. ' +
+              'Do not shutdown your instance as we have been notified of this failure ' +
+              'and are trying to understand what went wrong to push a new update that ' +
+              'will fix things.';
+            logger.error(failedToRollbackMessage);
+            UI.publish(failedToRollbackMessage);
+
+            // Not throwing an Error here as we want the client to keep running and ready
+            // since the next available UL _might_ fix the issue
+          } else {
+
+            const errorMessage = `Jenkins detected as unhealthy: ${healthState.message}. ` +
+                                 'Rolling back to previous update level.';
+            UI.publish(errorMessage);
+            logger.warn(errorMessage);
+
+            this.snapshotter.revertToLevelBefore(this.getCurrentLevel());
+            this.revertToPreviousUpdateLevel();
+            this.restartJenkins(true);
+          }
+        }
+        Storage.removeBootingFlag();
+      }).catch((errors) => {
+        logger.warn(`TODO ${errors}`);
+      }); // TODO catch?
+  }
+
+  revertToPreviousUpdateLevel() {
+    logger.error(`[NOT IMPLEMENTED YET] Revert UL-${this.getCurrentLevel()} to previous Update Level`);
   }
 
   getCurrentLevel() {
