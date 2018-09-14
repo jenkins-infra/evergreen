@@ -46,7 +46,9 @@ class HealthChecker {
       resolveWithFullResponse: true,
       encoding: 'utf-8',
       timeout: 3 * 1000,
-      retry: 10
+      retry: 10,
+      delay: 2000,
+      factor: 1.25
     };
     logger.debug('Checking instance identity URL');
     return rp(options)
@@ -75,7 +77,9 @@ class HealthChecker {
       resolveWithFullResponse: true,
       encoding: 'utf-8',
       timeout: 3 * 1000,
-      retry: 10
+      retry: 10,
+      delay: 2000,
+      factor: 1.25
     };
 
     logger.debug('Checking metrics Evergreen healthchecking URL');
