@@ -31,7 +31,7 @@ describe('Update service acceptance tests', () => {
     this.uuid = uuid;
   });
 
-  describe('PUT /update', () => {
+  describe('POST /update', () => {
     it('should treat an empty `create` as invalid', () => {
       return request({
         url: h.getUrl('/update'),

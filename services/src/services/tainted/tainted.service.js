@@ -12,6 +12,6 @@ module.exports = function (app) {
   service.docs = {
     description: 'Mark an update level tainted for a specific instance',
   };
-  app.use('/updates/tainted', service);
-  app.service('/updates/tainted').hooks(hooks.getHooks());
+  app.use('/update/tainted', service);
+  app.service('/update/tainted').hooks(hooks.getHooks());
 };

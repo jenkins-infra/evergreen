@@ -5,7 +5,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const tainted = sequelizeClient.define('tainted', {
+  const tainted = sequelizeClient.define('tainteds', {
     uuid: {
       allowNull: false,
       description: 'An evergreen-client\'s generated from registration UUID',

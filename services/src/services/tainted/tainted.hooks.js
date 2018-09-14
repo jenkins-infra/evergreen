@@ -20,6 +20,13 @@ class TaintedHooks {
         ],
         create: [
           ensureMatchingUUID,
+          /*
+           * For API consistency we want clients to just send their level,
+           * which is actually just an updateId :)
+           */
+          (context) => {
+            context.data.updateId = context.data.level;
+          },
         ],
         update: [
           internalOnly
