@@ -73,7 +73,7 @@ class Update {
         updates.core.checksum.signature));
     }
 
-    if ((!updates.plugins) || (!updates.plugins.updates)) {
+    if ((!updates.plugins) || (!updates.plugins.updates && !updates.plugins.deletes)) {
       logger.debug('No plugins available in the response');
       this.updateInProgress = null;
       this.saveUpdateSync(updates);
@@ -85,13 +85,19 @@ class Update {
     /*
      * Queue up all the downloads simultaneously, we need updates ASAP!
      */
-    updates.plugins.updates.forEach((plugin) => {
-      logger.info('Downloading', plugin);
-      tasks.push(Downloader.download(plugin.url,
-        Storage.pluginsDirectory(),
-        `${plugin.artifactId}.hpi`,
-        plugin.checksum.signature));
-    });
+    if (updates.plugins.updates) {
+      updates.plugins.updates.forEach((plugin) => {
+        logger.info('Downloading', plugin);
+        tasks.push(Downloader.download(plugin.url,
+          Storage.pluginsDirectory(),
+          `${plugin.artifactId}.hpi`,
+          plugin.checksum.signature));
+      });
+    }
+
+    if (updates.plugins.deletes) {
+      tasks.push(Storage.removePlugins(updates.plugins.deletes));
+    }
 
     return Promise.all(tasks).then(() => {
       UI.publish('All downloads completed, snapshotting data before restart');

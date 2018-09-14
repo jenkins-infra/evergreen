@@ -1,7 +1,9 @@
 'use strict';
 
-const path = require('path');
-const fs   = require('fs');
+const path   = require('path');
+const fs     = require('fs');
+const logger = require('winston');
+const UI     = require('./ui');
 
 /*
  * The Storage module simply contains common functions necessary for the
@@ -58,6 +60,21 @@ class Storage {
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
+  }
+
+  static removePlugins(plugins) {
+    if (!plugins) {
+      return;
+    }
+    let pluginPath = this.pluginsDirectory();
+    let retArray = [];
+    plugins.forEach((plugin) => {
+      retArray.push(fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
+        logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
+        UI.publish(`Deleted ${plugin}.hpi`);
+      }));
+    });
+    return retArray;
   }
 }
 
