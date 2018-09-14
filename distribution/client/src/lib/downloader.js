@@ -35,7 +35,7 @@ class Downloader {
    * @param {string} the filename to output at
    * @parma {string} Optional sha256 signature to verify of the file
    */
-  static download(item, dir, fileNameToWrite, sha256) {
+  static download(item, dir, fileNameToWrite, sha256, downloadOptions = {}) {
     const itemUrl = url.parse(item);
     const itemUrlBaseName = path.basename(itemUrl.pathname);
 
@@ -61,7 +61,9 @@ class Downloader {
       resolveWithFullResponse: true,
       encoding: null,
       timeout: 120 * 1000,
-      retry: 10
+      retry: downloadOptions.retry || 10,
+      delay: downloadOptions.delay || 1000,
+      factor: downloadOptions.factor || 1.2
     };
 
     const startTime = Date.now();
