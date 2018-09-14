@@ -22,7 +22,7 @@ describe('The healthchecker module', () => {
     it('should pass cases', async (done) => {
       // ugly hack to wait a bit for the server to start...
       setTimeout( async () => {
-        const healthChecker = new HealthChecker(`http://localhost:${port}`);
+        const healthChecker = new HealthChecker(`http://localhost:${port}`, {delay: 100});
 
         let result = await healthChecker.check();
         expect(result.healthy).toBe(true);

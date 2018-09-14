@@ -6,8 +6,11 @@ const METRICS_URL           = '/metrics/evergreen/healthcheck';
 
 class HealthChecker {
 
-  constructor(jenkinsRootUrl) {
+  constructor(jenkinsRootUrl, requestOptions = {}) {
     this.jenkinsRootUrl = jenkinsRootUrl;
+    this.retry = requestOptions.retry || 10;
+    this.delay = requestOptions.delay || 2000;
+    this.factor = requestOptions.factor || 1.25;
   }
 
   async check() { // TODO : add options.timeout etc.
@@ -46,9 +49,9 @@ class HealthChecker {
       resolveWithFullResponse: true,
       encoding: 'utf-8',
       timeout: 3 * 1000,
-      retry: 10,
-      delay: 2000,
-      factor: 1.25
+      retry: this.retry,
+      delay: this.delay,
+      factor: this.factor
     };
     logger.debug('Checking instance identity URL');
     return rp(options)
