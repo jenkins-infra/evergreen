@@ -56,6 +56,17 @@ describe('the Downloader class', () => {
         await Downloader.download(toDownload, dir, 'ace-editor.hpi');
         expect(Checksum.signatureFromFile(`${dir}/ace-editor.hpi`)).toEqual(sha256);
       });
+
+      it('should not retry too fast on failed download', async () => {
+        const toDownload = 'http://nonexisting-url-yada.org/thefile';
+        const startTime = new Date();
+        try {
+          await Downloader.download(toDownload, dir, 'thefile', {retry: 4, factor: 1.1, delay: 200});
+          expect(false).toBeTruthy(); // fail(), should not reach this line.
+        } catch (e) {
+          expect(new Date() - startTime).toBeGreaterThan(4 * 200);
+        }
+      });
     });
   });
 });
