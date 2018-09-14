@@ -88,15 +88,18 @@ class Registration {
    * @return Promise
    */
   async login() {
-    let api = this.app.service('authentication');
-    let ec = new ecc.ec(this.curve);
-    let key = ec.keyFromPrivate(this.privateKey, 'hex');
-    let signature = key.sign(this.uuid);
-    this.token = await api.create({
+    logger.info('Attempting to log in');
+    const ec = new ecc.ec(this.curve);
+    const key = ec.keyFromPrivate(this.privateKey, 'hex');
+    const signature = key.sign(this.uuid);
+
+    const response = await this.app.authenticate({
+      strategy: 'local',
       uuid: this.uuid,
       signature: signature
     });
-    logger.info('Logged in and received JWT:', this.token);
+
+    logger.info('Logged in and received JWT:', response.accessToken);
   }
 
   /*

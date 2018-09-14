@@ -34,11 +34,7 @@ class ErrorTelemetry {
       flavor: this.options.flavor,
     };
 
-    return api.create(payload,
-      {
-        headers: { Authorization: this.token }
-      }
-    )
+    return api.create(payload)
       .then(res => logger.debug(`Pushed error log (message='${logDataObject.message}'). Backend response:`, res))
       .catch(err => logger.error('Failed to push log', err));
   }

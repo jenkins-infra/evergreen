@@ -13,6 +13,7 @@ const configuration  = require('@feathersjs/configuration');
 const express        = require('@feathersjs/express');
 const socketio       = require('@feathersjs/socketio');
 const authentication = require('@feathersjs/authentication');
+const local          = require('@feathersjs/authentication-local');
 const jwt            = require('@feathersjs/authentication-jwt');
 
 const homepage       = require('./homepage');
@@ -23,7 +24,8 @@ const appHooks       = require('./app.hooks');
 const channels       = require('./channels');
 const sequelize      = require('./sequelize');
 
-const Sentry           = require('./libs/sentry');
+const Sentry       = require('./libs/sentry');
+const AuthVerifier = require('./libs/auth-verifier');
 
 const swagger          = require('feathers-swagger');
 const sequelizeSwagger = require('./sequelize-swagger');
@@ -71,6 +73,56 @@ app.configure(express.rest());
 app.configure(socketio());
 app.configure(sequelize);
 
+
+/* Configure the authentication provider via @feathersjs/authentication-jwt and
+ * passport-jwt (https://github.com/themikenicholson/passport-jwt)
+ */
+const authConfig = app.get('jwt');
+app.configure(authentication({
+  name: authConfig.name,
+  service: 'registration',
+  secret: process.env.EVERGREEN_JWT_SECRET || authConfig.secret,
+}));
+
+app.configure(jwt({
+  jsonWebTokenOptions: {
+    expiresIn: authConfig.expiresIn,
+    maxAge: authConfig.maxAge,
+  }
+}));
+
+app.configure(local({
+  service: 'registration',
+  usernameField: 'uuid',
+  /* `signature` is a JSON object and that throws a Missing Credentials because
+   * the `lookup` function in passport-local doesn't understand anything that's
+   * not a string very well.
+   */
+  passwordField: 'password',
+  Verifier: AuthVerifier,
+}));
+
+// Setup a hook to only allow valid JWTs or successful
+// local auth to authenticate and get new JWT access tokens
+app.service('authentication').hooks({
+  before: {
+    create: [
+      (context) => {
+        /* Stringify the signature JSON to make the lookup() function in
+         * passport-local/utils happy
+         *
+         * Somewhat related to
+         * https://github.com/jaredhanson/passport-local/issues/153
+         */
+        if (context.data.signature) {
+          context.data.password = JSON.stringify(context.data.signature);
+        }
+        return context;
+      },
+      authentication.hooks.authenticate(['local', 'jwt'])
+    ]
+  }
+});
 
 /*
  * Initialize the Sentry backend integration for reporting error telemetry
@@ -135,23 +187,6 @@ app.hooks(appHooks);
 if (process.env.NODE_ENV != 'production') {
   app.configure(sequelizeSwagger);
 }
-
-/* Configure the authentication provider via @feathersjs/authentication-jwt and
- * passport-jwt (https://github.com/themikenicholson/passport-jwt)
- */
-const authConfig = app.get('jwt');
-app.configure(authentication({
-  name: authConfig.name,
-  entity: 'authentication',
-  service: 'authentication',
-  secret: process.env.EVERGREEN_JWT_SECRET || authConfig.secret,
-}));
-
-app.configure(jwt({
-  jsonWebTokenOptions: {
-    expiresIn: authConfig.expiresIn,
-  }
-}));
 
 setInterval(() => {
   const now = Date.now();

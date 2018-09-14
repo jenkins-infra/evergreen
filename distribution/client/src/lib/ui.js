@@ -24,7 +24,7 @@ class MessageService {
   }
 
   async create(data, params) {
-    if (params.log) {
+    if ((params) && (params.log)) {
       logger[params.log](data, params.error);
     } else {
       logger.debug(`Publishing to the UI: message='${JSON.stringify(data)}, params='${JSON.stringify(params)}'`);

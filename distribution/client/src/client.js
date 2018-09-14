@@ -5,10 +5,9 @@
 const process = require('process');
 
 const feathers = require('@feathersjs/feathers');
-const fetch    = require('node-fetch');
 const logger   = require('winston');
-const rest     = require('@feathersjs/rest-client');
 const socketio = require('@feathersjs/socketio-client');
+const auth     = require('@feathersjs/authentication-client');
 const io       = require('socket.io-client');
 
 const createCron     = require('./lib/periodic');
@@ -18,7 +17,6 @@ const Status         = require('./lib/status');
 const Storage        = require('./lib/storage');
 const UI             = require('./lib/ui');
 const Update         = require('./lib/update');
-
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
@@ -96,34 +94,38 @@ class Client {
 
     setInterval(() => {
       /* no-op to keep this process alive */
-    }, 1000);
+      logger.info('reporting level again');
+      this.status.reportLevel();
+    }, 60 * 1000);
   }
 
   bootstrap() {
     const endpoint = process.env.EVERGREEN_ENDPOINT;
-    const restClient = rest(endpoint);
-
     logger.info('Configuring the client to use the endpoint %s', endpoint);
-    this.app.configure(restClient.fetch(fetch));
-
-    logger.info('Configuring the client for socket.io off %s', endpoint);
-    this.socket = io(process.env.EVERGREEN_ENDPOINT, {
+    this.socket = io(endpoint, {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax : 5000,
       reconnectionAttempts: Infinity
     });
-    const socketApp = feathers();
-    socketApp.configure(socketio(this.socket));
+    this.app.configure(socketio(this.socket));
+
+    this.app.configure(auth({
+    }));
+
+    this.app.on('reauthentication-error', (error) => {
+      logger.info('Client must re-authenticate..', error);
+      return this.reg.login();
+    });
 
     logger.info('Registering listener for event: `update created`');
-    socketApp.service('update').on('created', (message) => {
+    this.app.service('update').on('created', (message) => {
       logger.info('Received an Update `created` event, checking for updates', message);
       this.runUpdates();
     });
 
     logger.info('Registering listener for event: `status ping`');
-    socketApp.service('status').on('ping', (message) => {
+    this.app.service('status').on('ping', (message) => {
       logger.debug('Received ping', message);
     });
 

@@ -25,9 +25,10 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "@feathersjs/authentication-client": "^1.0.4",
     "@feathersjs/configuration": "^2.0.0",
     "@feathersjs/express": "^1.2.3",
-    "@feathersjs/feathers": "^3.1.7",
+    "@feathersjs/feathers": "^3.2.1",
     "@feathersjs/rest-client": "^1.4.1",
     "@feathersjs/socketio": "^3.2.2",
     "@feathersjs/socketio-client": "^1.1.0",
@@ -35,7 +36,6 @@
     "elliptic": "^6.4.1",
     "eventsource": "^1.0.5",
     "mkdirp": "^0.5.1",
-    "node-fetch": "^2.2.0",
     "node-stream-zip": "^1.7.0",
     "promise-request-retry": "^1.0.1",
     "request-promise": "^4.2.2",

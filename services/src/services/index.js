@@ -1,4 +1,3 @@
-const auth = require('./authentication/authentication.service');
 const status = require('./status/status.service');
 const registration = require('./registration/registration.service');
 
@@ -10,7 +9,6 @@ const errorTelemetry = require('./errorTelemetry/errorTelemetry.service.js');
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
-  app.configure(auth);
   app.configure(status);
   app.configure(registration);
   app.configure(versions);

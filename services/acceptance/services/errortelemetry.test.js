@@ -27,7 +27,7 @@ describe('Error Telemetry service acceptance tests', () => {
     describe('and an auth token', () => {
       beforeEach(async () => {
         const signature = this.keys.sign(this.reg.uuid);
-        this.token = await request({
+        const response = await request({
           url: h.getUrl('/authentication'),
           method: 'POST',
           json: true,
@@ -36,6 +36,7 @@ describe('Error Telemetry service acceptance tests', () => {
             signature: signature
           }
         });
+        this.token = response.accessToken;
       });
 
       it('should reject bad logs', () => {

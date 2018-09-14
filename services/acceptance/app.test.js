@@ -1,27 +1,12 @@
 const rp = require('request-promise');
-const url = require('url');
-const app = require('../src/app');
-
-const port = app.get('port') || 3030;
-const getUrl = pathname => url.format({
-  hostname: app.get('host') || 'localhost',
-  protocol: 'http',
-  port,
-  pathname
-});
+const h  = require('./helpers');
 
 describe('Feathers application tests', () => {
-  beforeAll(function(done) {
-    this.server = app.listen(port);
-    this.server.once('listening', () => done());
-  });
-
-  afterAll(function(done) {
-    this.server.close(done);
-  });
+  beforeAll(done => h.startApp(done));
+  afterAll(done => h.stopApp(done));
 
   it('starts and shows the index page', () => {
-    return rp(getUrl()).then(body => {
+    return rp(h.getUrl()).then(body => {
       expect(body).toEqual(expect.stringContaining('<html>'));
     });
   });

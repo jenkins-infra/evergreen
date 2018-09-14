@@ -26,8 +26,9 @@
     "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance"
   },
   "dependencies": {
-    "@feathersjs/authentication": "^2.1.7",
+    "@feathersjs/authentication": "^2.1.9",
     "@feathersjs/authentication-jwt": "^2.0.1",
+    "@feathersjs/authentication-local": "^1.2.3",
     "@feathersjs/cli": "^3.8.0",
     "@feathersjs/configuration": "^1.0.2",
     "@feathersjs/errors": "^3.3.0",

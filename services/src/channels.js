@@ -49,6 +49,6 @@ module.exports = function(app) {
    * Expose update/created events to all clients regardless of authentication
    * status to ensure that they get passed updates properly
    */
-  app.service('update').publish('created', () => app.channel('anonymous'));
-  app.service('status').publish('ping', () => app.channel('anonymous'));
+  app.service('update').publish('created', () => app.channel('anonymous', 'authenticated'));
+  app.service('status').publish('ping', () => app.channel('anonymous', 'authenticated'));
 };
