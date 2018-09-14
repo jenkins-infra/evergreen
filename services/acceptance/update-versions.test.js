@@ -4,8 +4,8 @@
  * client.
  */
 
-const fs   = require('fs');
-
+const fs      = require('fs');
+const logger  = require('winston');
 const request = require('request-promise');
 const h       = require('./helpers');
 
@@ -30,7 +30,8 @@ describe('versions/updates interaction acceptance tests', () => {
         commit: Date.now().toString(),
         manifest: this.ingest,
       },
-    });
+    })
+      .then(res => this.update = res);
   });
 
   describe('with a docker-cloud flavored client', () => {
@@ -88,6 +89,37 @@ describe('versions/updates interaction acceptance tests', () => {
         expect(foundPlugin).toBeTruthy();
       });
 
+      describe('fetching updates when the client has marked theirs as tainted', () => {
+        beforeEach(() => {
+          return request.post({
+            url: h.getUrl('/update/tainted'),
+            headers: { 'Authorization': this.token },
+            body: {
+              uuid: this.uuid,
+              /* marking the update level we've just received as tainted */
+              level: this.response.meta.level,
+            },
+            json: true
+          });
+        });
+
+        it('should not receive the tainted update level', () => {
+          const taintedLevel = this.response.meta.level;
+          expect(taintedLevel).toEqual(this.update.id);
+
+          return request({
+            url: h.getUrl(`/update/${this.uuid}`),
+            headers: { 'Authorization': this.token },
+            qs: {
+              level: taintedLevel,
+            },
+            json: true
+          })
+            /* Making the assumption in tests that a legit update is -1 */
+            .then(r => expect(r.meta.level).toEqual(taintedLevel - 1));
+        });
+      });
+
       describe('a follow-up request for updates', () => {
         it('should receive a 304 Not Modified response', () => {
           return request({
@@ -100,6 +132,47 @@ describe('versions/updates interaction acceptance tests', () => {
           })
             .then(r => expect(r).toBeFalsy())
             .catch(err => expect(err.statusCode).toBe(304));
+        });
+
+        describe('with multiple new update levels in the backend', () => {
+          beforeEach(async () => {
+            this.updates = [];
+            this.updates.push(await request({
+              url: h.getUrl('/update'),
+              method: 'POST',
+              headers: { 'Authorization': this.settings.internalAPI.secret },
+              json: true,
+              body: {
+                commit: Date.now().toString(),
+                manifest: this.ingest,
+              },
+            }));
+            this.updates.push(await request({
+              url: h.getUrl('/update'),
+              method: 'POST',
+              headers: { 'Authorization': this.settings.internalAPI.secret },
+              json: true,
+              body: {
+                commit: Date.now().toString(),
+                manifest: this.ingest,
+              },
+            }));
+          });
+
+          it('should only be given the next incremnetal update', () => {
+            logger.info('TEST!');
+            logger.error(Object.values(this.updates).map(u => u.id));
+            return request({
+              url: h.getUrl(`/update/${this.uuid}`),
+              headers: { 'Authorization': this.token },
+              qs: {
+                test: true,
+                level: this.response.meta.level,
+              },
+              json: true
+            })
+              .then(r => expect(r.meta.level).toEqual(this.updates[0].id));
+          });
         });
       });
     });

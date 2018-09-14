@@ -1,5 +1,6 @@
 const status = require('./status/status.service');
 const registration = require('./registration/registration.service');
+const tainted = require('./tainted/tainted.service');
 
 const versions = require('./versions/versions.service.js');
 
@@ -14,4 +15,5 @@ module.exports = function (app) {
   app.configure(versions);
   app.configure(update);
   app.configure(errorTelemetry);
+  app.configure(tainted);
 };

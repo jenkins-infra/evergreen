@@ -1,5 +1,6 @@
 const FeathersSequelize = require('feathers-sequelize');
 const errors            = require('@feathersjs/errors');
+const logger            = require('winston');
 
 class NotModified extends errors.FeathersError {
   constructor(message, data) {
@@ -30,18 +31,120 @@ class Update extends FeathersSequelize.Service {
    * Typically will not be called with an `id`, and is directly
    */
   async get(id, params) {
-    let findParams = {
-      query: params.query, /* copy the original query parameters over */
-    };
-    this.scopeFindQuery(findParams);
+    const channel = params.query.channel || 'general';
+    const level = params.query.level;
+    /*
+     * When there isn't any client level, the response is simple, just give
+     * them the latest in their channel
+     */
+    if (!level) {
+      return this.find({
+        query: {
+          $limit: 1,
+          $sort: {
+            id: -1,
+          },
+          channel: channel,
+          tainted: false,
+        },
+      }).then(async (records) => {
+        if (records.length === 0) {
+          throw new NotModified('No updates presently available');
+        }
 
-    return this.find(findParams).then(async (records) => {
+        const record = records[0];
+        const computed = {
+          meta: {
+            channel: record.channel,
+            level: record.id,
+          },
+          core: record.manifest.core,
+          plugins: {
+            updates: [
+            ],
+            deletes: [
+            ],
+          },
+        };
+
+        this.prepareManifestFromRecord(record, computed);
+        /*
+        * Last but not least, make sure that any flavor specific updates are
+        * assigned to the computed update manifest
+        */
+        await this.prepareManifestWithFlavor(id, record, computed);
+        await this.filterVersionsForClient(id, record, computed);
+        return computed;
+      });
+    }
+    const Sequelize = this.app.get('sequelizeClient');
+
+    /*
+     * The logic for finding the right update level is obviously complex
+     *
+     * There are two tables which we must consult: `tainted` for instance
+     * specific tainted update level information, and `updates` for system-wide
+     * update level (UL) information.
+     *
+     * The gist of the logic is this:
+     *   * If the client has a tainted UL, we need to rollback to the next lowest
+     *     non-tainted UL
+     *   * Else if the client has an update level already, we need to provide
+     *     them with the next incremental UL from where they are (e.g. 3 to 4,
+     *     and 4 to 5)
+     *   * Otherwise, we just want the latest and greatest UL in the channel.
+     */
+
+    return this.find({
+      query: {
+        $limit: 1,
+        $sort: {
+          id: 1,
+        },
+        id: {
+          $gt: level,
+        },
+        channel: channel,
+        tainted: false,
+      },
+    }).then(async (records) => {
       if (records.length === 0) {
-        throw new NotModified('No updates presently available');
+        logger.debug('No records found, checking the tainteds table');
+        /*
+         * if we don't have a newer UL, and they're currently tainted, give
+         * them an older one
+         */
+        records = await this.find({
+          query: {
+            $limit: 1,
+            $sort: {
+              id: -1,
+            },
+            channel: channel,
+            tainted: false,
+            id: {
+              $notIn: Sequelize.literal(`
+(SELECT "tainteds"."updateId" FROM "tainteds"
+  WHERE
+  ("tainteds"."uuid" = ${Sequelize.escape(id)}
+    AND "tainteds"."updateId" = ${Sequelize.escape(level)}
+  )
+)`),
+            },
+          },
+        });
+        /*
+         * If after all that we still have nothing, or we just got the same
+         * update level back again, then there's no update for
+         * the client
+         */
+        if ((records.length === 0) || (records[0].id == level)) {
+          throw new NotModified('No updates presently available');
+        }
       }
 
-      let record = records[0];
-      let computed = {
+      const record = records[0];
+      const computed = {
         meta: {
           channel: record.channel,
           level: record.id,
@@ -173,58 +276,6 @@ class Update extends FeathersSequelize.Service {
       });
     }
     return computedManifest;
-  }
-
-  /*
-   * Scope the find query to the appopriate update level for the client
-   * requesting an update
-   */
-  scopeFindQuery(params) {
-    let level = 0;
-    let channel = 'general';
-
-    /*
-     * Use the level provided in the query parameters if it's available,
-     * otherwise default to zero
-     */
-    if (params.query) {
-      level = params.query.level || level;
-      channel = params.query.channel || channel;
-    }
-
-    let query = {
-      tainted: false,
-      channel: channel,
-      $limit: 1,
-    };
-
-    /*
-     * By default, we want to take the latest Update Level, which is a:
-     *  ORDER BY createdAt DESC LIMIT 1
-     *
-     * For queries with levels, we want to take the _next_ Update Level, which
-     * is:
-     *  WHERE id  > ? ORDER BY createdAt ASC LIMIT 1
-     */
-    if (level != 0) {
-      Object.assign(query, {
-        id: {
-          $gt: level,
-        },
-        $sort: {
-          createdAt: 1,
-        }
-      });
-    } else {
-      Object.assign(query, {
-        $sort: {
-          createdAt: -1,
-        }
-      });
-    }
-
-    params.query = query;
-    return params;
   }
 }
 
