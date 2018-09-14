@@ -20,7 +20,7 @@ spec:
       version: 1.8.2
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.0'
+      version: '3.1'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.16'
@@ -35,7 +35,7 @@ spec:
       version: '2.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
-      version: '1.24'
+      version: '1.25'
     - groupId: com.coravy.hudson.plugins.github
       artifactId: github
       version: 1.29.2
@@ -194,7 +194,7 @@ status:
       version: '6.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.0'
+      version: '3.1'
     - groupId: io.jenkins
       artifactId: configuration-as-code
       version: 1.0-rc3-rc482.5bd56df3080e
@@ -275,7 +275,7 @@ status:
       version: 0.1.54.2
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
-      version: '1.24'
+      version: '1.25'
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.21'
