@@ -74,6 +74,9 @@ class Snapshotter {
     this.git('commit', '--allow-empty', '--message', `${message}`);
   }
 
+  revertToLevelBefore(currentLevel) {
+    logger.error(`[NOT IMPLEMENTED YET]${LOG_PREFIX} Revert UL-${currentLevel} to previous Update Level state`);
+  }
   /**
    * Will update the .gitignore file and commit if needed.
    * No-Op if already containing the expected content.

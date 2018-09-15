@@ -6,6 +6,7 @@ const fs       = require('fs');
 const feathers = require('@feathersjs/feathers');
 const h        = require('./helpers');
 const Update   = require('../src/lib/update');
+const HealthChecker = require('../src/lib/healthchecker');
 const Storage  = require('../src/lib/storage');
 const Supervisord = require('../src/lib/supervisord');
 const mkdirp   = require('mkdirp');
@@ -23,6 +24,7 @@ describe('The update module', () => {
 
     app = feathers();
     update = new Update(app);
+    update.healthChecker = new HealthChecker('http://127.0.0.1:8080/', { delay: 50, retry: 5});
 
   });
 
@@ -113,6 +115,9 @@ describe('The update module', () => {
     });
 
     it ('should execute updates if passed in with no deletes', async () => {
+
+      jest.setTimeout(10000);
+
       // daily-quote is only about 7k, good for simple download test
       manifest.plugins.updates = [
         {
