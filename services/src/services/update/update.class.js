@@ -33,6 +33,8 @@ class Update extends FeathersSequelize.Service {
   async get(id, params) {
     const channel = params.query.channel || 'general';
     const level = params.query.level;
+    const instance = await this.app.service('status').get(id);
+
     /*
      * When there isn't any client level, the response is simple, just give
      * them the latest in their channel
@@ -49,6 +51,7 @@ class Update extends FeathersSequelize.Service {
         },
       }).then(async (records) => {
         if (records.length === 0) {
+          logger.debug('No updates discovered for', instance.uuid);
           throw new NotModified('No updates presently available');
         }
 
@@ -72,8 +75,8 @@ class Update extends FeathersSequelize.Service {
         * Last but not least, make sure that any flavor specific updates are
         * assigned to the computed update manifest
         */
-        await this.prepareManifestWithFlavor(id, record, computed);
-        await this.filterVersionsForClient(id, record, computed);
+        await this.prepareManifestWithFlavor(instance, record, computed);
+        await this.filterVersionsForClient(instance, record, computed);
         return computed;
       });
     }
@@ -163,8 +166,8 @@ class Update extends FeathersSequelize.Service {
        * Last but not least, make sure that any flavor specific updates are
        * assigned to the computed update manifest
        */
-      await this.prepareManifestWithFlavor(id, record, computed);
-      await this.filterVersionsForClient(id, record, computed);
+      await this.prepareManifestWithFlavor(instance, record, computed);
+      await this.filterVersionsForClient(instance, record, computed);
       return computed;
     });
   }
@@ -172,12 +175,21 @@ class Update extends FeathersSequelize.Service {
   /*
    * Use the latest versions from the client to filter out updates which are
    * not necessary
+   *
+   * @param {Instance} Hydrated Instance model for the given client
+   * @param {Map} Hydrated Update model for the client's next Update Level
+   * @param {Map} The work-in-progress update manifest to compute for the
+   *  client
+   * @return {Boolean} True if we filtered everything properly
    */
-  async filterVersionsForClient(id, record, computedManifest) {
-    let clientVersions = await this.app.service('versions').find({
+  async filterVersionsForClient(instance, record, computedManifest) {
+    const clientVersions = await this.app.service('versions').find({
       query: {
-        uuid: id,
-        $limit: 1
+        uuid: instance.uuid,
+        $sort: {
+          id: -1,
+        },
+        $limit: 1,
       },
     });
     /*
@@ -185,34 +197,59 @@ class Update extends FeathersSequelize.Service {
      * then we need to merge the changes to make sure we're only sending the
      * client the updates they need
      */
-    if (clientVersions.length != 1) {
+    if (clientVersions.length === 0) {
+      logger.info('No client versions discovered for instance', instance.uuid);
       return false;
     }
-    let latestClientVersion = clientVersions[0];
+    const latestClientVersion = clientVersions[0];
 
     if (latestClientVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
       computedManifest.core = {};
     }
 
-    if (Object.keys(latestClientVersion.manifest.jenkins.plugins).length != 0) {
-      let signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
-      let artifactIds = record.manifest.plugins.map(p => p.artifactId);
-      let updates = [];
-      let deletes = [];
-      record.manifest.plugins.forEach((plugin) => {
-        if (!signatures.includes(plugin.checksum.signature)) {
-          updates.push(plugin);
-        }
-      });
-      Object.keys(latestClientVersion.manifest.jenkins.plugins).forEach((artifactId) => {
-        if (!artifactIds.includes(artifactId)) {
-          deletes.push(artifactId);
-        }
-      });
-      computedManifest.plugins.updates = updates;
-      computedManifest.plugins.deletes = deletes;
+    const pluginsInVersion = Object.keys(latestClientVersion.manifest.jenkins.plugins);
+    /*
+     * Bail out early if there's no pre-existing plugins
+     */
+    if (pluginsInVersion.length === 0) {
+      return true;
     }
 
+    const signatures = Object.values(latestClientVersion.manifest.jenkins.plugins);
+
+    /*
+     * Collect the base level of plugins in this update level
+     */
+    const artifactIds = record.manifest.plugins.map(p => p.artifactId);
+
+    if ((instance) && (instance.flavor) && (computedManifest.environments)) {
+      const flavorSpecific = computedManifest.environments[instance.flavor];
+      if ((flavorSpecific) && (flavorSpecific.plugins)) {
+        flavorSpecific.plugins.forEach(p => artifactIds.push(p.artifactId));
+      }
+    }
+
+    const updates = [];
+    const deletes = [];
+
+    record.manifest.plugins.forEach((plugin) => {
+      if (!signatures.includes(plugin.checksum.signature)) {
+        updates.push(plugin);
+      }
+    });
+
+    /*
+     * Look through all the plugins in the version reported by the client, and
+     * mark anything which no longer exist in the current update level as
+     * deleted
+     */
+    pluginsInVersion.forEach((artifactId) => {
+      if (!artifactIds.includes(artifactId)) {
+        deletes.push(artifactId);
+      }
+    });
+    computedManifest.plugins.updates = updates;
+    computedManifest.plugins.deletes = deletes;
     return true;
   }
 
@@ -243,9 +280,7 @@ class Update extends FeathersSequelize.Service {
    * Prepares the manifest with the updates specific to the given instance's
    * flavor
    */
-  async prepareManifestWithFlavor(id, record, computedManifest) {
-    const instance = await this.app.service('status').get(id);
-
+  async prepareManifestWithFlavor(instance, record, computedManifest) {
     if (!instance) {
       return computedManifest;
     }
@@ -254,7 +289,7 @@ class Update extends FeathersSequelize.Service {
       return computedManifest;
     }
 
-    let flavor = record.manifest.environments[instance.flavor];
+    const flavor = record.manifest.environments[instance.flavor];
     if ((flavor) && (flavor.plugins)) {
       flavor.plugins.forEach((plugin) => {
         /*

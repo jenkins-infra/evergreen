@@ -5,7 +5,6 @@
  */
 
 const fs      = require('fs');
-const logger  = require('winston');
 const request = require('request-promise');
 const h       = require('./helpers');
 
@@ -159,9 +158,7 @@ describe('versions/updates interaction acceptance tests', () => {
             }));
           });
 
-          it('should only be given the next incremnetal update', () => {
-            logger.info('TEST!');
-            logger.error(Object.values(this.updates).map(u => u.id));
+          it('should only be given the next incremental update', () => {
             return request({
               url: h.getUrl(`/update/${this.uuid}`),
               headers: { 'Authorization': this.token },

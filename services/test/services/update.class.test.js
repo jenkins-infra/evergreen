@@ -56,16 +56,6 @@ describe('update service class', () => {
 
 
     describe('when there is no `status` record yet', () => {
-      beforeEach(() => {
-        this.app.service = () => {
-          return {
-            get: () => {
-              return null;
-            },
-          };
-        };
-      });
-
       // how bland!
       it('should do nothing', () => {
         expect(this.service.prepareManifestWithFlavor(1, {}, computed)).resolves.toBe(computed);
@@ -73,17 +63,9 @@ describe('update service class', () => {
     });
 
     describe('when the `status` record has a flavor', () => {
-      beforeEach(() => {
-        this.app.service = () => {
-          return {
-            get: () => {
-              return {
-                flavor: 'docker-cloud',
-              };
-            },
-          };
-        };
-      });
+      const instance = {
+        flavor: 'docker-cloud',
+      };
 
       it('should populate the manifest with the flavor\'s additions', async () => {
         let plugin = { url: 'http://jest.io', checksum: {} };
@@ -97,7 +79,7 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates', [plugin]);
       });
@@ -111,7 +93,7 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates');
       });
@@ -142,7 +124,7 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(1, record, computed);
+        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates');
         expect(result.plugins.updates[0].url).toEqual('https://jest/1.0');
@@ -151,6 +133,16 @@ describe('update service class', () => {
   });
 
   describe('filterVersionsForClient()', () => {
+    beforeEach(() => {
+      /*
+       * Just a mock instance object for later
+       */
+      this.instance = {
+        uuid: 'jest-uuid',
+        flavor: 'docker-cloud',
+      };
+    });
+
     describe('with no pre-existing versions', () => {
       beforeEach(() => {
         this.app.service = () => {
@@ -273,6 +265,56 @@ describe('update service class', () => {
             };
             let result = await this.service.filterVersionsForClient(1, update, updateManifest);
             expect(result).toBeTruthy();
+            expect(updateManifest.plugins.updates).toHaveLength(1);
+          });
+        });
+
+        /*
+         * See https://issues.jenkins-ci.org/browse/JENKINS-53318
+         */
+        describe('when the client has flavored plugins', () => {
+          beforeEach(() => {
+            const manifest = {
+              jenkins: {
+                core: 'signature',
+                plugins: {
+                  'docker-plugin' : 'sha256-for-docker-plugin.hpi',
+                },
+              }
+            };
+
+            this.app.service = () => {
+              return {
+                find: () => {
+                  return [{
+                    manifest: manifest,
+                  }];
+                },
+              };
+            };
+          });
+
+          it('should not delete plugins in the flavor', async () => {
+            const updateManifest = {
+              core: {},
+              plugins: [],
+              environments: {
+                'docker-cloud': {
+                  plugins: [
+                    {
+                      artifactId: 'docker-plugin',
+                      checksum: {
+                        type: 'sha256',
+                        signature: 'some-other-sha256',
+                      },
+                    },
+                  ],
+                },
+              },
+            };
+            const result = await this.service.filterVersionsForClient(this.instance, update, updateManifest);
+            expect(result).toBeTruthy();
+            expect(updateManifest.plugins.deletes).toHaveLength(0);
             expect(updateManifest.plugins.updates).toHaveLength(1);
           });
         });
