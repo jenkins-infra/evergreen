@@ -95,11 +95,15 @@ class Client {
     }
 
     setInterval(() => {
-      /* no-op to keep this process alive */
-      const level = this.update.getCurrentLevel();
-      logger.info('Reporting the current Update Level:', level);
-      this.status.reportLevel(level);
+      /* keep this process alive */
+      this.tick();
     }, (5 * (60 * 1000)));
+  }
+
+  tick() {
+    const level = this.update.getCurrentLevel();
+    logger.debug('Reporting the current Update Level:', level);
+    this.status.reportLevel(level);
   }
 
   bootstrap() {
