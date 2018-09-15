@@ -9,12 +9,12 @@ const path    = require('path');
 const mkdirp  = require('mkdirp');
 const logger  = require('winston');
 
-const Storage     = require('./storage');
-const Downloader  = require('./downloader');
-const Supervisord = require('./supervisord');
-const UI          = require('./ui');
-const Snapshotter = require('./snapshotter');
+const Downloader    = require('./downloader');
 const HealthChecker = require('./healthchecker');
+const Storage       = require('./storage');
+const Supervisord   = require('./supervisord');
+const UI            = require('./ui');
+const Snapshotter   = require('./snapshotter');
 
 class Update {
   constructor(app, options) {
@@ -27,7 +27,15 @@ class Update {
     this.fileOptions = { encoding: 'utf8' };
     this.snapshotter = new Snapshotter();
     this.snapshotter.init(Storage.jenkinsHome());
-    this.healthChecker = new HealthChecker('http://127.0.0.1:8080'); // FIXME: define a process.env var?
+    /*
+     * This is typically going to be passed in by the Client, but some tests
+     * may not define a health checker
+     */
+    if (this.options.healthChecker) {
+      this.healthChecker = this.options.healthChecker;
+    } else {
+      this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
+    }
   }
 
   authenticate(uuid, token) {

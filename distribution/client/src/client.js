@@ -12,6 +12,7 @@ const io       = require('socket.io-client');
 
 const createCron     = require('./lib/periodic');
 const ErrorTelemetry = require('./lib/error-telemetry');
+const HealthChecker  = require('./lib/healthchecker');
 const Registration   = require('./lib/registration');
 const Status         = require('./lib/status');
 const Storage        = require('./lib/storage');
@@ -30,8 +31,9 @@ class Client {
     }
     this.app = feathers();
     this.reg = new Registration(this.app);
+    this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
+    this.update = new Update(this.app, { healthChecker: this.healthChecker });
     this.status = new Status(this.app, { flavor: process.env.FLAVOR });
-    this.update = new Update(this.app);
     this.errorTelemetry = new ErrorTelemetry(this.app, { flavor: process.env.FLAVOR });
     this.updating = false;
     // This should be overridden on bootstrap
@@ -80,6 +82,15 @@ class Client {
     const cron = createCron(app);
 
     this.runUpdates();
+
+    this.healthChecker.check().then((state) => {
+      if (state.healthy) {
+        UI.publish('Jenkins appears to be online', { log: 'info' });
+        Storage.removeBootingFlag();
+      } else {
+        UI.publish('Jenkins appears to be in an unhealthy state!', { log: 'error' });
+      }
+    });
 
     cron.runDaily('post-status', () => {
       this.status.reportVersions();
