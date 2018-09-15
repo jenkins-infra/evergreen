@@ -94,9 +94,10 @@ class Client {
 
     setInterval(() => {
       /* no-op to keep this process alive */
-      logger.info('reporting level again');
-      this.status.reportLevel();
-    }, 60 * 1000);
+      const level = this.update.getCurrentLevel();
+      logger.info('Reporting the current Update Level:', level);
+      this.status.reportLevel(level);
+    }, (5 * (60 * 1000)));
   }
 
   bootstrap() {
