@@ -63,6 +63,8 @@ class Client {
       .catch((err) => {
         if (err.type == 'invalid-json') {
           logger.warn('Received non-JSON response from the Update service');
+        } else if (err.code == 304) {
+          logger.debug('No updates available at this time');
         } else {
           UI.publish('Failed to query for updates!', { log: 'error', error: err });
         }
