@@ -135,7 +135,7 @@ pipeline {
                 stage('Base image') {
                   agent { label 'linux' }
                   steps {
-                      sh 'make -C distribution base-container-check'
+                      sh 'make -C distribution clean base-container-check'
                   }
                   post {
                       always {
@@ -146,7 +146,7 @@ pipeline {
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
-                      sh 'make -C distribution docker-cloud-container-check'
+                      sh 'make -C distribution clean docker-cloud-container-check'
                   }
                   post {
                       always {
@@ -157,7 +157,7 @@ pipeline {
                 stage('AWS Cloud image (smokes)') {
                   agent { label 'linux' }
                   steps {
-                      sh 'make -C distribution aws-cloud-container-check'
+                      sh 'make -C distribution clean aws-cloud-container-check'
                   }
                   post {
                       always {
@@ -181,7 +181,6 @@ pipeline {
                 }
             }
         }
-
     }
 }
 
