@@ -84,5 +84,15 @@ describe('The status module', () => {
         expect(versions.jenkins.plugins.git).toBeTruthy();
       });
     });
+
+    describe('when a commit.txt is present', () => {
+      beforeEach(() => {
+        fs.writeFileSync('/commit.txt', 'jest');
+      });
+      it('should contain the sha1 from the file', () => {
+        const versions = (new Status(app)).collectVersions();
+        expect(versions.container.commit).toEqual('jest');
+      });
+    });
   });
 });
