@@ -216,7 +216,7 @@ with:
 
 [source,bash]
 ----
-../tools/compose run --rm db psql -h db -U postgres -d evergreen_development
+make debug-db
 ----
 
 This will open up the `psql` command line client for PostgreSQL and should
