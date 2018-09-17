@@ -7,7 +7,7 @@ if [ $? -eq 0 ]; then
     TTY_ARGS="-ti"
 fi;
 
-COMMAND=$@
+COMMAND="$@"
 
 # The caller is passing in some custom paraneters to the `node` binary, so we
 # need to override the entrypoint to explicitly call node
@@ -18,17 +18,17 @@ fi;
 
 exec docker run --net host --rm ${TTY_ARGS} \
     -u $(id -u):$(id -g) \
-    -w ${PWD} \
+    -w "${PWD}" \
     --mount type=tmpfs,destination=/.npm \
     --mount type=tmpfs,destination=/.config \
-    -v ${PWD}:${PWD} \
-    -e PATH="$PWD/node_modules/.bin:/usr/local/bin:$PATH" \
+    -v "${PWD}:${PWD}" \
+    -e "PATH=$PWD/node_modules/.bin:/usr/local/bin:$PATH" \
     -e LANG=C.UTF-8 \
-    -e DB_TRACING=$DB_TRACING \
-    -e LOG_LEVEL=$LOG_LEVEL \
-    -e DEBUG=$DEBUG \
-    -e FLAVOR=$FLAVOR \
-    -e SENTRY_DSN=$SENTRY_DSN \
+    -e "DB_TRACING=$DB_TRACING" \
+    -e "LOG_LEVEL=$LOG_LEVEL" \
+    -e "DEBUG=$DEBUG" \
+    -e "FLAVOR=$FLAVOR" \
+    -e "SENTRY_DSN=$SENTRY_DSN" \
     $(printenv | grep -i \^evergreen | awk '{ print "-e", $1 }') \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
     node:10 \
