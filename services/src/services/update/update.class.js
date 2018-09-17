@@ -76,7 +76,7 @@ class Update extends FeathersSequelize.Service {
         * assigned to the computed update manifest
         */
         await this.prepareManifestWithFlavor(instance, record, computed);
-        await this.filterVersionsForClient(instance, record, computed);
+        await this.filterVersionsForClient(instance, computed);
         return computed;
       });
     }
@@ -167,7 +167,7 @@ class Update extends FeathersSequelize.Service {
        * assigned to the computed update manifest
        */
       await this.prepareManifestWithFlavor(instance, record, computed);
-      await this.filterVersionsForClient(instance, record, computed);
+      await this.filterVersionsForClient(instance, computed);
       return computed;
     });
   }
@@ -177,12 +177,11 @@ class Update extends FeathersSequelize.Service {
    * not necessary
    *
    * @param {Instance} Hydrated Instance model for the given client
-   * @param {Map} Hydrated Update model for the client's next Update Level
    * @param {Map} The work-in-progress update manifest to compute for the
    *  client
    * @return {Boolean} True if we filtered everything properly
    */
-  async filterVersionsForClient(instance, record, computedManifest) {
+  async filterVersionsForClient(instance, computedManifest) {
     const clientVersions = await this.app.service('versions').find({
       query: {
         uuid: instance.uuid,
@@ -203,7 +202,7 @@ class Update extends FeathersSequelize.Service {
     }
     const latestClientVersion = clientVersions[0];
 
-    if (latestClientVersion.manifest.jenkins.core == record.manifest.core.checksum.signature) {
+    if (latestClientVersion.manifest.jenkins.core == computedManifest.core.checksum.signature) {
       computedManifest.core = {};
     }
 
@@ -220,19 +219,12 @@ class Update extends FeathersSequelize.Service {
     /*
      * Collect the base level of plugins in this update level
      */
-    const artifactIds = record.manifest.plugins.map(p => p.artifactId);
-
-    if ((instance) && (instance.flavor) && (computedManifest.environments)) {
-      const flavorSpecific = computedManifest.environments[instance.flavor];
-      if ((flavorSpecific) && (flavorSpecific.plugins)) {
-        flavorSpecific.plugins.forEach(p => artifactIds.push(p.artifactId));
-      }
-    }
+    const artifactIds = computedManifest.plugins.updates.map(p => p.artifactId);
 
     const updates = [];
     const deletes = [];
 
-    record.manifest.plugins.forEach((plugin) => {
+    computedManifest.plugins.updates.forEach((plugin) => {
       if (!signatures.includes(plugin.checksum.signature)) {
         updates.push(plugin);
       }

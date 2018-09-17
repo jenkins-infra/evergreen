@@ -5,6 +5,7 @@
  */
 
 const fs      = require('fs');
+const path    = require('path');
 const request = require('request-promise');
 const h       = require('./helpers');
 
@@ -217,13 +218,9 @@ describe('versions/updates interaction acceptance tests', () => {
 
       it('should include the docker-plugin', () => {
         expect(this.response).toHaveProperty('plugins.updates');
-        let foundPlugin = false;
-        this.response.plugins.updates.forEach((plugin) => {
-          if (plugin.url.match(/docker-plugin/)) {
-            foundPlugin = true;
-          }
-        });
-        expect(foundPlugin).toBeTruthy();
+        const found = this.response.plugins.updates
+          .filter(p => p.url.match(/docker-plugin/));
+        expect(found).toHaveLength(1);
       });
     });
 
@@ -289,6 +286,66 @@ describe('versions/updates interaction acceptance tests', () => {
         expect(this.response.plugins.deletes).toHaveLength(1);
         expect(this.response.plugins.deletes).toEqual(expect.arrayContaining([this.invalidPluginName]));
       });
+    });
+  });
+
+  /*
+   * See https://issues.jenkins-ci.org/browse/JENKINS-53318
+   */
+  describe('a client with versions and a flavor (JENKINS-53318)', () => {
+    beforeEach(async () => {
+      this.ingest = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/53318/ingest.json')));
+      this.versions = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/53318/versions.json')));
+
+      this.update = await request.post({
+        url: h.getUrl('/update'),
+        headers: { 'Authorization': this.settings.internalAPI.secret },
+        json: true,
+        body: {
+          commit: Date.now().toString(),
+          manifest: this.ingest,
+        },
+      });
+
+      let { token, uuid } = await h.registerAndAuthenticate();
+      this.token = token;
+      this.uuid = uuid;
+      /*
+      * Once we have registered, we need to send a status in order for updates
+      * to properly be loaded.
+      */
+      this.status = await request({
+        url: h.getUrl('/status'),
+        method: 'POST',
+        headers: { 'Authorization': this.token },
+        json: true,
+        body: {
+          uuid: this.uuid,
+          flavor: 'docker-cloud'
+        }
+      });
+      this.posted_versions = await request.post({
+        url: h.getUrl('/versions'),
+        headers: { 'Authorization': this.token },
+        json: true,
+        body: {
+          uuid: this.uuid,
+          manifest: this.versions
+        }
+      });
+    });
+
+    it('should get the docker-plugin, which comes from a flavor', async () => {
+      const response = await request({
+        url: h.getUrl(`/update/${this.uuid}`),
+        headers: { 'Authorization': this.token },
+        json: true
+      });
+      expect(response).toHaveProperty('plugins.updates');
+
+      const found = response.plugins.updates
+        .filter(p => p.url.match(/docker-plugin/));
+      expect(found).toHaveLength(1);
     });
   });
 });

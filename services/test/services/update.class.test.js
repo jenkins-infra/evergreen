@@ -5,7 +5,7 @@ const createModel   = require('../../src/models/update');
 describe('update service class', () => {
   beforeEach(() => {
     this.app = {};
-    let options = {
+    const options = {
       app: this.app,
       name: 'update',
       Model: createModel(app),
@@ -29,8 +29,8 @@ describe('update service class', () => {
     });
 
     it('should populate the manifest', () => {
-      let plugin = { url: 'http://jest.io', checksum: {} };
-      let record = {
+      const plugin = { url: 'http://jest.io', checksum: {} };
+      const record = {
         manifest: {
           plugins: [plugin]
         },
@@ -42,7 +42,7 @@ describe('update service class', () => {
     });
 
     it('should return for empty/undefined plugins', () => {
-      let record = { manifest: {} };
+      const record = { manifest: {} };
       expect(this.service.prepareManifestFromRecord(record, computed)).toBe(computed);
     });
   });
@@ -53,7 +53,6 @@ describe('update service class', () => {
         updates: [],
       },
     };
-
 
     describe('when there is no `status` record yet', () => {
       // how bland!
@@ -68,8 +67,8 @@ describe('update service class', () => {
       };
 
       it('should populate the manifest with the flavor\'s additions', async () => {
-        let plugin = { url: 'http://jest.io', checksum: {} };
-        let record = {
+        const plugin = { url: 'http://jest.io', checksum: {} };
+        const record = {
           manifest: {
             environments: {
               'docker-cloud': {
@@ -79,13 +78,13 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
+        const result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates', [plugin]);
       });
 
       it('should accomodate empty flavors', async () => {
-        let record = {
+        const record = {
           manifest: {
             environments: {
               'docker-cloud': {},
@@ -93,17 +92,17 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
+        const result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates');
       });
 
       it('should handle flavors which have superceding plugins', async () => {
-        let plugin = {
+        const plugin = {
           artifactId: 'jest',
           url: 'https://jest/1.0',
         };
-        let computed = {
+        const computed = {
           plugins: {
             updates: [
               {
@@ -114,7 +113,7 @@ describe('update service class', () => {
           },
         };
 
-        let record = {
+        const record = {
           manifest: {
             environments: {
               'docker-cloud': {
@@ -124,7 +123,7 @@ describe('update service class', () => {
           }
         };
 
-        let result = await this.service.prepareManifestWithFlavor(instance, record, computed);
+        const result = await this.service.prepareManifestWithFlavor(instance, record, computed);
         expect(result).toBe(computed);
         expect(result).toHaveProperty('plugins.updates');
         expect(result.plugins.updates[0].url).toEqual('https://jest/1.0');
@@ -155,7 +154,7 @@ describe('update service class', () => {
       });
 
       it('should return false, indicating no filtering', () => {
-        expect(this.service.filterVersionsForClient(1, {})).resolves.toBeFalsy();
+        return expect(this.service.filterVersionsForClient(1, {})).resolves.toBeFalsy();
       });
     });
 
@@ -178,40 +177,23 @@ describe('update service class', () => {
       });
 
       describe('when the core is identical', () => {
-        let update = {
-          manifest: {
-            core: {
-              checksum: {
-                signature: 'signature',
-              },
-            },
-          },
-        };
-
         it('should filter out core', async () => {
-          let manifest = {
-            plugins: [],
+          const manifest = {
+            core: {
+              checksum: { signature: 'signature' },
+            },
+            plugins: {
+              updates: [],
+            },
           };
           expect.assertions(2);
-          let result = await this.service.filterVersionsForClient(1, update, manifest);
+          const result = await this.service.filterVersionsForClient(1, manifest);
           expect(result).toBeTruthy();
           expect(manifest.core).toMatchObject({});
         });
       });
 
       describe('when there are plugin updates available', () => {
-        let update = {
-          manifest: {
-            core: { checksum: { signature: null } },
-            plugins: [
-              {
-                url: 'http://jest.io',
-                checksum: { signature: '0xdeadbeef' },
-              },
-            ],
-          },
-        };
-
         describe('when the client has no plugins', () => {
           /*
            * This is the behavior when there is an empty, but existing,
@@ -221,8 +203,8 @@ describe('update service class', () => {
            * already have plugins prepared for it
            */
           it('should not override the plugins already computed', async () => {
-            let updateManifest = {
-              core: {},
+            const updateManifest = {
+              core: { checksum: { signature: null } },
               plugins: {
                 updates: [
                   { url: 'https://docker.io', checksum: { signature: '0xdeadbeef' } },
@@ -230,7 +212,7 @@ describe('update service class', () => {
                 ],
               },
             };
-            let result = await this.service.filterVersionsForClient(1, update, updateManifest);
+            const result = await this.service.filterVersionsForClient(1, updateManifest);
             expect(result).toBeTruthy();
             expect(updateManifest.plugins.updates).toHaveLength(2);
           });
@@ -259,11 +241,21 @@ describe('update service class', () => {
           });
 
           it('should only update plugins which need updating', async () => {
-            let updateManifest = {
-              core: {},
-              plugins: {},
+            const updateManifest = {
+              core: { checksum: { signature: 'signature' } },
+              plugins: {
+                updates: [
+                  {
+                    artifactId: 'docker-plugin',
+                    checksum: {
+                      type: 'sha256',
+                      signature: 'some-other-sha256',
+                    },
+                  },
+                ],
+              },
             };
-            let result = await this.service.filterVersionsForClient(1, update, updateManifest);
+            const result = await this.service.filterVersionsForClient(1, updateManifest);
             expect(result).toBeTruthy();
             expect(updateManifest.plugins.updates).toHaveLength(1);
           });
@@ -296,23 +288,20 @@ describe('update service class', () => {
 
           it('should not delete plugins in the flavor', async () => {
             const updateManifest = {
-              core: {},
-              plugins: [],
-              environments: {
-                'docker-cloud': {
-                  plugins: [
-                    {
-                      artifactId: 'docker-plugin',
-                      checksum: {
-                        type: 'sha256',
-                        signature: 'some-other-sha256',
-                      },
+              core: { checksum: { signature: 'signature' } },
+              plugins: {
+                updates: [
+                  {
+                    artifactId: 'docker-plugin',
+                    checksum: {
+                      type: 'sha256',
+                      signature: 'some-other-sha256',
                     },
-                  ],
-                },
+                  },
+                ],
               },
             };
-            const result = await this.service.filterVersionsForClient(this.instance, update, updateManifest);
+            const result = await this.service.filterVersionsForClient(this.instance, updateManifest);
             expect(result).toBeTruthy();
             expect(updateManifest.plugins.deletes).toHaveLength(0);
             expect(updateManifest.plugins.updates).toHaveLength(1);
