@@ -35,10 +35,10 @@ the impact.
 To develop on a developer box and quite easily set up both the backend services and the Jenkins Evergreen instance, you need to do the following:
 
 [source,shell, title=from the repo root]
+cd distribution/
 make run
 # wait enough for services to be fully started. Should be <30 seconds.
 sleep 30
-cd distribution/
 curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ../services/ingest.json)}" \
 -H 'Authorization: the API calls are coming from inside the house' \
 -H 'Content-Type: application/json' \
