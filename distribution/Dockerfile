@@ -85,11 +85,6 @@ RUN deluser node && \
     adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
 
 
-# Ensure that only the right CA root certificates are present on the system
-# See JEP-307
-COPY scripts/generate-ca-certificates /usr/local/sbin/
-RUN /usr/local/sbin/generate-ca-certificates
-
 COPY commit.txt /
 
 #######################
