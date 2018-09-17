@@ -30,7 +30,7 @@ module.exports = (app) => {
         updates: updates,
         levels: levels,
         instances: instances,
-        connections: app.channel('anonymous').length,
+        connections: app.channel('authenticated').length,
         commit: fs.readFileSync('./commit.txt'),
       });
     });
