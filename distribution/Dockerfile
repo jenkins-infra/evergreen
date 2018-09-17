@@ -9,10 +9,11 @@ ARG agent_port=50000
 
 ENV EVERGREEN_ENDPOINT=https://evergreen.jenkins.io/
 ENV EVERGREEN_HOME /evergreen
+ENV EVERGREEN_DATA /evergreen/data
 
-ENV JENKINS_HOME ${EVERGREEN_HOME}/jenkins/home
+ENV JENKINS_HOME ${EVERGREEN_DATA}/jenkins/home
 ENV JENKINS_WAR ${JENKINS_HOME}/jenkins.war
-ENV JENKINS_VAR ${EVERGREEN_HOME}/jenkins/var
+ENV JENKINS_VAR ${EVERGREEN_DATA}/jenkins/var
 ENV JENKINS_AGENT_PORT ${agent_port}
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 ENV JENKINS_UC https://updates.jenkins.io
@@ -33,11 +34,11 @@ ENV JENKINS_OPTS=\
 "--pluginroot=${JENKINS_VAR}/plugins"
 
 RUN mkdir -p /usr/share/jenkins/ref/ && \
-    mkdir ${EVERGREEN_HOME} && \
-    mkdir ${EVERGREEN_HOME}/jenkins/ && \
-    mkdir ${JENKINS_HOME} && \
-    mkdir ${JENKINS_VAR} && \
-    mkdir ${JENKINS_VAR}/logs
+    mkdir -p ${EVERGREEN_HOME} && \
+    mkdir -p ${EVERGREEN_DATA}/jenkins/ && \
+    mkdir -p ${JENKINS_HOME} && \
+    mkdir -p ${JENKINS_VAR} && \
+    mkdir -p ${JENKINS_VAR}/logs
 
 # for main web interface:
 EXPOSE 80

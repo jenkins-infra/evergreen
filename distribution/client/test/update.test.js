@@ -16,7 +16,7 @@ describe('The update module', () => {
 
   beforeEach( () => {
     const evergreenHome = tmp.dirSync({unsafeCleanup: true}).name;
-    process.env.EVERGREEN_HOME = evergreenHome;
+    process.env.EVERGREEN_DATA = evergreenHome;
     Storage.homeDirectory = (() => evergreenHome );
     mkdirp.sync(Storage.jenkinsHome());
 
