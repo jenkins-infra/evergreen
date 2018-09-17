@@ -15,13 +15,16 @@ if [[ "${1}" =~ "--" ]]; then
     COMMAND="node $@";
 fi;
 
+
+set -xe
+
 exec docker run --net host --rm ${TTY_ARGS} \
     -u $(id -u):$(id -g) \
     -w ${PWD} \
     --mount type=tmpfs,destination=/.npm \
     --mount type=tmpfs,destination=/.config \
     -v ${PWD}:${PWD} \
-    -e PATH=$PWD/node_modules/.bin:/usr/local/bin:$PATH \
+    -e PATH="$PWD/node_modules/.bin:/usr/local/bin:$PATH" \
     -e LANG=C.UTF-8 \
     -e DB_TRACING=$DB_TRACING \
     -e LOG_LEVEL=$LOG_LEVEL \
