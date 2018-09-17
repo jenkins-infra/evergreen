@@ -119,7 +119,8 @@ jq -r '.Reservations[0].Instances[].PublicIpAddress'
 TIP: `jq` is a nice tool to process JSON.
 If you do not have it installed, either install it, or just look for `PublicIpAddress` field in the json returned from the `aws ec2 describe-instances` command.
 
-Once you have the public IP, open a browser on the http://1.2.3.4:8080 URL.
+Once you have the public IP, after a few minutes
+footnote:[The master EC2 instance is being configured to run the Jenkins master. That is why even if the IP is already assigned, it could still take some more time to do additional things like installing Docker, pulling the evergreen image and have it started], open a browser on the http://1.2.3.4:8080 URL.
 This should display the Jenkins Install Wizard, asking for a secret to unlock the screen, located under `/evergreen/jenkins/home/secrets/initialAdminPassword`.
 
 To retrieve it, use the IP retrieved above in the following command:
