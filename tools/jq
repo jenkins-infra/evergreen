@@ -3,7 +3,7 @@
 set -euo pipefail
 
 exec docker run --rm \
-    -w ${PWD} \
-    -v ${PWD}:${PWD} \
+    -w "${PWD}" \
+    -v "${PWD}:${PWD}" \
     -i \
     realguess/jq:1.4 jq $@
