@@ -1,7 +1,7 @@
 patch-package
 --- a/node_modules/promise-request-retry/index.js
 +++ b/node_modules/promise-request-retry/index.js
-@@ -1,7 +1,7 @@
+@@ -1,20 +1,29 @@
  'use strict';
  const requestPromise = require('request-promise');
  const Promise = require('bluebird');
@@ -10,21 +10,65 @@ patch-package
  
  class rpRetry {
      static _rpRetry(options) {
-@@ -22,7 +22,16 @@ class rpRetry {
+-        if(options.verbose_logging) {
+-          logger.info(`calling ${options.uri} with retry ${options.retry}`);
+-        }
++
+         const tries = options.retry || 1;
+         delete options.retry;
+-        const fetchDataWithRetry = tryCount => {
++
++        const delay = options.delay || 100; // default ms delay between retries
++        delete options.delay;
++
++        const factor = options.factor || 1; // If absent, delay will always be the same.
++        delete options.factor;
++
++        if (options.verbose_logging) {
++            logger.info(`calling ${options.uri} with retry ${tries}, initial delay=${delay}, factor=${factor}`);
++        }
++
++        const fetchDataWithRetry = (tryCount, delay) => {
+             return requestPromise(options)
+                 .then(result => {
+-                    if(options.verbose_logging) {
+-                      logger.info(`Result obtained for ${options.method} request to ${options.uri}`);
++                    if (options.verbose_logging) {
++                        logger.info(`Result obtained for ${options.method} request to ${options.uri}`);
+                     }
+                     return Promise.resolve(result);
+                 })
+@@ -22,22 +31,27 @@ class rpRetry {
                      logger.info(`Encountered error ${err.message} for ${options.method} request to ${options.uri}, retry count ${tryCount}`);
                      tryCount -= 1;
                      if (tryCount) {
 -                        return fetchDataWithRetry(tryCount);
-+                        let delay = options.delay || 100; // default ms delay between retries
-+                        if (options.factor) {
-+                            delay *= options.factor;
-+                        }
 +                        return new Promise((resolve, reject) => {
 +                            setTimeout(() => {
-+                                logger.debug(`waiting for ${delay} ms before next retry for ${options.uri}`);
-+                                resolve(fetchDataWithRetry(tryCount));
++                                logger.debug(`waiting for ${delay} ms before next retry for ${options.uri}. Next wait ${delay * factor}`);
++                                resolve(fetchDataWithRetry(tryCount, delay * factor));
 +                            }, delay);
 +                        });
                      }
                      return Promise.reject(err);
                  });
+         };
+-        return fetchDataWithRetry(tries);
++        return fetchDataWithRetry(tries, delay);
+     }
+ 
+     static _rp(options) {
+-        if(options.verbose_logging) {
+-          logger.info(`calling ${options.uri} without retries`);
++        if (options.verbose_logging) {
++            logger.info(`calling ${options.uri} without retries`);
+         }
+         return requestPromise(options)
+             .then(result => {
+-                if(options.verbose_logging) {
+-                  logger.info(`Result obtained for ${options.method} request to ${options.uri}`);
++                if (options.verbose_logging) {
++                    logger.info(`Result obtained for ${options.method} request to ${options.uri}`);
+                 }
+                 return Promise.resolve(result);
+             })
