@@ -61,7 +61,6 @@
               "sudo docker pull $DOCKER_IMAGE\n",
               "sudo docker run -d -p 8080:8080 -p 50000:50000 ",
               " --name jenkins-evergreen",
-              " -e EVERGREEN_ENDPOINT=http://evergreen.jenkins.io.batmat.net:8080",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
               " -e AGENT_SECURITY_GROUP=", {"Ref":"EvergreenAgentSecurityGroup"},
