@@ -105,7 +105,7 @@ class Status {
    * Collect and report the versions of the software installed on the instance
    */
   collectVersions() {
-    let versions = {
+    const versions = {
       schema: 1,
       container: {
         commit: null,
@@ -126,6 +126,14 @@ class Status {
     Object.assign(versions.container.tools, process.versions);
 
     versions.jenkins.core = Checksum.signatureFromFile(path.join(Storage.jenkinsHome(), 'jenkins.war'));
+
+    /*
+     * Grab the version of the container from the root of the filesystem
+     */
+    const commitFile = '/commit.txt';
+    if (fs.existsSync(commitFile)) {
+      versions.container.commit = fs.readFileSync(commitFile, 'utf8');
+    }
 
     try {
       const files = fs.readdirSync(Storage.pluginsDirectory());
