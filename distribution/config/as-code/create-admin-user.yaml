@@ -8,7 +8,10 @@ jenkins:
       users:
         - id: "admin"
           password: ${JENKINS_ADMIN_PASSWORD}
-  authorizationStrategy: loggedInUsersCanDoAnything
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
   #CSRF issuer
   crumbIssuer:
     standard:
