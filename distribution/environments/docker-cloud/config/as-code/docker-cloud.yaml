@@ -9,8 +9,8 @@ jenkins:
         templates:
           - labelString: "agent"
             dockerTemplateBase:
-              image: "jenkins/slave"
-            remoteFs: "/home/jenkins/agent"
+              image: 'batmat/jenkins-ssh-agent'
+            remoteFs: "/home/jenkins"
             connector:
               attach:
                 user: "jenkins"
