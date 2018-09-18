@@ -64,8 +64,6 @@ test_jep_307() {
   result=$( docker exec "$container_under_test" curl -s https://repo.jenkins-ci.org )
   assertEquals "Incrementals repo should be OK" "0" "$?"
 
-  result=$( docker exec "$container_under_test" curl -s https://sonic.com/ )
-  assertEquals "everything else should not validate" "60" "$?"
 }
 
 # JENKINS-53059
