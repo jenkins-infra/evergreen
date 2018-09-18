@@ -19,10 +19,10 @@ class Storage {
     /* The default home directory is /evergreen, see the Dockerfile in the root
      * directory of th repository
      */
-    if (!process.env.EVERGREEN_HOME) {
-      return '/evergreen';
+    if (!process.env.EVERGREEN_DATA) {
+      return '/evergreen/data';
     }
-    return process.env.EVERGREEN_HOME;
+    return process.env.EVERGREEN_DATA;
   }
 
   /*
@@ -35,6 +35,13 @@ class Storage {
       Storage.homeDirectory(),
       'jenkins',
       'home');
+  }
+
+  static jenkinsVar() {
+    return path.join(
+      Storage.homeDirectory(),
+      'jenkins',
+      'var');
   }
 
   /*

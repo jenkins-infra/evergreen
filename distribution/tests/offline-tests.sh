@@ -79,7 +79,7 @@ test_INSECURE_SHOW_ADMIN_PASSWORD_can_be_unset() {
     assertEquals "Line with generated password should not have been found" "0" "$?"
 
     result=$( docker logs "$container_under_test" |
-        grep -e '^Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war')
+        grep -e '^Error: Unable to access jarfile /evergreen/data/jenkins/home/jenkins.war')
     assertEquals "Should not have been able to start jenkins.war" "0" "$?"
   fi;
 }

@@ -63,8 +63,8 @@ describe('The status module', () => {
 
     describe('when there is a jenkins.war present', () => {
       beforeEach(() => {
-        mkdirp.sync('/evergreen/jenkins/home');
-        fs.writeFileSync('/evergreen/jenkins/home/jenkins.war', 'jest!');
+        mkdirp.sync('/evergreen/data/jenkins/home');
+        fs.writeFileSync('/evergreen/data/jenkins/home/jenkins.war', 'jest!');
       });
 
       it('should contain the core signature', () => {
@@ -75,8 +75,8 @@ describe('The status module', () => {
 
     describe('When there are plugins present', () => {
       beforeEach(() => {
-        mkdirp.sync('/evergreen/jenkins/home/plugins');
-        fs.writeFileSync('/evergreen/jenkins/home/plugins/git.hpi', 'jest!');
+        mkdirp.sync('/evergreen/data/jenkins/home/plugins');
+        fs.writeFileSync('/evergreen/data/jenkins/home/plugins/git.hpi', 'jest!');
       });
 
       it('should contain the signature of the plugin', () => {

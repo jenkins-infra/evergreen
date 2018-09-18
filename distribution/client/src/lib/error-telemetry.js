@@ -5,9 +5,11 @@
 * handle both error and "metrics" telemetry, but let's start with a smaller
 * scope at least for now.
 */
-const Tail   = require('tail').Tail;
-const fs     = require('fs');
-const logger = require('winston');
+const { Tail } = require('tail');
+const fs       = require('fs');
+const logger   = require('winston');
+const path     = require('path');
+const Storage  = require('./storage');
 
 class ErrorTelemetry {
   constructor(app, options) {
@@ -78,7 +80,7 @@ class ErrorTelemetry {
   fileToWatch() {
     if (!process.env.ESSENTIALS_LOG_FILE) {
       logger.debug('Defaulting to evergreen.log.0');
-      return '/evergreen/jenkins/var/logs/evergreen.log.0';
+      return path.join(Storage.jenkinsVar(), 'logs', 'evergreen.log.0');
     }
     return process.env.ESSENTIALS_LOG_FILE;
   }
