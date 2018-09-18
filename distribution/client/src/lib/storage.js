@@ -37,6 +37,13 @@ class Storage {
       'home');
   }
 
+  static jenkinsVar() {
+    return path.join(
+      Storage.homeDirectory(),
+      'jenkins',
+      'var');
+  }
+
   /*
    * Returns the directory used for storing plugins
    *
