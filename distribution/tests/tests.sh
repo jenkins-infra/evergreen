@@ -98,7 +98,7 @@ test_war_is_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
   result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/war' 2>&1 )
   assertNotEquals "war directory should not be found" "0" "$?"
-  assertEquals "ls should not find war directory" "ls: /evergreen/jenkins/home/war: No such file or directory" "$result"
+  assertEquals "ls should not find war directory" "ls: /evergreen/data/jenkins/home/war: No such file or directory" "$result"
 }
 test_logs_are_not_under_jenkins_home() {
 
