@@ -278,4 +278,9 @@ test_git_history_is_present() {
   assertEquals "git call to retrieve last subject should have succeeded" 0 "$?"
 }
 
+test_no_anonymous_read() {
+  result=$( curl -v -f -I http://localhost:$TEST_PORT/computer/ 2>&1 )
+  assertNotEquals "curl call to /computer should not have succeeeded" 0 "$?"
+}
+
 . ./shunit2/shunit2
