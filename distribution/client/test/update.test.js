@@ -92,7 +92,6 @@ describe('The update module', () => {
     });
 
     it('should still update core if nothing else is passed in', async () => {
-      Downloader.download.mockImplementationOnce(() => true);
       manifest.core = {
         url: 'testurl',
         checksum: { signature: 'signature' }
@@ -103,7 +102,6 @@ describe('The update module', () => {
     });
 
     it('should execute deletes if passed in with no updates', async () => {
-      const expectations = [];
       const pluginPath = Storage.pluginsDirectory();
 
       manifest.plugins.deletes = ['delete1', 'delete2'];
@@ -111,9 +109,7 @@ describe('The update module', () => {
 
       manifest.plugins.deletes.forEach((filename) => {
         h.touchFile(`${pluginPath}/${filename}.hpi`);
-        expectations.push(
-          expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy()
-        );
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
       });
 
       const response = await update.applyUpdates(manifest);
@@ -121,18 +117,15 @@ describe('The update module', () => {
       expect(update.updateInProgress).toBeFalsy();
 
       manifest.plugins.deletes.forEach((filename) => {
-        expectations.push(
-          expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy()
-        );
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
       });
       expect(Supervisord.restartProcess).toHaveBeenCalled();
-      return Promise.all(expectations);
     });
 
     it ('should execute updates if passed in with no deletes', async () => {
       jest.setTimeout(10000);
-      Downloader.download.mockImplementationOnce(() => {
-        require.requireActual('../src/lib/downloader').default;
+      Downloader.mockImplementationOnce(() => {
+        return require.requireActual('../src/lib/downloader').default();
       });
 
       // daily-quote is only about 7k, good for simple download test
@@ -148,13 +141,13 @@ describe('The update module', () => {
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
-      expect(await h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
       expect(Supervisord.restartProcess).toHaveBeenCalled();
     });
 
     it('should execute both updates and deletes if both passed in', async () => {
-      Downloader.download.mockImplementationOnce(() => {
-        require.requireActual('../src/lib/downloader').default;
+      Downloader.mockImplementationOnce(() => {
+        return require.requireActual('../src/lib/downloader').default();
       });
       manifest.plugins.deletes = ['delete1'];
       // daily-quote is only about 7k, good for simple download test

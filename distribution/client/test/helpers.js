@@ -2,24 +2,24 @@
  * This module contains functions which are helpful for running across multiple
  * tests
  */
-const fs            = require('fs');
+const fs = require('fs');
+const { promisify } = require('util');
+const open = promisify(fs.open);
+const close = promisify(fs.close);
+const access = promisify(fs.access);
 
 class Helpers {
   constructor () {
   }
 
   checkFileExists(filename) {
-    return new Promise(r=>fs.access(filename, fs.F_OK, e => r(!e)));
+    return access(filename, fs.F_OK, () => {
+      return false;
+    });
   }
 
   touchFile(filename) {
-    return new Promise((resolve, reject) => {
-      fs.open(filename, 'w', (err, fd) => {
-        err ? reject(err) : fs.close(fd, err => {
-          err ? reject(err) : resolve(fd);
-        });
-      });
-    });
+    return open(filename, 'w').then(close);
   }
 }
 
