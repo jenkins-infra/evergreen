@@ -1,14 +1,16 @@
 jest.mock('../src/lib/supervisord');
+jest.mock('../src/lib/downloader');
 
-const tmp      = require('tmp');
-const fs       = require('fs');
-const feathers = require('@feathersjs/feathers');
-const h        = require('./helpers');
-const Update   = require('../src/lib/update');
+const tmp           = require('tmp');
+const fs            = require('fs');
+const feathers      = require('@feathersjs/feathers');
+const h             = require('./helpers');
+const Update        = require('../src/lib/update');
 const HealthChecker = require('../src/lib/healthchecker');
-const Storage  = require('../src/lib/storage');
-const Supervisord = require('../src/lib/supervisord');
-const mkdirp   = require('mkdirp');
+const Storage       = require('../src/lib/storage');
+const Supervisord   = require('../src/lib/supervisord');
+const Downloader    = require('../src/lib/downloader');
+const mkdirp        = require('mkdirp');
 
 describe('The update module', () => {
   let app = null;
@@ -84,13 +86,22 @@ describe('The update module', () => {
     });
 
     it('should not reject on no plugin updates', async () => {
-      let response = await update.applyUpdates(manifest);
+      const response = await update.applyUpdates(manifest);
       expect(response).toBeFalsy();
       expect(update.updateInProgress).toBeFalsy();
     });
 
+    it('should still update core if nothing else is passed in', async () => {
+      manifest.core = {
+        url: 'testurl',
+        checksum: { signature: 'signature' }
+      };
+      const response = await update.applyUpdates(manifest);
+      expect(response).toBeTruthy();
+      expect(update.updateInProgress).toBeFalsy();
+    });
+
     it('should execute deletes if passed in with no updates', async () => {
-      const expectations = [];
       const pluginPath = Storage.pluginsDirectory();
 
       manifest.plugins.deletes = ['delete1', 'delete2'];
@@ -98,9 +109,7 @@ describe('The update module', () => {
 
       manifest.plugins.deletes.forEach((filename) => {
         h.touchFile(`${pluginPath}/${filename}.hpi`);
-        expectations.push(
-          expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy()
-        );
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
       });
 
       const response = await update.applyUpdates(manifest);
@@ -108,16 +117,16 @@ describe('The update module', () => {
       expect(update.updateInProgress).toBeFalsy();
 
       manifest.plugins.deletes.forEach((filename) => {
-        expectations.push(
-          expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy()
-        );
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
       });
       expect(Supervisord.restartProcess).toHaveBeenCalled();
-      return Promise.all(expectations);
     });
 
     it ('should execute updates if passed in with no deletes', async () => {
       jest.setTimeout(10000);
+      Downloader.mockImplementationOnce(() => {
+        return require.requireActual('../src/lib/downloader').default();
+      });
 
       // daily-quote is only about 7k, good for simple download test
       manifest.plugins.updates = [
@@ -132,8 +141,36 @@ describe('The update module', () => {
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
-      expect(await h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
       expect(Supervisord.restartProcess).toHaveBeenCalled();
+    });
+
+    it('should execute both updates and deletes if both passed in', async () => {
+      Downloader.mockImplementationOnce(() => {
+        return require.requireActual('../src/lib/downloader').default();
+      });
+      manifest.plugins.deletes = ['delete1'];
+      // daily-quote is only about 7k, good for simple download test
+      manifest.plugins.updates = [
+        {
+          artifactId: 'daily-quote',
+          url: 'http://updates.jenkins-ci.org/download/plugins/daily-quote/1.0/daily-quote.hpi',
+          checksum: { signature: 'e0e6bf16f76f1627c1aa296d796c6cc55cdcca838ae5d144f698524b488a72c1' }
+        }
+      ];
+      const pluginPath = Storage.pluginsDirectory();
+      mkdirp.sync(pluginPath);
+      manifest.plugins.deletes.forEach((filename) => {
+        h.touchFile(`${pluginPath}/${filename}.hpi`);
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
+      });
+      let response = await update.applyUpdates(manifest);
+      expect(response).toBeTruthy();
+      expect(update.updateInProgress).toBeFalsy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
+      manifest.plugins.deletes.forEach((filename) => {
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
+      });
     });
   });
 });
