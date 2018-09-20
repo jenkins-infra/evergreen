@@ -82,13 +82,6 @@ class Update {
         updates.core.checksum.signature));
     }
 
-    if ((!updates.plugins) || (!updates.plugins.updates && !updates.plugins.deletes)) {
-      logger.debug('No plugins available in the response');
-      this.updateInProgress = null;
-      this.saveUpdateSync(updates);
-      return false;
-    }
-
     // FIXME: check updates.meta.level is specified
 
     /*
@@ -106,6 +99,13 @@ class Update {
 
     if (updates.plugins.deletes) {
       tasks.push(Storage.removePlugins(updates.plugins.deletes));
+    }
+
+    if (tasks.length == 0) {
+      logger.debug('No actionable tasks');
+      this.updateInProgress = null;
+      this.saveUpdateSync(updates);
+      return false;
     }
 
     return Promise.all(tasks).then(() => {
