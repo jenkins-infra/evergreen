@@ -30,7 +30,7 @@ The `Makefile` at the project root should help you getting started.
 want to start to understand how things work, and be able to modify them and see
 the impact.
 
-==== Running the whole stack locally
+=== Running the whole stack locally
 
 To develop on a developer box and quite easily set up both the backend services and the Jenkins Evergreen instance, you need to do the following:
 
@@ -80,4 +80,14 @@ See the `tests/tests.sh` file to see how this works, and if you want to check ad
 === Backend
 
 The backend services are written in JavaScript and have tests written primarily
-in link:https://mochajs.org/[Mocha], which can be run via `make check`.
+in link:https://facebook.github.io/jest/[Jest], which can be run via `make check`.
+
+=== How to list available plugins updates
+
+[source,bash]
+----
+(cd services && make propose-updates)
+----
+
+This will tell you which plugins can be upgraded in the
+`services/essentials.yaml` file under the `status` section.
