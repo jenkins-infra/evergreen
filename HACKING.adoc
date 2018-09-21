@@ -80,25 +80,14 @@ See the `tests/tests.sh` file to see how this works, and if you want to check ad
 === Backend
 
 The backend services are written in JavaScript and have tests written primarily
-in link:https://mochajs.org/[Mocha], which can be run via `make check`.
+in link:https://facebook.github.io/jest/[Jest], which can be run via `make check`.
 
 === How to list available plugins updates
 
-Given the /pluginManager is made unreachable on purpose, we cannot use the standard UI easily to check what plugins could receive an update.
-
-Here is a small System Groovy script to generate such report.
-
-[source,groovy]
+[source,bash]
 ----
-def plugins = Jenkins.instance.pluginManager.activePlugins.findAll {
-  it -> it.hasUpdate()
-}
-
-println "${plugins.size()} have updates\n"
-def indentation = "    "
-plugins.collect {
-  it -> "${indentation}- groupId: TO_BE_FILLED_IN\n"+
-        "${indentation}  artifactId: ${it.getShortName()}\n"+ "${indentation}  version: ${it.version}"
-}.each { println it }
-
+(cd services && make propose-updates)
 ----
+
+This will tell you which plugins can be upgraded in the
+`services/essentials.yaml` file under the `status` section.
