@@ -11,7 +11,7 @@ spec:
       version: '1.0'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
-      version: 1.0-rc52.83b6596bf05e
+      version: 1.0-rc58.a9ecd200b39a
     - groupId: io.jenkins.plugins
       artifactId: essentials
       version: 0.5.1
@@ -224,7 +224,7 @@ status:
       version: 0.5.1
     - groupId: io.jenkins.plugins
       artifactId: evergreen
-      version: 1.0-rc52.83b6596bf05e
+      version: 1.0-rc58.a9ecd200b39a
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
       version: 2.3.1
