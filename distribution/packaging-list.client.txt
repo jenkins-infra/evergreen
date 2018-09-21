@@ -4,6 +4,7 @@
 ./client/config/
 ./client/src/
 ./client/src/lib/
+./client/patches/
 # Inlude the public site information
 ./client/public/
 ./client/public/docs/

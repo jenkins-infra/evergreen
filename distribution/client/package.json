@@ -8,7 +8,7 @@
     "test": "npm run eslint && npm run jest",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "jest": "jest",
-    "prepare": "patch-package"
+    "postinstall": "patch-package"
   },
   "author": "R Tyler Croy",
   "license": "GPL-3.0",
