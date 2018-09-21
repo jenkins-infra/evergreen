@@ -20,7 +20,6 @@
     "html-webpack-plugin": "^3.2.0",
     "jest": "^22.4.4",
     "memfs": "^2.9.4",
-    "patch-package": "^5.1.1",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.0",
     "webpack": "^4.17.1",
@@ -47,7 +46,8 @@
     "url-parse": "^1.4.3",
     "uuid": "^3.3.2",
     "winston": "^2.4.3",
-    "xmlrpc": "^1.3.2"
+    "xmlrpc": "^1.3.2",
+    "patch-package": "^5.1.1"
   },
   "jest": {
     "collectCoverage": true,
