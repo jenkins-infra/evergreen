@@ -63,6 +63,7 @@ describe('the Downloader class', () => {
           await Downloader.download(toDownload, dir, 'thefile', null, {delay: 20, retry: 4, factor: 10});
           expect(false).toBeTruthy(); // fail(), should not reach this line.
         } catch (e) {
+          // 4 attempts, no delay for the first, then 20 ms, 20*10 (exponential factor), 20*10*10
           expect(new Date() - startTime).toBeGreaterThan(0 + 20 + 200 + 2000);
         }
       });
