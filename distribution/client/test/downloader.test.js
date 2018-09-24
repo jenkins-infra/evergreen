@@ -14,9 +14,13 @@ describe('the Downloader class', () => {
       /* Make sure memfs is flushed every time */
       fs.volume.reset();
       mkdirp.sync(dir);
+
+      // default is 5 seconds, could be bigger because of the various file sizes and network flakiness
+      jest.setTimeout(120000);
     });
 
     it('should return promise', async () => {
+      // jenkins.io is ~70 kB.
       let response = Downloader.download(`${item}/index.html`, dir, 'index.html');
       expect(response instanceof Promise).toBeTruthy();
       await response;
@@ -31,11 +35,6 @@ describe('the Downloader class', () => {
     });
 
     describe('with real downloads', () => {
-      // FIXME: introduce assume() + env var to allow disabling this?
-      beforeEach(() => {
-        // default is 5 seconds, could be bigger because of the file size
-        jest.setTimeout(120000);
-      });
 
       it('should fail on an invalid signature', async () => {
         try {
@@ -50,21 +49,22 @@ describe('the Downloader class', () => {
       });
 
       it('should manage to download a decently big file, retrying if needed', async () => {
-        // ace-editor is 5 MB, so it could make tests more flaky and cumbersome with slow connection
-        const toDownload = 'http://updates.jenkins-ci.org/download/plugins/ace-editor/1.1/ace-editor.hpi';
-        const sha256 = 'abc97028893c8a71581a5f559ea48e8e1f1a65164faee96dabfed9e95e9abad2';
+        // plugin is ~1 MB, so it could make tests more flaky and cumbersome with flaky connection
+        const toDownload = 'http://updates.jenkins-ci.org/download/plugins/blueocean-pipeline-editor/1.5.0/blueocean-pipeline-editor.hpi';
+        const sha256 = 'ccaaae7c899b7b15a5bd60f1e59336ca9adf5d08c01de5d123416e83ea5314db';
         await Downloader.download(toDownload, dir, 'ace-editor.hpi');
         expect(Checksum.signatureFromFile(`${dir}/ace-editor.hpi`)).toEqual(sha256);
       });
 
       it('should not retry too fast on failed download', async () => {
-        const toDownload = 'http://nonexisting-url-yada.org/thefile';
+        const toDownload = 'http://nonexisting-url-dont-retry-too-fast.org/thefile';
         const startTime = new Date();
         try {
-          await Downloader.download(toDownload, dir, 'thefile', {retry: 4, factor: 1.1, delay: 200});
+          await Downloader.download(toDownload, dir, 'thefile', null, {delay: 20, retry: 4, factor: 10});
           expect(false).toBeTruthy(); // fail(), should not reach this line.
         } catch (e) {
-          expect(new Date() - startTime).toBeGreaterThan(4 * 200);
+          // 4 attempts, no delay for the first, then 20 ms, 20*10 (exponential factor), 20*10*10
+          expect(new Date() - startTime).toBeGreaterThan(0 + 20 + 200 + 2000);
         }
       });
     });
