@@ -11,6 +11,7 @@ build: depends docs
 
 run: depends build
 	EVERGREEN_HOME=/tmp/ \
+		EVERGREEN_DATA=/tmp/ \
 		EVERGREEN_DISABLE_SNAPSHOT=true \
 		EVERGREEN_ENDPOINT=http://127.0.0.1:3030 \
 		FLAVOR=docker-cloud \
