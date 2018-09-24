@@ -60,9 +60,7 @@ RUN apk add --no-cache git \
                         ttf-dejavu \
                         curl \
                         socat \
-                        wget \
-                        nginx \
-                        git # JEP-302
+                        nginx
 
 # Ensure the latest npm is available
 RUN npm install npm@latest -g
@@ -70,10 +68,10 @@ RUN npm install npm@latest -g
 ## the nginx alpine package doesn't make this directory properly
 RUN mkdir -p /run/nginx
 
-# TODO: add a checksum check?
 RUN cd /tmp && \
-    wget --quiet https://download.docker.com/linux/static/stable/x86_64/docker-17.12.1-ce.tgz --output-document /tmp/docker.tar.gz && \
-    tar xvzf docker.tar.gz && \
+    curl -sL https://download.docker.com/linux/static/stable/x86_64/docker-17.12.1-ce.tgz --output /tmp/docker.tar.gz && \
+    echo "9dd0d19312640460671352930eb44b1692441d95  docker.tar.gz" | sha1sum -c && \
+    tar xzf docker.tar.gz && \
     mv docker/* /usr/local/bin && \
     rmdir docker && \
     rm docker.tar.gz
