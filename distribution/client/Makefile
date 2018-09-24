@@ -2,8 +2,11 @@ include ../../node.mk
 
 PATH:=./node_modules/.bin:../../tools:$(PATH)
 
-build: depends
+docs:
+	rsync -avz --exclude=developer ../../docs .
 	node ./scripts/render-docs
+
+build: depends docs
 	webpack-cli
 
 run: depends build
@@ -13,4 +16,4 @@ run: depends build
 		FLAVOR=docker-cloud \
 		npm run client
 
-.PHONY: run build
+.PHONY: run build docs
