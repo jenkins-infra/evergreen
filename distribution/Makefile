@@ -79,10 +79,7 @@ container-prereqs: distribution store-commit
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C ../services dump generate-ingest
 
-container-check: base-container-check docker-cloud-container-check aws-cloud-container-check
-
-base-container-check: containers container-check-prereqs
-	./tests/offline-tests.sh
+container-check: docker-cloud-container-check aws-cloud-container-check
 
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
@@ -101,7 +98,6 @@ containers: container
 	$(MAKE) -C ../services container
 
 publish: container
-	docker push ${IMAGE_NAME}:base
 	$(MAKE) -C environments $@
 
 create-squid-cache-volume:
@@ -138,6 +134,6 @@ shunit2:
 	git clone --depth 1 https://github.com/kward/shunit2
 
 .PHONY: all check clean container container-check container-prereqs \
-	container-check-prereqs base-container-check \
+	container-check-prereqs \
 	docker-cloud-container-check create-squid-cache-volume \
 	distribution prepare-distribution

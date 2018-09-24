@@ -131,17 +131,6 @@ pipeline {
             }
 
             parallel {
-                stage('Base image') {
-                  agent { label 'linux' }
-                  steps {
-                      sh 'make -C distribution clean base-container-check'
-                  }
-                  post {
-                      always {
-                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
-                      }
-                  }
-                }
                 stage('Docker Cloud image') {
                   agent { label 'linux' }
                   steps {
