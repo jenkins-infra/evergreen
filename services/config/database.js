@@ -20,6 +20,7 @@ else {
 
 module.exports =  {};
 module.exports[nodeEnv] = {
-  'url' : process.env.DB_CONNECTION_STRING || connectorConfig['postgres'],
-  'dialect' : 'postgresql',
+  url : process.env.DB_CONNECTION_STRING || connectorConfig['postgres'],
+  dialect : 'postgresql',
+  seederStorage: 'sequelize',
 };
