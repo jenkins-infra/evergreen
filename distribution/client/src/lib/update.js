@@ -142,17 +142,14 @@ class Update {
   restartJenkins(rollingBack) { // Add param to stop recursion?
     Supervisord.restartProcess('jenkins');
 
-    const options = {
-      timeoutInSeconds: 60
-    };
-    UI.publish('Jenkins should now be online, health checking');// (timeout=${options.timeoutInSeconds})`);
-
-    logger.info('Jenkins has restarted, now healthchecking!');
+    const messageWhileRestarting = 'Jenkins should now be online, health checking!';
+    UI.publish(messageWhileRestarting);
+    logger.info(messageWhileRestarting);
 
     // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
     // consistent promise usage UX here.
     // checking healthState.health value is possibly a bit convoluted (?)
-    this.healthChecker.check(options)
+    this.healthChecker.check()
       .then( healthState => {
         if (healthState.healthy) {
           logger.info('Jenkins healthcheck after restart succeeded! Yey.');
