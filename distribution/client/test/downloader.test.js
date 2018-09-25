@@ -69,4 +69,16 @@ describe('the Downloader class', () => {
       });
     });
   });
+
+  describe('formatDuration()', () => {
+    it('should format date correctly', () => {
+
+      expect(Downloader.formatDuration(10)).toBe('10ms');
+      expect(Downloader.formatDuration(999)).toBe('999ms');
+      expect(Downloader.formatDuration(1.09 * 1000)).toBe('1.1s');
+      expect(Downloader.formatDuration(1.201 * 1000)).toBe('1.2s');
+      expect(Downloader.formatDuration(10.8 * 1000)).toBe('10s');
+      expect(Downloader.formatDuration(72.843 * 1000)).toBe('72s');
+    });
+  });
 });

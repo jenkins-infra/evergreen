@@ -23,8 +23,13 @@ class Downloader {
       return `${durationInMs}ms`;
     }
     const seconds = Math.floor(durationInMs / 1000);
-    const millisecs = durationInMs - 1000 * seconds;
-    return `${seconds}.${millisecs}s`;
+    let millisecsPart = '';
+    if (seconds < 10) { // keep first digit after comma only for numbers < 10
+      // Keep only first digit: 426 => 4, 986=>9
+      const millisecs = Math.round( (durationInMs - 1000 * seconds) / 100);
+      millisecsPart = `.${millisecs}`;
+    }
+    return `${seconds}${millisecsPart}s`;
   }
 
   /*
@@ -77,7 +82,7 @@ class Downloader {
         .then((response) => {
           const elapsedString = Downloader.formatDuration(Date.now() - startTime);
           logger.info ('Download complete for', filename, `(Took ${elapsedString})`);
-          UI.publish(`Fetched ${filename} in ${elapsedString}s`);
+          UI.publish(`Fetched ${filename} in ${elapsedString}`);
 
           const output = fs.createWriteStream(filename);
 
