@@ -17,7 +17,8 @@ module.exports = function () {
     }
 
     if (context.error) {
-      logger.error(context.error);
+      logger.error(`Error during call: ${context.error}`);
+      logger.silly('Full context ***', context.error, '*** End full error context');
     }
   };
 };
