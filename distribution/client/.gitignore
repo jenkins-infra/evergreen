@@ -2,3 +2,5 @@ node_modules/
 coverage/
 public/main.js
 public/main.js.map
+# Docs is rsynced in for the build from the root directory
+docs/
