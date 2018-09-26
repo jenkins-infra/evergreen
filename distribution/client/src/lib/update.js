@@ -58,6 +58,17 @@ class Update {
     });
   }
 
+  async taintUpdateLevel(levelToTaint) {
+    let toBeTaintedLevel = levelToTaint;
+    if (!toBeTaintedLevel) {
+      toBeTaintedLevel = this.getCurrentLevel();
+    }
+    logger.warn(`Tainting UL ${toBeTaintedLevel}`);
+    return this.app.service('update/tainted').create({
+      uuid: this.uuid,
+      level: toBeTaintedLevel
+    }, {});
+  }
   /*
    * Apply the updates provided by the given Update Manifest
    *
