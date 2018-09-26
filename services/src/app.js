@@ -7,6 +7,7 @@ const compress       = require('compression');
 const cors           = require('cors');
 const helmet         = require('helmet');
 const logger         = require('winston');
+const Raven          = require('raven');
 
 const feathers       = require('@feathersjs/feathers');
 const configuration  = require('@feathersjs/configuration');
@@ -49,11 +50,16 @@ logger.level = process.env.LOG_LEVEL || 'warn';
  */
 if (process.env.SENTRY_DSN) {
   logger.info('Configuring Sentry for backend errors..');
-  const Raven = require('raven');
   Raven.config(process.env.SENTRY_DSN).install();
+  /*
+   * The requesthandler for Express must be the first middleware loaded into
+   * the Express app
+   *
+   * See:
+   *  https://docs.sentry.io/platforms/javascript/express/?platform=javascript
+   */
   app.use(Raven.requestHandler());
-  app.use(Raven.errorHandler());
-  logger.info('..Sentry middleware installed');
+  logger.info('..Sentry request handler middleware installed');
 }
 
 // Load app configuration
@@ -155,6 +161,18 @@ app.configure(services);
 app.configure(channels);
 
 app.use('/', homepage(app));
+
+
+if (process.env.SENTRY_DSN) {
+  /*
+   * The Sentry error handler must be installed _after_ our other application
+   * handlers, but must be the _first_ error handler installed in Express
+   *
+   * See:
+   *  https://docs.sentry.io/platforms/javascript/express/?platform=javascript
+   */
+  app.use(Raven.errorHandler());
+}
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
