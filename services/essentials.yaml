@@ -26,10 +26,10 @@ spec:
       version: '1.16'
     - groupId: org.jenkins-ci.plugins
       artifactId: git
-      version: 3.9.1
+      version: 4.0.0-rc2892.70634f157021
     - groupId: org.jenkins-ci.plugins
       artifactId: git-client
-      version: 2.7.3
+      version: 3.0.0-beta6-rc1776.912790760394
     - groupId: org.jenkins-ci.plugins
       artifactId: buildtriggerbadge
       version: '2.9'
@@ -233,10 +233,10 @@ status:
       version: 2.3.1
     - groupId: org.jenkins-ci.plugins
       artifactId: git
-      version: 3.9.1
+      version: 4.0.0-rc2892.70634f157021
     - groupId: org.jenkins-ci.plugins
       artifactId: git-client
-      version: 2.7.3
+      version: 3.0.0-beta6-rc1776.912790760394
     - groupId: org.jenkins-ci.plugins
       artifactId: git-server
       version: '1.7'
@@ -287,7 +287,7 @@ status:
       version: '1.21'
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
-      version: 1.7.1
+      version: '1.12'
     - groupId: org.jenkins-ci.plugins
       artifactId: mercurial
       version: '2.4'
