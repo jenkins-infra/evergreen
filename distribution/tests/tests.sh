@@ -278,6 +278,15 @@ test_git_history_is_present() {
   assertEquals "git call to retrieve last subject should have succeeded" 0 "$?"
 }
 
+# JENKINS-53856
+test_no_permission_error_in_logs() {
+
+    result=$( docker logs "$container_under_test" |
+                grep -i 'Permission denied' )
+    assertNotEquals "Permission errors found in the instance, check logs: $result" 0 $?
+
+}
+
 test_no_anonymous_read() {
   result=$( curl -v -f -I http://localhost:$TEST_PORT/computer/ 2>&1 )
   assertNotEquals "curl call to /computer should not have succeeeded" 0 "$?"
