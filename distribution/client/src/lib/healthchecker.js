@@ -8,12 +8,27 @@ class HealthChecker {
 
   constructor(jenkinsRootUrl, requestOptions = {}) {
     this.jenkinsRootUrl = jenkinsRootUrl;
-    // let's target ~3 to 5 minutes overall of attempts for updates to arrive + Jenkins to start 
+    // let's target ~3 to 5 minutes overall of attempts for updates to arrive + Jenkins to start
     // TODO: later, introduce some smarter delay depending on the number of things to download?
     // values below are ~ 4.5 minutes
     this.retry = requestOptions.retry || 25;
     this.delay = requestOptions.delay || 3000;
     this.factor = requestOptions.factor || 1.10;
+
+    this.defaultRequestOptions = {
+      verboseLogging: true,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'evergreen-client'
+      },
+      simple: true,
+      resolveWithFullResponse: true,
+      encoding: 'utf-8',
+      timeout: 3 * 1000,
+      retry: this.retry,
+      delay: this.delay,
+      factor: this.factor
+    };
   }
 
   async check() { // TODO : add options.timeout etc.
@@ -40,22 +55,11 @@ class HealthChecker {
   }
 
   checkInstanceIdentity() {
-    // TODO: share (most?) options here
-    let options = {
+    const options = Object.assign({}, this.defaultRequestOptions, {
       uri: `${this.jenkinsRootUrl}${INSTANCE_IDENTITY_URL}`,
-      verboseLogging: true,
-      method: 'GET',
-      headers: {
-        'User-Agent': 'evergreen-client'
-      },
-      simple: true,
-      resolveWithFullResponse: true,
-      encoding: 'utf-8',
-      timeout: 3 * 1000,
-      retry: this.retry,
-      delay: this.delay,
-      factor: this.factor
-    };
+      json: false
+    });
+
     logger.debug('Checking instance identity URL');
     return rp(options)
       .then(response => {
@@ -71,22 +75,10 @@ class HealthChecker {
   }
 
   checkMetrics() {
-    let options = {
+    const options = Object.assign({}, this.defaultRequestOptions, {
       uri: `${this.jenkinsRootUrl}${METRICS_URL}`,
-      verboseLogging: true,
-      method: 'GET',
-      headers: {
-        'User-Agent': 'evergreen-client'
-      },
-      json: true,
-      simple: true,
-      resolveWithFullResponse: true,
-      encoding: 'utf-8',
-      timeout: 3 * 1000,
-      retry: 10,
-      delay: 2000,
-      factor: 1.25
-    };
+      json: true
+    });
 
     logger.debug('Checking metrics Evergreen healthchecking URL');
     return rp(options).
