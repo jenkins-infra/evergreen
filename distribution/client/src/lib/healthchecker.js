@@ -8,9 +8,12 @@ class HealthChecker {
 
   constructor(jenkinsRootUrl, requestOptions = {}) {
     this.jenkinsRootUrl = jenkinsRootUrl;
-    this.retry = requestOptions.retry || 10;
-    this.delay = requestOptions.delay || 2000;
-    this.factor = requestOptions.factor || 1.25;
+    // let's target ~3 to 5 minutes overall of attempts for updates to arrive + Jenkins to start 
+    // TODO: later, introduce some smarter delay depending on the number of things to download?
+    // values below are ~ 4.5 minutes
+    this.retry = requestOptions.retry || 25;
+    this.delay = requestOptions.delay || 3000;
+    this.factor = requestOptions.factor || 1.10;
   }
 
   async check() { // TODO : add options.timeout etc.
