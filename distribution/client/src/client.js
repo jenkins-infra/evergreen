@@ -113,7 +113,6 @@ class Client {
 
   tick() {
     const level = this.update.getCurrentLevel();
-    logger.debug('Reporting the current Update Level:', level);
     this.status.reportLevel(level);
   }
 

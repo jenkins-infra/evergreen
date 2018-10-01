@@ -208,7 +208,7 @@ class Update {
     this.loadUpdateSync();
     if (this.manifest) {
       let level = this.manifest.meta.level;
-      logger.debug('Currently at update level %d', level);
+      logger.silly('Currently at Update Level %d', level);
       return level;
     }
     return 0;
