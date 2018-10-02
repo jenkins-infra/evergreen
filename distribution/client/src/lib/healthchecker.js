@@ -75,10 +75,13 @@ class HealthChecker {
         const body = response.body;
         // simplistic check that we should be on the expected page
         // see https://ci.jenkins.io/instance-identity/ for instance
-        if (!( body.indexOf('-----BEGIN PUBLIC KEY-----') > -1 &&
-            body.indexOf('-----END PUBLIC KEY-----') > -1)) {
+        if ( body.indexOf('-----BEGIN PUBLIC KEY-----') > -1 &&
+            body.indexOf('-----END PUBLIC KEY-----') > -1 ) {
           logger.debug('/instance-identity/ URL OK');
-          throw new Error('Could not find the public key in the instance-identity page');
+        } else {
+          const errMsg = 'Could not find the public key in the instance-identity page';
+          logger.error(errMsg);
+          throw new Error(errMsg);
         }
       });
   }
