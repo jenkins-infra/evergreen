@@ -77,6 +77,8 @@ fix-formatting:
 container-prereqs: distribution store-commit
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
+	$(MAKE) -C client lint
+	$(MAKE) -C ../services lint
 	$(MAKE) -C ../services dump generate-ingest
 
 container-check: docker-cloud-container-check aws-cloud-container-check

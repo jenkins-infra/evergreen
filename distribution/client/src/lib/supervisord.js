@@ -5,6 +5,7 @@
 
 const xmlrpc = require('xmlrpc');
 const client = xmlrpc.createClient('http://localhost:9001/RPC2');
+const logger = require('winston');
 
 class Supervisord {
   constructor() {
@@ -44,6 +45,7 @@ class Supervisord {
   }
 
   startProcess(name) {
+    logger.info(`[supervisord] Starting ${name} process`);
     return new Promise((resolve, reject) => {
       client.methodCall('supervisor.startProcess', [name], (e, value) => {
         if (e) {
@@ -55,6 +57,7 @@ class Supervisord {
   }
 
   stopProcess(name) {
+    logger.info(`[supervisord] Stopping ${name} process`);
     return new Promise((resolve, reject) => {
       client.methodCall('supervisor.stopProcess', [name], (e, value) => {
         if (e) {
@@ -66,6 +69,7 @@ class Supervisord {
   }
 
   async restartProcess(name) {
+    logger.info(`[supervisord] Restarting ${name} process`);
     if (await this.isProcessRunning(name)) {
       await this.stopProcess(name);
     }

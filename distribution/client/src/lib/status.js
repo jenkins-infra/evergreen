@@ -79,7 +79,7 @@ class Status {
       },
     })
       .then(() => {
-        logger.info(`Currently at UL ${updateLevel}`);
+        logger.info(`Currently at Update Level ${updateLevel}`);
       })
       .catch((err) => {
         logger.error('Failed to update the Status record with the current level', err.message, err.status);

@@ -58,6 +58,17 @@ class Update {
     });
   }
 
+  async taintUpdateLevel(levelToTaint) {
+    let toBeTaintedLevel = levelToTaint;
+    if (!toBeTaintedLevel) {
+      toBeTaintedLevel = this.getCurrentLevel();
+    }
+    logger.warn(`Tainting UL ${toBeTaintedLevel}`);
+    return this.app.service('update/tainted').create({
+      uuid: this.uuid,
+      level: toBeTaintedLevel
+    }, {});
+  }
   /*
    * Apply the updates provided by the given Update Manifest
    *
@@ -142,17 +153,14 @@ class Update {
   restartJenkins(rollingBack) { // Add param to stop recursion?
     Supervisord.restartProcess('jenkins');
 
-    const options = {
-      timeoutInSeconds: 60
-    };
-    UI.publish('Jenkins should now be online, health checking');// (timeout=${options.timeoutInSeconds})`);
-
-    logger.info('Jenkins has restarted, now healthchecking!');
+    const messageWhileRestarting = 'Jenkins should now be online, health checking!';
+    UI.publish(messageWhileRestarting);
+    logger.info(messageWhileRestarting);
 
     // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
     // consistent promise usage UX here.
     // checking healthState.health value is possibly a bit convoluted (?)
-    this.healthChecker.check(options)
+    this.healthChecker.check()
       .then( healthState => {
         if (healthState.healthy) {
           logger.info('Jenkins healthcheck after restart succeeded! Yey.');
@@ -200,7 +208,7 @@ class Update {
     this.loadUpdateSync();
     if (this.manifest) {
       let level = this.manifest.meta.level;
-      logger.debug('Currently at update level %d', level);
+      logger.silly('Currently at Update Level %d', level);
       return level;
     }
     return 0;
