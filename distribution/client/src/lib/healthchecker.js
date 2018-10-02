@@ -15,6 +15,15 @@ class HealthChecker {
     this.delay = requestOptions.delay || 3000;
     this.factor = requestOptions.factor || 1.10;
 
+    if (process.env.PROCESS_RETRY_OVERRIDE) {
+      const overrideCandidate = parseInt(process.env.PROCESS_RETRY_OVERRIDE, 10);
+      if (!isNaN(overrideCandidate)) {
+        logger.warn(`Using overridden value for number of retries for requests: ${overrideCandidate} used instead of ${this.retry}`);
+        this.retry = overrideCandidate;
+      } else {
+        logger.error(`PROCESS_RETRY_OVERRIDE env var should be an integer >= 1 (provided=${process.env.PROCESS_RETRY_OVERRIDE}`);
+      }
+    }
     this.defaultRequestOptions = {
       verboseLogging: true,
       method: 'GET',
