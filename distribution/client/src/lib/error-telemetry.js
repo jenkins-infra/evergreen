@@ -61,7 +61,7 @@ class ErrorTelemetry {
     });
 
     tail.on('line', data => {
-      logger.debug('Reading line:', data);
+      logger.silly('Reading line:', data);
 
       try {
         this.callErrorTelemetryService(this.app, JSON.parse(data));
