@@ -17,7 +17,7 @@ spec:
       version: 0.5.1
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.8.3
+      version: 1.8.4
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: '3.2'
@@ -122,67 +122,67 @@ status:
       version: '1.3'
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.8.3
+      version: 1.8.4
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-autofavorite
       version: 1.2.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-bitbucket-pipeline
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-commons
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-config
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-core-js
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-dashboard
-      version: 1.8.3
+      version: 1.8.4
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-display-url
       version: 2.2.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-events
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-git-pipeline
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-github-pipeline
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-i18n
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jira
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jwt
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-personalization
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-api-impl
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-editor
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-scm-api
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest-impl
-      version: 1.8.3
+      version: 1.8.4
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-web
-      version: 1.8.3
+      version: 1.8.4
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
       version: '2.17'
@@ -269,7 +269,7 @@ status:
       version: '1.1'
     - groupId: io.jenkins.blueocean
       artifactId: jenkins-design-language
-      version: 1.8.3
+      version: 1.8.4
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
       version: 3.0.2
