@@ -33,6 +33,7 @@ services:
       - 'LOG_LEVEL=debug'
       - 'INSECURE_SHOW_ADMIN_PASSWORD=true'
       - 'DEVELOPMENT=true'
+      - 'PROCESS_RETRY_OVERRIDE=10'
     ports:
       - '8080:80'
     depends_on:

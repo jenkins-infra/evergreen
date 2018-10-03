@@ -82,7 +82,11 @@ container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh creat
 	$(MAKE) -C ../services lint
 	$(MAKE) -C ../services dump generate-ingest
 
-container-check: docker-cloud-container-check aws-cloud-container-check
+container-check: docker-cloud-container-check aws-cloud-container-check rollback-check
+
+# Only checking it on docker-cloud.
+rollback-check: containers container-check-prereqs
+	ENVIRONMENT=docker-cloud ./tests/rollback-tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
