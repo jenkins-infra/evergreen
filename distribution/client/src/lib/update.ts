@@ -82,8 +82,15 @@ export default class Update {
     }, {});
   }
   /*
-   * Apply the updates provided by the given Update Manifest
-   *
+   * Apply the updates provided by the given Update Manifest.
+   * Rolls back automatically to the previous non tainted level if failing.
+   * (Note: the rollback may not end up on most of the time, that would mean going from say UL-0 to U)
+
+   1) UL10 gets globally tainted after an issue is identified (UL9 is not tainted)
+   2) Instance attempts updating from UL10 to UL11, and fails
+   3) update.query() to get the right updates => receives UL9...
+   4) config files changed from UL9 to UL10, Jenkins fails to start after rolling back.
+
    * @param  {Map} Update Manifest described in JEP-307
    * @return {Promise} Which resolves once updates have been applied
    * @return {boolean} False if there is already an update in progress
@@ -137,7 +144,9 @@ export default class Update {
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       this.saveUpdateSync(updates);
       UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
-      this.restartJenkins();
+    }).then( () => {
+      return this.restartJenkins();
+    }).finally( () => {
       this.updateInProgress = null;
       return true;
     });
@@ -173,7 +182,7 @@ export default class Update {
     // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
     // consistent promise usage UX here.
     // checking healthState.health value is possibly a bit convoluted (?)
-    this.healthChecker.check()
+    return this.healthChecker.check()
       .then( healthState => {
         if (healthState.healthy) {
           logger.info('Jenkins healthcheck after restart succeeded! Yey.');
@@ -201,19 +210,28 @@ export default class Update {
             UI.publish(errorMessage);
             logger.warn(errorMessage);
 
-            this.snapshotter.revertToLevelBefore(this.getCurrentLevel());
             this.revertToPreviousUpdateLevel();
-            this.restartJenkins(true);
           }
         }
         Storage.removeBootingFlag();
-      }).catch((errors) => {
-        logger.warn(`TODO ${errors}`);
-      }); // TODO catch?
+        return false;
+      });
   }
 
+  /*
+   * 1) Taint current level
+   * 2) query and trigger a new update
+   *    (failing UL has been marked tainted for the instance, so should be served the/a previous UL)
+   * FIXME: 'the/a previous UL' => current code will serve "a" UL. We actually want "the"
+   */
   revertToPreviousUpdateLevel() {
-    logger.error(`[NOT IMPLEMENTED YET] Revert UL-${this.getCurrentLevel()} to previous Update Level`);
+
+    this.snapshotter.revertToLevelBefore(this.getCurrentLevel());
+    return this.taintUpdateLevel()
+      .then( () => {
+        return this.query();
+      }).then(updates => this.applyUpdates(updates));
+
   }
 
   getCurrentLevel() {
