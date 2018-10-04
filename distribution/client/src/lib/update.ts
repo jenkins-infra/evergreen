@@ -70,7 +70,7 @@ export default class Update {
     });
   }
 
-  async taintUpdateLevel(levelToTaint) {
+  async taintUpdateLevel(levelToTaint?: number) {
     let toBeTaintedLevel = levelToTaint;
     if (!toBeTaintedLevel) {
       toBeTaintedLevel = this.getCurrentLevel();
