@@ -17,12 +17,55 @@ describe('The healthchecker module', () => {
     }
   };
 
+  describe('constructor', () => {
+    it('should use default values if none passed in', () => {
+      const healthChecker = new HealthChecker();
+      expect(healthChecker.retry).toEqual(25);
+      expect(healthChecker.delay).toEqual(3000);
+      expect(healthChecker.factor).toEqual(1.10);
+    });
+    it('should use passed in values', () => {
+      const jenkinsRootUrl = `http://localhost:${port}`;
+      const requestOptions = {delay: 100, retry: 1, factor: 1.01};
+      const healthChecker = new HealthChecker(jenkinsRootUrl, requestOptions);
+      expect(healthChecker.jenkinsRootUrl).toEqual(jenkinsRootUrl);
+      expect(healthChecker.retry).toEqual(requestOptions.retry);
+      expect(healthChecker.delay).toEqual(requestOptions.delay);
+      expect(healthChecker.factor).toEqual(requestOptions.factor);
+    });
+    it('should override the delay if env var set', () => {
+      const retryOverride = 21;
+      process.env.PROCESS_RETRY_OVERRIDE = retryOverride;
+      const jenkinsRootUrl = `http://localhost:${port}`;
+      const requestOptions = {delay: 100, retry: 1, factor: 1.01};
+      const healthChecker = new HealthChecker(jenkinsRootUrl, requestOptions);
+      expect(healthChecker.jenkinsRootUrl).toEqual(jenkinsRootUrl);
+      expect(healthChecker.retry).toEqual(retryOverride);
+      expect(healthChecker.delay).toEqual(requestOptions.delay);
+      expect(healthChecker.factor).toEqual(requestOptions.factor);
+    });
+    it('should handle non int value in env var', () => {
+      process.env.PROCESS_RETRY_OVERRIDE = true;
+      const jenkinsRootUrl = `http://localhost:${port}`;
+      const requestOptions = {delay: 100, retry: 1, factor: 1.01};
+      const healthChecker = new HealthChecker(jenkinsRootUrl, requestOptions);
+      expect(healthChecker.jenkinsRootUrl).toEqual(jenkinsRootUrl);
+      expect(healthChecker.retry).toEqual(requestOptions.retry);
+      expect(healthChecker.delay).toEqual(requestOptions.delay);
+      expect(healthChecker.factor).toEqual(requestOptions.factor);
+    });
+  });
+
   describe('check()', () => {
 
     it('should pass cases', async (done) => {
       // ugly hack to wait a bit for the server to start...
       setTimeout( async () => {
         const healthChecker = new HealthChecker(`http://localhost:${port}`, {delay: 100, retry: 1});
+        serverOptions.instanceIdentity = true;
+        serverOptions.metrics.plugins = true;
+        serverOptions.metrics.deadlock = true;
+        serverOptions.metrics.body = true;
 
         let result = await healthChecker.check();
         expect(result.healthy).toBe(true);
@@ -48,10 +91,20 @@ describe('The healthchecker module', () => {
         expect(result.healthy).toBe(false);
         expect(result.message).toContain('wrong');
 
+        // issue: no body
+        serverOptions.instanceIdentity = true;
+        serverOptions.metrics.plugins = true;
+        serverOptions.metrics.deadlock = true;
+        serverOptions.metrics.body = false;
+        result = await healthChecker.check();
+        expect(result.healthy).toBe(false);
+        expect(result.message).toContain('No body');
+
         // back to all should work
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = true;
         serverOptions.metrics.deadlock = true;
+        serverOptions.metrics.body = true;
         result = await healthChecker.check();
         expect(result.healthy).toBe(true);
 
@@ -85,21 +138,25 @@ describe('The healthchecker module', () => {
         if (!serverOptions.metrics.deadlock) {
           noDeadlock = false;
         }
-        textReponse = JSON.stringify({
-          'disk-space': {
-            healthy: true
-          },
-          plugins: {
-            healthy: pluginsHealthy,
-            message: 'No failed plugins'
-          },
-          'temporary-space': {
-            healthy: true
-          },
-          'thread-deadlock': {
-            healthy: noDeadlock
-          }
-        });
+        if (!serverOptions.metrics.body) {
+          textReponse = '';
+        } else {
+          textReponse = JSON.stringify({
+            'disk-space': {
+              healthy: true
+            },
+            plugins: {
+              healthy: pluginsHealthy,
+              message: 'No failed plugins'
+            },
+            'temporary-space': {
+              healthy: true
+            },
+            'thread-deadlock': {
+              healthy: noDeadlock
+            }
+          });
+        }
       }
       response.end(textReponse);
     };
