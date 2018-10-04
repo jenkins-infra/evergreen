@@ -73,37 +73,16 @@ This documentation is coming soon.
 
 === Milestones
 
-Jenkins Evergreen is currently pre-release software, with a few upcoming
-milestones of development.
+Jenkins Evergreen is currently available for **early adopters**. Please see link:https://jenkins.io/projects/evergreen[jenkins.io/projects/evergreen] for more documentation and instructions on how to use it.
 
 ==== Milestone One
 
-The first milestone of Jenkins Evergreen is to provide the first
-full-update-cycle of the Evergreen distribution mechanism. Like the first wire
-stretched across
-link:https://en.wikipedia.org/wiki/Suspension_bridge#Construction_sequence_(wire_strand_cable_type)[suspension bridges]
-the goal of Milestone One is to build the tooling necessary to deliver the
-"bigger parts" of Jenkins Evergreen.
 
-The bare minimum components to support subsequent continuously delivered
-milestones as:
-
-* Packaged Jenkins + `evergreen-client` inside of a Docker container.
-* Safe upgrade system implemented for Jenkins Evergreen to tolerate
-  <<deployment>> failures.
-* Minimum Evergreen backend services necessary to coordinate new upgrades for
-  connected Jenkins Evergreen Instances, including:
-** Capturing basic error telemetry to determine whether a new <<deployment>> was successful.
-** Maintaining long-lived connections with Instances
-** Storing "Status" information for connected Instances.
-* Basic demonstration of pre-configuration of Jenkins Evergreen with
-  "automatically sane defaults"
-* Development workflow for identifying and managing new "versions" of Jenkins
-  Evergreen for <<deployment>>.
+:tada:
 
 ==== Milestone Two
 
-**Currently unplanned**
+Currently **in-progress**
 
 The second milestone for Jenkins Evergreen is much more focused on the
 end-user experience while exercising the continuous delivery process built out
@@ -113,7 +92,7 @@ in Milestone One.
 
 **Currently unplanned**
 
-==== Public Release
+==== General Availability
 
 **Currently unplanned**
 
