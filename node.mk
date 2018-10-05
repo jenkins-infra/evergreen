@@ -1,15 +1,15 @@
 # Clever: https://stackoverflow.com/a/324782
 NODE:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/tools/node
 
-all: check
+all:: check
 
-lint: depends
+lint:: depends
 	$(NODE) npm run eslint
 
 fix-formatting: depends
 	$(NODE) npm run eslint -- --fix
 
-check: lint
+check:: lint
 	$(MAKE) unit
 
 unit: depends
@@ -26,7 +26,7 @@ node_modules: package-lock.json package.json
 	# directory every time it runs, busting the GNU/Make cache causing rebuilds
 	if [ ! -d node_modules ]; then $(NODE) npm install; fi;
 
-clean:
+clean::
 	rm -rf vendor node_modules build
 
 .PHONY: all check clean depends run unit lint
