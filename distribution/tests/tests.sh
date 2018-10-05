@@ -16,7 +16,7 @@ JENKINS_HOME=to_override
 # Retries a few times in case of error
 upload_update_level() {
   n=0
-  until [ $n -ge 20 ]
+  until [ $n -ge 30 ]
   do
     echo "Uploading Update Level to /update service (attempt #$n):"
     curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ../services/ingest.json)}" \
@@ -26,7 +26,7 @@ upload_update_level() {
        && break
 
     n=$((n+1))
-    sleep $n
+    sleep 1
   done
 }
 
@@ -268,10 +268,8 @@ test_blueocean_default_redirect() {
 test_git_history_is_present() {
   commitCount=$( docker exec -w "$JENKINS_HOME" "$container_under_test" git rev-list --count HEAD )
   assertEquals "git call to count commits should have succeeded" 0 "$?"
-  # Depending on if ingest.json is pushed to backend before or after the client first
-  # polls the backend, we'll get 3 or 4 commits...
-  # See JENKINS-53499
-  assertTrue "[ $commitCount -ge 3 ]"
+
+  assertEquals 3  "$commitCount"
 
   docker exec -w "$JENKINS_HOME" "$container_under_test" git log --pretty=format:%s HEAD~..HEAD | \
                 grep 'Snapshot after downloads completed, before Jenkins restart' > /dev/null
