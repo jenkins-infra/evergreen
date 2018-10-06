@@ -8,6 +8,8 @@ lint:: compile
 
 check:: compile
 
+unit:: compile
+
 compile:
 	tsc
 
@@ -27,6 +29,6 @@ run: depends build
 		EVERGREEN_DISABLE_SNAPSHOT=true \
 		EVERGREEN_ENDPOINT=http://127.0.0.1:3030 \
 		FLAVOR=docker-cloud \
-		npm run client
+		npm run start
 
 .PHONY: run build docs compile

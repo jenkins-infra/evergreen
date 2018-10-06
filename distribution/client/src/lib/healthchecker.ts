@@ -1,12 +1,21 @@
-const logger        = require('winston');
-const rp            = require('promise-request-retry');
+
+import * as logger from 'winston'
+import rp from 'promise-request-retry';
+
+import { RequestOptions } from './request-options';
 
 const INSTANCE_IDENTITY_URL = '/instance-identity/';
 const METRICS_URL           = '/metrics/evergreen/healthcheck';
 
-class HealthChecker {
+export default class HealthChecker {
+  protected readonly defaultRequestOptions : any;
 
-  constructor(jenkinsRootUrl, requestOptions = {}) {
+  public readonly jenkinsRootUrl : string;
+  public readonly retry : number;
+  public readonly delay : number;
+  public readonly factor : number;
+
+  constructor(jenkinsRootUrl, requestOptions: RequestOptions = {}) {
     this.jenkinsRootUrl = jenkinsRootUrl;
     // let's target ~3 to 5 minutes overall of attempts for updates to arrive + Jenkins to start
     // TODO: later, introduce some smarter delay depending on the number of things to download?
@@ -111,5 +120,3 @@ class HealthChecker {
       });
   }
 }
-
-module.exports = HealthChecker;

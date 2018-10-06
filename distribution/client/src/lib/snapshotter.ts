@@ -4,9 +4,9 @@
 *  https://github.com/jenkinsci/jep/tree/master/jep/302
 */
 
-const { spawnSync } = require('child_process');
-const logger        = require('winston');
-const fs            = require('fs');
+import { spawnSync } from 'child_process';
+import * as logger from 'winston';
+import fs from 'fs';
 
 const LOG_PREFIX = '[snapshotting]';
 // https://github.com/jenkinsci/jep/tree/master/jep/302#user-content-files-to-store
@@ -16,10 +16,10 @@ const GITIGNORE_CONTENT = `
 /secrets/master.key
 `;
 
-class Snapshotter {
+export default class Snapshotter {
+  protected workingDirectory : string;
 
-  constructor(app, options) {
-    this.options = options || {};
+  constructor() {
   }
 
   /**

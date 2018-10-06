@@ -3,20 +3,35 @@
  * of the evergreen-client with the backend services layer
  */
 
-const ecc    = require('elliptic');
-const fs     = require('fs');
-const logger = require('winston');
-const path   = require('path');
-const mkdirp = require('mkdirp');
+import ecc from 'elliptic';
+import * as logger from 'winston';
+import path from 'path';
+import mkdirp from 'mkdirp'
+import fs from 'fs';
 
-const storage = require('./storage');
+import Storage from './storage';
 
 require('./rand-patch');
 
-class Registration {
-  constructor (app, options) {
+export interface FileOptions {
+  encoding?: string,
+  flag?: string,
+};
+
+export default class Registration {
+  protected readonly app : any;
+  protected readonly options : Map<string, any>;
+  protected readonly curve : string;
+
+  protected privateKey : string;
+  protected publicKey : string;
+  protected fileOptions : FileOptions;
+
+  public uuid : string;
+  public token : string;
+
+  constructor(app) {
     this.app = app;
-    this.options = options || {};
     this.uuid = null;
     this.publicKey = null;
     this.privateKey = null;
@@ -46,15 +61,19 @@ class Registration {
    * @return Promise
    */
   async register() {
-    let self = this;
+    const self = this;
     return new Promise((resolve, reject) => {
-      let api = self.app.service('registration');
+      const api = self.app.service('registration');
       logger.info('Checking registration status..');
       if (self.hasKeys() && self.hasUUID()) {
         logger.info('We have keys and a UUID already');
         self.loadKeysSync();
         self.loadUUIDSync();
-        return self.login().then(res => resolve(res, false));
+        return self.login().then(res => resolve(
+          {
+            result: res,
+            created: false,
+          }));
       } else {
         if (!self.generateKeys()) {
           return reject('Failed to generate keys');
@@ -72,7 +91,10 @@ class Registration {
           if (!self.saveUUIDSync()) {
             reject('Failed to save UUID!');
           } else {
-            return self.login().then(res => resolve(res, true));
+            return self.login().then(res => resolve({
+              result: res,
+              created: true,
+            }));
           }
         }).catch((res) => {
           logger.error('Failed to register:', res);
@@ -108,8 +130,8 @@ class Registration {
    * @return Boolean
    */
   generateKeys() {
-    let ec = new ecc.ec(this.curve);
-    let privkey = ec.genKeyPair();
+    const ec = new ecc.ec(this.curve);
+    const privkey = ec.genKeyPair();
     this.publicKey = privkey.getPublic('hex');
     this.privateKey = privkey.getPrivate('hex');
 
@@ -126,7 +148,7 @@ class Registration {
    *
    * Will return null if no public key has yet been generated
    *
-   * @return String
+   * @return string
    */
   getPublicKey() {
     return this.publicKey;
@@ -154,7 +176,7 @@ class Registration {
   }
 
   loadUUIDSync() {
-    let config = JSON.parse(fs.readFileSync(this.uuidPath(), this.fileOptions));
+    const config = JSON.parse(fs.readFileSync(this.uuidPath(), this.fileOptions) as string);
     this.uuid = config.uuid;
     return (!!this.uuid);
   }
@@ -215,8 +237,8 @@ class Registration {
     if (!this.hasKeys()) {
       return false;
     }
-    this.publicKey = fs.readFileSync(this.publicKeyPath(), this.fileOptions);
-    this.privateKey = fs.readFileSync(this.privateKeyPath(), this.fileOptions);
+    this.publicKey = fs.readFileSync(this.publicKeyPath(), this.fileOptions) as string;
+    this.privateKey = fs.readFileSync(this.privateKeyPath(), this.fileOptions) as string;
     return true;
   }
 
@@ -240,10 +262,10 @@ class Registration {
 
   /* Return the directory where registration keys should be stored
    *
-   * @return String
+   * @return string
    */
   keyPath() {
-    const keys = path.join(storage.homeDirectory(), 'keys');
+    const keys = path.join(Storage.homeDirectory(), 'keys');
 
     /* Only bother making the directory if it doesn't already exist */
     try {
@@ -263,7 +285,7 @@ class Registration {
    *
    * This public key is safe to be shared with external services
    *
-   * @return String
+   * @return string
    */
   publicKeyPath() {
     return path.join(this.keyPath(), 'evergreen.pub');
@@ -277,5 +299,3 @@ class Registration {
     return path.join(this.keyPath(), 'uuid.json');
   }
 }
-
-module.exports = Registration;

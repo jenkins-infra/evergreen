@@ -3,8 +3,9 @@ jest.mock('fs');
 const fs      = require('fs');
 const mkdirp  = require('mkdirp');
 const path    = require('path');
-const h       = require('./helpers');
-const Storage = require('../src/lib/storage');
+
+import h from '../testlib/helpers';
+import Storage from '../src/lib/storage';
 
 describe('The storage module', () => {
   let dir = '/tmp';

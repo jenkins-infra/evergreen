@@ -6,8 +6,8 @@
  * It seems to not believe that we're in nodejs when we really are
  */
 
-const crypto = require('crypto');
-const rand   = require('brorand');
+import crypto from 'crypto';
+import rand from 'brorand';
 
 rand.Rand.prototype._rand = function _rand(n) {
   return crypto.randomBytes(n);

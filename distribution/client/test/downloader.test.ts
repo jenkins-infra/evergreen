@@ -2,8 +2,9 @@ jest.mock('fs');
 
 const fs         = require('fs');
 const mkdirp     = require('mkdirp');
-const Downloader = require('../src/lib/downloader');
-const Checksum   = require('../src/lib/checksum');
+
+import Downloader from '../src/lib/downloader';
+import Checksum from '../src/lib/checksum';
 
 describe('the Downloader class', () => {
   describe('download()', () => {
@@ -63,8 +64,9 @@ describe('the Downloader class', () => {
           await Downloader.download(toDownload, dir, 'thefile', null, {delay: 20, retry: 4, factor: 10});
           expect(false).toBeTruthy(); // fail(), should not reach this line.
         } catch (e) {
+          const endTime = new Date();
           // 4 attempts, no delay for the first, then 20 ms, 20*10 (exponential factor), 20*10*10
-          expect(new Date() - startTime).toBeGreaterThan(0 + 20 + 200 + 2000);
+          expect((endTime as any) - (startTime as any)).toBeGreaterThan(0 + 20 + 200 + 2000);
         }
       });
     });

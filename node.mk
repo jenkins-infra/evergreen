@@ -12,8 +12,8 @@ fix-formatting: depends
 check:: lint
 	$(MAKE) unit
 
-unit: depends
-	if [ -z "$${SKIP_TESTS}" ]; then $(NODE) npm run jest; \
+unit:: depends
+	if [ -z "$${SKIP_TESTS}" ]; then $(NODE) npm run test; \
 	else echo "Tests are skipped!"; fi;
 
 debug-unit: depends

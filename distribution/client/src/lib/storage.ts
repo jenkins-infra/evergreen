@@ -1,15 +1,16 @@
 'use strict';
 
-const path   = require('path');
-const fs     = require('fs');
-const logger = require('winston');
-const UI     = require('./ui');
+import fs from 'fs';
+import path from 'path';
+
+import * as logger from 'winston';
+import UI from './ui';
 
 /*
  * The Storage module simply contains common functions necessary for the
  * evergreen-client to store its own data.
  */
-class Storage {
+export default class Storage {
   /*
    * Returns the default home directory or the value of EVERGREEN_HOME
    *
@@ -69,12 +70,12 @@ class Storage {
     }
   }
 
-  static removePlugins(plugins) {
+  static removePlugins(plugins?: Array<any>) {
     if (!plugins) {
       return;
     }
-    let pluginPath = this.pluginsDirectory();
-    let retArray = [];
+    const pluginPath = this.pluginsDirectory();
+    const retArray = [];
     plugins.forEach((plugin) => {
       retArray.push(fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
         logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
@@ -84,5 +85,3 @@ class Storage {
     return retArray;
   }
 }
-
-module.exports = Storage;

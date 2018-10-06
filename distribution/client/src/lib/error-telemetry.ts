@@ -5,13 +5,24 @@
 * handle both error and "metrics" telemetry, but let's start with a smaller
 * scope at least for now.
 */
-const { Tail } = require('tail');
-const fs       = require('fs');
-const logger   = require('winston');
-const path     = require('path');
-const Storage  = require('./storage');
+import { Tail } from 'tail';
+import fs from 'fs';
+import * as logger from 'winston'
+import path from 'path';
 
-class ErrorTelemetry {
+import Storage from './storage';
+
+export interface ErrorTelemetryOptions {
+  flavor?: string,
+};
+
+export default class ErrorTelemetry {
+  protected readonly app : any;
+  protected readonly options : ErrorTelemetryOptions;
+
+  public uuid : string;
+  public token : string;
+
   constructor(app, options) {
     this.app = app;
     this.options = options;
@@ -45,7 +56,7 @@ class ErrorTelemetry {
   * monitoredFile: path to the log file to watch
   * outputFunction(app,line): the function that will be called on each new line detected
   */
-  setup(monitoredFile) {
+  setup(monitoredFile?: string) {
     logger.info('Setting up error logging...');
     let loggingFile = monitoredFile || this.fileToWatch();
 

@@ -4,16 +4,17 @@
  *
  */
 
-const logger = require('winston');
-const cron   = require('cron');
+import * as logger from 'winston'
+import cron from 'cron';
 
-class Periodic {
+export default class Periodic {
+  protected readonly jobs : any;
+  protected readonly offset : number;
+
   /*
    * Requires the feathersjs app instance on initialization
    */
-  constructor (app, options) {
-    this.app = app;
-    this.options = options || {};
+  constructor() {
     this.jobs = {};
     this.offset = this.computeOffset();
     logger.info('Periodic using minute offset of', this.offset);
@@ -48,8 +49,3 @@ class Periodic {
     return Math.floor(Math.random() * 59);
   }
 }
-
-module.exports = function(app, options) {
-  return new Periodic(app, options);
-};
-module.exports.Periodic = Periodic;

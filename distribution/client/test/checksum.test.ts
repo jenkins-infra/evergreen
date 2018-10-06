@@ -2,8 +2,9 @@
 
 jest.mock('fs');
 
-const fs       = require('fs');
-const Checksum = require('../src/lib/checksum');
+const fs = require('fs');
+
+import Checksum from '../src/lib/checksum';
 
 describe('Checksum', () => {
   beforeEach(() => {

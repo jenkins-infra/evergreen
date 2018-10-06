@@ -4,10 +4,11 @@
   "description": "",
   "main": "src/client.js",
   "scripts": {
-    "client": "node src/client.js",
-    "test": "npm run eslint && npm run jest",
-    "eslint": "eslint src/. test/. --config .eslintrc.json",
-    "jest": "jest",
+    "prestart": "tsc",
+    "start": "node build/client.js",
+    "pretest": "eslint src/. test/. --config .eslintrc.json",
+    "eslint": "npm run pretest",
+    "test": "jest",
     "postinstall": "patch-package"
   },
   "author": "R Tyler Croy",
@@ -15,6 +16,8 @@
   "devDependencies": {
     "@types/feathersjs__feathers": "^3.0.5",
     "@types/jest": "^23.3.3",
+    "@types/node": "^10.11.4",
+    "@types/tmp": "0.0.33",
     "asciidoctor.js": "^1.5.7-rc.1",
     "css-loader": "^1.0.0",
     "eslint": "^4.19.1",
@@ -60,10 +63,22 @@
       "<rootDir>/ui/index.js",
       "<rootDir>/src/lib/ui.js"
     ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "coverageReporters": [
       "json",
       "lcov",
       "text-summary"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ],
     "coverageThreshold": {
       "global": {
