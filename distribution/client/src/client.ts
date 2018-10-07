@@ -2,28 +2,37 @@
  * This is the main entrypoint for the evergreen-client
  */
 
-const process = require('process');
+import feathers from '@feathersjs/feathers';
+import * as logger from 'winston';
+import socketio from '@feathersjs/socketio-client';
+import auth from '@feathersjs/authentication-client';
+import io from 'socket.io-client';
 
-const feathers = require('@feathersjs/feathers');
-const logger   = require('winston');
-const socketio = require('@feathersjs/socketio-client');
-const auth     = require('@feathersjs/authentication-client');
-const io       = require('socket.io-client');
-
-const createCron     = require('./lib/periodic');
-const ErrorTelemetry = require('./lib/error-telemetry');
-const HealthChecker  = require('./lib/healthchecker');
-const Registration   = require('./lib/registration');
-const Status         = require('./lib/status');
-const Storage        = require('./lib/storage');
-const UI             = require('./lib/ui');
-const Update         = require('./lib/update');
+import ErrorTelemetry from './lib/error-telemetry';
+import HealthChecker from './lib/healthchecker';
+import Registration from './lib/registration';
+import Status from './lib/status';
+import Storage from './lib/storage';
+import UI from './lib/ui'
+import Update from './lib/update';
+import Periodic from './lib/periodic';
 
 /*
  * The Client class is a simple wrapper meant to start the basics of the client
  * and then run a simple runloop to block the client from ever exiting
  */
-class Client {
+export default class Client {
+  protected readonly app : any;
+  protected readonly reg : Registration;
+  protected readonly healthChecker : HealthChecker;
+  protected readonly update : Update;
+  protected readonly status : Status;
+  protected readonly errorTelemetry : ErrorTelemetry;
+
+  protected socket : any;
+
+  public updating : boolean;
+
   constructor() {
     if (!process.env.FLAVOR) {
       logger.error('Fatal error encountered while trying to start, no flavor set, exiting the client');
@@ -79,7 +88,7 @@ class Client {
      * Only setting on the cron once we have registered and logged in,
      * otherwise it's not really useful to have anything running periodically
      */
-    const cron = createCron(app);
+    const cron = new Periodic();
 
     this.runUpdates();
 
@@ -151,7 +160,7 @@ class Client {
       this.runUpdates();
     });
 
-    this.reg.register().then((res, newRegistration) => {
+    this.reg.register().then(({res, newRegistration}) => {
       UI.publish('Registered this Evergreen instance', { log: 'debug', error: res} );
       this.status.authenticate(this.reg.uuid, this.reg.token);
       this.update.authenticate(this.reg.uuid, this.reg.token);
@@ -168,8 +177,6 @@ class Client {
   }
 }
 
-module.exports = Client;
-
 if (require.main === module) {
   Storage.setBootingFlag();
   UI.serve();
@@ -180,6 +187,6 @@ if (require.main === module) {
   logger.level = process.env.LOG_LEVEL || 'warn';
   /* Main entrypoint for module */
   UI.publish('Starting the evergreen-client..', { log: 'info' });
-  let client = new Client();
+  const client = new Client();
   client.bootstrap();
 }

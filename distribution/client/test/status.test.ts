@@ -5,7 +5,8 @@ jest.mock('fs');
 const fs       = require('fs');
 const mkdirp   = require('mkdirp');
 const feathers = require('@feathersjs/feathers');
-const Status   = require('../src/lib/status');
+
+import Status from '../src/lib/status';
 
 describe('The status module', () => {
   beforeEach(() => {
@@ -57,7 +58,7 @@ describe('The status module', () => {
 
   describe('collectVersions()', () => {
     it('should contain a node version', () => {
-      const versions = (new Status(app)).collectVersions();
+      const versions : any = (new Status(app)).collectVersions();
       expect(versions.container.tools.node).toBeTruthy();
     });
 
@@ -80,7 +81,7 @@ describe('The status module', () => {
       });
 
       it('should contain the signature of the plugin', () => {
-        const versions = (new Status(app)).collectVersions();
+        const versions : any = (new Status(app)).collectVersions();
         expect(versions.jenkins.plugins.git).toBeTruthy();
       });
     });

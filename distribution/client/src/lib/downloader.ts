@@ -3,18 +3,19 @@
  * disk and checking them against provided checksums.
  */
 
-const fs     = require('fs');
-const path   = require('path');
-const url    = require('url');
+import fs from 'fs';
+import path from 'path';
+import url from 'url';
 
-const rp      = require('promise-request-retry');
-const logger  = require('winston');
-const mkdirp  = require('mkdirp');
+import rp from 'promise-request-retry';
+import * as logger from 'winston';
+import mkdirp from 'mkdirp';
 
-const Checksum = require('./checksum');
-const UI       = require('./ui');
+import UI from './ui';
+import Checksum from './checksum';
+import { RequestOptions } from './request-options';
 
-class Downloader {
+export default class Downloader {
   constructor() {
   }
 
@@ -40,7 +41,10 @@ class Downloader {
    * @param {string} the filename to output at
    * @parma {string} Optional sha256 signature to verify of the file
    */
-  static download(item, dir, fileNameToWrite, sha256, downloadOptions = {}) {
+  static download(item, dir,
+    fileNameToWrite?: string,
+    sha256?: string,
+    downloadOptions: RequestOptions = {}) {
     const itemUrl = url.parse(item);
     const itemUrlBaseName = path.basename(itemUrl.pathname);
 
@@ -113,5 +117,3 @@ class Downloader {
     });
   }
 }
-
-module.exports = Downloader;

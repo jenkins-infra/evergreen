@@ -1,16 +1,18 @@
 jest.mock('../src/lib/supervisord');
 jest.mock('../src/lib/downloader');
 
-const tmp           = require('tmp');
 const fs            = require('fs');
 const feathers      = require('@feathersjs/feathers');
-const h             = require('./helpers');
-const Update        = require('../src/lib/update');
-const HealthChecker = require('../src/lib/healthchecker');
-const Storage       = require('../src/lib/storage');
-const Supervisord   = require('../src/lib/supervisord');
-const Downloader    = require('../src/lib/downloader');
 const mkdirp        = require('mkdirp');
+
+import tmp from 'tmp';
+import h from '../testlib/helpers';
+
+import Update from '../src/lib/update';
+import HealthChecker from '../src/lib/healthchecker';
+import Storage from '../src/lib/storage';
+import Supervisord from '../src/lib/supervisord';
+import Downloader from '../src/lib/downloader';
 
 describe('The update module', () => {
   let app = null;
@@ -124,7 +126,7 @@ describe('The update module', () => {
 
     it ('should execute updates if passed in with no deletes', async () => {
       jest.setTimeout(10000);
-      Downloader.mockImplementationOnce(() => {
+      (Downloader as unknown as jest.Mock).mockImplementationOnce(() => {
         return require.requireActual('../src/lib/downloader').default();
       });
 
@@ -146,7 +148,7 @@ describe('The update module', () => {
     });
 
     it('should execute both updates and deletes if both passed in', async () => {
-      Downloader.mockImplementationOnce(() => {
+      (Downloader as unknown as jest.Mock).mockImplementationOnce(() => {
         return require.requireActual('../src/lib/downloader').default();
       });
       manifest.plugins.deletes = ['delete1'];

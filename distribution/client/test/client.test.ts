@@ -1,13 +1,12 @@
-const assert = require('assert');
-const tmp      = require('tmp');
-const Client = require('../src/client');
-const Storage  = require('../src/lib/storage');
 const mkdirp   = require('mkdirp');
 
-describe('The base client module', () => {
+import tmp from 'tmp';
+import Client from '../src/client';
+import Storage from '../src/lib/storage';
 
+describe('The base client module', () => {
   it('should interpret properly', () => {
-    assert(Client);
+    expect(Client).toBeTruthy();
   });
 
   describe('flavorCheck', () => {

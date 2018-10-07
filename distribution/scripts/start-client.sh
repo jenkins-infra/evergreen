@@ -24,4 +24,4 @@ else
   echo "Client is starting up"
 fi
 
-exec /usr/local/bin/npm run client
+exec /usr/local/bin/npm run start

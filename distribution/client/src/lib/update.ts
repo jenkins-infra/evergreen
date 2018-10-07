@@ -4,26 +4,38 @@
  *  https://github.com/jenkinsci/jep/tree/master/jep/307
  */
 
-const fs      = require('fs');
-const path    = require('path');
-const mkdirp  = require('mkdirp');
-const logger  = require('winston');
+import fs from 'fs';
+import path from 'path';
+import mkdirp from 'mkdirp';
+import * as logger from 'winston';
 
-const Downloader    = require('./downloader');
-const HealthChecker = require('./healthchecker');
-const Storage       = require('./storage');
-const Supervisord   = require('./supervisord');
-const UI            = require('./ui');
-const Snapshotter   = require('./snapshotter');
+import Downloader    from './downloader';
+import HealthChecker from './healthchecker';
+import Storage       from './storage';
+import Supervisord   from './supervisord';
+import UI            from './ui';
+import Snapshotter   from './snapshotter';
 
-class Update {
-  constructor(app, options) {
-    this.options = options || {};
+export interface FileOptions {
+  encoding?: string,
+  flag?: string,
+};
+
+export default class Update {
+  protected readonly app : any;
+  protected readonly snapshotter : Snapshotter;
+  protected readonly fileOptions : FileOptions;
+  protected readonly options : any;
+  protected readonly healthChecker : HealthChecker;
+
+  public uuid : string;
+  public token : string;
+  public manifest : any;
+  public updateInProgress : Date;
+
+  constructor(app, options = {}) {
     this.app = app;
-    this.token = null;
-    this.uuid = null;
-    this.manifest = null;
-    this.updateInProgress = null;
+    this.options = options;
     this.fileOptions = { encoding: 'utf8' };
     this.snapshotter = new Snapshotter();
     this.snapshotter.init(Storage.jenkinsHome());
@@ -84,7 +96,7 @@ class Update {
     UI.publish('Starting to apply updates');
     // Setting this to a timestamp to make a timeout in the future
     this.updateInProgress = new Date();
-    let tasks = [];
+    const tasks = [];
 
     if ((updates.core) && (updates.core.url)) {
       tasks.push(Downloader.download(updates.core.url,
@@ -150,7 +162,7 @@ class Update {
        while it's not been yet marked as tainted in the backend?
      * how to report that borked case in a clear way
   */
-  restartJenkins(rollingBack) { // Add param to stop recursion?
+  restartJenkins(rollingBack?: boolean) { // Add param to stop recursion?
     Supervisord.restartProcess('jenkins');
 
     const messageWhileRestarting = 'Jenkins should now be online, health checking!';
@@ -207,7 +219,7 @@ class Update {
   getCurrentLevel() {
     this.loadUpdateSync();
     if (this.manifest) {
-      let level = this.manifest.meta.level;
+      const level = this.manifest.meta.level;
       logger.silly('Currently at Update Level %d', level);
       return level;
     }
@@ -235,7 +247,7 @@ class Update {
       }
     }
     this.manifest = JSON.parse(fs.readFileSync(this.updatePath(),
-      this.fileOptions));
+      this.fileOptions) as string);
     return this.manifest;
   }
 
@@ -260,5 +272,3 @@ class Update {
     return dir;
   }
 }
-
-module.exports = Update;

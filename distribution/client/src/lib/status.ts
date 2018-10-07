@@ -1,20 +1,30 @@
 'use strict';
 
-const fs     = require('fs');
-const path   = require('path');
+import path from 'path';
+import fs from 'fs';
 
-const logger   = require('winston');
-const Storage  = require('./storage');
-const Checksum = require('./checksum');
+import * as logger from 'winston';
+import Storage from './storage';
+import Checksum from './checksum';
 
+
+export interface StatusOptions {
+  flavor?: string,
+};
 
 /*
  * The status module is responsible for collecting and reporting the current
  * state of this instance to the Evergreen backend `Status` service
  */
-class Status {
-  constructor(app, options) {
-    this.options = options || {};
+export default class Status {
+  protected readonly app : any;
+  protected readonly options : StatusOptions;
+
+  public uuid : string;
+  public token : string;
+
+  constructor(app : any, options : StatusOptions = {}) {
+    this.options = options;
     this.token = null;
     this.uuid = null;
     this.app = app;
@@ -38,8 +48,8 @@ class Status {
    * Create a status record in the backend for this particular instance
    */
   async create() {
-    let api = this.app.service('status');
-    let record = {
+    const api = this.app.service('status');
+    const record = {
       uuid: this.uuid,
       flavor: this.options.flavor,
       timezone: this.getTimezone(),
@@ -68,8 +78,8 @@ class Status {
   }
 
   reportLevel(updateLevel) {
-    let api = this.app.service('status');
-    let record = {
+    const api = this.app.service('status');
+    const record = {
       uuid: this.uuid,
       updateId: updateLevel,
     };
@@ -152,10 +162,6 @@ class Status {
         throw err;
       }
     }
-
     return versions;
   }
-
 }
-
-module.exports = Status;

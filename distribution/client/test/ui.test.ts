@@ -1,4 +1,5 @@
-const UI = require('../src/lib/ui');
+
+import UI from '../src/lib/ui';
 
 describe('The UI module', () => {
   it('should be a singleton', () => {

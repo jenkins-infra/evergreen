@@ -14,6 +14,9 @@ const logger        = require('winston');
  * Simple shim feathers service just to enable events
  */
 class MessageService {
+  protected readonly app : any;
+  protected recent : Array<any>;
+
   constructor(app) {
     this.app = app;
     this.recent = [];
@@ -37,6 +40,9 @@ class MessageService {
 }
 
 class UI {
+  protected readonly app : any;
+  protected server : any;
+
   constructor() {
     const app = express(feathers());
     this.app = app;
@@ -60,7 +66,7 @@ class UI {
    * necessarily be presented to the user.
    *
    */
-  publish(message, params) {
+  publish(message, params?: any) {
     return this.app.service('messages').create({
       message: message,
       timestamp: Date.now(),
@@ -75,4 +81,4 @@ class UI {
   }
 }
 
-module.exports = new UI();
+export default new UI();

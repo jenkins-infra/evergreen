@@ -8,7 +8,7 @@ const open = promisify(fs.open);
 const close = promisify(fs.close);
 const access = promisify(fs.access);
 
-class Helpers {
+export class Helpers {
   constructor () {
   }
 
@@ -23,4 +23,4 @@ class Helpers {
   }
 }
 
-module.exports = new Helpers();
+export default new Helpers();

@@ -1,6 +1,7 @@
-const HealthChecker = require('../src/lib/healthchecker');
 const logger        = require('winston');
 const http          = require('http');
+
+import HealthChecker from '../src/lib/healthchecker';
 
 describe('The healthchecker module', () => {
   let server = null;
@@ -13,17 +14,19 @@ describe('The healthchecker module', () => {
     instanceIdentity: true,
     metrics: {
       plugins: true,
-      deadlock: true
-    }
+      deadlock: true,
+      body: null,
+    },
   };
 
   describe('constructor', () => {
     it('should use default values if none passed in', () => {
-      const healthChecker = new HealthChecker();
+      const healthChecker = new HealthChecker('http://example.com');
       expect(healthChecker.retry).toEqual(25);
       expect(healthChecker.delay).toEqual(3000);
       expect(healthChecker.factor).toEqual(1.10);
     });
+
     it('should use passed in values', () => {
       const jenkinsRootUrl = `http://localhost:${port}`;
       const requestOptions = {delay: 100, retry: 1, factor: 1.01};
@@ -35,7 +38,7 @@ describe('The healthchecker module', () => {
     });
     it('should override the delay if env var set', () => {
       const retryOverride = 21;
-      process.env.PROCESS_RETRY_OVERRIDE = retryOverride;
+      process.env.PROCESS_RETRY_OVERRIDE = retryOverride.toString();
       const jenkinsRootUrl = `http://localhost:${port}`;
       const requestOptions = {delay: 100, retry: 1, factor: 1.01};
       const healthChecker = new HealthChecker(jenkinsRootUrl, requestOptions);
@@ -45,7 +48,7 @@ describe('The healthchecker module', () => {
       expect(healthChecker.factor).toEqual(requestOptions.factor);
     });
     it('should handle non int value in env var', () => {
-      process.env.PROCESS_RETRY_OVERRIDE = true;
+      process.env.PROCESS_RETRY_OVERRIDE = 'true';
       const jenkinsRootUrl = `http://localhost:${port}`;
       const requestOptions = {delay: 100, retry: 1, factor: 1.01};
       const healthChecker = new HealthChecker(jenkinsRootUrl, requestOptions);

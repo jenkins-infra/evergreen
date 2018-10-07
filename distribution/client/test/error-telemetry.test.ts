@@ -5,7 +5,7 @@ const fs             = require('fs');
 const path           = require('path');
 const mkdirp         = require('mkdirp');
 
-const ErrorTelemetry = require('../src/lib/error-telemetry');
+import ErrorTelemetry from '../src/lib/error-telemetry';
 
 describe('Error Telemetry Logging', () => {
   beforeEach(() => {
@@ -15,13 +15,13 @@ describe('Error Telemetry Logging', () => {
 
   describe('authenticate()', () => {
     it('should store values', () => {
-      const telemetry = new ErrorTelemetry().authenticate('you-you-i-Dee', 'toe-ken-that-guy');
+      const telemetry = new ErrorTelemetry(null, null).authenticate('you-you-i-Dee', 'toe-ken-that-guy');
       assert.equal(telemetry.uuid, 'you-you-i-Dee');
     });
   });
 
   describe('setup() call', () => {
-    const errorTelemetryService = new ErrorTelemetry();
+    const errorTelemetryService = new ErrorTelemetry(null, null);
 
     let logsDir = '/evergreen/jenkins/war/logs';
     let logFile = path.join(logsDir, 'evergreen.log.0');

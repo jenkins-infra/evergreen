@@ -1,10 +1,10 @@
-const Snapshotter = require('../src/lib/snapshotter');
-const tmp         = require('tmp');
 const fs          = require('fs');
 
-describe('The snapshotting module', () => {
+import tmp from 'tmp';
+import Snapshotter from '../src/lib/snapshotter';
 
-  let tmpDir = '';
+describe('The snapshotting module', () => {
+  let tmpDir = null;
   beforeEach(() => {
     tmpDir = tmp.dirSync({unsafeCleanup: true});
   });

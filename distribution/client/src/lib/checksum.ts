@@ -1,10 +1,10 @@
 'use strict';
 
-const crypto = require('crypto');
-const fs     = require('fs');
-const logger  = require('winston');
+import crypto from 'crypto';
+import fs from 'fs';
+import * as logger from 'winston';
 
-class Checksum {
+export default class Checksum {
   /*
    * Generate a SHA-256 checksum signature from the provided relative or
    * absolute file path
@@ -26,5 +26,3 @@ class Checksum {
     }
   }
 }
-
-module.exports = Checksum;

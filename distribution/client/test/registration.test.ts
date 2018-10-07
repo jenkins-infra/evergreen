@@ -3,9 +3,11 @@ jest.mock('fs');
 const assert       = require('assert');
 const fs           = require('fs');
 const path         = require('path');
-const Registration = require('../src/lib/registration');
+
+import Registration from '../src/lib/registration';
 
 describe('The registration module', () => {
+  const app = new Object();
   beforeEach(() => {
     /* Make sure memfs is flushed every time */
     fs.volume.reset();
@@ -13,19 +15,19 @@ describe('The registration module', () => {
 
   describe('register()', () => {
     it('should return a Promise', () => {
-      const response = (new Registration()).register();
+      const response = (new Registration(app)).register();
       assert(response instanceof Promise);
     });
   });
 
   describe('getPublicKey()', () => {
     it('should return null on a new instance', () => {
-      const r = new Registration();
+      const r = new Registration(app);
       assert.equal(null, r.getPublicKey());
     });
 
     it('should return a public key after generateKeys() has been called', () => {
-      const r = new Registration();
+      const r = new Registration(app);
       assert(r.generateKeys());
       assert.equal(typeof r.getPublicKey(), 'string');
     });
@@ -33,7 +35,7 @@ describe('The registration module', () => {
 
   describe('saveUUIDSync()', () => {
     beforeEach(() => {
-      this.reg = new Registration();
+      this.reg = new Registration(app);
     });
     it('should not write anything by default', () => {
       assert.equal(this.reg.saveUUIDSync(), false);
@@ -62,7 +64,7 @@ describe('The registration module', () => {
   describe('loadUUIDSync()', () => {
     let uuid = 'just another-fake-uuid';
     beforeEach(() => {
-      this.reg = new Registration();
+      this.reg = new Registration(app);
       this.reg.uuid = uuid;
       this.reg.saveUUIDSync();
     });
@@ -76,13 +78,13 @@ describe('The registration module', () => {
 
   describe('saveKeysSync()', () => {
     it('should return false if there are not keys', () => {
-      const r = new Registration();
+      const r = new Registration(app);
       assert(!r.saveKeysSync());
     });
 
     describe('when keys have been generated', () => {
       beforeEach(() => {
-        this.reg = new Registration();
+        this.reg = new Registration(app);
         this.reg.generateKeys();
       });
       it('should return true if the public key has been written', () => {
@@ -107,7 +109,7 @@ describe('The registration module', () => {
 
   describe('loadKeysSync()', () => {
     beforeEach(() => {
-      this.reg = new Registration();
+      this.reg = new Registration(app);
     });
 
     it('should return false by default when there are no keys', () => {
@@ -121,7 +123,7 @@ describe('The registration module', () => {
 
     describe('when keys are already on disk', () => {
       beforeEach(() => {
-        const preflight = new Registration();
+        const preflight = new Registration(app);
         preflight.generateKeys();
         preflight.saveKeysSync();
       });
@@ -135,31 +137,31 @@ describe('The registration module', () => {
 
   describe('hasKeys()', () => {
     it('should return false by default', () => {
-      assert.equal((new Registration()).hasKeys(), false);
+      assert.equal((new Registration(app)).hasKeys(), false);
     });
   });
 
   describe('generateKeys()', () => {
     it('should return a boolean on success', () => {
-      assert.ok((new Registration()).generateKeys());
+      assert.ok((new Registration(app)).generateKeys());
     });
   });
 
   describe('publicKeyPath()', () => {
     it('should return a path', () => {
-      const p = (new Registration()).publicKeyPath();
+      const p = (new Registration(app)).publicKeyPath();
       assert(p != path.basename(p), 'This doesn\'t look like a path');
     });
   });
 
   describe('keyPath()', () => {
     it('should return a path', () => {
-      const keys = (new Registration()).keyPath();
+      const keys = (new Registration(app)).keyPath();
       assert(keys != path.basename(keys), 'This doesn\'t look like a path');
     });
 
     it('should create a directory if one does not exist', () => {
-      const keyPath = (new Registration()).keyPath();
+      const keyPath = (new Registration(app)).keyPath();
       const stats = fs.statSync(keyPath);
       assert(stats.isDirectory());
     });
@@ -176,7 +178,7 @@ describe('The registration module', () => {
 
   describe('uuidPath()', () => {
     it('should return a path', () => {
-      const p = (new Registration()).uuidPath();
+      const p = (new Registration(app)).uuidPath();
       assert(p != path.basename(p), 'This doesn\'t look like a path');
     });
   });
