@@ -218,11 +218,12 @@ export default class Update {
 
   getCurrentLevel() {
     this.loadUpdateSync();
-    if (this.manifest) {
+    if (this.manifest && this.manifest.meta && this.manifest.meta.level) {
       const level = this.manifest.meta.level;
       logger.silly('Currently at Update Level %d', level);
       return level;
     }
+    logger.warn('No manifest level found, returning UL 0 (manifest=${this.manifest})');
     return 0;
   }
 
