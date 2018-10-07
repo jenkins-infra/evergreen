@@ -90,6 +90,7 @@ export default class Update {
    */
   async applyUpdates(updates) {
     if (this.updateInProgress || (!updates)) {
+      logger.warn('applyUpdates request ignored: update already in progress!');
       return false;
     }
 
