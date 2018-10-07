@@ -47,9 +47,17 @@ describe('The update module', () => {
 
   describe('saveUpdateSync()', () => {
     it('should write to disk', () => {
-      expect(update.saveUpdateSync()).toBeTruthy();
+      expect(update.saveUpdateSync({})).toBeTruthy();
       expect(() => {
         fs.statSync(update.updatePath());
+      }).not.toThrow();
+    });
+  });
+  describe('recordUpdateLevel()', () => {
+    it('should not fail', () => {
+      expect(update.recordUpdateLevel()).toBeTruthy();
+      expect(() => {
+        fs.statSync(update.auditLogPath());
       }).not.toThrow();
     });
   });
