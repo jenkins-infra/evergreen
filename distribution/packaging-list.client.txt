@@ -2,8 +2,7 @@
 ./client/package.json
 ./client/package-lock.json
 ./client/config/
-./client/src/
-./client/src/lib/
+./client/build/
 ./client/patches/
 # Inlude the public site information
 ./client/public/
