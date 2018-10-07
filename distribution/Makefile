@@ -33,6 +33,7 @@ store-commit:
 distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip
 
 prepare-distribution: build/jenkins-support build/jenkins.sh
+	$(MAKE) -C client compile
 	mkdir -p $(DIST_DIR)/client $(DIST_DIR)/config $(DIST_DIR)/www $(DIST_DIR)/scripts
 	rsync -avm --delete --files-from=packaging-list.client.txt . $(DIST_DIR)/
 	rsync -avm --delete --include-from=packaging-list.config.txt --exclude="*" ./config/ $(DIST_DIR)/config
@@ -75,7 +76,6 @@ fix-formatting:
 	$(MAKE) -C client $@
 
 container-prereqs: distribution store-commit
-	$(MAKE) -C client compile
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C client lint

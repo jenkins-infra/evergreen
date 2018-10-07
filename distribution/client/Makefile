@@ -10,7 +10,7 @@ check:: compile
 
 unit:: compile
 
-compile:
+compile: depends
 	tsc
 
 docs:
