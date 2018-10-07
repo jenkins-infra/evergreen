@@ -197,8 +197,7 @@ export default class Update {
             // since the next available UL _might_ fix the issue
           } else {
 
-            const errorMessage = `Jenkins detected as unhealthy: ${healthState.message}. ` +
-                                 'Rolling back to previous update level.';
+            const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
             UI.publish(errorMessage);
             logger.warn(errorMessage);
 
