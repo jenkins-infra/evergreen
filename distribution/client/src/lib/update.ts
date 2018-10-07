@@ -179,9 +179,9 @@ export default class Update {
           logger.info('Jenkins healthcheck after restart succeeded! Yey.');
         } else {
 
+          // if things are wrong twice, stop trying and just holler for help
           if (rollingBack) {
 
-            // if things are wrong twice, stop trying and just holler for help
             // Quick notice sketch, but I do think we need a very complete and informative message
             const failedToRollbackMessage =
               'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
