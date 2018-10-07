@@ -131,4 +131,25 @@ oneTimeTearDown() {
   cleanup
 }
 
+# Upload the ingest.json to the update service.
+# Retries a few times in case of error
+# parameter is optional and will default to ../services/ingest.json
+upload_update_level() {
+  ingestFile=$1
+  echo "Uploading '$ingestFile' as new Update Level to backend (cwd=$( pwd ))"
+  n=0
+  attempts=30
+  until [ $n -ge $attempts ]
+  do
+    curl --data-raw "{\"commit\":\"container-tests-$RANDOM\",\"manifest\":$(cat ${ingestFile:=../services/ingest.json})}" \
+    -H 'Authorization: the API calls are coming from inside the house' \
+    -H 'Content-Type: application/json' \
+    http://localhost:3030/update \
+       && break
+    echo "Failed uploading Update Level to /update service (attempt #$n/$attempts):"
+    n=$((n+1))
+    sleep 1
+  done
+}
+
 # vim: ft=sh
