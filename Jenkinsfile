@@ -138,7 +138,7 @@ pipeline {
                   }
                   post {
                       always {
-                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
+                          archiveArtifacts artifacts: '**/build/tests-run*/**'
                       }
                   }
                 }
@@ -149,7 +149,7 @@ pipeline {
                   }
                   post {
                       always {
-                          archiveArtifacts artifacts: '**/build/tests-run*/**.log*'
+                          archiveArtifacts artifacts: '**/build/tests-run*/**'
                       }
                   }
                 }
