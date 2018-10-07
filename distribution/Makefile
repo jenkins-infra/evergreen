@@ -75,6 +75,7 @@ fix-formatting:
 	$(MAKE) -C client $@
 
 container-prereqs: distribution store-commit
+	$(MAKE) -C client compile
 
 container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh create-squid-cache-volume
 	$(MAKE) -C client lint
