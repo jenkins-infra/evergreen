@@ -227,10 +227,30 @@ export default class Update {
   }
 
   saveUpdateSync(manifest) {
+    if (!manifest) {
+      throw new Error('Update Manifest is required!');
+    }
     logger.info(`Saving a new manifest into ${this.updatePath()}`);
     fs.writeFileSync(
       this.updatePath(),
       JSON.stringify(manifest),
+      this.fileOptions);
+
+    this.recordUpdateLevel(manifest);
+    return true;
+  }
+
+  /**
+   * Function for audit/debugging purpose. Store in a file the successive ULs an instance went through
+  */
+  recordUpdateLevel(manifest) {
+    logger.debug('Storing Update Level for auditability');
+    const level = this.getCurrentLevel();
+    const log = {timestamp: new Date(), updateLevel: level};
+    const logLine = JSON.stringify(log);
+
+    fs.appendFileSync(this.auditLogPath(),
+      `${logLine}\n`,
       this.fileOptions);
     return true;
   }
@@ -258,10 +278,10 @@ export default class Update {
    * @return String
    */
   updatePath() {
-    const dir = path.join(Storage.homeDirectory(), 'updates.json');
+    const filePath = path.join(Storage.homeDirectory(), 'updates.json');
 
     try {
-      fs.statSync(dir);
+      fs.statSync(filePath);
     } catch (err) {
       if (err.code == 'ENOENT') {
         mkdirp.sync(Storage.homeDirectory());
@@ -269,6 +289,20 @@ export default class Update {
         throw err;
       }
     }
-    return dir;
+    return filePath;
+  }
+
+  auditLogPath() {
+    const filePath = path.join(Storage.homeDirectory(), 'updates.auditlog');
+    try {
+      fs.statSync(filePath);
+    } catch (err) {
+      if (err.code == 'ENOENT') {
+        mkdirp.sync(Storage.homeDirectory());
+      } else {
+        throw err;
+      }
+    }
+    return filePath;
   }
 }
