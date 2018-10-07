@@ -75,7 +75,7 @@ export default class Snapshotter {
   }
 
   revertToLevelBefore(currentLevel) {
-    logger.error(`[NOT IMPLEMENTED YET]${LOG_PREFIX} Revert UL-${currentLevel} to previous Update Level state`);
+    logger.error(`[NOT IMPLEMENTED YET]${LOG_PREFIX} GIT Revert UL-${currentLevel} to previous Update Level state`);
   }
   /**
    * Will update the .gitignore file and commit if needed.
@@ -83,19 +83,19 @@ export default class Snapshotter {
    */
   updateGitIgnore() {
     if (!this.isEnabled()) {
-      logger.info('Snapshotting is disabled, avoiding an update to .gitignore');
+      logger.warn('Snapshotting is disabled, avoiding an update to .gitignore');
       return;
     }
     const gitignorePath = `${this.workingDirectory}/.gitignore`;
 
     if (!fs.existsSync(gitignorePath) ||
         fs.readFileSync(gitignorePath, 'utf-8') !== GITIGNORE_CONTENT ) {
-      logger.info(`${LOG_PREFIX} .gitignore outdated or absent, updating.`);
+      logger.debug(`${LOG_PREFIX} .gitignore outdated or absent, updating.`);
       fs.writeFileSync(gitignorePath, GITIGNORE_CONTENT);
       this.git('add', '.gitignore');
       this.git('commit', '--message', 'Update .gitignore content to latest');
     } else {
-      logger.info(`${LOG_PREFIX} .gitignore up to date already.`);
+      logger.debug(`${LOG_PREFIX} .gitignore up to date already.`);
     }
   }
 
@@ -110,7 +110,7 @@ export default class Snapshotter {
    */
   git(...args) {
     if (!this.isEnabled()) {
-      logger.info('Snapshotting has been disabled, ignoring request to run', args);
+      logger.warn('Snapshotting has been disabled, ignoring request to run', args);
       return;
     }
 
@@ -121,14 +121,14 @@ export default class Snapshotter {
     };
 
     const cmd = `git ${args.join(' ')}`;
-    logger.info(`${LOG_PREFIX} Running '${cmd}' command in ${this.workingDirectory}`);
+    logger.debug(`${LOG_PREFIX} Running '${cmd}' command in ${this.workingDirectory}`);
 
     const result = spawnSync('git', args, options);
     if (result.stdout && result.stdout.length > 0) {
-      logger.info(`${LOG_PREFIX} stdout: '${result.stdout.toString()}'`);
+      logger.debug(`${LOG_PREFIX} stdout: '${result.stdout.toString()}'`);
     }
     if (result.stderr && result.stderr.length > 0) {
-      logger.error(`${LOG_PREFIX} stderr: '${result.stderr.toString()}'`);
+      logger.debug(`${LOG_PREFIX} stderr: '${result.stderr.toString()}'`);
     }
     if (result.status && result.status !== 0) {
       const errorMessage = `${LOG_PREFIX} Error exit code '${result.status}' while executing command '${cmd}'`;
