@@ -37,5 +37,3 @@ services:
       - '8080:80'
     depends_on:
       - backend
-    volumes:
-      - ./client:/evergreen/client

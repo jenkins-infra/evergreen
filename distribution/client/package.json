@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/client.js",
   "scripts": {
-    "prestart": "tsc",
     "start": "node build/client.js",
     "pretest": "eslint src/. test/. --config .eslintrc.json",
     "eslint": "npm run pretest",
