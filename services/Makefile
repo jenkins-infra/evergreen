@@ -127,8 +127,14 @@ publish: container
 update-center.json:
 	wget -O update-center.json https://updates.jenkins.io/update-center.actual.json
 
+update-center-experimental.json:
+	wget -O update-center-experimental.json https://updates.jenkins.io/experimental/update-center.actual.json
+
 propose-updates: update-center.json
-	node ./prepare-essentials propose-updates
+	node ./prepare-essentials propose-updates --uc ./update-center.json
+
+propose-experimental-updates: update-center-experimental.json
+	node ./prepare-essentials propose-updates --uc ./update-center-experimental.json
 
 generate-essentials: essentials.yaml prepare-essentials update-center.json
 	node ./prepare-essentials save
