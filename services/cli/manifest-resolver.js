@@ -85,7 +85,7 @@ class ManifestResolver {
             plugin.optional = false;
           }
 
-          var ok;
+          let ok;
           try {
             ok = compareVersions(needed[artifactId].version, plugin.version) == 1;
           } catch (x) {
