@@ -27,13 +27,14 @@ cleanup () {
 
   echo -n "Retrieving test run data (container logs, ...) before shutdown... Will be in the $testRunDirectory directory... "
   # Normally should be something like evergreen_backend_1, evergreen_db_1 and evergreen_instance_1
-  containers=$( $COMPOSE ps | head -5 | tail -4 | awk '{print $1}' )
+  containers=$( $COMPOSE ps | head -5 | tail -3 | awk '{print $1}' )
 
   for container in $containers
   do
     docker logs $container > $testRunDirectory/${container}.log 2>&1
   done
-  docker cp "$container_under_test":/evergreen/jenkins/var/logs/evergreen.log.0 $testRunDirectory/evergreen.log.0
+  docker cp "$container_under_test":/evergreen/data/jenkins/var/logs/evergreen.log.0 $testRunDirectory/evergreen.log.0
+  docker cp "$container_under_test":/evergreen/data/updates.auditlog $testRunDirectory/updates.auditlog
   echo "Done getting logs for $containers"
 
   echo -n "Cleaning up... "
@@ -129,6 +130,27 @@ export container_under_test=${container_under_test:?}
 
 oneTimeTearDown() {
   cleanup
+}
+
+# Upload the ingest.json to the update service.
+# Retries a few times in case of error
+# parameter is optional and will default to ../services/ingest.json
+upload_update_level() {
+  ingestFile=$1
+  echo "Uploading '$ingestFile' as new Update Level to backend (cwd=$( pwd ))"
+  n=0
+  attempts=30
+  until [ $n -ge $attempts ]
+  do
+    curl --data-raw "{\"commit\":\"container-tests-$RANDOM\",\"manifest\":$(cat ${ingestFile:=../services/ingest.json})}" \
+    -H 'Authorization: the API calls are coming from inside the house' \
+    -H 'Content-Type: application/json' \
+    http://localhost:3030/update \
+       && break
+    echo "Failed uploading Update Level to /update service (attempt #$n/$attempts):"
+    n=$((n+1))
+    sleep 1
+  done
 }
 
 # vim: ft=sh

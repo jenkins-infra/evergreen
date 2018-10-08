@@ -77,6 +77,7 @@ export default class Client {
         } else if (err.code == 304) {
           logger.debug('No updates available at this time');
         } else {
+          logger.warn('error during update (already in progress maybe?)');
           UI.publish('Failed to query for updates!', { log: 'error', error: err });
         }
       });

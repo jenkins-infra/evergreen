@@ -90,6 +90,7 @@ export default class Update {
    */
   async applyUpdates(updates) {
     if (this.updateInProgress || (!updates)) {
+      logger.warn('applyUpdates request ignored: update already in progress!');
       return false;
     }
 
@@ -178,9 +179,9 @@ export default class Update {
           logger.info('Jenkins healthcheck after restart succeeded! Yey.');
         } else {
 
+          // if things are wrong twice, stop trying and just holler for help
           if (rollingBack) {
 
-            // if things are wrong twice, stop trying and just holler for help
             // Quick notice sketch, but I do think we need a very complete and informative message
             const failedToRollbackMessage =
               'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
@@ -196,8 +197,7 @@ export default class Update {
             // since the next available UL _might_ fix the issue
           } else {
 
-            const errorMessage = `Jenkins detected as unhealthy: ${healthState.message}. ` +
-                                 'Rolling back to previous update level.';
+            const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
             UI.publish(errorMessage);
             logger.warn(errorMessage);
 
@@ -218,19 +218,40 @@ export default class Update {
 
   getCurrentLevel() {
     this.loadUpdateSync();
-    if (this.manifest) {
+    if (this.manifest && this.manifest.meta && this.manifest.meta.level) {
       const level = this.manifest.meta.level;
       logger.silly('Currently at Update Level %d', level);
       return level;
     }
+    logger.warn('No manifest level found, returning UL 0 (manifest=${this.manifest})');
     return 0;
   }
 
   saveUpdateSync(manifest) {
+    if (!manifest) {
+      throw new Error('Update Manifest is required!');
+    }
     logger.info(`Saving a new manifest into ${this.updatePath()}`);
     fs.writeFileSync(
       this.updatePath(),
       JSON.stringify(manifest),
+      this.fileOptions);
+
+    this.recordUpdateLevel(manifest);
+    return true;
+  }
+
+  /**
+   * Function for audit/debugging purpose. Store in a file the successive ULs an instance went through
+  */
+  recordUpdateLevel(manifest) {
+    logger.debug('Storing Update Level for auditability');
+    const level = this.getCurrentLevel();
+    const log = {timestamp: new Date(), updateLevel: level};
+    const logLine = JSON.stringify(log);
+
+    fs.appendFileSync(this.auditLogPath(),
+      `${logLine}\n`,
       this.fileOptions);
     return true;
   }
@@ -258,10 +279,10 @@ export default class Update {
    * @return String
    */
   updatePath() {
-    const dir = path.join(Storage.homeDirectory(), 'updates.json');
+    const filePath = path.join(Storage.homeDirectory(), 'updates.json');
 
     try {
-      fs.statSync(dir);
+      fs.statSync(filePath);
     } catch (err) {
       if (err.code == 'ENOENT') {
         mkdirp.sync(Storage.homeDirectory());
@@ -269,6 +290,20 @@ export default class Update {
         throw err;
       }
     }
-    return dir;
+    return filePath;
+  }
+
+  auditLogPath() {
+    const filePath = path.join(Storage.homeDirectory(), 'updates.auditlog');
+    try {
+      fs.statSync(filePath);
+    } catch (err) {
+      if (err.code == 'ENOENT') {
+        mkdirp.sync(Storage.homeDirectory());
+      } else {
+        throw err;
+      }
+    }
+    return filePath;
   }
 }
