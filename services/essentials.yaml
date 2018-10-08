@@ -4,11 +4,11 @@ metadata:
   annotations: null
 spec:
   core:
-    version: '2.143'
+    version: '2.145'
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.0'
+      version: '1.1'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc58.a9ecd200b39a
@@ -109,7 +109,7 @@ spec:
           version: 1.5.0
 status:
   core:
-    version: '2.143'
+    version: '2.145'
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
@@ -203,7 +203,7 @@ status:
       version: '3.2'
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.0'
+      version: '1.1'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
       version: 2.1.18
