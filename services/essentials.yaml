@@ -41,13 +41,13 @@ spec:
       version: 1.26.1
     - groupId: com.coravy.hudson.plugins.github
       artifactId: github
-      version: 1.29.2
+      version: 1.29.3
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
-      version: 2.3.6
+      version: 2.4.0
     - groupId: org.jenkins-ci.plugins
       artifactId: htmlpublisher
-      version: '1.16'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.21'
@@ -56,7 +56,7 @@ spec:
       version: '2.4'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-agent
-      version: '1.16'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-aggregator
       version: '2.6'
@@ -242,13 +242,13 @@ status:
       version: '1.7'
     - groupId: com.coravy.hudson.plugins.github
       artifactId: github
-      version: 1.29.2
+      version: 1.29.3
     - groupId: org.jenkins-ci.plugins
       artifactId: github-api
       version: '1.90'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
-      version: 2.3.6
+      version: 2.4.0
     - groupId: org.jenkins-ci.ui
       artifactId: handlebars
       version: '1.1'
@@ -257,7 +257,7 @@ status:
       version: 2.1.6-1.0
     - groupId: org.jenkins-ci.plugins
       artifactId: htmlpublisher
-      version: '1.16'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins.icon-shim
       artifactId: icon-shim
       version: 2.0.3
@@ -353,7 +353,7 @@ status:
       version: '1.15'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-agent
-      version: '1.16'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-credentials
       version: '1.14'
