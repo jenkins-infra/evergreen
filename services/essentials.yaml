@@ -59,7 +59,7 @@ spec:
       version: '1.16'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-aggregator
-      version: '2.5'
+      version: '2.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: metrics
       version: 4.0.2.2
@@ -197,7 +197,7 @@ status:
       version: 2.2.9
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-folder
-      version: '6.3'
+      version: '6.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: '3.2'
@@ -206,7 +206,7 @@ status:
       version: '1.0'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
-      version: 2.1.17
+      version: 2.1.18
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.16'
@@ -221,7 +221,7 @@ status:
       version: '1.14'
     - groupId: org.jenkins-ci.plugins
       artifactId: durable-task
-      version: '1.24'
+      version: '1.26'
     - groupId: io.jenkins.plugins
       artifactId: essentials
       version: 0.5.1
@@ -263,7 +263,7 @@ status:
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.8.11.2
+      version: 2.8.11.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
       version: '1.1'
@@ -282,6 +282,9 @@ status:
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
       version: 1.26.1
+    - groupId: org.6wind.jenkins
+      artifactId: lockable-resources
+      version: '2.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.21'
@@ -323,7 +326,7 @@ status:
       version: 1.3.2
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-rest-api
-      version: '2.4'
+      version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-stage-step
       version: '2.3'
@@ -332,7 +335,7 @@ status:
       version: 1.3.2
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-stage-view
-      version: '2.4'
+      version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.4'
@@ -341,7 +344,7 @@ status:
       version: '1.12'
     - groupId: org.jenkins-ci.plugins
       artifactId: scm-api
-      version: 2.2.7
+      version: 2.2.8
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
       version: '1.46'
@@ -356,7 +359,7 @@ status:
       version: '1.14'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
-      version: '1.14'
+      version: '1.15'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
       version: '2.5'
@@ -365,22 +368,22 @@ status:
       version: '1.1'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-aggregator
-      version: '2.5'
+      version: '2.6'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
       version: '2.29'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-basic-steps
-      version: '2.6'
+      version: '2.11'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.54'
+      version: '2.56'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.9'
+      version: '2.11'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.21'
+      version: '2.22'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
       version: '2.25'
