@@ -93,13 +93,11 @@ export default class Client {
 
     this.runUpdates();
 
-    this.healthChecker.check().then((state) => {
-      if (state.healthy) {
-        UI.publish('Jenkins appears to be online', { log: 'info' });
-        Storage.removeBootingFlag();
-      } else {
-        UI.publish('Jenkins appears to be in an unhealthy state!', { log: 'error' });
-      }
+    this.healthChecker.check().then(() => {
+      UI.publish('Jenkins appears to be online', { log: 'info' });
+      Storage.removeBootingFlag();
+    }).catch((error) => {
+      UI.publish('Jenkins appears to be in an unhealthy state!', { log: 'error' });
     });
 
     cron.runDaily('post-status', () => {

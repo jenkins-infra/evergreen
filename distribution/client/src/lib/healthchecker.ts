@@ -59,14 +59,7 @@ export default class HealthChecker {
     return Promise.all(checks)
       .then( () => {
         return {
-          healthy: true,
           message: 'All checks were successful. Instance deemed healthy.'
-        };
-      })
-      .catch( error => {
-        return {
-          healthy: false,
-          message: `Something went wrong: ${error}`
         };
       });
 

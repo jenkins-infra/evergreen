@@ -184,34 +184,31 @@ export default class Update {
     // checking healthState.health value is possibly a bit convoluted (?)
     return this.healthChecker.check()
       .then( healthState => {
-        if (healthState.healthy) {
-          logger.info('Jenkins healthcheck after restart succeeded! Yey.');
+        logger.info('Jenkins healthcheck after restart succeeded! Yey.');
+
+        // if things are wrong twice, stop trying and just holler for help
+        if (rollingBack) {
+
+          // Quick notice sketch, but I do think we need a very complete and informative message
+          const failedToRollbackMessage =
+            'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
+            'upgrade, but even after the automated rollback we were unable to bring ' +
+            'to life. Please report this issue to the Jenkins Evergreen team. ' +
+            'Do not shutdown your instance as we have been notified of this failure ' +
+            'and are trying to understand what went wrong to push a new update that ' +
+            'will fix things.';
+          logger.error(failedToRollbackMessage);
+          UI.publish(failedToRollbackMessage);
+
+          // Not throwing an Error here as we want the client to keep running and ready
+          // since the next available UL _might_ fix the issue
         } else {
 
-          // if things are wrong twice, stop trying and just holler for help
-          if (rollingBack) {
+          const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
+          UI.publish(errorMessage);
+          logger.warn(errorMessage);
 
-            // Quick notice sketch, but I do think we need a very complete and informative message
-            const failedToRollbackMessage =
-              'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
-              'upgrade, but even after the automated rollback we were unable to bring ' +
-              'to life. Please report this issue to the Jenkins Evergreen team. ' +
-              'Do not shutdown your instance as we have been notified of this failure ' +
-              'and are trying to understand what went wrong to push a new update that ' +
-              'will fix things.';
-            logger.error(failedToRollbackMessage);
-            UI.publish(failedToRollbackMessage);
-
-            // Not throwing an Error here as we want the client to keep running and ready
-            // since the next available UL _might_ fix the issue
-          } else {
-
-            const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
-            UI.publish(errorMessage);
-            logger.warn(errorMessage);
-
-            this.revertToPreviousUpdateLevel();
-          }
+          this.revertToPreviousUpdateLevel();
         }
         Storage.removeBootingFlag();
         return false;
