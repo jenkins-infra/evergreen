@@ -202,8 +202,8 @@ export default class Update {
       }).catch( (error) => { // first catch, try rolling back
 
         const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`;
-        UI.publish(errorMessage);
         logger.warn(errorMessage);
+        UI.publish(errorMessage);
 
         return this.revertToPreviousUpdateLevel(); // FIXME: async issue!
 
