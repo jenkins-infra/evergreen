@@ -84,7 +84,7 @@ describe('Versions service acceptance tests', () => {
           .catch(err => expect(err.statusCode).toEqual(401));
       });
 
-      it('should disallow creating redundant versions records', async () => {
+      it('should allow creating redundant versions records', async () => {
         let req = {
           url: h.getUrl('/versions'),
           method: 'POST',
@@ -93,13 +93,7 @@ describe('Versions service acceptance tests', () => {
           body: { uuid: this.reg.uuid, manifest: manifest }
         };
         await request(req);
-
-        try {
-          await request(req);
-          expect(false).toBeTruthy();
-        } catch (err) {
-          expect(err.statusCode).toEqual(400);
-        }
+        await request(req);
       });
     });
   });
