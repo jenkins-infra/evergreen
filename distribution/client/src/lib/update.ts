@@ -186,7 +186,7 @@ export default class Update {
        while it's not been yet marked as tainted in the backend?
      * how to report that borked case in a clear way
   */
-  restartJenkins(rollingBack?: boolean) { // number param instead to detect an unruly recursive call depth (must never be more than one recursive call)
+  restartJenkins() {
     Supervisord.restartProcess('jenkins');
 
     const messageWhileRestarting = 'Jenkins is being restarted, health checking!';
