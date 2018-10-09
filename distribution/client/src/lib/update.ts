@@ -106,8 +106,9 @@ export default class Update {
       // Setting this to a timestamp to make a timeout in the future
       this.updateInProgress = new Date();
     }
-
-    UI.publish('Starting to apply updates');
+    const applyUpdatesMessage = 'Starting to apply updates';
+    logger.info(applyUpdatesMessage)
+    UI.publish(applyUpdatesMessage);
 
     const tasks = [];
 
