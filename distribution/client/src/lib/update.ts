@@ -282,7 +282,7 @@ export default class Update {
   recordUpdateLevel(manifest) {
     logger.debug('Storing Update Level for auditability');
     const level = this.getCurrentLevel();
-    const log = {timestamp: new Date(), updateLevel: level};
+    const log = {timestamp: new Date(), updateLevel: level, 'manifest': manifest};
     const logLine = JSON.stringify(log);
 
     fs.appendFileSync(this.auditLogPath(),
