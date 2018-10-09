@@ -83,7 +83,7 @@ describe('The update module', () => {
   });
 
   describe('applyUpdates()', () => {
-    let manifest = null;
+    let manifest : any = {};
     beforeEach(() => {
       update.updateInProgress = false;
       manifest = {
@@ -105,7 +105,8 @@ describe('The update module', () => {
 
     it('should not reject on no plugin updates', async () => {
       const response = await update.applyUpdates(manifest);
-      expect(response).toBeFalsy();
+      expect(response).toBe(true);
+
       expect(update.updateInProgress).toBeFalsy();
     });
 

@@ -133,22 +133,30 @@ export default class Update {
     }
 
     if (tasks.length == 0) {
-      logger.debug('No actionable tasks');
+      logger.warn('No actionable tasks');
       this.updateInProgress = null;
       this.saveUpdateSync(updates);
-      return false;
+      return true;
     }
 
+    logger.info(`Triggering update with tasks: ${tasks}`);
+
     return Promise.all(tasks).then(() => {
+
       UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       this.saveUpdateSync(updates);
       UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
+
     }).then( () => {
+
       return this.restartJenkins();
+
     }).finally( () => {
+
       this.updateInProgress = null;
       return true;
+
     });
   }
 
@@ -175,44 +183,45 @@ export default class Update {
   restartJenkins(rollingBack?: boolean) { // Add param to stop recursion?
     Supervisord.restartProcess('jenkins');
 
-    const messageWhileRestarting = 'Jenkins should now be online, health checking!';
+    const messageWhileRestarting = 'Jenkins is being restarted, health checking!';
     UI.publish(messageWhileRestarting);
     logger.info(messageWhileRestarting);
 
-    // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
-    // consistent promise usage UX here.
-    // checking healthState.health value is possibly a bit convoluted (?)
     return this.healthChecker.check()
       .then( healthState => {
         logger.info('Jenkins healthcheck after restart succeeded! Yey.');
-
-        // if things are wrong twice, stop trying and just holler for help
-        if (rollingBack) {
-
-          // Quick notice sketch, but I do think we need a very complete and informative message
-          const failedToRollbackMessage =
-            'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
-            'upgrade, but even after the automated rollback we were unable to bring ' +
-            'to life. Please report this issue to the Jenkins Evergreen team. ' +
-            'Do not shutdown your instance as we have been notified of this failure ' +
-            'and are trying to understand what went wrong to push a new update that ' +
-            'will fix things.';
-          logger.error(failedToRollbackMessage);
-          UI.publish(failedToRollbackMessage);
-
-          // Not throwing an Error here as we want the client to keep running and ready
-          // since the next available UL _might_ fix the issue
-        } else {
-
-          const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
-          UI.publish(errorMessage);
-          logger.warn(errorMessage);
-
-          this.revertToPreviousUpdateLevel();
-        }
         Storage.removeBootingFlag();
-        return false;
+        return true;
+
+      }).catch( (error) => { // first catch, try rolling back
+
+        const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`;
+        UI.publish(errorMessage);
+        logger.warn(errorMessage);
+
+        return this.revertToPreviousUpdateLevel(); // FIXME: async issue!
+
+      }).catch(() => { // second time wrong, stop trying and just holler for help
+
+        // Quick notice sketch, but I do think we need a very complete and informative message
+        const failedToRollbackMessage =
+          'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
+          'upgrade, but even after the automated rollback we were unable to bring ' +
+          'to life. Please report this issue to the Jenkins Evergreen team. ' +
+          'Do not shutdown your instance as we have been notified of this failure ' +
+          'and are trying to understand what went wrong to push a new update that ' +
+          'will fix things.';
+        logger.error(failedToRollbackMessage);
+        UI.publish(failedToRollbackMessage);
+
+        // Not throwing an Error here as we want the client to keep running and ready
+        // since the next available UL _might_ fix the issue
+
+      }).finally(() => {
+        Storage.removeBootingFlag();
+        return true;
       });
+
   }
 
   /*
@@ -223,7 +232,7 @@ export default class Update {
    */
   revertToPreviousUpdateLevel() {
 
-    this.snapshotter.revertToLevelBefore(this.getCurrentLevel());
+    this.snapshotter.revertToLevelBefore(this.getCurrentLevel()); // TODO test this
     return this.taintUpdateLevel()
       .then( () => {
         return this.query();
@@ -238,7 +247,7 @@ export default class Update {
       logger.silly('Currently at Update Level %d', level);
       return level;
     }
-    logger.warn('No manifest level found, returning UL 0 (manifest=${this.manifest})');
+    logger.warn(`No manifest level found, returning UL 0 (manifest=${this.manifest})`);
     return 0;
   }
 
