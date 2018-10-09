@@ -23,8 +23,8 @@ describe('The update module', () => {
     update.healthChecker.check = jest.fn(() => {
       return Promise.resolve({ message: 'fake' });
     });
-    update.revertToPreviousUpdateLevel = jest.fn(() => {
-      return true;
+    update.taintUpdateLevel = jest.fn(() => {
+      return Promise.resolve(true);
     });
   });
 
@@ -39,17 +39,17 @@ describe('The update module', () => {
       };
     });
 
-    // Tests TODO: 
+    // Tests TODO:
     // * check we do not rollback UL0
     // * no rolling back twice
     // * when rolling back, applyUpdates can actually be called by itself to trigger the rollback
 
     it('should rollback if healthcheck goes wrong (and revert works)', async () => {
-
+      jest.setTimeout(10000);
       // ====================================================
       // GIVEN a good update from initial/default UL0 to UL1
       expect(update.getCurrentLevel()).toBe(0);
-      
+
       const ul1 = Object.assign({},
         manifest,
         {
@@ -66,15 +66,14 @@ describe('The update module', () => {
         }
         );
         const result1 = await update.applyUpdates(ul1);
-        
+
         // Update to UL1 went OK
         expect(update.getCurrentLevel()).toBe(1);
         expect(result1).toBe(true);
         expect(update.healthChecker.check).toHaveBeenCalled();
-        
+
       // ========================
       // WHEN a bad update to UL2
-      
       const ul2 = Object.assign({}, ul1, { meta: { level: 2 } })
       ul2.plugins.updates = [
         {
@@ -84,17 +83,26 @@ describe('The update module', () => {
         }
       ];
 
-      // change the healthchecking mock to force a failure, hence a revert below
+      // change the healthchecking mock to force a failure *once*, hence a revert below
       update.healthChecker.check.mockImplementationOnce(() => {return Promise.reject(new Error('forced mock failure for healthchecking'))});
-      
-      expect(update.revertToPreviousUpdateLevel).not.toHaveBeenCalled(); // not yet, let's just double-check
-      
+
+      // query cannot really call the backend side, so we mock it to return ul1
+      update.query = jest.fn( () => {
+        return Promise.resolve(ul1);
+      });
+
+
+      expect(update.taintUpdateLevel).not.toHaveBeenCalled(); // not yet, let's just double-check
+
       // update to broken UL2 (as healthchecking is stubbed above to fail)
       const result2 = await update.applyUpdates(ul2);
-      
+
+      expect(await update.healthChecker.check()).toBeTruthy();
       // ===============================
       // THEN we get an automated revert
-      expect(update.revertToPreviousUpdateLevel).toHaveBeenCalled();
+      expect(update.taintUpdateLevel).toHaveBeenCalled();
+      expect(update.query).toHaveBeenCalled();
+      expect(update.getCurrentLevel()).toBe(1);
 
     });
 

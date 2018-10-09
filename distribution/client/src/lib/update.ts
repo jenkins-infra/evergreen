@@ -95,15 +95,20 @@ export default class Update {
    * @return {Promise} Which resolves once updates have been applied
    * @return {boolean} False if there is already an update in progress
    */
-  async applyUpdates(updates) {
-    if (this.updateInProgress || (!updates)) {
+  async applyUpdates(updates, forceUpdate?: boolean) {
+    if (forceUpdate) {
+      logger.warn('Forced update (expected during a rollback)');
+    }
+    else if (this.updateInProgress || (!updates)) {
       logger.warn('applyUpdates request ignored: update already in progress!');
       return false;
+    } else {
+      // Setting this to a timestamp to make a timeout in the future
+      this.updateInProgress = new Date();
     }
 
     UI.publish('Starting to apply updates');
-    // Setting this to a timestamp to make a timeout in the future
-    this.updateInProgress = new Date();
+
     const tasks = [];
 
     if ((updates.core) && (updates.core.url)) {
@@ -180,7 +185,7 @@ export default class Update {
        while it's not been yet marked as tainted in the backend?
      * how to report that borked case in a clear way
   */
-  restartJenkins(rollingBack?: boolean) { // Add param to stop recursion?
+  restartJenkins(rollingBack?: boolean) { // number param instead to detect an unruly recursive call depth (must never be more than one recursive call)
     Supervisord.restartProcess('jenkins');
 
     const messageWhileRestarting = 'Jenkins is being restarted, health checking!';
@@ -231,12 +236,18 @@ export default class Update {
    * FIXME: 'the/a previous UL' => current code will serve "a" UL. We actually want "the"
    */
   revertToPreviousUpdateLevel() {
-
     this.snapshotter.revertToLevelBefore(this.getCurrentLevel()); // TODO test this
+
     return this.taintUpdateLevel()
       .then( () => {
+
         return this.query();
-      }).then(updates => this.applyUpdates(updates));
+
+      }).then(updates => {
+
+        return this.applyUpdates(updates, true);
+
+      });
 
   }
 
