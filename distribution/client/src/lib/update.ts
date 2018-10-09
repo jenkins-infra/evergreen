@@ -196,7 +196,6 @@ export default class Update {
     return this.healthChecker.check()
       .then( healthState => {
         logger.info('Jenkins healthcheck after restart succeeded! Yey.');
-        Storage.removeBootingFlag();
         return true;
 
       }).catch( (error) => { // first catch, try rolling back
