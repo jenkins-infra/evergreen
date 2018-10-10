@@ -84,21 +84,27 @@ describe('Versions service acceptance tests', () => {
           .catch(err => expect(err.statusCode).toEqual(401));
       });
 
-      it('should disallow creating redundant versions records', async () => {
-        let req = {
+      it('should allow creating redundant versions records', async () => {
+        const req = {
           url: h.getUrl('/versions'),
           method: 'POST',
           headers: { 'Authorization': this.token },
           json: true,
           body: { uuid: this.reg.uuid, manifest: manifest }
         };
-        await request(req);
-
-        try {
-          await request(req);
-          expect(false).toBeTruthy();
-        } catch (err) {
-          expect(err.statusCode).toEqual(400);
+        let id = null;
+        {
+          const result = await request(req);
+          expect(result.uuid).toBeTruthy();
+          expect(result.uuid).toEqual(this.reg.uuid);
+          expect(id).not.toEqual(result.id);
+          id = result.id;
+        }
+        {
+          const result = await request(req);
+          expect(result.uuid).toBeTruthy();
+          expect(result.uuid).toEqual(this.reg.uuid);
+          expect(id).not.toEqual(result.id); // show it's a new row in db, not an update or so
         }
       });
     });
