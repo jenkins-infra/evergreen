@@ -113,4 +113,6 @@ $RECYCLE.BIN/
 lib/
 data/
 ingest.json
+update-center.json
+update-center-experimental.json
 commit.txt

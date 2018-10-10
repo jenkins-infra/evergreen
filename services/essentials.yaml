@@ -19,11 +19,17 @@ spec:
       artifactId: blueocean
       version: 1.8.4
     - groupId: org.jenkins-ci.plugins
+      artifactId: cloudbees-bitbucket-branch-source
+      version: 2.2.12
+    - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: '3.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.16'
+    - groupId: org.jenkins-ci.plugins
+      artifactId: docker-workflow
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: git
       version: 4.0.0-rc2892.70634f157021
@@ -39,9 +45,15 @@ spec:
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
       version: 1.26.1
+    - groupId: org.jvnet.hudson.plugins
+      artifactId: favorite
+      version: 2.3.2
     - groupId: com.coravy.hudson.plugins.github
       artifactId: github
       version: 1.29.3
+    - groupId: org.jenkins-ci.plugins
+      artifactId: github-api
+      version: '1.92'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
       version: 2.4.0
@@ -49,8 +61,14 @@ spec:
       artifactId: htmlpublisher
       version: '1.17'
     - groupId: org.jenkins-ci.plugins
+      artifactId: jackson2-api
+      version: 2.9.7.0-beta
+    - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.21'
+    - groupId: org.jenkins-ci.plugins
+      artifactId: matrix-project
+      version: '1.13'
     - groupId: org.jenkins-ci.plugins
       artifactId: mercurial
       version: '2.4'
@@ -60,6 +78,24 @@ spec:
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-aggregator
       version: '2.6'
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-api
+      version: 2.30-beta-1
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-cps
+      version: 2.58-beta-1
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-cps-global-lib
+      version: '2.12'
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-job
+      version: 2.26-beta-1
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-scm-step
+      version: '2.7'
+    - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-support
+      version: 2.21-beta-1
     - groupId: org.jenkins-ci.plugins
       artifactId: metrics
       version: 4.0.2.2
@@ -79,6 +115,12 @@ spec:
       artifactId: script-security
       version: '1.46'
     - groupId: org.jenkins-ci.plugins
+      artifactId: sse-gateway
+      version: '1.16'
+    - groupId: org.jenkins-ci.plugins
+      artifactId: structs
+      version: '1.17'
+    - groupId: org.jenkins-ci.plugins
       artifactId: docker-commons
       version: '1.13'
     - groupId: org.jenkins-ci.plugins
@@ -87,6 +129,15 @@ spec:
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
       version: 3.0.2
+    - groupId: org.jenkins-ci.ui
+      artifactId: ace-editor
+      version: '1.1'
+    - groupId: org.jenkins-ci.ui
+      artifactId: handlebars
+      version: 1.1.1
+    - groupId: org.jenkins-ci.ui
+      artifactId: momentjs
+      version: 1.1.1
   environments:
     - name: docker-cloud
       plugins:
@@ -113,7 +164,7 @@ status:
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
-      version: 1.0.1
+      version: '1.1'
     - groupId: org.jenkins-ci.plugins
       artifactId: apache-httpcomponents-client-4-api
       version: 4.5.5-3.0
@@ -194,7 +245,7 @@ status:
       version: '2.9'
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
-      version: 2.2.9
+      version: 2.2.12
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-folder
       version: '6.6'
@@ -218,7 +269,7 @@ status:
       version: '1.13'
     - groupId: org.jenkins-ci.plugins
       artifactId: docker-workflow
-      version: '1.14'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: durable-task
       version: '1.26'
@@ -230,7 +281,7 @@ status:
       version: 1.0-rc58.a9ecd200b39a
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
-      version: 2.3.1
+      version: 2.3.2
     - groupId: org.jenkins-ci.plugins
       artifactId: git
       version: 4.0.0-rc2892.70634f157021
@@ -245,13 +296,13 @@ status:
       version: 1.29.3
     - groupId: org.jenkins-ci.plugins
       artifactId: github-api
-      version: '1.90'
+      version: '1.92'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
       version: 2.4.0
     - groupId: org.jenkins-ci.ui
       artifactId: handlebars
-      version: '1.1'
+      version: 1.1.1
     - groupId: org.jenkins-ci.plugins
       artifactId: handy-uri-templates-2-api
       version: 2.1.6-1.0
@@ -263,7 +314,7 @@ status:
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.8.11.3
+      version: 2.9.7.0-beta
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
       version: '1.1'
@@ -290,7 +341,7 @@ status:
       version: '1.21'
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
-      version: '1.12'
+      version: '1.13'
     - groupId: org.jenkins-ci.plugins
       artifactId: mercurial
       version: '2.4'
@@ -299,7 +350,7 @@ status:
       version: 4.0.2.2
     - groupId: org.jenkins-ci.ui
       artifactId: momentjs
-      version: '1.1'
+      version: 1.1.1
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-build-step
       version: '2.7'
@@ -350,7 +401,7 @@ status:
       version: '1.46'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
-      version: '1.15'
+      version: '1.16'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-agent
       version: '1.17'
@@ -359,7 +410,7 @@ status:
       version: '1.14'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
-      version: '1.15'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
       version: '2.5'
@@ -371,34 +422,34 @@ status:
       version: '2.6'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
-      version: '2.29'
+      version: 2.30-beta-1
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-basic-steps
       version: '2.11'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.56'
+      version: 2.58-beta-1
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.11'
+      version: '2.12'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
       version: '2.22'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
-      version: '2.25'
+      version: 2.26-beta-1
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-multibranch
       version: '2.20'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-scm-step
-      version: '2.6'
+      version: '2.7'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-step-api
       version: '2.16'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
-      version: '2.20'
+      version: 2.21-beta-1
   environments:
     - name: docker-cloud
       plugins:
