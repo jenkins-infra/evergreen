@@ -2,3 +2,4 @@
 build/
 update-center.json
 shunit2
+.vscode/
