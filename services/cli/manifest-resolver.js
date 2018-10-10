@@ -85,8 +85,15 @@ class ManifestResolver {
             plugin.optional = false;
           }
 
+          let ok;
+          try {
+            ok = compareVersions(needed[artifactId].version, plugin.version) == 1;
+          } catch (x) {
+            logger.warn(`Cannot compare ${artifactId}:${needed[artifactId].version} to ${plugin.version}: ${x}`);
+            ok = true;
+          }
           // The plugin version requested is lower than one we already have.
-          if (compareVersions(needed[artifactId].version, plugin.version) == 1) {
+          if (ok) {
             if (!plugin.optional) {
               /*
               * If version of the plugin which is already present is considered
@@ -204,6 +211,7 @@ class ManifestResolver {
             return false;
           }).forEach((dep) => {
             envNeeds[dep] = deps[dep];
+            // TODO this is printing bogus messages like: The docker-cloud environment also needs docker-plugin
             logger.info(`The ${environment} environment also needs ${dep}`);
           });
           this.environmentNeeded[environment] = envNeeds;

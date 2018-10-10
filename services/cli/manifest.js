@@ -38,6 +38,10 @@ class Manifest {
     return this.data.spec.plugins;
   }
 
+  getActualPlugins() {
+    return this.data.status.plugins;
+  }
+
   getCore() {
     return this.data.spec.core;
   }

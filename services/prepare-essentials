@@ -13,15 +13,22 @@ logger.level = process.env.LOG_LEVEL || 'info';
 
 yargs.command('propose-updates',
   'Fetch the latest Update Center and propose updates',
-  () => {},
+  {uc: {}},
   (argv) => {
-    const uc = UpdateCenter.fromFile('./update-center.json')
+    const uc = UpdateCenter.fromFile(argv.uc)
     const manifest = Manifest.loadFile();
-    manifest.getPlugins().forEach((plugin) => {
+    manifest.getActualPlugins().forEach((plugin) => {
       const updated = uc.plugins[plugin.artifactId]
-      if ((!plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/)) &&
-        (compareVersions(updated.version, plugin.version) == 1)) {
-        logger.info(`The update center has a newer ${plugin.artifactId}: ${updated.version}`);
+      if (updated == null) {
+        logger.warn(`No such plugin ${plugin.artifactId}`);
+      } else if (!plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/)) {
+        try {
+          if (compareVersions(updated.version, plugin.version) == 1) {
+            logger.info(`The update center has a newer ${plugin.artifactId}: ${updated.version}`);
+          }
+        } catch (x) {
+          logger.warn(`Could not compare ${plugin.artifactId}:${plugin.version} to ${updated.version}: ${x}`);
+        }
       }
     });
   }
