@@ -67,6 +67,10 @@ debug-run: migrate store-commit
 
 debug-db:
 	$(COMPOSE) run --rm db psql -h db -U postgres -d evergreen_development
+
+debug-test-db:
+	$(COMPOSE) run --rm db psql -h db -U postgres -d evergreen_test
+
 ##############################################################
 ##
 
