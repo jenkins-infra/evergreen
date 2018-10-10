@@ -48,6 +48,7 @@ class Sentry {
         uuid: data.uuid,
         source: data.log,
         flavor: data.flavor,
+        updateLevel: data.updateLevel
       },
     };
 
