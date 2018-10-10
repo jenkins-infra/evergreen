@@ -120,13 +120,13 @@ describe('versions/updates interaction acceptance tests', () => {
           return request(payload)
             /* Making the assumption in tests that a legit update is -1 */
             .then(r => expect(r.meta.level).toEqual(taintedLevel - 1))
-            .then ( () => {
+            .then(() => {
               // let's check that a subsequent request with the rolled back level does not yield the tainted one
+              // (we're now expecting an HTTP-304)
               payload.qs.level = taintedLevel - 1;
+              logger.debug(`Testing second case with ${JSON.stringify(payload)}`);
               return request(payload);
-            }).then ( r => {
-              expect(r.meta.level).toEqual(taintedLevel - 1);
-            });
+            }).catch(err => expect(err.statusCode).toBe(304));
         });
       });
 
