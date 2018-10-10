@@ -11,6 +11,7 @@ import * as logger from 'winston'
 import path from 'path';
 
 import Storage from './storage';
+import Update from './update';
 
 export interface ErrorTelemetryOptions {
   flavor?: string,
@@ -18,13 +19,15 @@ export interface ErrorTelemetryOptions {
 
 export default class ErrorTelemetry {
   protected readonly app : any;
+  protected readonly update : Update;
   protected readonly options : ErrorTelemetryOptions;
 
   public uuid : string;
   public token : string;
 
-  constructor(app, options) {
+  constructor(app, update, options) {
     this.app = app;
+    this.update = update;
     this.options = options;
   }
 
@@ -45,6 +48,7 @@ export default class ErrorTelemetry {
       log: logDataObject,
       uuid: this.uuid,
       flavor: this.options.flavor,
+      updateLevel: this.update.getCurrentLevel()
     };
 
     return api.create(payload)

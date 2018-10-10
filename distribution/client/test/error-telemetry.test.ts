@@ -15,13 +15,13 @@ describe('Error Telemetry Logging', () => {
 
   describe('authenticate()', () => {
     it('should store values', () => {
-      const telemetry = new ErrorTelemetry(null, null).authenticate('you-you-i-Dee', 'toe-ken-that-guy');
+      const telemetry = new ErrorTelemetry(null, null, null).authenticate('you-you-i-Dee', 'toe-ken-that-guy');
       assert.equal(telemetry.uuid, 'you-you-i-Dee');
     });
   });
 
   describe('setup() call', () => {
-    const errorTelemetryService = new ErrorTelemetry(null, null);
+    const errorTelemetryService = new ErrorTelemetry(null, null, null);
 
     let logsDir = '/evergreen/jenkins/war/logs';
     let logFile = path.join(logsDir, 'evergreen.log.0');
