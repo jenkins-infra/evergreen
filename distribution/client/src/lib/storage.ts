@@ -77,6 +77,9 @@ export default class Storage {
     const pluginPath = this.pluginsDirectory();
     const retArray = [];
     plugins.forEach((plugin) => {
+      retArray.push(fs.rmdir(`${pluginPath}/${plugin}`, () => {
+        logger.info(`${pluginPath}/${plugin} was removed`);
+      }));
       retArray.push(fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
         logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
         UI.publish(`Deleted ${plugin}.hpi`);
