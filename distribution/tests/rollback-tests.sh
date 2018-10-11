@@ -46,7 +46,7 @@ test_rollback() {
   wait_for_jenkins
 
   # FIXME: fixed sleep time is crappy
-  sleep 300
+  sleep 600
   assertEquals "Should be UL 2" 2 "$correctUL"
 
   # let's now check the upload and upgrade attempt to borked UL3 *actually* happened
