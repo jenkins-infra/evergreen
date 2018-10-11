@@ -104,7 +104,7 @@ describe('versions/updates interaction acceptance tests', () => {
           });
         });
 
-        it('should not receive the tainted update level', () => {
+        it('should not receive the tainted update level', async () => {
           const taintedLevel = this.response.meta.level;
           expect(taintedLevel).toEqual(this.update.id);
 
@@ -116,17 +116,25 @@ describe('versions/updates interaction acceptance tests', () => {
             },
             json: true
           };
+
           logger.error(`Tainted level is ${taintedLevel}`);
-          return request(payload)
-            /* Making the assumption in tests that a legit update is -1 */
-            .then(r => expect(r.meta.level).toEqual(taintedLevel - 1))
-            .then(() => {
-              // let's check that a subsequent request with the rolled back level does not yield the tainted one
-              // (we're now expecting an HTTP-304)
-              payload.qs.level = taintedLevel - 1;
-              logger.debug(`Testing second case with ${JSON.stringify(payload)}`);
-              return request(payload);
-            }).catch(err => expect(err.statusCode).toBe(304));
+          const result1 = await request(payload);
+
+          /* Making the assumption in tests that a legit update is -1 */
+          expect(result1.meta.level).toEqual(taintedLevel - 1);
+
+          try {
+            // let's check that a subsequent request answers with the rolled back level, and does not yield the tainted one
+            // (we're now expecting an HTTP-304)
+            payload.qs.level = taintedLevel - 1;
+            logger.debug(`Testing second case with ${JSON.stringify(payload)}`);
+            await request(payload);
+
+            expect(false).toBe(true); // must not reach this line, the previous line should throw
+
+          } catch (err) {
+            expect(err.statusCode).toBe(304);
+          }
         });
       });
 
