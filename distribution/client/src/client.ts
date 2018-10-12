@@ -41,8 +41,8 @@ export default class Client {
     this.app = feathers();
     this.reg = new Registration(this.app);
     this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
-    this.update = new Update(this.app, { healthChecker: this.healthChecker }), { status: this.status };
     this.status = new Status(this.app, { flavor: process.env.FLAVOR });
+    this.update = new Update(this.app, { healthChecker: this.healthChecker, status: this.status });
     this.errorTelemetry = new ErrorTelemetry(this.app, this.update, { flavor: process.env.FLAVOR });
     this.updating = false;
     // This should be overridden on bootstrap
