@@ -187,18 +187,20 @@ export default class Update {
      * how to report that borked case in a clear way
   */
   restartJenkins() {
-    Supervisord.restartProcess('jenkins');
+
+    const jenkinsIsRestarting = Supervisord.restartProcess('jenkins');
 
     const messageWhileRestarting = 'Jenkins is being restarted, health checking!';
     UI.publish(messageWhileRestarting);
     logger.info(messageWhileRestarting);
 
-    return this.healthChecker.check()
-      .then( healthState => {
+    return jenkinsIsRestarting
+      .then(() => this.healthChecker.check())
+      .then(() => {
         logger.info('Jenkins healthcheck after restart succeeded! Yey.');
         return true;
 
-      }).catch( (error) => { // first catch, try rolling back
+      }).catch((error) => { // first catch, try rolling back
 
         const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`;
         logger.warn(errorMessage);
