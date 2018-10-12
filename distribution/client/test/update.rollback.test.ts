@@ -114,6 +114,7 @@ describe('The update module', () => {
       expect(update.taintUpdateLevel).toHaveBeenCalled();
       expect(update.query).toHaveBeenCalled();
       expect(update.status.reportVersions).toHaveBeenCalled();
+      expect(Supervisord.restartProcess).toHaveBeenCalled();
       expect(update.getCurrentLevel()).toBe(1);
 
     });
