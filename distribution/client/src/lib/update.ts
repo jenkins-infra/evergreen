@@ -15,6 +15,7 @@ import Storage       from './storage';
 import Supervisord   from './supervisord';
 import UI            from './ui';
 import Snapshotter   from './snapshotter';
+import Status        from './status';
 
 export interface FileOptions {
   encoding?: string,
@@ -27,6 +28,7 @@ export default class Update {
   protected readonly fileOptions : FileOptions;
   protected readonly options : any;
   protected readonly healthChecker : HealthChecker;
+  protected readonly status : Status;
 
   public uuid : string;
   public token : string;
@@ -48,6 +50,8 @@ export default class Update {
     } else {
       this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
     }
+
+    this.status = this.options.status;
   }
 
   authenticate(uuid, token) {
@@ -244,8 +248,10 @@ export default class Update {
   revertToPreviousUpdateLevel() {
     this.snapshotter.revertToLevelBefore(this.getCurrentLevel()); // TODO test this
 
-    return this.taintUpdateLevel()
+    return this.status.reportVersions() // critical so that the subsequent query correctly computes the diff
       .then( () => {
+        return this.taintUpdateLevel();
+      }).then( () => {
         logger.info('Immediately Querying a new update level to go to (could be a previous one, if no new is available)')
         return this.query();
 

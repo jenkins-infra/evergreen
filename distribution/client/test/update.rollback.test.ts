@@ -1,4 +1,3 @@
-jest.mock('../src/lib/supervisord');
 
 import feathers      from '@feathersjs/feathers';
 import mkdirp        from 'mkdirp';
@@ -6,6 +5,10 @@ import tmp           from 'tmp';
 import Update        from '../src/lib/update';
 import HealthChecker from '../src/lib/healthchecker';
 import Storage       from '../src/lib/storage';
+import Status        from '../src/lib/status';
+import Supervisord   from '../src/lib/supervisord';
+
+jest.mock('../src/lib/supervisord');
 
 describe('The update module', () => {
   let app = null;
@@ -24,6 +27,14 @@ describe('The update module', () => {
       return Promise.resolve({ message: 'fake' });
     });
     update.taintUpdateLevel = jest.fn(() => {
+      return Promise.resolve(true);
+    });
+    update.status = new Status(app);
+    update.status.reportVersions = jest.fn(() => {
+      return Promise.resolve(true);
+    });
+
+    Supervisord.restartProcess = jest.fn(() => {
       return Promise.resolve(true);
     });
   });
@@ -102,6 +113,7 @@ describe('The update module', () => {
       // THEN we get an automated revert
       expect(update.taintUpdateLevel).toHaveBeenCalled();
       expect(update.query).toHaveBeenCalled();
+      expect(update.status.reportVersions).toHaveBeenCalled();
       expect(update.getCurrentLevel()).toBe(1);
 
     });
