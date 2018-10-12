@@ -76,6 +76,23 @@ export default class Supervisord {
     if (await this.isProcessRunning(name)) {
       await this.stopProcess(name);
     }
-    return this.startProcess(name);
+
+    // During testing, it seemed like the restart call done to Supervisord could take some time
+    // for Jenkins to actually start restarting.
+    // This was causing issues, because then the healthcheck done after the restart would actually
+    // happen on the *current* version of Jenkins, running the current UL, and not the one we are
+    // about to restart "on".
+    // So we give a few seconds to actually wait for Jenkins to initiate restart so that the following
+    // healthchecks or anything else happen on Jenkins *after* restart, and not somehow during or /just before/ it.
+    return this.startProcess(name)
+      .then(() => {
+        logger.info('Waiting a few seconds while Jenkins restart is being initiated before continuing...')
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(true);
+          }, 5000);
+        });
+      });
+
   }
 }
