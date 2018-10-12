@@ -79,7 +79,11 @@ export default class Update {
     return this.app.service('update/tainted').create({
       uuid: this.uuid,
       level: toBeTaintedLevel
-    }, {});
+    }, {})
+    .catch( (e) => {
+      logger.error('Tainting went wrong!', e);
+      throw e;
+    });
   }
   /*
    * Apply the updates provided by the given Update Manifest.
@@ -208,7 +212,7 @@ export default class Update {
 
         return this.revertToPreviousUpdateLevel(); // FIXME: async issue!
 
-      }).catch(() => { // second time wrong, stop trying and just holler for help
+      }).catch((error) => { // second time wrong, stop trying and just holler for help
 
         // Quick notice sketch, but I do think we need a very complete and informative message
         const failedToRollbackMessage =
@@ -218,7 +222,7 @@ export default class Update {
           'Do not shutdown your instance as we have been notified of this failure ' +
           'and are trying to understand what went wrong to push a new update that ' +
           'will fix things.';
-        logger.error(failedToRollbackMessage);
+        logger.error(failedToRollbackMessage, error);
         UI.publish(failedToRollbackMessage);
 
         // Not throwing an Error here as we want the client to keep running and ready
@@ -242,13 +246,16 @@ export default class Update {
 
     return this.taintUpdateLevel()
       .then( () => {
-
+        logger.info('Immediately Querying a new update level to go to (could be a previous one, if no new is available)')
         return this.query();
 
       }).then(updates => {
-
+        logger.info(`Updating to the following received update: ${JSON.stringify(updates)}`);
         return this.applyUpdates(updates, true);
 
+      }).catch( e => {
+        logger.error('Something went wrong during revertToPreviousUpdateLevel! ', e);
+        throw e;
       });
 
   }
