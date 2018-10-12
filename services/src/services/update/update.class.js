@@ -25,27 +25,35 @@ class Update extends FeathersSequelize.Service {
     this.remove = undefined;
   }
 
+  isCurrentLevelPerInstanceTainted(id, level) {
+    const Sequelize = this.app.get('sequelizeClient');
+
+    return Sequelize.query(
+      `SELECT tainteds."updateId"
+FROM tainteds
+WHERE tainteds.uuid = ${Sequelize.escape(id)} AND
+      tainteds."updateId" = ${Sequelize.escape(level)}`,
+      { type: Sequelize.QueryTypes.SELECT})
+
+      .then(results => {
+        const tainted = results.length > 0;
+        logger.silly(`Is (${id}, ${level}) tainted? => ${tainted} (results=${JSON.stringify(results)})`);
+        return tainted;
+      });
+  }
+
   /*
-   * Return the update level to serve to the requesting instance for the given parameters
+   * Return the update level to serve to the requesting instance for the given parameters.
    *
    * The logic for finding the right update level (called UL below) is the following:
-   * 1) if no current UL is provided, the latest non-tainted available update level will be served.
-   *    E.g. that is why a fresh instance (at special UL0) will actually directly jump to, say, UL-174,
-   *    instead of going there one by one :-). (would be a nice UX, right? YOU HAD TO BE THERE BEFORE, YOUR FAULT!)
    *
-   * 2) If an UL is provided, then we will serve the next non-tainted one (e.g. if the current instance
-   *    is running UL-50, it will be told to update to UL-51, if UL-51 is not tainted).
+   * 1) if the provided/current UL is untainted, then we look for the next UL available.
+   * This means one that is the lowest > currentUL.
    *
-   * What does 'tainted' mean? A tainted UL is one that is considered broken and to be causing issues to
-   * instance(s). Hence, it will always be ignored when looking for candidate ULs.
+   * 2) if the provided/current UL is tainted, *then we are triggering a rollback*.
+   * This means we look for the highest UL that is < currentUL.
    *
-   * There are two ways by which an UL can be _tainted_:
-   *
-   * 1) globally tainted: cf. the tainted boolean column of the `updates` table
-   *
-   * 2) per-instance tainted: cf. the `tainteds` table.
-   *    (the main use case for this is to allow a single instance to tell the backend that a given UL made
-   *    it crash. hence)
+   * 3) if *no* UL is provided, we jump directly to the latest UL available.
    */
   async get(id, params) {
 
@@ -53,25 +61,20 @@ class Update extends FeathersSequelize.Service {
     const instance = await this.app.service('status').get(id);
     let level = params.query.level;
 
-    // So we always look for all the available ULs that are > currentUL.
-    //
-    // * if there is a level, we want the very next one => sort by ascending order (orderbyClause=1),
-    //    and take the first one ($limit: 1).
-    //    E.g we are on UL50, and latest is UL54 => this will yield [UL51,UL52,UL53,UL54].
-    //    Taking the the first in ascending order will select UL51. (no UL is tainted in this example)
-    //
-    // * if there is no level, we simply consider the current to be UL0, so available ULs will yield **all**
-    //   ULs from the DB. Say [UL1,UL2,...,UL51,UL52,UL53,UL54] to take the same example as above.
-    //   By sorting by descending order (orderbyClause=-1), and choosing the first one ($limit: 1), we'll select UL54.
-    let orderByClause = 1;
+    const Sequelize = this.app.get('sequelizeClient');
+    const Op = Sequelize.Op;
+    let gtOrLt = Op.gt;
+    let orderByClause = 1; // ascending by default to take the next one available, not latest
     if (!level) {
       level = 0;
+      orderByClause = -1; // take latest level
+      gtOrLt = Op.gt;
+    } else if (await this.isCurrentLevelPerInstanceTainted(id, level)) {
       orderByClause = -1;
+      gtOrLt = Op.lt;
     }
 
-    const Sequelize = this.app.get('sequelizeClient');
-
-    const records = await this.find({
+    const query = {
       query: {
         $limit: 1,
         $sort: {
@@ -80,17 +83,17 @@ class Update extends FeathersSequelize.Service {
         channel: channel,
         tainted: false,
         id: {
-          $gt: level,
+          [gtOrLt]: level,
           $notIn: Sequelize.literal(`
-(SELECT "tainteds"."updateId" FROM "tainteds"
-  WHERE
-  ("tainteds"."uuid" = ${Sequelize.escape(id)}
-    AND "tainteds"."updateId" = ${Sequelize.escape(level)}
-  )
+(SELECT "tainteds"."updateId"
+  FROM "tainteds"
+  WHERE "tainteds"."uuid" = ${Sequelize.escape(id)}
 )`),
         },
       },
-    });
+    };
+
+    const records = await this.find(query);
 
     /*
      * If after all that we still have nothing, or we just got the same
