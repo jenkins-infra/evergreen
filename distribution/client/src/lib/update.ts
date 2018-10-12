@@ -51,11 +51,11 @@ export default class Update {
       this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
     }
 
-    if(!this.options.status) {
-      throw new Error('Missing required status attribute');
+    if (this.options.status) {
+      this.status = this.options.status;
+    } else {
+      this.status = this.status = new Status(this.app, { flavor: process.env.FLAVOR });
     }
-    this.status = this.options.status;
-
   }
 
   authenticate(uuid, token) {
