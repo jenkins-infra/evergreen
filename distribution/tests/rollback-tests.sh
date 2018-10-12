@@ -37,7 +37,7 @@ test_rollback() {
   assertEquals "Should be UL 2" 2 "$correctUL"
 
   # upload borked update level to backend
-  sleep 5
+  sleep 10
 
   echo "UPLOAD BORKED UL, FFS"
   upload_update_level "./tests/rollback/2-ingest-borked.json"
