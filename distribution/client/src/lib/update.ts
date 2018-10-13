@@ -118,9 +118,7 @@ export default class Update {
       // Setting this to a timestamp to make a timeout in the future
       this.updateInProgress = new Date();
     }
-    const applyUpdatesMessage = 'Starting to apply updates';
-    logger.info(applyUpdatesMessage)
-    UI.publish(applyUpdatesMessage);
+    UI.publish('Starting to apply updates', { log: 'info' });
 
     const tasks = [];
 
@@ -202,9 +200,7 @@ export default class Update {
 
     const jenkinsIsRestarting = Supervisord.restartProcess('jenkins');
 
-    const messageWhileRestarting = 'Jenkins is being restarted, health checking!';
-    UI.publish(messageWhileRestarting);
-    logger.info(messageWhileRestarting);
+    UI.publish('Jenkins is being restarted, health checking!', { log: 'info' });
 
     return jenkinsIsRestarting
       .then(() => this.healthChecker.check())
@@ -214,9 +210,7 @@ export default class Update {
 
       }).catch((error) => { // first catch, try rolling back
 
-        const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`;
-        logger.warn(errorMessage);
-        UI.publish(errorMessage);
+        UI.publish(`Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`, {log: 'warn'});
 
         return this.revertToPreviousUpdateLevel(); // FIXME: async issue!
 
@@ -230,8 +224,7 @@ export default class Update {
           'Do not shutdown your instance as we have been notified of this failure ' +
           'and are trying to understand what went wrong to push a new update that ' +
           'will fix things.';
-        logger.error(failedToRollbackMessage, error);
-        UI.publish(failedToRollbackMessage);
+        UI.publish(failedToRollbackMessage, { log: 'error' });
 
         // Not throwing an Error here as we want the client to keep running and ready
         // since the next available UL _might_ fix the issue

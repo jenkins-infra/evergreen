@@ -97,9 +97,7 @@ export default class Client {
       UI.publish('Jenkins appears to be online', { log: 'info' });
       Storage.removeBootingFlag();
     }).catch((error) => {
-      const errorMessage = 'Jenkins appears to be in an unhealthy state (startup auto-healthcheck)!'
-      logger.error(errorMessage);
-      UI.publish(errorMessage, { log: 'error' });
+      UI.publish('Jenkins appears to be in an unhealthy state (startup auto-healthcheck)!', { log: 'error' });
     });
 
     cron.runDaily('post-status', () => {
