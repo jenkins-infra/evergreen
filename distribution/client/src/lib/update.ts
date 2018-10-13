@@ -158,21 +158,16 @@ export default class Update {
     logger.info(`Triggering update with tasks: ${tasks}`);
 
     return Promise.all(tasks).then(() => {
-
       UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       this.saveUpdateSync(updates);
       UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
 
     }).then( () => {
-
       return this.restartJenkins();
-
     }).finally( () => {
-
       this.updateInProgress = null;
       return true;
-
     });
   }
 
@@ -212,7 +207,7 @@ export default class Update {
 
         UI.publish(`Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`, {log: 'warn'});
 
-        return this.revertToPreviousUpdateLevel(); // FIXME: async issue!
+        return this.revertToPreviousUpdateLevel();
 
       }).catch((error) => { // second time wrong, stop trying and just holler for help
 
