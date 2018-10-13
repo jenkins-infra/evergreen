@@ -54,7 +54,7 @@ export default class Update {
     if (this.options.status) {
       this.status = this.options.status;
     } else {
-      this.status = this.status = new Status(this.app, { flavor: process.env.FLAVOR });
+      this.status = new Status(this.app, { flavor: process.env.FLAVOR });
     }
   }
 
