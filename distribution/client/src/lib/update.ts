@@ -218,12 +218,11 @@ export default class Update {
 
         // Quick notice sketch, but I do think we need a very complete and informative message
         const failedToRollbackMessage =
-          'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
-          'upgrade, but even after the automated rollback we were unable to bring ' +
-          'to life. Please report this issue to the Jenkins Evergreen team. ' +
-          'Do not shutdown your instance as we have been notified of this failure ' +
-          'and are trying to understand what went wrong to push a new update that ' +
-          'will fix things.';
+          'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to upgrade, but even after the automated rollback we ' +
+          'were unable to bring it back to life. Please report this issue to the Jenkins Evergreen issue tracker at ' +
+          'https://github.com/jenkins-infra/evergreen/issues. ' +
+          'Do not shutdown your instance as we have been notified of this failure and are trying to understand what went wrong to ' +
+          'push a new update to fix the problem.';
         UI.publish(failedToRollbackMessage, { log: 'error' });
 
         // Not throwing an Error here as we want the client to keep running and ready
