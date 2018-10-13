@@ -149,7 +149,7 @@ export default class Update {
     }
 
     if (tasks.length == 0) {
-      logger.warn('No actionable tasks');
+      logger.warn('No actionable tasks during upgrade process');
       this.updateInProgress = null;
       this.saveUpdateSync(updates);
       return true;
