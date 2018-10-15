@@ -15,8 +15,10 @@ all: check container
 
 lint: shunit2
 	$(ROOT_DIR)/tools/yamllint -s docker-compose*.yml
+	$(ROOT_DIR)/tools/yamllint -s ./tests/environments/*/docker-compose*.yml
 	$(ROOT_DIR)/tools/yamllint -s config/as-code/*.yaml
-	$(ROOT_DIR)/tools/shellcheck -x tests/tests.sh
+	$(ROOT_DIR)/tools/shellcheck -x tests/*.sh
+	$(ROOT_DIR)/tools/jsonlint --quiet ./tests/rollback/*.json
 	$(ROOT_DIR)/tools/shellcheck -x scripts/*.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
