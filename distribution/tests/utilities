@@ -35,6 +35,7 @@ cleanup () {
   done
   docker cp "$container_under_test":/evergreen/data/jenkins/var/logs/evergreen.log.0 $testRunDirectory/evergreen.log.0
   docker cp "$container_under_test":/evergreen/data/updates.auditlog $testRunDirectory/updates.auditlog
+  docker cp "$container_under_test":/evergreen/supervisord.log $testRunDirectory/supervisord.log
   echo "Done getting logs for $containers"
 
   echo -n "Cleaning up... "
