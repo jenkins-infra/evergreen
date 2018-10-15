@@ -104,6 +104,14 @@ wait_for_jenkins() {
   echo "Running containers (beware, ideally there should be none to avoid issues)"
   determine_container_name
 
+  if [[ -n $1 ]]; then
+    echo "Looking at docker logs since $1"
+    SINCE="--since=$1"
+  else
+    echo "Looking at docker logs from the beginning"
+    SINCE=""
+  fi
+
   # FIXME: have to wait pretty long because plugin installations
   # Possibly we'll want a special mode to accelerate testing, maybe by downloading plugins
   # from a local cache by overriding JENKINS_UC?
@@ -112,7 +120,7 @@ wait_for_jenkins() {
   while true
   do
     cur_attempts=$(( cur_attempts + 1 ))
-    if ( docker logs $container_under_test | grep "Jenkins is fully up and running" ); then
+    if ( docker logs $SINCE $container_under_test | grep "Jenkins is fully up and running" ); then
       info "Jenkins has started."
       break;
     elif (( $cur_attempts > $max_attempts )); then

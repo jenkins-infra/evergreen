@@ -37,17 +37,13 @@ test_rollback() {
   assertEquals "Should be UL 2" 2 "$correctUL"
 
   # upload borked update level to backend
-  sleep 10
-
-  echo "UPLOAD BORKED UL, FFS"
+  echo "UPLOADING BROKEN UPDATE LEVEL (MISSING CREDENTIALS PLUGIN)"
   upload_update_level "./tests/rollback/2-ingest-borked.json"
 
   # wait enough until upgrade happens, then rollback: check UL is the same as before
-  wait_for_jenkins
-
-  # FIXME: fixed sleep time is crappy
-  sleep 600
-  assertEquals "Should be UL 2" 2 "$correctUL"
+  now=$( date --iso-8601=seconds )
+  echo "Waiting for Jenkins to restart a first time to broken UL3, then back to UL2 (using logs --since=$now)"
+  wait_for_jenkins "$now"
 
   # let's now check the upload and upgrade attempt to borked UL3 *actually* happened
   # because if this didn't, then we'd still on UL2, but not testing there was a rollback somewhere
