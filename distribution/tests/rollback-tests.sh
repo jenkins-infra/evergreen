@@ -33,6 +33,11 @@ test_rollback() {
   assertEquals "Command should have succeeded" 0 "$?"
   assertEquals "Should be UL 2" 2 "$correctUL"
 
+  # FIXME: un-harcode the sleep below. We need to wait for the full startup from above, healthcheck included.
+  # what can happen here is that we'll reach the upload_update_level call below *before* the healthcheck finished
+  # which will make the new pushed update for UL3 to be ignored because an "update is already running" when calling Update.applyUpdates()
+  sleep 10
+
   # upload borked update level to backend
   echo "UPLOADING BROKEN UPDATE LEVEL (MISSING CREDENTIALS PLUGIN)"
   upload_update_level "./tests/rollback/2-ingest-borked.json"
