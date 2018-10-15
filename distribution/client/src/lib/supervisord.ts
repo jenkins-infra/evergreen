@@ -50,7 +50,7 @@ export default class Supervisord {
   static startProcess(name) {
     logger.info(`[supervisord] Starting ${name} process`);
     return new Promise((resolve, reject) => {
-      client.methodCall('supervisor.startProcess', [name], (e, value) => {
+      client.methodCall('supervisor.startProcess', [name,true], (e, value) => {
         if (e) {
           return reject(e);
         }
@@ -62,7 +62,7 @@ export default class Supervisord {
   static stopProcess(name) {
     logger.info(`[supervisord] Stopping ${name} process`);
     return new Promise((resolve, reject) => {
-      client.methodCall('supervisor.stopProcess', [name], (e, value) => {
+      client.methodCall('supervisor.stopProcess', [name,true], (e, value) => {
         if (e) {
           return reject(e);
         }
@@ -77,22 +77,6 @@ export default class Supervisord {
       await this.stopProcess(name);
     }
 
-    // During testing, it seemed like the restart call done to Supervisord could take some time
-    // for Jenkins to actually start restarting.
-    // This was causing issues, because then the healthcheck done after the restart would actually
-    // happen on the *current* version of Jenkins, running the current UL, and not the one we are
-    // about to restart "on".
-    // So we give a few seconds to actually wait for Jenkins to initiate restart so that the following
-    // healthchecks or anything else happen on Jenkins *after* restart, and not somehow during or /just before/ it.
-    return this.startProcess(name)
-      .then(() => {
-        logger.info('Waiting a few seconds while Jenkins restart is being initiated before continuing...')
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(true);
-          }, 5000);
-        });
-      });
-
+    return this.startProcess(name);
   }
 }
