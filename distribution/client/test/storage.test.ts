@@ -57,12 +57,15 @@ describe('The storage module', () => {
       mkdirp.sync(pluginPath);
       filenames.forEach((filename) => {
         fs.mkdirSync(`${pluginPath}/${filename}`)
+        h.touchFile(`${pluginPath}/${filename}/testfile`); // make sure we remove a directory with files
         h.touchFile(`${pluginPath}/${filename}.hpi`);
         expect(h.checkFileExists(`${pluginPath}/${filename}`)).resolves.toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).resolves.toBeTruthy();
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
       });
       await Storage.removePlugins(filenames);
       filenames.forEach((filename) => {
+        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).resolves.toBeFalsy();
         expect(h.checkFileExists(`${pluginPath}/${filename}`)).resolves.toBeFalsy();
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
       });
