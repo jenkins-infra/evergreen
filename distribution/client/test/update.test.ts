@@ -1,4 +1,3 @@
-jest.mock('../src/lib/supervisord');
 jest.mock('../src/lib/downloader');
 
 const fs            = require('fs');
@@ -17,6 +16,7 @@ import Downloader from '../src/lib/downloader';
 describe('The update module', () => {
   let app = null;
   let update = null;
+  let restartCalled = false;
 
   beforeEach( () => {
     const evergreenHome = tmp.dirSync({unsafeCleanup: true}).name;
@@ -27,6 +27,14 @@ describe('The update module', () => {
     app = feathers();
     update = new Update(app);
     update.healthChecker = new HealthChecker('http://127.0.0.1:8080/', { delay: 50, retry: 5});
+    update.healthChecker.check = () => {
+      return Promise.resolve({ healthy:true, message: 'fake'});
+    };
+    restartCalled = false;
+    update.restartJenkins = () => {
+      restartCalled = true;
+      return Promise.resolve(true);
+    };
   });
 
   describe('authenticate()', () => {
@@ -75,7 +83,7 @@ describe('The update module', () => {
   });
 
   describe('applyUpdates()', () => {
-    let manifest = null;
+    let manifest : any = {};
     beforeEach(() => {
       update.updateInProgress = false;
       manifest = {
@@ -97,7 +105,8 @@ describe('The update module', () => {
 
     it('should not reject on no plugin updates', async () => {
       const response = await update.applyUpdates(manifest);
-      expect(response).toBeFalsy();
+      expect(response).toBe(true);
+
       expect(update.updateInProgress).toBeFalsy();
     });
 
@@ -129,7 +138,7 @@ describe('The update module', () => {
       manifest.plugins.deletes.forEach((filename) => {
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
       });
-      expect(Supervisord.restartProcess).toHaveBeenCalled();
+      expect(restartCalled).toBeTruthy();
     });
 
     it ('should execute updates if passed in with no deletes', async () => {
@@ -152,7 +161,7 @@ describe('The update module', () => {
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
       expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
-      expect(Supervisord.restartProcess).toHaveBeenCalled();
+      expect(restartCalled).toBeTruthy();
     });
 
     it('should execute both updates and deletes if both passed in', async () => {

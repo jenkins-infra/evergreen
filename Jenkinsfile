@@ -142,6 +142,17 @@ pipeline {
                       }
                   }
                 }
+                stage('Rollback testing') {
+                  agent { label 'linux' }
+                  steps {
+                      sh 'make -C distribution clean rollback-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: '**/build/tests-run*/**'
+                      }
+                  }
+                }
                 stage('AWS Cloud image (smokes)') {
                   agent { label 'linux' }
                   steps {

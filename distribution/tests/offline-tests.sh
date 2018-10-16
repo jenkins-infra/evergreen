@@ -4,16 +4,12 @@
 current_directory=$(dirname "$0")
 export PATH="$current_directory/../../tools:$PATH"
 
-JENKINS_HOME=to_override
-
 # shellcheck source=tests/utilities
 . "$current_directory/utilities"
 
 
 oneTimeSetUp() {
   setup_container_under_test
-  # shellcheck disable=SC2016
-  JENKINS_HOME="$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )"
 }
 
 # JENKINS-49864
@@ -35,7 +31,7 @@ test_not_root() {
 
   docker exec "$container_under_test" ps -o user= -o comm= | \
     grep -E 'jenkins|npm' | \
-    while read process_user
+    while read -r process_user
   do
     currentUser=$( echo "$process_user" | awk '{print $1}' )
     assertEquals "User for '$process_user' should be jenkins" "jenkins" "$currentUser"
@@ -70,7 +66,7 @@ test_jep_307() {
 test_INSECURE_SHOW_ADMIN_PASSWORD_can_be_unset() {
   # Avoid executing this for the base image
   if [ ! -z "${ENVIRONMENT}" ]; then
-    result=$( docker run --rm jenkins/evergreen:$ENVIRONMENT /evergreen/scripts/jenkins-evergreen.sh )
+    result=$( docker run --rm "jenkins/evergreen:$ENVIRONMENT" /evergreen/scripts/jenkins-evergreen.sh )
     # Expected to fail, but because war is missing. Admin password must have been generated,
     # and final expected error line is "Error: Unable to access jarfile /evergreen/jenkins/home/jenkins.war"
     assertNotEquals "Should have failed to start up (war is absent)" "0" "$?"

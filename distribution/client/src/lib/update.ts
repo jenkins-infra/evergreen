@@ -15,6 +15,7 @@ import Storage       from './storage';
 import Supervisord   from './supervisord';
 import UI            from './ui';
 import Snapshotter   from './snapshotter';
+import Status        from './status';
 
 export interface FileOptions {
   encoding?: string,
@@ -27,6 +28,7 @@ export default class Update {
   protected readonly fileOptions : FileOptions;
   protected readonly options : any;
   protected readonly healthChecker : HealthChecker;
+  protected readonly status : Status;
 
   public uuid : string;
   public token : string;
@@ -47,6 +49,12 @@ export default class Update {
       this.healthChecker = this.options.healthChecker;
     } else {
       this.healthChecker = new HealthChecker(process.env.JENKINS_URL || 'http://127.0.0.1:8080');
+    }
+
+    if (this.options.status) {
+      this.status = this.options.status;
+    } else {
+      this.status = new Status(this.app, { flavor: process.env.FLAVOR });
     }
   }
 
@@ -70,7 +78,7 @@ export default class Update {
     });
   }
 
-  async taintUpdateLevel(levelToTaint) {
+  async taintUpdateLevel(levelToTaint?: number) {
     let toBeTaintedLevel = levelToTaint;
     if (!toBeTaintedLevel) {
       toBeTaintedLevel = this.getCurrentLevel();
@@ -79,24 +87,43 @@ export default class Update {
     return this.app.service('update/tainted').create({
       uuid: this.uuid,
       level: toBeTaintedLevel
-    }, {});
+    }, {})
+    .catch( (e) => {
+      logger.error('Tainting went wrong!', e);
+      throw e;
+    });
   }
   /*
-   * Apply the updates provided by the given Update Manifest
-   *
+   * Apply the updates provided by the given Update Manifest.
+   * Rolls back automatically to the previous non tainted level if failing.
+   * (Note: the rollback may not end up on most of the time, that would mean going from say UL-0 to U)
+
+   1) UL10 gets globally tainted after an issue is identified (UL9 is not tainted)
+   2) Instance attempts updating from UL10 to UL11, and fails
+   3) update.query() to get the right updates => receives UL9...
+   4) config files changed from UL9 to UL10, Jenkins fails to start after rolling back.
+
    * @param  {Map} Update Manifest described in JEP-307
    * @return {Promise} Which resolves once updates have been applied
    * @return {boolean} False if there is already an update in progress
    */
-  async applyUpdates(updates) {
-    if (this.updateInProgress || (!updates)) {
+  async applyUpdates(updates, forceUpdate?: boolean) {
+    if (forceUpdate) {
+      logger.warn('Forced update (expected during a rollback)');
+      if(!this.updateInProgress) {
+        logger.warn('No value for updateInProgress during a forced update, that is unexpected, setting a new value!');
+        this.updateInProgress = new Date();
+      }
+    }
+    else if (this.updateInProgress || (!updates)) {
       logger.warn('applyUpdates request ignored: update already in progress!');
       return false;
+    } else {
+      // Setting this to a timestamp to make a timeout in the future
+      this.updateInProgress = new Date();
     }
+    UI.publish('Starting to apply updates', { log: 'info' });
 
-    UI.publish('Starting to apply updates');
-    // Setting this to a timestamp to make a timeout in the future
-    this.updateInProgress = new Date();
     const tasks = [];
 
     if ((updates.core) && (updates.core.url)) {
@@ -126,18 +153,23 @@ export default class Update {
     }
 
     if (tasks.length == 0) {
-      logger.debug('No actionable tasks');
+      logger.warn('No actionable tasks during upgrade process');
       this.updateInProgress = null;
       this.saveUpdateSync(updates);
-      return false;
+      return true;
     }
+
+    logger.info(`Triggering update with tasks: ${tasks}`);
 
     return Promise.all(tasks).then(() => {
       UI.publish('All downloads completed, snapshotting data before restart');
       this.snapshotter.snapshot(`UL${this.getCurrentLevel()}->UL${updates.meta.level} Snapshot after downloads completed, before Jenkins restart`);
       this.saveUpdateSync(updates);
       UI.publish('All downloads completed and snapshotting done, restarting Jenkins');
-      this.restartJenkins();
+
+    }).then( () => {
+      return this.restartJenkins();
+    }).finally( () => {
       this.updateInProgress = null;
       return true;
     });
@@ -163,57 +195,80 @@ export default class Update {
        while it's not been yet marked as tainted in the backend?
      * how to report that borked case in a clear way
   */
-  restartJenkins(rollingBack?: boolean) { // Add param to stop recursion?
-    Supervisord.restartProcess('jenkins');
+  restartJenkins() {
 
-    const messageWhileRestarting = 'Jenkins should now be online, health checking!';
-    UI.publish(messageWhileRestarting);
-    logger.info(messageWhileRestarting);
+    const jenkinsIsRestarting = Supervisord.restartProcess('jenkins');
+    UI.publish('Jenkins is being restarted, health checking!', { log: 'info' });
 
-    // FIXME: actually now I'm thinking throwing in HealthChecker might provide a more
-    // consistent promise usage UX here.
-    // checking healthState.health value is possibly a bit convoluted (?)
-    this.healthChecker.check()
-      .then( healthState => {
-        if (healthState.healthy) {
-          logger.info('Jenkins healthcheck after restart succeeded! Yey.');
-        } else {
+    return jenkinsIsRestarting
+      .then(() => this.healthChecker.check())
+      .then(() => {
+        logger.info('Jenkins healthcheck after restart succeeded! Yey.');
+        return true;
 
-          // if things are wrong twice, stop trying and just holler for help
-          if (rollingBack) {
+      }).catch((error) => { // first catch, try rolling back
 
-            // Quick notice sketch, but I do think we need a very complete and informative message
-            const failedToRollbackMessage =
-              'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to ' +
-              'upgrade, but even after the automated rollback we were unable to bring ' +
-              'to life. Please report this issue to the Jenkins Evergreen team. ' +
-              'Do not shutdown your instance as we have been notified of this failure ' +
-              'and are trying to understand what went wrong to push a new update that ' +
-              'will fix things.';
-            logger.error(failedToRollbackMessage);
-            UI.publish(failedToRollbackMessage);
+        UI.publish(`Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`, {log: 'warn'});
+        return this.revertToPreviousUpdateLevel();
 
-            // Not throwing an Error here as we want the client to keep running and ready
-            // since the next available UL _might_ fix the issue
-          } else {
+      }).catch((error) => { // second time wrong, stop trying and just holler for help
 
-            const errorMessage = `Jenkins detected as unhealthy. Rolling back to previous update level (${healthState.message}).`;
-            UI.publish(errorMessage);
-            logger.warn(errorMessage);
+        // Quick notice sketch, but I do think we need a very complete and informative message
+        const failedToRollbackMessage =
+          'Ooh noes :-(. We are terribly sorry but it looks like Jenkins failed to upgrade, but even after the automated rollback we ' +
+          'were unable to bring it back to life. Please report this issue to the Jenkins Evergreen issue tracker at ' +
+          'https://github.com/jenkins-infra/evergreen/issues. ' +
+          'Do not shutdown your instance as we have been notified of this failure and are trying to understand what went wrong to ' +
+          'push a new update to fix the problem.';
+        UI.publish(failedToRollbackMessage, { log: 'error' });
 
-            this.snapshotter.revertToLevelBefore(this.getCurrentLevel());
-            this.revertToPreviousUpdateLevel();
-            this.restartJenkins(true);
-          }
-        }
+        // Not throwing an Error here as we want the client to keep running and ready
+        // since the next available UL _might_ fix the issue
+
+      }).finally(() => {
         Storage.removeBootingFlag();
-      }).catch((errors) => {
-        logger.warn(`TODO ${errors}`);
-      }); // TODO catch?
+        return true;
+      });
+
   }
 
+  /*
+   * 1) Taint current level
+   * 2) query and trigger a new update
+   *    (failing UL has been marked tainted for the instance, so *should* be served the previous UL)
+   *
+   * FIXME: the served UL when rolling back could (rarely, but still) be different from the actual previous one before failed upgrade.
+   * Example:
+   *
+   * * an instance is on UL50
+   * * for some reason, this UL is globally tainted after the fact
+   * * a new UL51 is pushed
+   * * the instance updates to UL51, but fails, so initiate a rollback
+   * * it will per-instance taint UL51, then asks for where to go
+   * * the server will tell the instance to go to UL49, not UL50. So technically, this could cause issues,
+   *   especially with the data snapshoting system and the associated restore...
+   * For now, we've ignored this issue, and granted this should almost never actually happen given host fast updates are pushed.
+   * But it's algorithmically and generally still _possible_.
+   */
   revertToPreviousUpdateLevel() {
-    logger.error(`[NOT IMPLEMENTED YET] Revert UL-${this.getCurrentLevel()} to previous Update Level`);
+    this.snapshotter.revertToLevelBefore(this.getCurrentLevel()); // TODO test this
+
+    return this.status.reportVersions() // critical so that the subsequent query correctly computes the diff
+      .then( () => {
+        return this.taintUpdateLevel();
+      }).then( () => {
+        logger.info('Immediately Querying a new update level to go to (could be a previous one, if no new is available)')
+        return this.query();
+
+      }).then(updates => {
+        logger.info(`Updating to the following received update: ${JSON.stringify(updates)}`);
+        return this.applyUpdates(updates, true);
+
+      }).catch( e => {
+        logger.error('Something went wrong during revertToPreviousUpdateLevel! ', e);
+        throw e;
+      });
+
   }
 
   getCurrentLevel() {
@@ -223,7 +278,7 @@ export default class Update {
       logger.silly('Currently at Update Level %d', level);
       return level;
     }
-    logger.warn('No manifest level found, returning UL 0 (manifest=${this.manifest})');
+    logger.warn(`No manifest level found, returning UL 0 (manifest=${this.manifest})`);
     return 0;
   }
 
@@ -247,7 +302,7 @@ export default class Update {
   recordUpdateLevel(manifest) {
     logger.debug('Storing Update Level for auditability');
     const level = this.getCurrentLevel();
-    const log = {timestamp: new Date(), updateLevel: level};
+    const log = {timestamp: new Date(), updateLevel: level, 'manifest': manifest};
     const logLine = JSON.stringify(log);
 
     fs.appendFileSync(this.auditLogPath(),

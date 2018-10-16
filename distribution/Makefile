@@ -15,8 +15,10 @@ all: check container
 
 lint: shunit2
 	$(ROOT_DIR)/tools/yamllint -s docker-compose*.yml
+	$(ROOT_DIR)/tools/yamllint -s ./tests/environments/*/docker-compose*.yml
 	$(ROOT_DIR)/tools/yamllint -s config/as-code/*.yaml
-	$(ROOT_DIR)/tools/shellcheck -x tests/tests.sh
+	$(ROOT_DIR)/tools/shellcheck -x tests/*.sh
+	$(ROOT_DIR)/tools/jsonlint --quiet ./tests/rollback/*.json
 	$(ROOT_DIR)/tools/shellcheck -x scripts/*.sh
 	$(MAKE) -C environments lint
 	$(MAKE) -C client lint
@@ -82,7 +84,11 @@ container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh creat
 	$(MAKE) -C ../services lint
 	$(MAKE) -C ../services dump generate-ingest
 
-container-check: docker-cloud-container-check aws-cloud-container-check
+container-check: docker-cloud-container-check aws-cloud-container-check rollback-check
+
+# Only checking it on docker-cloud.
+rollback-check: containers container-check-prereqs
+	ENVIRONMENT=docker-cloud ./tests/rollback-tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
 	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
