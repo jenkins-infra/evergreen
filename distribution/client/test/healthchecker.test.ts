@@ -64,52 +64,66 @@ describe('The healthchecker module', () => {
     it('should pass cases', async (done) => {
       // ugly hack to wait a bit for the server to start...
       setTimeout( async () => {
-        const healthChecker = new HealthChecker(`http://localhost:${port}`, {delay: 100, retry: 1});
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = true;
         serverOptions.metrics.deadlock = true;
         serverOptions.metrics.body = true;
-
-        let result = await healthChecker.check();
-        expect(result.healthy).toBe(true);
-        expect(result.message).not.toContain('wrong');
+        const healthChecker = new HealthChecker(`http://localhost:${port}`, {delay: 300, retry: 1});
+        expect(await healthChecker.check()).toBeTruthy();
 
         // broken /instance-identity page
         serverOptions.instanceIdentity = false;
-        result = await healthChecker.check();
-        expect(result.healthy).toBe(false);
+        try {
+          await healthChecker.check();
+          expect(true).toBeFalsy();
+        }
+        catch (e) {
+          // expected
+        }
 
         // issue: a plugin is failed
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = false;
-        result = await healthChecker.check();
-        expect(result.healthy).toBe(false);
-        expect(result.message).toContain('wrong');
+        try {
+          await healthChecker.check();
+          expect(true).toBeFalsy();
+        }
+        catch (e) {
+          // expected
+        }
 
         // issue: deadlock
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = true;
         serverOptions.metrics.deadlock = false;
-        result = await healthChecker.check();
-        expect(result.healthy).toBe(false);
-        expect(result.message).toContain('wrong');
+        try {
+          await healthChecker.check();
+          expect(true).toBeFalsy();
+        }
+        catch (e) {
+          // expected
+        }
 
         // issue: no body
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = true;
         serverOptions.metrics.deadlock = true;
         serverOptions.metrics.body = false;
-        result = await healthChecker.check();
-        expect(result.healthy).toBe(false);
-        expect(result.message).toContain('No body');
+        try {
+          await healthChecker.check();
+          expect(true).toBeFalsy();
+        }
+        catch (e) {
+          expect(e.toString()).toContain('No body');
+        }
 
         // back to all should work
         serverOptions.instanceIdentity = true;
         serverOptions.metrics.plugins = true;
         serverOptions.metrics.deadlock = true;
         serverOptions.metrics.body = true;
-        result = await healthChecker.check();
-        expect(result.healthy).toBe(true);
+        const result = await healthChecker.check();
+        expect(result).toBeTruthy();
 
         done();
       }, 1000);
@@ -120,7 +134,7 @@ describe('The healthchecker module', () => {
   // Code below handles the very simple embedded test http server code and cases
   // See serverOptions above for behavior "configuration" of this test server
   beforeEach( async (done) => {
-    port = 3000; // Math.floor(Math.random() * (65535 - 1024) + 1024);
+    port = Math.floor(Math.random() * (65535 - 1024) + 1024);
 
     let textReponse = 'Hello Node.js Server!';
     const requestHandler = (request, response) => {

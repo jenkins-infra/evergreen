@@ -19,6 +19,8 @@ oneTimeSetUp() {
   # shellcheck disable=SC2119
   upload_update_level
 
+  # (parameter for ingest file name *is* optional)
+  # shellcheck disable=SC2119
   wait_for_jenkins
   # shellcheck disable=SC2016
   JENKINS_HOME="$( docker exec "$container_under_test" bash -c 'echo $JENKINS_HOME' )"

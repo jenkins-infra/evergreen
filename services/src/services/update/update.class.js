@@ -25,151 +25,107 @@ class Update extends FeathersSequelize.Service {
     this.remove = undefined;
   }
 
-  /*
-   * Return the latest update level for the given parameters
-   *
-   * Typically will not be called with an `id`, and is directly
-   */
-  async get(id, params) {
-    const channel = params.query.channel || 'general';
-    const level = params.query.level;
-    const instance = await this.app.service('status').get(id);
-
-    /*
-     * When there isn't any client level, the response is simple, just give
-     * them the latest in their channel
-     */
-    if (!level) {
-      return this.find({
-        query: {
-          $limit: 1,
-          $sort: {
-            id: -1,
-          },
-          channel: channel,
-          tainted: false,
-        },
-      }).then(async (records) => {
-        if (records.length === 0) {
-          logger.debug('No updates discovered for', instance.uuid);
-          throw new NotModified('No updates presently available');
-        }
-
-        const record = records[0];
-        const computed = {
-          meta: {
-            channel: record.channel,
-            level: record.id,
-          },
-          core: record.manifest.core,
-          plugins: {
-            updates: [
-            ],
-            deletes: [
-            ],
-          },
-        };
-
-        this.prepareManifestFromRecord(record, computed);
-        /*
-        * Last but not least, make sure that any flavor specific updates are
-        * assigned to the computed update manifest
-        */
-        await this.prepareManifestWithFlavor(instance, record, computed);
-        await this.filterVersionsForClient(instance, computed);
-        return computed;
-      });
-    }
+  isCurrentLevelPerInstanceTainted(id, level) {
     const Sequelize = this.app.get('sequelizeClient');
 
-    /*
-     * The logic for finding the right update level is obviously complex
-     *
-     * There are two tables which we must consult: `tainted` for instance
-     * specific tainted update level information, and `updates` for system-wide
-     * update level (UL) information.
-     *
-     * The gist of the logic is this:
-     *   * If the client has a tainted UL, we need to rollback to the next lowest
-     *     non-tainted UL
-     *   * Else if the client has an update level already, we need to provide
-     *     them with the next incremental UL from where they are (e.g. 3 to 4,
-     *     and 4 to 5)
-     *   * Otherwise, we just want the latest and greatest UL in the channel.
-     */
+    return Sequelize.query(
+      `SELECT tainteds."updateId"
+FROM tainteds
+WHERE tainteds.uuid = ${Sequelize.escape(id)} AND
+      tainteds."updateId" = ${Sequelize.escape(level)}`,
+      { type: Sequelize.QueryTypes.SELECT})
 
-    return this.find({
+      .then(results => {
+        const tainted = results.length > 0;
+        logger.silly(`Is (${id}, ${level}) tainted? => ${tainted} (results=${JSON.stringify(results)})`);
+        return tainted;
+      });
+  }
+
+  /*
+   * Return the update level to serve to the requesting instance for the given parameters.
+   *
+   * The logic for finding the right update level (called UL below) is the following:
+   *
+   * 1) if the provided/current UL is untainted, then we look for the next UL available.
+   * This means one that is the lowest > currentUL.
+   *
+   * 2) if the provided/current UL is tainted, *then we are triggering a rollback*.
+   * This means we look for the highest UL that is < currentUL.
+   *
+   * 3) if *no* UL is provided, we jump directly to the latest UL available.
+   */
+  async get(id, params) {
+
+    const channel = params.query.channel || 'general';
+    const instance = await this.app.service('status').get(id);
+    let level = params.query.level;
+
+    const Sequelize = this.app.get('sequelizeClient');
+    const Op = Sequelize.Op;
+    let gtOrLt = Op.gt;
+    let orderByClause = 1; // ascending by default to take the next one available, not latest
+    if (!level) {
+      level = 0;
+      orderByClause = -1; // take latest level
+      gtOrLt = Op.gt;
+    } else if (await this.isCurrentLevelPerInstanceTainted(id, level)) {
+      orderByClause = -1;
+      gtOrLt = Op.lt;
+    }
+
+    const query = {
       query: {
         $limit: 1,
         $sort: {
-          id: 1,
-        },
-        id: {
-          $gt: level,
+          id: orderByClause,
         },
         channel: channel,
         tainted: false,
-      },
-    }).then(async (records) => {
-      if (records.length === 0) {
-        logger.debug('No records found, checking the tainteds table');
-        /*
-         * if we don't have a newer UL, and they're currently tainted, give
-         * them an older one
-         */
-        records = await this.find({
-          query: {
-            $limit: 1,
-            $sort: {
-              id: -1,
-            },
-            channel: channel,
-            tainted: false,
-            id: {
-              $notIn: Sequelize.literal(`
-(SELECT "tainteds"."updateId" FROM "tainteds"
-  WHERE
-  ("tainteds"."uuid" = ${Sequelize.escape(id)}
-    AND "tainteds"."updateId" = ${Sequelize.escape(level)}
-  )
+        id: {
+          [gtOrLt]: level,
+          $notIn: Sequelize.literal(`
+(SELECT "tainteds"."updateId"
+  FROM "tainteds"
+  WHERE "tainteds"."uuid" = ${Sequelize.escape(id)}
 )`),
-            },
-          },
-        });
-        /*
-         * If after all that we still have nothing, or we just got the same
-         * update level back again, then there's no update for
-         * the client
-         */
-        if ((records.length === 0) || (records[0].id == level)) {
-          throw new NotModified('No updates presently available');
-        }
-      }
-
-      const record = records[0];
-      const computed = {
-        meta: {
-          channel: record.channel,
-          level: record.id,
         },
-        core: record.manifest.core,
-        plugins: {
-          updates: [
-          ],
-          deletes: [
-          ],
-        },
-      };
+      },
+    };
 
-      this.prepareManifestFromRecord(record, computed);
-      /*
-       * Last but not least, make sure that any flavor specific updates are
-       * assigned to the computed update manifest
-       */
-      await this.prepareManifestWithFlavor(instance, record, computed);
-      await this.filterVersionsForClient(instance, computed);
-      return computed;
-    });
+    const records = await this.find(query);
+
+    /*
+     * If after all that we still have nothing, or we just got the same
+     * update level back again, then there's no update for the client
+     */
+    if ((records.length === 0) || (records[0].id === level)) {
+      throw new NotModified('No updates presently available');
+    }
+
+    const record = records[0];
+    const computed = {
+      meta: {
+        channel: record.channel,
+        level: record.id,
+      },
+      core: record.manifest.core,
+      plugins: {
+        updates: [
+        ],
+        deletes: [
+        ],
+      },
+    };
+
+    this.prepareManifestFromRecord(record, computed);
+    /*
+     * Last but not least, make sure that any flavor specific updates are
+     * assigned to the computed update manifest
+     */
+    await this.prepareManifestWithFlavor(instance, record, computed);
+    await this.filterVersionsForClient(instance, computed);
+    return computed;
   }
 
   /*

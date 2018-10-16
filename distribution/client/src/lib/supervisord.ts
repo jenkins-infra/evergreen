@@ -50,7 +50,7 @@ export default class Supervisord {
   static startProcess(name) {
     logger.info(`[supervisord] Starting ${name} process`);
     return new Promise((resolve, reject) => {
-      client.methodCall('supervisor.startProcess', [name], (e, value) => {
+      client.methodCall('supervisor.startProcess', [name,true], (e, value) => {
         if (e) {
           return reject(e);
         }
@@ -62,7 +62,7 @@ export default class Supervisord {
   static stopProcess(name) {
     logger.info(`[supervisord] Stopping ${name} process`);
     return new Promise((resolve, reject) => {
-      client.methodCall('supervisor.stopProcess', [name], (e, value) => {
+      client.methodCall('supervisor.stopProcess', [name,true], (e, value) => {
         if (e) {
           return reject(e);
         }
@@ -76,6 +76,7 @@ export default class Supervisord {
     if (await this.isProcessRunning(name)) {
       await this.stopProcess(name);
     }
+
     return this.startProcess(name);
   }
 }
