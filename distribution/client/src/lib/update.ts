@@ -194,7 +194,6 @@ export default class Update {
   restartJenkins() {
 
     const jenkinsIsRestarting = Supervisord.restartProcess('jenkins');
-
     UI.publish('Jenkins is being restarted, health checking!', { log: 'info' });
 
     return jenkinsIsRestarting
@@ -206,7 +205,6 @@ export default class Update {
       }).catch((error) => { // first catch, try rolling back
 
         UI.publish(`Jenkins detected as unhealthy. Rolling back to previous update level (${error}).`, {log: 'warn'});
-
         return this.revertToPreviousUpdateLevel();
 
       }).catch((error) => { // second time wrong, stop trying and just holler for help
