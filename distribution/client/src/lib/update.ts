@@ -231,8 +231,20 @@ export default class Update {
   /*
    * 1) Taint current level
    * 2) query and trigger a new update
-   *    (failing UL has been marked tainted for the instance, so should be served the/a previous UL)
-   * FIXME: 'the/a previous UL' => current code will serve "a" UL. We actually want "the"
+   *    (failing UL has been marked tainted for the instance, so *should* be served the previous UL)
+   *
+   * FIXME: the served UL when rolling back could (rarely, but still) be different from the actual previous one before failed upgrade.
+   * Example:
+   *
+   * * an instance is on UL50
+   * * for some reason, this UL is globally tainted after the fact
+   * * a new UL51 is pushed
+   * * the instance updates to UL51, but fails, so initiate a rollback
+   * * it will per-instance taint UL51, then asks for where to go
+   * * the server will tell the instance to go to UL49, not UL50. So technically, this could cause issues,
+   *   especially with the data snapshoting system and the associated restore...
+   * For now, we've ignored this issue, and granted this should almost never actually happen given host fast updates are pushed.
+   * But it's algorithmically and generally still _possible_.
    */
   revertToPreviousUpdateLevel() {
     this.snapshotter.revertToLevelBefore(this.getCurrentLevel()); // TODO test this
