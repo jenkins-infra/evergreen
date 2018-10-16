@@ -110,6 +110,10 @@ export default class Update {
   async applyUpdates(updates, forceUpdate?: boolean) {
     if (forceUpdate) {
       logger.warn('Forced update (expected during a rollback)');
+      if(!this.updateInProgress) {
+        logger.warn('No value for updateInProgress during a forced update, that is unexpected, setting a new value!');
+        this.updateInProgress = new Date();
+      }
     }
     else if (this.updateInProgress || (!updates)) {
       logger.warn('applyUpdates request ignored: update already in progress!');
