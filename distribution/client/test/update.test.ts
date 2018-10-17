@@ -128,7 +128,7 @@ describe('The update module', () => {
 
       manifest.plugins.deletes.forEach((filename) => {
         h.touchFile(`${pluginPath}/${filename}.hpi`);
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeTruthy();
       });
 
       const response = await update.applyUpdates(manifest);
@@ -136,7 +136,7 @@ describe('The update module', () => {
       expect(update.updateInProgress).toBeFalsy();
 
       manifest.plugins.deletes.forEach((filename) => {
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeFalsy();
       });
       expect(restartCalled).toBeTruthy();
     });
@@ -160,7 +160,7 @@ describe('The update module', () => {
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
-      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
       expect(restartCalled).toBeTruthy();
     });
 
@@ -181,14 +181,14 @@ describe('The update module', () => {
       mkdirp.sync(pluginPath);
       manifest.plugins.deletes.forEach((filename) => {
         h.touchFile(`${pluginPath}/${filename}.hpi`);
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeTruthy();
       });
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
-      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).resolves.toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
       manifest.plugins.deletes.forEach((filename) => {
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeFalsy();
       });
     });
   });
