@@ -1,5 +1,3 @@
-jest.mock('../src/lib/downloader');
-
 const fs            = require('fs');
 const feathers      = require('@feathersjs/feathers');
 const mkdirp        = require('mkdirp');
@@ -111,12 +109,14 @@ describe('The update module', () => {
     });
 
     it('should still update core if nothing else is passed in', async () => {
+      // Fake core with something much smaller, just to get a remote file (extension-filter is ~16kB)
       manifest.core = {
-        url: 'testurl',
-        checksum: { signature: 'signature' }
+        url: 'https://updates.jenkins-ci.org/download/plugins/extension-filter/1.0/extension-filter.hpi',
+        checksum: { signature: '9f82f97ad3f7625c03e15fbb7fc213eff23cc37535548383897670e0d6c7cf26' }
       };
       const response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
+      expect(h.checkFileExists(`${Storage.jenkinsHome()}/jenkins.war`)).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
     });
 
@@ -143,10 +143,6 @@ describe('The update module', () => {
 
     it ('should execute updates if passed in with no deletes', async () => {
       jest.setTimeout(10000);
-      (Downloader as unknown as jest.Mock).mockImplementationOnce(() => {
-        return require.requireActual('../src/lib/downloader').default();
-      });
-
       // daily-quote is only about 7k, good for simple download test
       manifest.plugins.updates = [
         {
@@ -160,14 +156,12 @@ describe('The update module', () => {
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
+      expect(h.checkFileExists(`${pluginPath}`)).toBeTruthy();
       expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
       expect(restartCalled).toBeTruthy();
     });
 
     it('should execute both updates and deletes if both passed in', async () => {
-      (Downloader as unknown as jest.Mock).mockImplementationOnce(() => {
-        return require.requireActual('../src/lib/downloader').default();
-      });
       manifest.plugins.deletes = ['delete1'];
       // daily-quote is only about 7k, good for simple download test
       manifest.plugins.updates = [
