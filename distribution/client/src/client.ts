@@ -183,7 +183,7 @@ if (require.main === module) {
    * Allow the log level to be overridden in the environment for debugging
    * purposes by the user
    */
-  logger.level = process.env.LOG_LEVEL || 'warn';
+  (logger as any).level = process.env.LOG_LEVEL || 'warn';
   /* Main entrypoint for module */
   UI.publish('Starting the evergreen-client..', { log: 'info' });
   const client = new Client();

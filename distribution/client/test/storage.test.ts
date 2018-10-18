@@ -59,15 +59,15 @@ describe('The storage module', () => {
         fs.mkdirSync(`${pluginPath}/${filename}`)
         h.touchFile(`${pluginPath}/${filename}/testfile`); // make sure we remove a directory with files
         h.touchFile(`${pluginPath}/${filename}.hpi`);
-        expect(h.checkFileExists(`${pluginPath}/${filename}`)).resolves.toBeTruthy();
-        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).resolves.toBeTruthy();
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}`)).toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeTruthy();
       });
       await Storage.removePlugins(filenames);
       filenames.forEach((filename) => {
-        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).resolves.toBeFalsy();
-        expect(h.checkFileExists(`${pluginPath}/${filename}`)).resolves.toBeFalsy();
-        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).resolves.toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}`)).toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeFalsy();
       });
     });
   });

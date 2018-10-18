@@ -77,14 +77,28 @@ export default class Storage {
     const pluginPath = this.pluginsDirectory();
     const retArray = [];
     plugins.forEach((plugin) => {
-      retArray.push(fs.rmdir(`${pluginPath}/${plugin}`, () => {
-        logger.info(`${pluginPath}/${plugin} was removed`);
+      retArray.push(new Promise((resolve, reject) => {
+        fs.rmdir(`${pluginPath}/${plugin}`, (err) => {
+          if(err) {
+            reject(err);
+          }
+          logger.info(`${pluginPath}/${plugin} was removed`);
+          resolve(true);
+        });
       }));
-      retArray.push(fs.unlink(`${pluginPath}/${plugin}.hpi`, () => {
-        logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
-        UI.publish(`Deleted ${plugin}.hpi`);
+      retArray.push(new Promise((resolve, reject) => {
+
+        fs.unlink(`${pluginPath}/${plugin}.hpi`, (err) => {
+          if (err) {
+            reject(err);
+          }
+          logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
+          UI.publish(`Deleted ${plugin}.hpi`);
+          resolve(true);
+        });
+
       }));
     });
-    return retArray;
+    return Promise.all(retArray);
   }
 }
