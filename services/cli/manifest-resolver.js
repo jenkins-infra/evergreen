@@ -227,7 +227,7 @@ class ManifestResolver {
    */
   fetchManifestForPlugin(plugin) {
     const start = Date.now();
-    const url = `${UrlResolver.artifactForPlugin(plugin)}!META-INF/MANIFEST.MF`;
+    const url = `${UrlResolver.artifactForPlugin(plugin)}!/META-INF/MANIFEST.MF`;
 
     return request({
       uri: url,
