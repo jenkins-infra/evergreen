@@ -23,6 +23,37 @@ class Sentry {
   }
 
   /**
+   * Map java.util.logging log levels to Sentry.io log levels.
+   * If the level is missing or invalid, the fallback is "info".
+   * @param {string} level
+   * @see {@link https://docs.oracle.com/javase/8/docs/api/java/util/logging/Level.html|java.util.logging.Level}
+   * @see {@link https://docs.sentry.io/clients/node/usage/#raven-node-additional-data|Sentry.io - Raven - additional data}
+   */
+  mapJavaLogLevel(level) {
+    if (!level) {
+      logger.error('Missing log level.');
+      return 'info';
+    }
+
+    switch (level.toUpperCase()) {
+    case 'SEVERE':
+      return 'error';
+    case 'WARNING':
+      return 'warning';
+    case 'INFO':
+    case 'CONFIG':
+      return 'info';
+    case 'FINE':
+    case 'FINER':
+    case 'FINEST':
+      return 'debug';
+    default:
+      logger.warn(`Unknown log level "${level}", using "info"`);
+      return 'info';
+    }
+  }
+
+  /**
    * Send the JSON output to Sentry.io.  JSON format is from the Error Telemetry API.
    * @param {json} data
    */
@@ -33,7 +64,7 @@ class Sentry {
     }
 
     const errorData = {
-      level: data.log.level.toLowerCase(),
+      level: this.mapJavaLogLevel(data.log.level),
       logger: data.log.name,
       user: {
         /*
