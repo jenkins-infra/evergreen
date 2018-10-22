@@ -8,7 +8,7 @@ spec:
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.1'
+      version: '1.2'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc58.a9ecd200b39a
@@ -23,7 +23,7 @@ spec:
       version: 2.2.12
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.2'
+      version: '3.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.16'
@@ -56,7 +56,7 @@ spec:
       version: '1.92'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
-      version: 2.4.0
+      version: 2.4.1
     - groupId: org.jenkins-ci.plugins
       artifactId: htmlpublisher
       version: '1.17'
@@ -65,7 +65,7 @@ spec:
       version: 2.9.7.0-beta
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
-      version: '1.21'
+      version: '1.22'
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
       version: '1.13'
@@ -125,7 +125,7 @@ spec:
       version: '2.5'
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.2
+      version: 3.0.3
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
       version: '1.1'
@@ -248,10 +248,10 @@ status:
       version: '6.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.2'
+      version: '3.3'
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.1'
+      version: '1.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
       version: 2.1.18
@@ -296,7 +296,7 @@ status:
       version: '1.92'
     - groupId: org.jenkins-ci.plugins
       artifactId: github-branch-source
-      version: 2.4.0
+      version: 2.4.1
     - groupId: org.jenkins-ci.ui
       artifactId: handlebars
       version: 1.1.1
@@ -320,7 +320,7 @@ status:
       version: 1.9.0
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.2
+      version: 3.0.3
     - groupId: org.jenkins-ci.ui
       artifactId: jquery-detached
       version: 1.2.1
@@ -335,7 +335,7 @@ status:
       version: '2.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
-      version: '1.21'
+      version: '1.22'
     - groupId: org.jenkins-ci.plugins
       artifactId: matrix-project
       version: '1.13'
