@@ -45,11 +45,15 @@ describe('The storage module', () => {
   });
 
   describe('removePlugins()', () => {
-    it('should return cleanly on empty plugins', () => {
-      expect(Storage.removePlugins());
+    it('should return cleanly on empty plugins', async () => {
+      expect(() => {
+        Storage.removePlugins();
+      }).not.toThrow();
     });
     it('should not error if file not found', async () => {
-      await expect(Storage.removePlugins(['not-found']));
+      expect(() => {
+        Storage.removePlugins(['not-found']);
+      }).not.toThrow();
     });
     it('should remove all files in a list', async () => {
       const filenames = ['first', 'second', 'third', 'fourth'];
