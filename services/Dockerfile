@@ -5,7 +5,7 @@ WORKDIR ${APP_DIR}
 
 ADD package*json ${APP_DIR}/
 
-RUN npm install
+RUN npm ci
 
 # Doing a multi-stage build to reset some stuff for a smaller image
 FROM node:9-alpine

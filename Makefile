@@ -23,9 +23,9 @@ update-package-locks:
 	# https://npm.community/t/some-packages-have-dist-tarball-as-http-and-not-https/285/13
 	rm -rf services/node_modules/ services/package-lock.json && \
 	rm -rf distribution/client/node_modules/ distribution/client/package-lock.json && \
-	cd services/ &&	$(NODE) npm install && \
+	cd services/ &&	$(NODE) npm ci && \
 	sed -i 's/"resolved": "http:/"resolved": "https:/g' package-lock.json && \
-	cd ../distribution/client && $(NODE) npm install && \
+	cd ../distribution/client && $(NODE) npm ci && \
 	sed -i 's/"resolved": "http:/"resolved": "https:/g' package-lock.json
 
 npm-audit-fix:

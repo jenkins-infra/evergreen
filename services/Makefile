@@ -13,7 +13,7 @@ all: check docs container
 # directory every time it runs, busting the GNU/Make cache causing rebuilds
 depends: package.json
 	@if [ ! -d node_modules ]; then \
-		npm install; \
+		npm ci; \
 	fi;
 
 docs: depends
