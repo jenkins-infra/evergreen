@@ -1,4 +1,4 @@
-FROM node:9 as builder
+FROM node:10 as builder
 
 ARG APP_DIR=/srv/evergreen
 WORKDIR ${APP_DIR}
