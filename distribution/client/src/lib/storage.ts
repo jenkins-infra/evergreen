@@ -1,6 +1,6 @@
 'use strict';
 
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 
 import * as logger from 'winston';
@@ -78,10 +78,19 @@ export default class Storage {
     const retArray = [];
     plugins.forEach((plugin) => {
       retArray.push(new Promise((resolve, reject) => {
+        fs.remove(`${pluginPath}/${plugin}`, (err) => {
+          if(err) {
+            logger.debug(`${pluginPath}/${plugin} was not found.`);
+          }
+          logger.info(`${pluginPath}/${plugin} was removed`);
+          resolve(true);
+        });
+      }));
+      retArray.push(new Promise((resolve, reject) => {
 
         fs.unlink(`${pluginPath}/${plugin}.hpi`, (err) => {
           if (err) {
-            reject(err);
+            logger.debug(`${pluginPath}/${plugin}.hpi was not found.`);
           }
           logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
           UI.publish(`Deleted ${plugin}.hpi`);
