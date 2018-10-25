@@ -1,6 +1,7 @@
 include ../../node.mk
 
-PATH:=./node_modules/.bin:../../tools:$(PATH)
+SHELL := /bin/bash
+PATH := ./node_modules/.bin:../../tools:$(PATH)
 
 all:: build
 
