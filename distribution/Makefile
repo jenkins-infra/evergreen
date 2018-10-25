@@ -46,7 +46,7 @@ prepare-distribution: build/jenkins-support build/jenkins.sh
 
 	# Once the tree has been put into place, node_modules must be generated for
 	# the distribution
-	(cd $(DIST_DIR)/client && $(ROOT_DIR)/tools/npm install --production)
+	(cd $(DIST_DIR)/client && $(ROOT_DIR)/tools/npm ci --production)
 
 prepare-docker-cloud-distribution: prepare-distribution
 	mkdir -p build/evergreen-docker-cloud/evergreen
