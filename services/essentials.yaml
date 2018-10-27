@@ -145,7 +145,7 @@ spec:
       plugins:
         - groupId: org.jenkins-ci.plugins
           artifactId: ec2
-          version: '1.39'
+          version: 1.42-rc793.29f87d3fb1d2
         - groupId: io.jenkins.plugins
           artifactId: aws-global-configuration
           version: '1.0'
@@ -155,6 +155,9 @@ spec:
         - groupId: org.jenkins-ci.plugins
           artifactId: node-iterator-api
           version: 1.5.0
+        - groupId: org.jenkins-ci.plugins
+          artifactId: aws-java-sdk
+          version: 1.11.403
 status:
   core:
     version: '2.147'
@@ -472,10 +475,10 @@ status:
           version: '1.0'
         - groupId: org.jenkins-ci.plugins
           artifactId: aws-java-sdk
-          version: 1.11.341
+          version: 1.11.403
         - groupId: org.jenkins-ci.plugins
           artifactId: ec2
-          version: '1.39'
+          version: 1.42-rc793.29f87d3fb1d2
         - groupId: org.jenkins-ci.plugins
           artifactId: node-iterator-api
-          version: '1.5'
+          version: 1.5.0
