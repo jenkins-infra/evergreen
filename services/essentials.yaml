@@ -113,7 +113,7 @@ spec:
       version: 0.1.54.2
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.47'
+      version: '1.48'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
       version: '1.17'
@@ -398,7 +398,7 @@ status:
       version: 2.2.8
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.47'
+      version: '1.48'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.16'
