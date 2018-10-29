@@ -83,7 +83,7 @@ spec:
       version: '2.31'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.59'
+      version: '2.60'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.12'
@@ -428,7 +428,7 @@ status:
       version: '2.11'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.59'
+      version: '2.60'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.12'
