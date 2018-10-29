@@ -80,10 +80,10 @@ spec:
       version: '2.6'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
-      version: 2.30-beta-1
+      version: '2.31'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: 2.58-beta-1
+      version: '2.59'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.12'
@@ -95,7 +95,7 @@ spec:
       version: '2.7'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
-      version: 2.21-beta-1
+      version: '2.21'
     - groupId: org.jenkins-ci.plugins
       artifactId: metrics
       version: 4.0.2.3-rc229.d9b0eb3c576d
@@ -125,7 +125,7 @@ spec:
       version: '2.5'
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.3
+      version: 3.0.4
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
       version: '1.1'
@@ -323,7 +323,7 @@ status:
       version: 1.9.0
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.3
+      version: 3.0.4
     - groupId: org.jenkins-ci.ui
       artifactId: jquery-detached
       version: 1.2.1
@@ -422,13 +422,13 @@ status:
       version: '2.6'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
-      version: 2.30-beta-1
+      version: '2.31'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-basic-steps
       version: '2.11'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: 2.58-beta-1
+      version: '2.59'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.12'
@@ -449,7 +449,7 @@ status:
       version: '2.16'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
-      version: 2.21-beta-1
+      version: '2.21'
   environments:
     - name: docker-cloud
       plugins:
