@@ -16,13 +16,10 @@ jenkins:
             securityGroups: "${AGENT_SECURITY_GROUP}"
             remoteFS: "/home/ec2-user"
             remoteAdmin: "ec2-user"
-            # FIXME: JENKINS-52319: without this, NPE during provisioning
-            userData: >
+            initScript: >
               sudo yum update -y;
               sudo yum remove -y java-1.7.0-openjdk ;
               sudo yum install -y docker java-1.8.0-openjdk-devel;
               sudo service docker start;
               sudo usermod -a -G docker ec2-user;
               sudo docker info;
-            # FIXME: JENKINS-52334: mode *required*, broken if missing.
-            mode: NORMAL
