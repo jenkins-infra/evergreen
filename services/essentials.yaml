@@ -97,6 +97,9 @@ spec:
       artifactId: workflow-support
       version: '2.21'
     - groupId: org.jenkins-ci.plugins
+      artifactId: pipeline-utility-steps
+      version: 2.1.0
+    - groupId: org.jenkins-ci.plugins
       artifactId: metrics
       version: 4.0.2.3-rc229.d9b0eb3c576d
     - groupId: org.jenkins-ci.plugins
@@ -387,6 +390,9 @@ status:
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-stage-view
       version: '2.10'
+    - groupId: org.jenkins-ci.plugins
+      artifactId: pipeline-utility-steps
+      version: 2.1.0
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.4'
