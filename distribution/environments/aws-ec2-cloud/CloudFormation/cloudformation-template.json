@@ -62,6 +62,7 @@
               "sudo docker pull $DOCKER_IMAGE\n",
               "sudo docker run -d -p 8080:8080 -p 50000:50000 ",
               " --name evergreen",
+              " --restart=always",
               " -v jenkins-evergreen-data:/evergreen/data",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
