@@ -121,12 +121,12 @@ If you do not have it installed, either install it, or just look for `PublicIpAd
 
 Once you have the public IP, after a few minutes
 footnote:[The master EC2 instance is being configured to run the Jenkins master. That is why even if the IP is already assigned, it could still take some more time to do additional things like installing Docker, pulling the evergreen image and have it started], open a browser on the http://1.2.3.4:8080 URL.
-This should display the Jenkins Install Wizard, asking for a secret to unlock the screen, located under `/evergreen/jenkins/home/secrets/initialAdminPassword`.
+This should display the Jenkins Install Wizard, asking for a secret to unlock the screen, located under `/evergreen/data/jenkins/home/secrets/initialAdminPassword`.
 
 To retrieve it, use the IP retrieved above in the following command:
 
 [source,shell]
-ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-evergreen cat /evergreen/jenkins/home/secrets/initialAdminPassword
+ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-evergreen cat /evergreen/data/jenkins/home/secrets/initialAdminPassword
 The authenticity of host '35.173.187.174 (35.173.187.174)' can't be established.
 ECDSA key fingerprint is SHA256:/q51fyKpC+EvWTKqO8W/oEycTbCn0FZFA6lMV3pnpdQ.
 ECDSA key fingerprint is MD5:e2:3b:e3:eb:b7:da:7b:68:09:dd:c6:3a:2c:13:7f:e9.
