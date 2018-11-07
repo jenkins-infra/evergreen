@@ -77,11 +77,15 @@ describe('The status module', () => {
     describe('When there are plugins present', () => {
       beforeEach(() => {
         mkdirp.sync('/evergreen/data/jenkins/home/plugins');
-        fs.writeFileSync('/evergreen/data/jenkins/home/plugins/git.hpi', 'jest!');
+        fs.writeFileSync('/evergreen/data/jenkins/home/plugins/git.jpi', 'jest!');
+        // important check: should never happen, but if someone put a .hpi by hand
+        // we should be aware, since Jenkins *will* load it
+        fs.writeFileSync('/evergreen/data/jenkins/home/plugins/bla.hpi', 'jest again!');
       });
 
       it('should contain the signature of the plugin', () => {
         const versions : any = (new Status(app)).collectVersions();
+        expect(versions.jenkins.plugins.bla).toBeTruthy();
         expect(versions.jenkins.plugins.git).toBeTruthy();
       });
     });

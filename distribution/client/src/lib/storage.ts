@@ -1,10 +1,15 @@
 'use strict';
 
-import fs from 'fs-extra';
+import fs   from 'fs-extra';
 import path from 'path';
 
 import * as logger from 'winston';
 import UI from './ui';
+
+import util from 'util';
+
+const remove = util.promisify(fs.remove);
+const unlink = util.promisify(fs.unlink);
 
 /*
  * The Storage module simply contains common functions necessary for the
@@ -94,6 +99,18 @@ export default class Storage {
           }
           logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
           UI.publish(`Deleted ${plugin}.hpi`);
+          resolve(true);
+        });
+
+      }));
+      retArray.push(new Promise((resolve, reject) => {
+
+        fs.unlink(`${pluginPath}/${plugin}.jpi`, (err) => {
+          if (err) {
+            logger.debug(`${pluginPath}/${plugin}.jpi was not found.`);
+          }
+          logger.info(`${pluginPath}/${plugin}.jpi was deleted`);
+          UI.publish(`Deleted ${plugin}.jpi`);
           resolve(true);
         });
 
