@@ -126,7 +126,7 @@ This should display the Jenkins Install Wizard, asking for a secret to unlock th
 To retrieve it, use the IP retrieved above in the following command:
 
 [source,shell]
-ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec jenkins-evergreen cat /evergreen/data/jenkins/home/secrets/initialAdminPassword
+ssh -i $PEM_FILE_LOCAL_PATH ec2-user@$PUBLIC_IP_ADDRESS docker exec evergreen cat /evergreen/data/jenkins/home/secrets/initialAdminPassword
 The authenticity of host '35.173.187.174 (35.173.187.174)' can't be established.
 ECDSA key fingerprint is SHA256:/q51fyKpC+EvWTKqO8W/oEycTbCn0FZFA6lMV3pnpdQ.
 ECDSA key fingerprint is MD5:e2:3b:e3:eb:b7:da:7b:68:09:dd:c6:3a:2c:13:7f:e9.
