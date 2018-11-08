@@ -42,16 +42,16 @@ test_smoke() {
 }
 
 test_required_plugins_are_here() {
-  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.hpi"
+  docker exec "$container_under_test" ls "$JENKINS_HOME/plugins/metrics.jpi"
   assertEquals "The metrics plugin should be installed" 0 "$?"
 
   # workaround for JENKINS-52197
   # shellcheck disable=SC2016
-  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/evergreen*.hpi'
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/evergreen*.jpi'
   assertEquals "The evergreen plugin should be installed" 0 "$?"
 
   # shellcheck disable=SC2016
-  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.hpi'
+  docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins/configuration-as-code*.jpi'
   assertEquals "The configuration-as-code plugin should be installed" 0 "$?"
 }
 
@@ -77,8 +77,8 @@ test_no_executor() {
 # JENKINS-49406 check data segregation
 test_plugins_are_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
-  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins | grep -v hpi' )
-  assertEquals "hpi should not be found in plugins dir" "" "$result"
+  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/plugins | grep -v jpi' )
+  assertEquals "jpi should not be found in plugins dir" "" "$result"
 }
 test_war_is_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
@@ -271,6 +271,17 @@ test_no_permission_error_in_logs() {
 test_no_anonymous_read() {
   result=$( curl -v -f -I http://localhost:$TEST_PORT/computer/ 2>&1 )
   assertNotEquals "curl call to /computer should not have succeeeded" 0 "$?"
+}
+
+# JENKINS-54466
+test_no_hpi() {
+  pluginDir="$JENKINS_HOME/plugins"
+
+  hpiList=$( docker exec -w "$pluginDir" "$container_under_test" bash -c 'ls *.hpi' )
+  assertNotEquals "there should be no .hpi under $pluginDir: $hpiList" 0 "$?"
+
+  jpiList=$( docker exec -w "$pluginDir" "$container_under_test" bash -c 'ls *.jpi' )
+  assertEquals "there should be (many) .jpi under $pluginDir: $jpiList" 0 "$?"
 }
 
 . ./shunit2/shunit2

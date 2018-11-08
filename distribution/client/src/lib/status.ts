@@ -148,7 +148,7 @@ export default class Status {
     try {
       const files = fs.readdirSync(Storage.pluginsDirectory());
       files.forEach((file) => {
-        const matched = file.match(/^(.*).hpi$/);
+        const matched = file.match(/^(.*).(h|j)pi$/);
         if (matched) {
           const name = matched[1];
           const fullPath = path.join(Storage.pluginsDirectory(), file);

@@ -143,7 +143,7 @@ export default class Update {
         logger.info('Downloading', plugin);
         tasks.push(Downloader.download(plugin.url,
           Storage.pluginsDirectory(),
-          `${plugin.artifactId}.hpi`,
+          `${plugin.artifactId}.jpi`,
           plugin.checksum.signature));
       });
     }

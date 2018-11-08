@@ -63,15 +63,18 @@ describe('The storage module', () => {
         fs.mkdirSync(`${pluginPath}/${filename}`)
         h.touchFile(`${pluginPath}/${filename}/testfile`); // make sure we remove a directory with files
         h.touchFile(`${pluginPath}/${filename}.hpi`);
+        h.touchFile(`${pluginPath}/${filename}.jpi`);
         expect(h.checkFileExists(`${pluginPath}/${filename}`)).toBeTruthy();
         expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).toBeTruthy();
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeTruthy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.jpi`)).toBeTruthy();
       });
       await Storage.removePlugins(filenames);
       filenames.forEach((filename) => {
         expect(h.checkFileExists(`${pluginPath}/${filename}/testfile`)).toBeFalsy();
         expect(h.checkFileExists(`${pluginPath}/${filename}`)).toBeFalsy();
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.jpi`)).toBeFalsy();
       });
     });
   });

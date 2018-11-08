@@ -157,7 +157,7 @@ describe('The update module', () => {
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
       expect(h.checkFileExists(`${pluginPath}`)).toBeTruthy();
-      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.jpi`)).toBeTruthy();
       expect(restartCalled).toBeTruthy();
     });
 
@@ -180,9 +180,10 @@ describe('The update module', () => {
       let response = await update.applyUpdates(manifest);
       expect(response).toBeTruthy();
       expect(update.updateInProgress).toBeFalsy();
-      expect(h.checkFileExists(`${pluginPath}/daily-quote.hpi`)).toBeTruthy();
+      expect(h.checkFileExists(`${pluginPath}/daily-quote.jpi`)).toBeTruthy();
       manifest.plugins.deletes.forEach((filename) => {
         expect(h.checkFileExists(`${pluginPath}/${filename}.hpi`)).toBeFalsy();
+        expect(h.checkFileExists(`${pluginPath}/${filename}.jpi`)).toBeFalsy();
       });
     });
   });
