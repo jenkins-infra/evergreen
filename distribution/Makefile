@@ -15,12 +15,12 @@ all: check container
 
 lint: shunit2
 	$(ROOT_DIR)/tools/yamllint -s docker-compose*.yml
-	$(ROOT_DIR)/tools/yamllint -s ./tests/environments/*/docker-compose*.yml
+	$(ROOT_DIR)/tools/yamllint -s ./tests/flavors/*/docker-compose*.yml
 	$(ROOT_DIR)/tools/yamllint -s config/as-code/*.yaml
 	$(ROOT_DIR)/tools/shellcheck -x tests/*.sh
 	$(ROOT_DIR)/tools/jsonlint --quiet ./tests/rollback/*.json
 	$(ROOT_DIR)/tools/shellcheck -x scripts/*.sh
-	$(MAKE) -C environments lint
+	$(MAKE) -C flavors lint
 	$(MAKE) -C client lint
 
 check: lint
@@ -50,11 +50,11 @@ prepare-distribution: build/jenkins-support build/jenkins.sh
 
 prepare-docker-cloud-distribution: prepare-distribution
 	mkdir -p build/evergreen-docker-cloud/evergreen
-	rsync -avm --delete environments/docker-cloud/config ./build/evergreen-docker-cloud/evergreen
+	rsync -avm --delete flavors/docker-cloud/config ./build/evergreen-docker-cloud/evergreen
 
 prepare-aws-ec2-cloud-distribution:
 	mkdir -p build/evergreen-aws-ec2-cloud/evergreen
-	rsync -avm --delete environments/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
+	rsync -avm --delete flavors/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
 
 build/evergreen-aws-ec2-cloud.zip: prepare-aws-ec2-cloud-distribution
 	(cd build && \
@@ -88,26 +88,26 @@ container-check: docker-cloud-container-check aws-cloud-container-check rollback
 
 # Only checking it on docker-cloud.
 rollback-check: containers container-check-prereqs
-	ENVIRONMENT=docker-cloud ./tests/rollback-tests.sh
+	FLAVOR=docker-cloud ./tests/rollback-tests.sh
 
 docker-cloud-container-check: containers container-check-prereqs
-	ENVIRONMENT=docker-cloud ./tests/offline-tests.sh
-	ENVIRONMENT=docker-cloud ./tests/tests.sh
+	FLAVOR=docker-cloud ./tests/offline-tests.sh
+	FLAVOR=docker-cloud ./tests/tests.sh
 
 aws-cloud-container-check: containers container-check-prereqs
-	ENVIRONMENT=aws-ec2-cloud ./tests/offline-tests.sh
-	ENVIRONMENT=aws-ec2-cloud ./tests/tests.sh
+	FLAVOR=aws-ec2-cloud ./tests/offline-tests.sh
+	FLAVOR=aws-ec2-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client build
 	docker build -t ${IMAGE_NAME}:base .
-	$(MAKE) -C environments $@
+	$(MAKE) -C flavors $@
 
 containers: container
 	$(MAKE) -C ../services container
 
 publish: container
-	$(MAKE) -C environments $@
+	$(MAKE) -C flavors $@
 
 create-squid-cache-volume:
 	docker volume create ${SQUID_VOLUME_NAME}
@@ -115,7 +115,7 @@ create-squid-cache-volume:
 run: create-squid-cache-volume container-check-prereqs
 	$(COMPOSE) -f docker-compose.yml \
              -f docker-compose.squid-cache.yml \
-             -f tests/environments/docker-cloud/docker-compose.docker-cloud.yml \
+             -f tests/flavors/docker-cloud/docker-compose.docker-cloud.yml \
              up
 
 
