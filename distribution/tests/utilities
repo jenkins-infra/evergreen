@@ -17,8 +17,8 @@ cleanup () {
   echo
 
   flavor=no-flavor
-  if [[ -n $ENVIRONMENT ]]; then
-    flavor=$ENVIRONMENT
+  if [[ -n $FLAVOR ]]; then
+    flavor=$FLAVOR
   fi
   currentCommand="$( basename $0 )"
   theDate=$( date +%Y-%m-%d_%H-%M-%S )
@@ -65,20 +65,20 @@ setup_container_under_test() {
 
   # TODO: support enabling a *list* of environments/flavours?
   COMPOSEFILES="-f docker-compose.yml "
-  if [[ -n $ENVIRONMENT ]]; then
-    ENVIRONMENT_COMPOSE_OVERRIDE="tests/environments/$ENVIRONMENT/docker-compose.$ENVIRONMENT.yml"
-    echo "ENVIRONMENT detected, enabling $ENVIRONMENT by adding the override compose file to the startup"
+  if [[ -n $FLAVOR ]]; then
+    FLAVOR_COMPOSE_OVERRIDE="tests/flavors/$FLAVOR/docker-compose.$FLAVOR.yml"
+    echo "FLAVOR detected, enabling $FLAVOR by adding the override compose file to the startup"
     # shellcheck disable=SC1090
-    if [[ -e $ENVIRONMENT_COMPOSE_OVERRIDE ]] ; then
+    if [[ -e $FLAVOR_COMPOSE_OVERRIDE ]] ; then
       set -e
-      COMPOSEFILES="$COMPOSEFILES -f $ENVIRONMENT_COMPOSE_OVERRIDE "
+      COMPOSEFILES="$COMPOSEFILES -f $FLAVOR_COMPOSE_OVERRIDE "
       set +e
     else
-      echo "$ENVIRONMENT_COMPOSE_OVERRIDE could not be found, stopping!"
+      echo "$FLAVOR_COMPOSE_OVERRIDE could not be found, stopping!"
       exit 1
     fi
   else
-    echo "No environment specified."
+    echo "No flavor specified."
   fi
 
   if [[ -z $DISABLE_PROXY_CACHE ]] ; then

@@ -106,5 +106,5 @@ USER root
 RUN ln -s /evergreen/scripts/jenkins-support /usr/local/bin
 
 # This is just a place holder entrypoint and is expected to be overridden by
-# the environment specific images
+# the flavor specific images
 CMD nginx -g "daemon off;"

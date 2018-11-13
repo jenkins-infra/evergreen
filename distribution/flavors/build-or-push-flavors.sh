@@ -11,7 +11,7 @@ if [[ "$1" == "build" ]]; then
     echo "Building $dir directory"
     # Changing up a directory to ensure we have the full build context
     (cd ../ && \
-        docker build --build-arg FLAVOR="$dir" -t "$IMAGE_NAME:$dir" -f "environments/$dir/Dockerfile" .)
+        docker build --build-arg FLAVOR="$dir" -t "$IMAGE_NAME:$dir" -f "flavors/$dir/Dockerfile" .)
   done
 elif [[ "$1" == "push" ]]; then
   for dir in *-cloud
