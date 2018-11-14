@@ -457,6 +457,8 @@ status:
       artifactId: workflow-support
       version: '2.21'
   environments:
+    - name: java11-docker-cloud
+      plugins:
     - name: docker-cloud
       plugins:
         - groupId: org.jenkins-ci.plugins

@@ -32,7 +32,7 @@ store-commit:
 	git rev-parse HEAD > commit.txt
 
 ## Distribution
-distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip
+distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip build/evergreen-java11-docker-cloud.zip
 
 prepare-distribution: build/jenkins-support build/jenkins.sh
 	$(MAKE) -C client compile
@@ -56,6 +56,10 @@ prepare-aws-ec2-cloud-distribution:
 	mkdir -p build/evergreen-aws-ec2-cloud/evergreen
 	rsync -avm --delete flavors/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
 
+prepare-java11-docker-cloud-distribution: prepare-distribution
+	mkdir -p build/evergreen-java11-docker-cloud/evergreen
+	rsync -avm --delete flavors/java11-docker-cloud/config ./build/evergreen-java11-docker-cloud/evergreen
+
 build/evergreen-aws-ec2-cloud.zip: prepare-aws-ec2-cloud-distribution
 	(cd build && \
 		zip -q -r evergreen-aws-ec2-cloud.zip evergreen && \
@@ -67,6 +71,12 @@ build/evergreen-docker-cloud.zip: prepare-docker-cloud-distribution
 		zip -q -r evergreen-docker-cloud.zip evergreen && \
 		cd evergreen-docker-cloud && \
 		zip -q -r ../evergreen-docker-cloud.zip ./evergreen)
+
+build/evergreen-java11-docker-cloud.zip: prepare-java11-docker-cloud-distribution
+	(cd build && \
+		zip -q -r evergreen-java11-docker-cloud.zip evergreen && \
+		cd evergreen-java11-docker-cloud && \
+		zip -q -r ../evergreen-java11-docker-cloud.zip ./evergreen)
 
 build/evergreen.zip: prepare-distribution
 	(cd build && \
@@ -84,7 +94,7 @@ container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh creat
 	$(MAKE) -C ../services lint
 	$(MAKE) -C ../services dump generate-ingest
 
-container-check: docker-cloud-container-check aws-cloud-container-check rollback-check
+container-check: docker-cloud-container-check aws-cloud-container-check java11-docker-cloud-check rollback-check
 
 # Only checking it on docker-cloud.
 rollback-check: containers container-check-prereqs
@@ -97,6 +107,10 @@ docker-cloud-container-check: containers container-check-prereqs
 aws-cloud-container-check: containers container-check-prereqs
 	FLAVOR=aws-ec2-cloud ./tests/offline-tests.sh
 	FLAVOR=aws-ec2-cloud ./tests/tests.sh
+
+java11-docker-cloud-container-check: containers container-check-prereqs
+	FLAVOR=java11-docker-cloud ./tests/offline-tests.sh
+	FLAVOR=java11-docker-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client build

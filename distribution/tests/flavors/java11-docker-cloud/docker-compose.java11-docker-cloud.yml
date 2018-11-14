@@ -1,0 +1,7 @@
+version: '3'
+services:
+
+  instance:
+    image: jenkins/evergreen:java11-docker-cloud
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,17 @@
+---
+jenkins:
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "tcp://localhost:2375/"
+        templates:
+          - labelString: "agent"
+            dockerTemplateBase:
+              image: 'batmat/jenkins-ssh-agent'
+            remoteFs: "/home/jenkins"
+            connector:
+              attach:
+                user: "jenkins"
+            instanceCapStr: "10"
