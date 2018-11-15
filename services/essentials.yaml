@@ -161,6 +161,8 @@ spec:
         - groupId: org.jenkins-ci.plugins
           artifactId: aws-java-sdk
           version: 1.11.403
+    - name: java11-docker-cloud
+      plugins:
 status:
   core:
     version: '2.149'
@@ -457,8 +459,6 @@ status:
       artifactId: workflow-support
       version: '2.21'
   environments:
-    - name: java11-docker-cloud
-      plugins:
     - name: docker-cloud
       plugins:
         - groupId: org.jenkins-ci.plugins
