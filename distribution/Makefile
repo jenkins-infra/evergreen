@@ -4,7 +4,7 @@ COMPOSE:=$(ROOT_DIR)/tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
-SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
+SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master
 SQUID_VOLUME_NAME=squid-cache
 
 DIST_DIR=build/evergreen
@@ -56,7 +56,8 @@ prepare-aws-ec2-cloud-distribution:
 	mkdir -p build/evergreen-aws-ec2-cloud/evergreen
 	rsync -avm --delete flavors/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
 
-prepare-java11-docker-cloud-distribution: prepare-distribution
+prepare-java11-docker-cloud-distribution: build/jenkins-jdk11.sh prepare-distribution
+	rsync -avm ./build/jenkins-jdk11.sh $(DIST_DIR)/scripts
 	mkdir -p build/evergreen-java11-docker-cloud/evergreen
 	rsync -avm --delete flavors/java11-docker-cloud/config ./build/evergreen-java11-docker-cloud/evergreen
 
@@ -143,13 +144,18 @@ clean:
 
 #################
 
-build/jenkins.sh:
+build:
 	mkdir -p build
+
+build/jenkins-jdk11.sh: build
+	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-jdk11.sh > $@
+	chmod +x $@
+
+build/jenkins.sh: build
 	$(DOWNLOAD)  $(SCRIPTS_URL)/jenkins.sh > $@
 	chmod +x $@
 
-build/jenkins-support:
-	mkdir -p build
+build/jenkins-support: build
 	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 
