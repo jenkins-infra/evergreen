@@ -1,5 +1,8 @@
 FROM node:10
 
+ARG FLAVOR=null
+ENV FLAVOR ${FLAVOR}
+
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
@@ -105,13 +108,31 @@ USER root
 # /usr/local/bin
 RUN ln -s /evergreen/scripts/jenkins-support /usr/local/bin
 
-# This is just a place holder entrypoint and is expected to be overridden by
-# the flavor specific images
-CMD nginx -g "daemon off;"
-
 RUN mkdir /usr/java && \
     curl -LS https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.1%2B13/OpenJDK11-jdk_x64_linux_openj9_11.0.1_13.tar.gz | \
     tar xzf - -C /usr/java && \
     mv /usr/java/jdk*/* /usr/java && \
     rmdir /usr/java/jdk*
 ENV PATH=$PATH:/usr/java/bin
+
+ # Libs required to run on Java 11
+ENV JAVA_LIB_DIR /usr/share/jenkins/ref/java_cp
+ENV JAVA_MODULES "java.xml.bind,java.activation"
+RUN mkdir ${JAVA_LIB_DIR} \
+    && curl -fsSL http://central.maven.org/maven2/javax/xml/bind/jaxb-api/2.3.0/jaxb-api-2.3.0.jar -o ${JAVA_LIB_DIR}/jaxb-api.jar \
+    && curl -fsSL http://central.maven.org/maven2/com/sun/xml/bind/jaxb-core/2.3.0.1/jaxb-core-2.3.0.1.jar -o ${JAVA_LIB_DIR}/jaxb-core.jar \
+    && curl -fsSL http://central.maven.org/maven2/com/sun/xml/bind/jaxb-impl/2.3.0.1/jaxb-impl-2.3.0.1.jar -o ${JAVA_LIB_DIR}/jaxb-impl.jar \
+    && curl -fsSL https://github.com/javaee/activation/releases/download/JAF-1_2_0/javax.activation.jar -o ${JAVA_LIB_DIR}/javax.activation.jar
+
+# Prepare the flavor specific parts of the distribution
+# https://github.com/moby/moby/issues/35018, cannot use $user below
+COPY --chown=jenkins:jenkins build/evergreen-${FLAVOR}.zip /
+RUN cd / && unzip -q evergreen-${FLAVOR}.zip && chown -R jenkins:jenkins /evergreen
+RUN rm -f /evergreen-${FLAVOR}.zip
+
+# Jenkins directory is a volume, so configuration and build history
+# can be persisted and survive image upgrades
+# Important: this must be done *after* all file system changes have been made
+# by the Dockerfile
+VOLUME ${EVERGREEN_HOME}
+CMD /usr/bin/supervisord -c $EVERGREEN_HOME/config/supervisord.conf
