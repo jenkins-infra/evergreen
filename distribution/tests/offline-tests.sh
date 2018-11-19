@@ -85,4 +85,14 @@ test_docker_flavor_custom_supervisordconf() {
   result=$(docker run --rm jenkins/evergreen:docker-cloud grep "socat" /evergreen/config/supervisord.conf )
   assertEquals "The wrong supervisord.conf exists in the container" "0" "$?"
 }
+
+# JENKINS-54598
+test_java_version() {
+  [[ "$FLAVOR" != "java11-docker-cloud" ]] || startSkipping
+  result=$(docker run --rm -jenkins/evergreen:java11-docker-cloud java -version 2>&1 \
+    | grep "(build 11.")
+  assertEquals "java 11 should be installed" 0 "$?"
+  [[ "$FLAVOR" != "java11-docker-cloud" ]] || endSkipping
+}
+
 . ./shunit2/shunit2
