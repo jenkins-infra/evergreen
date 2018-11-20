@@ -30,5 +30,4 @@ if [[ "${INSECURE_SHOW_ADMIN_PASSWORD:-false}" == "true" ]]; then
 fi
 
 export JENKINS_ADMIN_PASSWORD
-JENKINS_SCRIPT="${1:-jenkins.sh}"
-exec "${EVERGREEN_HOME}"/scripts/"${JENKINS_SCRIPT}"
+exec "${EVERGREEN_HOME}"/scripts/jenkins.sh

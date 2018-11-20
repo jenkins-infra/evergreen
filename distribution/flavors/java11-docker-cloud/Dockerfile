@@ -108,6 +108,7 @@ USER root
 # /usr/local/bin
 RUN ln -s /evergreen/scripts/jenkins-support /usr/local/bin
 
+# TODO Checksum JDK
 RUN mkdir /usr/java && \
     curl -LS https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.1%2B13/OpenJDK11-jdk_x64_linux_openj9_11.0.1_13.tar.gz | \
     tar xzf - -C /usr/java && \
@@ -129,6 +130,7 @@ RUN mkdir ${JAVA_LIB_DIR} \
 COPY --chown=jenkins:jenkins build/evergreen-${FLAVOR}.zip /
 RUN cd / && unzip -q evergreen-${FLAVOR}.zip && chown -R jenkins:jenkins /evergreen
 RUN rm -f /evergreen-${FLAVOR}.zip
+RUN mv ${EVERGREEN_HOME}/scripts/jenkins-jdk11.sh ${EVERGREEN_HOME}/scripts/jenkins.sh
 
 # Jenkins directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
