@@ -163,6 +163,12 @@ spec:
           version: 1.11.403
     - name: java11-docker-cloud
       plugins:
+        - groupId: io.jenkins.docker
+          artifactId: docker-plugin
+          version: 1.1.6-rc865.abf142391212
+        - groupId: org.jenkins-ci.plugins.workflow
+          artifactId: workflow-support
+          version: 2.21-rc591.43d37d4d080a
 status:
   core:
     version: '2.149'
@@ -490,3 +496,14 @@ status:
         - groupId: org.jenkins-ci.plugins
           artifactId: node-iterator-api
           version: 1.5.0
+    - name: java11-docker-cloud
+      plugins:
+        - groupId: org.jenkins-ci.plugins
+          artifactId: docker-java-api
+          version: 3.0.14
+        - groupId: io.jenkins.docker
+          artifactId: docker-plugin
+          version: 1.1.6-rc865.abf142391212
+        - groupId: org.jenkins-ci.plugins
+          artifactId: ssh-slaves
+          version: '1.22'
