@@ -66,6 +66,8 @@ RUN apt-get update -y &&\
     time \
     nginx
 
+RUN useradd -d /var/lib/nginx -s /sbin/nologin nginx
+
 # Ensure the latest npm is available
 RUN npm install npm@latest -g
 
