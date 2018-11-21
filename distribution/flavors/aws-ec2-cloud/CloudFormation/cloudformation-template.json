@@ -60,7 +60,7 @@
               "echo \"", { "Ref": "PrivateKey"}, "\" > ssh-agents-private-key\n",
               "sudo docker volume create jenkins-evergreen-data\n",
               "sudo docker pull $DOCKER_IMAGE\n",
-              "sudo docker run -d -p 8080:8080 -p 50000:50000 ",
+              "sudo docker run -d -p 8080:80 -p 50000:50000 ",
               " --name evergreen",
               " --restart=always",
               " -v jenkins-evergreen-data:/evergreen/data",
