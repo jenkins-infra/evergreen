@@ -4,7 +4,7 @@ COMPOSE:=$(ROOT_DIR)/tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
-SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master/
+SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master
 SQUID_VOLUME_NAME=squid-cache
 
 DIST_DIR=build/evergreen
@@ -32,7 +32,7 @@ store-commit:
 	git rev-parse HEAD > commit.txt
 
 ## Distribution
-distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip
+distribution: build/evergreen.zip build/evergreen-docker-cloud.zip build/evergreen-aws-ec2-cloud.zip build/evergreen-java11-docker-cloud.zip
 
 prepare-distribution: build/jenkins-support build/jenkins.sh
 	$(MAKE) -C client compile
@@ -56,6 +56,11 @@ prepare-aws-ec2-cloud-distribution:
 	mkdir -p build/evergreen-aws-ec2-cloud/evergreen
 	rsync -avm --delete flavors/aws-ec2-cloud/config ./build/evergreen-aws-ec2-cloud/evergreen
 
+prepare-java11-docker-cloud-distribution: build/jenkins-jdk11.sh prepare-distribution
+	rsync -avm ./build/jenkins-jdk11.sh $(DIST_DIR)/scripts
+	mkdir -p build/evergreen-java11-docker-cloud/evergreen
+	rsync -avm --delete flavors/java11-docker-cloud/config ./build/evergreen-java11-docker-cloud/evergreen
+
 build/evergreen-aws-ec2-cloud.zip: prepare-aws-ec2-cloud-distribution
 	(cd build && \
 		zip -q -r evergreen-aws-ec2-cloud.zip evergreen && \
@@ -67,6 +72,12 @@ build/evergreen-docker-cloud.zip: prepare-docker-cloud-distribution
 		zip -q -r evergreen-docker-cloud.zip evergreen && \
 		cd evergreen-docker-cloud && \
 		zip -q -r ../evergreen-docker-cloud.zip ./evergreen)
+
+build/evergreen-java11-docker-cloud.zip: prepare-java11-docker-cloud-distribution
+	(cd build && \
+		zip -q -r evergreen-java11-docker-cloud.zip evergreen && \
+		cd evergreen-java11-docker-cloud && \
+		zip -q -r ../evergreen-java11-docker-cloud.zip ./evergreen)
 
 build/evergreen.zip: prepare-distribution
 	(cd build && \
@@ -84,7 +95,7 @@ container-check-prereqs: shunit2 ./tests/tests.sh ./tests/offline-tests.sh creat
 	$(MAKE) -C ../services lint
 	$(MAKE) -C ../services dump generate-ingest
 
-container-check: docker-cloud-container-check aws-cloud-container-check rollback-check
+container-check: docker-cloud-container-check aws-cloud-container-check java11-docker-cloud-check rollback-check
 
 # Only checking it on docker-cloud.
 rollback-check: containers container-check-prereqs
@@ -97,6 +108,10 @@ docker-cloud-container-check: containers container-check-prereqs
 aws-cloud-container-check: containers container-check-prereqs
 	FLAVOR=aws-ec2-cloud ./tests/offline-tests.sh
 	FLAVOR=aws-ec2-cloud ./tests/tests.sh
+
+java11-docker-cloud-container-check: containers container-check-prereqs
+	FLAVOR=java11-docker-cloud ./tests/offline-tests.sh
+	FLAVOR=java11-docker-cloud ./tests/tests.sh
 
 container: container-prereqs Dockerfile config/supervisord.conf
 	$(MAKE) -C client build
@@ -129,13 +144,18 @@ clean:
 
 #################
 
-build/jenkins.sh:
+build:
 	mkdir -p build
+
+build/jenkins-jdk11.sh: build
+	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-jdk11.sh > $@
+	chmod +x $@
+
+build/jenkins.sh: build
 	$(DOWNLOAD)  $(SCRIPTS_URL)/jenkins.sh > $@
 	chmod +x $@
 
-build/jenkins-support:
-	mkdir -p build
+build/jenkins-support: build
 	$(DOWNLOAD) $(SCRIPTS_URL)/jenkins-support > $@
 	chmod +x $@
 

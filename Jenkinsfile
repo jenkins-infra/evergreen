@@ -164,6 +164,17 @@ pipeline {
                       }
                   }
                 }
+                stage('Java 11 Docker Cloud image') {
+                  agent { label 'linux' }
+                  steps {
+                      sh 'make -C distribution clean java11-docker-cloud-container-check'
+                  }
+                  post {
+                      always {
+                          archiveArtifacts artifacts: '**/build/tests-run*/**'
+                      }
+                  }
+                }
             }
         }
 
