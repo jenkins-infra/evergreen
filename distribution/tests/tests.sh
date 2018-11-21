@@ -82,16 +82,14 @@ test_plugins_are_not_exploded_under_jenkins_home() {
 }
 test_war_is_not_exploded_under_jenkins_home() {
   # shellcheck disable=SC2016
-  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/war' 2>&1 )
-  assertNotEquals "war directory should not be found" "0" "$?"
-  assertEquals "ls should not find war directory" "ls: /evergreen/data/jenkins/home/war: No such file or directory" "$result"
+  result=$( docker exec "$container_under_test" bash -c 'test -d $JENKINS_HOME/war' 2>&1 )
+  assertNotEquals "war directory should not be found (output=$result)" "0" "$?"
 }
 test_logs_are_not_under_jenkins_home() {
 
   # shellcheck disable=SC2016
-  result=$( docker exec "$container_under_test" bash -c 'ls $JENKINS_HOME/logs' 2>&1 )
-  assertNotEquals "ls should return non zero for logs dir" "0" "$?"
-  assertEquals "ls should not find logs directory" "ls: $JENKINS_HOME/logs: No such file or directory" "$result"
+  result=$( docker exec "$container_under_test" bash -c 'test -d $JENKINS_HOME/logs' 2>&1 )
+  assertNotEquals "ls should return non zero for logs dir, i.e. dir should be absent (output=$result)" "0" "$?"
 }
 
 test_jenkins_logs_is_found_on_disk() {
