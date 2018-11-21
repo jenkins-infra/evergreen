@@ -88,11 +88,11 @@ test_docker_flavor_custom_supervisordconf() {
 
 # JENKINS-54598
 test_java_version() {
-  [[ "$FLAVOR" != "java11-docker-cloud" ]] || startSkipping
+  [[ "$FLAVOR" = "java11-docker-cloud" ]] || startSkipping
   result=$(docker run --rm -jenkins/evergreen:java11-docker-cloud java -version 2>&1 \
     | grep "(build 11.")
   assertEquals "java 11 should be installed" 0 "$?"
-  [[ "$FLAVOR" != "java11-docker-cloud" ]] || endSkipping
+  [[ "$FLAVOR" = "java11-docker-cloud" ]] || endSkipping
 }
 
 . ./shunit2/shunit2
