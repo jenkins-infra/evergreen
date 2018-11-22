@@ -110,12 +110,11 @@ USER root
 # /usr/local/bin
 RUN ln -s /evergreen/scripts/jenkins-support /usr/local/bin
 
-# TODO Checksum JDK
-RUN mkdir /usr/java && \
-    curl -LS https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.1%2B13/OpenJDK11-jdk_x64_linux_openj9_11.0.1_13.tar.gz | \
-    tar xzf - -C /usr/java && \
-    mv /usr/java/jdk*/* /usr/java && \
-    rmdir /usr/java/jdk*
+RUN curl -L --show-error https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_linux-x64_bin.tar.gz --output openjdk.tar.gz && \
+    echo "7a6bb980b9c91c478421f865087ad2d69086a0583aeeb9e69204785e8e97dcfd  openjdk.tar.gz" | sha256sum -c && \
+    tar xvzf openjdk.tar.gz && \
+    mv jdk-11.0.1/ /usr/java && \
+    rm openjdk.tar.gz
 ENV PATH=$PATH:/usr/java/bin
 
  # Libs required to run on Java 11
