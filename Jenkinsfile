@@ -2,7 +2,7 @@ pipeline {
     agent { label 'linux' }
 
     options {
-        timeout(time: 1, unit: 'HOURS')
+        timeout(time: 4, unit: 'HOURS')
         buildDiscarder(logRotator(daysToKeepStr: '10'))
         timestamps()
     }
