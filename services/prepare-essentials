@@ -2,7 +2,7 @@
 
 const logger          = require('winston');
 const yargs           = require('yargs');
-const compareVersions = require('compare-versions')
+const compareVersions = require('node-version-compare');
 
 const Ingest           = require('./cli/ingest');
 const Manifest         = require('./cli/manifest');
@@ -22,12 +22,8 @@ yargs.command('propose-updates',
       if (updated == null) {
         logger.warn(`No such plugin ${plugin.artifactId}`);
       } else if (!plugin.version.match(/(.*?)-rc(\d+)\.(.*)?/)) {
-        try {
-          if (compareVersions(updated.version, plugin.version) == 1) {
-            logger.info(`The update center has a newer ${plugin.artifactId}: ${updated.version}`);
-          }
-        } catch (x) {
-          logger.warn(`Could not compare ${plugin.artifactId}:${plugin.version} to ${updated.version}: ${x}`);
+        if (compareVersions(updated.version, plugin.version) == 1) {
+          logger.info(`The update center has a newer ${plugin.artifactId}: ${updated.version}`);
         }
       }
     });
