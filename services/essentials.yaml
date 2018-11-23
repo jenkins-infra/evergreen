@@ -168,7 +168,7 @@ spec:
           version: 1.1.6-rc865.abf142391212
         - groupId: org.jenkins-ci.plugins.workflow
           artifactId: workflow-support
-          version: 2.21-rc591.43d37d4d080a
+          version: 2.23-rc674.73bb98187744
 status:
   core:
     version: '2.149'
@@ -507,3 +507,6 @@ status:
         - groupId: org.jenkins-ci.plugins
           artifactId: ssh-slaves
           version: '1.22'
+        - groupId: org.jenkins-ci.plugins.workflow
+          artifactId: workflow-support
+          version: 2.23-rc674.73bb98187744
