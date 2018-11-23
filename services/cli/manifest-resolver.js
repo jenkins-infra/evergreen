@@ -2,7 +2,7 @@
 
 const logger          = require('winston');
 const request         = require('request-promise');
-const compareVersions = require('compare-versions');
+const compareVersions = require('node-version-compare');
 
 const PluginManifest   = require('./plugin-manifest');
 const PluginDependency = require('./plugin-dependency');
