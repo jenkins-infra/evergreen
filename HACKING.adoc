@@ -26,29 +26,23 @@ submit pull requests to improve support for other development environments.
 
 The `Makefile` at the project root should help you getting started.
 
-`make check` or the more specific `make container-check` is likely where you
+`make check` or the more specific `cd distribution && make container-check` is likely where you
 want to start to understand how things work, and be able to modify them and see
 the impact.
 
 === Running the whole stack locally
 
-To develop on a developer box and quite easily set up both the backend services and the Jenkins Evergreen instance, you need to do the following:
+To develop on a developer box and quite easily set up both the backend services and the Jenkins Evergreen instance,
+you need to run the `start-dev.sh` script located in `distribution/bin/start-dev.sh`.
 
 [source,shell, title=from the repo root]
-cd distribution/
-make run
-# wait enough for services to be fully started. Should be <30 seconds.
-sleep 30
-curl --data-raw "{\"commit\":\"container-tests\",\"manifest\":$(cat ../services/ingest.json)}" \
--H 'Authorization: the API calls are coming from inside the house' \
--H 'Content-Type: application/json' \
-http://localhost:3030/update
+$ distribution/bin/start-dev.sh
 
-As soon as you post the `json` into that URL, you should see logs showing Evergreen has started to download plugins and so on.
+At some point, you should see logs showing Evergreen has started to download plugins and so on.
 
 Then open your browser on http://localhost:8080 and you should see your development version for _Jenkins Evergreen_ coming up.
 
-TIP: Expect some delay for the first time, because you will need to many dozens of MB.
+TIP: Expect some delay for the first time, because you will need to download many dozens of MB.
 However, an `squid` proxy cache is set up while using this `make run`, hence these downloads should be very fast the next times.
 
 === Code style
