@@ -138,6 +138,9 @@ spec:
     - groupId: org.jenkins-ci.ui
       artifactId: momentjs
       version: 1.1.1
+    - groupId: org.jenkinsci.plugins
+      artifactId: pipeline-model-definition
+      version: 1.3.3
   environments:
     - name: docker-cloud
       plugins:
@@ -376,16 +379,16 @@ status:
       version: 1.3.1
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-api
-      version: 1.3.2
+      version: 1.3.3
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-declarative-agent
       version: 1.1.1
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-definition
-      version: 1.3.2
+      version: 1.3.3
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-extensions
-      version: 1.3.2
+      version: 1.3.3
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-rest-api
       version: '2.10'
@@ -394,7 +397,7 @@ status:
       version: '2.3'
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-stage-tags-metadata
-      version: 1.3.2
+      version: 1.3.3
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-stage-view
       version: '2.10'
