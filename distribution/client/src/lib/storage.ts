@@ -82,39 +82,29 @@ export default class Storage {
     const pluginPath = this.pluginsDirectory();
     const retArray = [];
     plugins.forEach((plugin) => {
-      retArray.push(new Promise((resolve, reject) => {
-        fs.remove(`${pluginPath}/${plugin}`, (err) => {
-          if(err) {
-            logger.debug(`${pluginPath}/${plugin} was not found.`);
-          }
-          logger.info(`${pluginPath}/${plugin} was removed`);
-          resolve(true);
-        });
-      }));
-      retArray.push(new Promise((resolve, reject) => {
-
-        fs.unlink(`${pluginPath}/${plugin}.hpi`, (err) => {
-          if (err) {
-            logger.debug(`${pluginPath}/${plugin}.hpi was not found.`);
-          }
-          logger.info(`${pluginPath}/${plugin}.hpi was deleted`);
-          UI.publish(`Deleted ${plugin}.hpi`);
-          resolve(true);
-        });
-
-      }));
-      retArray.push(new Promise((resolve, reject) => {
-
-        fs.unlink(`${pluginPath}/${plugin}.jpi`, (err) => {
-          if (err) {
-            logger.debug(`${pluginPath}/${plugin}.jpi was not found.`);
-          }
-          logger.info(`${pluginPath}/${plugin}.jpi was deleted`);
-          UI.publish(`Deleted ${plugin}.jpi`);
-          resolve(true);
-        });
-
-      }));
+      retArray.push(
+        remove(`${pluginPath}/${plugin}`)
+          .then(() => {
+            logger.info(`${pluginPath}/${plugin} was deleted.`);
+            return true;
+          }).catch(() => logger.debug(`${pluginPath}/${plugin} was not found.`))
+      );
+      retArray.push(
+        unlink(`${pluginPath}/${plugin}.hpi`)
+          .then(() => {
+            logger.info(`${pluginPath}/${plugin}.hpi was deleted.`);
+            UI.publish(`Deleted ${plugin}.hpi`);
+            return true;
+          }).catch(() => logger.info(`${pluginPath}/${plugin}.hpi was not found.`))
+      );
+      retArray.push(
+        unlink(`${pluginPath}/${plugin}.jpi`)
+          .then(() => {
+            logger.info(`${pluginPath}/${plugin}.jpi was deleted.`);
+            UI.publish(`Deleted ${plugin}.jpi`);
+            return true;
+          }).catch(() => logger.debug(`${pluginPath}/${plugin}.jpi was not found.`))
+      );
     });
     return Promise.all(retArray);
   }
