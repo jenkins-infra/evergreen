@@ -8,7 +8,7 @@ spec:
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.1'
+      version: '1.4'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc63.e2bbb0e347b6
@@ -268,7 +268,7 @@ status:
       version: 3.4.1
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.1'
+      version: '1.4'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
       version: 2.1.18
