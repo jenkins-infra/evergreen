@@ -134,16 +134,16 @@ update-center.json:
 update-center-experimental.json:
 	wget -O update-center-experimental.json https://updates.jenkins.io/experimental/update-center.actual.json
 
-propose-updates: update-center.json
+propose-updates: update-center.json depends
 	node ./prepare-essentials propose-updates --uc ./update-center.json
 
-propose-experimental-updates: update-center-experimental.json
+propose-experimental-updates: update-center-experimental.json depends
 	node ./prepare-essentials propose-updates --uc ./update-center-experimental.json
 
-generate-essentials: essentials.yaml prepare-essentials update-center.json
+generate-essentials: essentials.yaml prepare-essentials update-center.json depends
 	node ./prepare-essentials save
 
-generate-ingest: essentials.yaml prepare-essentials
+generate-ingest: essentials.yaml prepare-essentials depends
 	node ./prepare-essentials generate-ingest
 ##############################################################
 ##
