@@ -20,7 +20,7 @@ spec:
       version: 1.10.1
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
-      version: 2.2.15
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: 3.4.1
@@ -131,7 +131,7 @@ spec:
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jsch
-      version: 0.1.54.2
+      version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
       version: '1.50'
@@ -274,7 +274,7 @@ status:
       version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
-      version: 2.2.15
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-folder
       version: '6.6'
@@ -358,7 +358,7 @@ status:
       version: 1.2.1
     - groupId: org.jenkins-ci.plugins
       artifactId: jsch
-      version: 0.1.54.2
+      version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: junit
       version: 1.26.1
