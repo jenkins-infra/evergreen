@@ -19,6 +19,9 @@ spec:
       artifactId: blueocean
       version: 1.10.1
     - groupId: org.jenkins-ci.plugins
+      artifactId: sse-gateway
+      version: '1.17'
+    - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
       version: 2.3.0
     - groupId: org.jenkins-ci.plugins
@@ -433,7 +436,7 @@ status:
       version: '1.50'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
-      version: '1.16'
+      version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-agent
       version: '1.17'
