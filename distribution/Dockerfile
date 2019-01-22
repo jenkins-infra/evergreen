@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM centos:7.6.1810
 
 ARG user=jenkins
 ARG group=jenkins
@@ -50,17 +50,32 @@ EXPOSE ${agent_port}
 # The only dependencies for Jenkins Evergreen are:
 #   * supervisor
 #   * nodejs
-RUN apk add --no-cache git \
+RUN yum update -y
+RUN yum install -y --setopt=skip_missing_names_on_install=False \
+        epel-release
+RUN yum install -y --setopt=skip_missing_names_on_install=False \
+                        git \
                         ca-certificates \
-                        openssh-client \
+                        openssh-clients \
                         unzip \
                         bash \
-                        openjdk8 \
+                        java-1.8.0-openjdk \
                         supervisor \
-                        ttf-dejavu \
+                        dejavu-sans-mono-fonts \
                         curl \
                         socat \
                         nginx
+
+# Use the auto-install script, but prevent any unnoticed change
+# https://linuxize.com/post/how-to-install-node-js-on-centos-7/
+RUN curl -sL https://rpm.nodesource.com/setup_10.x > /tmp/install-node && \
+    echo "2050d9584f54fd1da7dfc54f52eac24d  /tmp/install-node" | md5sum --check && \
+    cat /tmp/install-node| bash - && \
+    rm /tmp/install-node
+RUN yum install -y --setopt=skip_missing_names_on_install=False \
+    nodejs
+RUN node --version | grep '^v10.' > /dev/null && \
+    npm --version | grep '^6.' > /dev/null
 
 # Ensure the latest npm is available
 RUN npm install npm@latest -g
@@ -79,10 +94,8 @@ RUN cd /tmp && \
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
-RUN deluser node && \
-    addgroup -g ${gid} ${group} && \
-    adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
-
+RUN groupadd -g ${gid} ${group}
+RUN adduser --home-dir "$JENKINS_HOME" --uid ${uid} --gid ${group} --shell /bin/bash ${user}
 
 COPY commit.txt /
 
