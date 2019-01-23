@@ -24,4 +24,5 @@ else
   echo "Client is starting up"
 fi
 
-exec /usr/local/bin/npm run start
+export PATH=/usr/bin:/usr/local/bin:$PATH
+exec npm run start

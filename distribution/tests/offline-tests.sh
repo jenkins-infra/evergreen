@@ -14,7 +14,7 @@ oneTimeSetUp() {
 
 # JENKINS-49864
 test_docker_CLI_available() {
-  docker exec "$container_under_test" which docker > /dev/null
+  docker exec "$container_under_test" docker --version > /dev/null
   assertEquals "docker found in the PATH" 0 $?
 
   # Check that not only something called docker can be found on the PATH
