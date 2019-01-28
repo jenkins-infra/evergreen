@@ -17,7 +17,7 @@ spec:
       version: 0.5.1
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.10.1
+      version: 1.10.2
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.17'
@@ -26,7 +26,7 @@ spec:
       version: 2.4.0
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: 3.4.1
+      version: '3.5'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.17'
@@ -35,7 +35,7 @@ spec:
       version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: git
-      version: 4.0.0-rc2892.70634f157021
+      version: 4.0.0-rc3016.df016c238c06
     - groupId: org.jenkins-ci.plugins
       artifactId: git-client
       version: 3.0.0-beta6-rc1776.912790760394
@@ -137,7 +137,7 @@ spec:
       version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.50'
+      version: '1.51'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
       version: '1.17'
@@ -146,7 +146,7 @@ spec:
       version: '1.13'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
-      version: '2.5'
+      version: '2.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
       version: 3.0.5
@@ -205,67 +205,67 @@ status:
       version: '1.3'
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.10.1
+      version: 1.10.2
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-autofavorite
       version: 1.2.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-bitbucket-pipeline
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-commons
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-config
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-core-js
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-dashboard
-      version: 1.10.1
+      version: 1.10.2
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-display-url
       version: 2.2.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-events
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-git-pipeline
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-github-pipeline
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-i18n
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jira
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jwt
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-personalization
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-api-impl
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-editor
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-scm-api
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest-impl
-      version: 1.10.1
+      version: 1.10.2
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-web
-      version: 1.10.1
+      version: 1.10.2
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
       version: '2.17'
@@ -283,7 +283,7 @@ status:
       version: '6.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: 3.4.1
+      version: '3.5'
     - groupId: io.jenkins
       artifactId: configuration-as-code
       version: '1.4'
@@ -316,10 +316,10 @@ status:
       version: 2.3.2
     - groupId: org.jenkins-ci.plugins
       artifactId: git
-      version: 4.0.0-rc2892.70634f157021
+      version: 4.0.0-rc3016.df016c238c06
     - groupId: org.jenkins-ci.plugins
       artifactId: git-client
-      version: 3.0.0-beta6-rc1776.912790760394
+      version: 3.0.0-beta7-rc1887.63cf3cdbaf54
     - groupId: org.jenkins-ci.plugins
       artifactId: git-server
       version: '1.7'
@@ -352,7 +352,7 @@ status:
       version: '1.2'
     - groupId: io.jenkins.blueocean
       artifactId: jenkins-design-language
-      version: 1.10.1
+      version: 1.10.2
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
       version: 3.0.5
@@ -430,10 +430,10 @@ status:
       version: '1.12'
     - groupId: org.jenkins-ci.plugins
       artifactId: scm-api
-      version: 2.2.8
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.50'
+      version: '1.51'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.17'
@@ -448,7 +448,7 @@ status:
       version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
-      version: '2.5'
+      version: '2.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: variant
       version: '1.1'
