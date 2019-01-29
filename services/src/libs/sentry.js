@@ -83,11 +83,7 @@ class Sentry {
       },
     };
 
-    if (data.log.exception) {
-      this.raven.captureException(new Error(data.log.message), errorData);
-    } else {
-      this.raven.captureMessage(data.log.message, errorData);
-    }
+    this.raven.captureMessage(data.log.message, errorData);
   }
 }
 
