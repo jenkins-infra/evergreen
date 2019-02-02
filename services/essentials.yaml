@@ -83,7 +83,7 @@ spec:
       version: '2.6'
     - groupId: org.jenkins-ci.plugins
       artifactId: durable-task
-      version: '1.28'
+      version: '1.29'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
       version: '2.33'
@@ -92,13 +92,13 @@ spec:
       version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.62'
+      version: '2.63'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.12'
+      version: '2.13'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.28'
+      version: '2.29'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
       version: '2.31'
@@ -107,10 +107,10 @@ spec:
       version: '2.7'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-step-api
-      version: '2.18'
+      version: '2.19'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
-      version: '3.1'
+      version: '3.2'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-utility-steps
       version: 2.2.0
@@ -304,7 +304,7 @@ status:
       version: '1.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: durable-task
-      version: '1.28'
+      version: '1.29'
     - groupId: io.jenkins.plugins
       artifactId: essentials
       version: 0.5.1
@@ -463,13 +463,13 @@ status:
       version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.62'
+      version: '2.63'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.12'
+      version: '2.13'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.28'
+      version: '2.29'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
       version: '2.31'
@@ -481,10 +481,10 @@ status:
       version: '2.7'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-step-api
-      version: '2.18'
+      version: '2.19'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
-      version: '3.1'
+      version: '3.2'
   environments:
     - name: docker-cloud
       plugins:
