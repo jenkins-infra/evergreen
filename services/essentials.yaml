@@ -189,7 +189,7 @@ spec:
       plugins:
         - groupId: io.jenkins.docker
           artifactId: docker-plugin
-          version: 1.1.6-rc865.abf142391212
+          version: 1.1.6-rc873.9fdb4e76a001
 status:
   core:
     version: '2.162'
@@ -524,7 +524,7 @@ status:
           version: 3.0.14
         - groupId: io.jenkins.docker
           artifactId: docker-plugin
-          version: 1.1.6-rc865.abf142391212
+          version: 1.1.6-rc873.9fdb4e76a001
         - groupId: org.jenkins-ci.plugins
           artifactId: ssh-slaves
           version: '1.22'
