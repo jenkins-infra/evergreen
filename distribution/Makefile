@@ -4,7 +4,7 @@ COMPOSE:=$(ROOT_DIR)/tools/compose
 DOWNLOAD=curl -sSL
 # This variable is used for downloading some of the "upstream" maintained
 # scripts necessary for running Jenkins nicely inside of Docker
-SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/master
+SCRIPTS_URL=https://raw.githubusercontent.com/jenkinsci/docker/a7bdb0450a730badb219fbec0d20a22233aac723
 SQUID_VOLUME_NAME=squid-cache
 
 DIST_DIR=build/evergreen
