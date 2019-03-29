@@ -95,7 +95,7 @@ spec:
       version: '2.15'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.64'
+      version: '2.65'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.13'
@@ -140,7 +140,7 @@ spec:
       version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.55'
+      version: '1.56'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
       version: '1.17'
@@ -168,6 +168,9 @@ spec:
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.5'
+    - groupId: org.6wind.jenkins
+      artifactId: lockable-resources
+      version: '2.5'
   environments:
     - name: docker-cloud
       plugins:
@@ -376,7 +379,7 @@ status:
       version: '1.27'
     - groupId: org.6wind.jenkins
       artifactId: lockable-resources
-      version: '2.3'
+      version: '2.5'
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.23'
@@ -442,7 +445,7 @@ status:
       version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.55'
+      version: '1.56'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.17'
@@ -472,7 +475,7 @@ status:
       version: '2.15'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.64'
+      version: '2.65'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
       version: '2.13'
