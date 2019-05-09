@@ -290,7 +290,7 @@ test_no_hpi() {
 test_no_remotingCLI_in_casc_file() {
 
   # race condition risk? That check might run *before* the plugin has had the time to modify the file?
-  docker exec "$container_under_test" bash -c 'cat $EVERGREEN_HOME/config/as-code/create-admin-user.yaml | grep remotingCLI'
+  docker exec "$container_under_test" bash -c "cat $EVERGREEN_HOME/config/as-code/create-admin-user.yaml | grep remotingCLI"
   assertNotEquals "casc file should NOT contain remotingCLI entry anymore" 0 "$?"
 
 }
