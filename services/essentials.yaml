@@ -4,14 +4,14 @@ metadata:
   annotations: null
 spec:
   core:
-    version: '2.164'
+    version: '2.165'
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
       version: '1.10'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
-      version: 1.0-rc63.e2bbb0e347b6
+      version: 1.0-rc71.83f7f00c3452
     - groupId: io.jenkins.plugins
       artifactId: essentials
       version: 0.5.1
@@ -201,7 +201,7 @@ spec:
           version: 1.1.6-rc873.9fdb4e76a001
 status:
   core:
-    version: '2.164'
+    version: '2.165'
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
@@ -322,7 +322,7 @@ status:
       version: 0.5.1
     - groupId: io.jenkins.plugins
       artifactId: evergreen
-      version: 1.0-rc63.e2bbb0e347b6
+      version: 1.0-rc71.83f7f00c3452
     - groupId: org.jvnet.hudson.plugins
       artifactId: favorite
       version: 2.3.2
