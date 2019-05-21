@@ -31,6 +31,9 @@ spec:
       artifactId: config-file-provider
       version: '3.5'
     - groupId: org.jenkins-ci.plugins
+      artifactId: credentials
+      version: 2.1.19
+    - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.18'
     - groupId: org.jenkins-ci.plugins
@@ -301,7 +304,7 @@ status:
       version: '1.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
-      version: 2.1.18
+      version: 2.1.19
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
       version: '1.18'
