@@ -23,7 +23,9 @@
     "eslint": "eslint src/. test/. acceptance/. cli-test/. cli/. --config .eslintrc.json",
     "start": "node src/",
     "jest": "jest --bail --forceExit ./test",
-    "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance"
+    "acceptance": "jest -i --bail --coverageDirectory=coverage/acceptance --forceExit ./acceptance",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.11",
@@ -55,7 +57,8 @@
     "serve-favicon": "^2.5.0",
     "url-parse": "^1.4.3",
     "uuid": "^3.3.2",
-    "winston": "^2.4.4"
+    "winston": "^2.4.4",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@feathersjs/socketio-client": "^1.1.0",
@@ -92,5 +95,6 @@
         "lines": 86
       }
     }
-  }
+  },
+  "snyk": true
 }
