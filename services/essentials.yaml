@@ -4,11 +4,11 @@ metadata:
   annotations: null
 spec:
   core:
-    version: '2.183'
+    version: '2.187'
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.22'
+      version: '1.23'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc71.83f7f00c3452
@@ -23,7 +23,7 @@ spec:
       version: '1.18'
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
-      version: 2.5.2
+      version: 2.5.3
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
       version: 2.4.5
@@ -71,7 +71,7 @@ spec:
       version: '1.18'
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.9.8
+      version: 2.9.9.1
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.23'
@@ -98,13 +98,13 @@ spec:
       version: '2.18'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.70'
+      version: '2.72'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.13'
+      version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.30'
+      version: '2.32'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
       version: '2.33'
@@ -119,7 +119,7 @@ spec:
       version: '3.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-utility-steps
-      version: 2.2.0
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-graph-analysis
       version: '1.9'
@@ -131,7 +131,7 @@ spec:
       version: 4.0.2.3-rc229.d9b0eb3c576d
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
-      version: '1.2'
+      version: '1.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: authentication-tokens
       version: '1.3'
@@ -143,7 +143,7 @@ spec:
       version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.60'
+      version: '1.61'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
       version: '1.19'
@@ -204,7 +204,7 @@ spec:
           version: 1.1.6-rc873.9fdb4e76a001
 status:
   core:
-    version: '2.183'
+    version: '2.187'
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
@@ -283,7 +283,7 @@ status:
       version: '2.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
-      version: 2.5.2
+      version: 2.5.3
     - groupId: org.jenkins-ci.plugins
       artifactId: buildtriggerbadge
       version: '2.10'
@@ -292,13 +292,13 @@ status:
       version: 2.4.5
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-folder
-      version: '6.8'
+      version: '6.9'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
       version: 3.6.2
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.22'
+      version: '1.23'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
       version: 2.2.0
@@ -358,10 +358,10 @@ status:
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.9.8
+      version: 2.9.9.1
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
-      version: '1.2'
+      version: '1.3'
     - groupId: io.jenkins.blueocean
       artifactId: jenkins-design-language
       version: 1.17.0
@@ -433,7 +433,7 @@ status:
       version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-utility-steps
-      version: 2.2.0
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.5'
@@ -442,10 +442,10 @@ status:
       version: '1.12'
     - groupId: org.jenkins-ci.plugins
       artifactId: scm-api
-      version: 2.4.1
+      version: 2.6.3
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.60'
+      version: '1.61'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
       version: '1.18'
@@ -475,13 +475,13 @@ status:
       version: '2.18'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.70'
+      version: '2.72'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.13'
+      version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.31'
+      version: '2.32'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
       version: '2.33'
