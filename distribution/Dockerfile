@@ -69,7 +69,7 @@ RUN yum install -y --setopt=skip_missing_names_on_install=False \
 # Use the auto-install script, but prevent any unnoticed change
 # https://linuxize.com/post/how-to-install-node-js-on-centos-7/
 RUN curl -sL https://rpm.nodesource.com/setup_10.x > /tmp/install-node && \
-    echo "2050d9584f54fd1da7dfc54f52eac24d  /tmp/install-node" | md5sum --check && \
+    echo "854ac37b5c96517ad3082e3ce4292d8e  /tmp/install-node" | md5sum --check && \
     cat /tmp/install-node| bash - && \
     rm /tmp/install-node
 RUN yum install -y --setopt=skip_missing_names_on_install=False \
