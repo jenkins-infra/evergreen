@@ -4,11 +4,11 @@ metadata:
   annotations: null
 spec:
   core:
-    version: '2.176'
+    version: '2.187'
   plugins:
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.17'
+      version: '1.23'
     - groupId: io.jenkins.plugins
       artifactId: evergreen
       version: 1.0-rc71.83f7f00c3452
@@ -17,25 +17,25 @@ spec:
       version: 0.5.1
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.16.0
+      version: 1.17.0
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
-      version: '1.17'
+      version: '1.18'
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
-      version: 2.5.2
+      version: 2.5.3
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
-      version: 2.4.4
+      version: 2.4.5
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.5'
+      version: 3.6.2
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
-      version: 2.1.19
+      version: 2.2.0
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
-      version: '1.18'
+      version: '1.19'
     - groupId: org.jenkins-ci.plugins
       artifactId: docker-workflow
       version: '1.18'
@@ -71,7 +71,7 @@ spec:
       version: '1.18'
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.9.8
+      version: 2.9.9.1
     - groupId: org.jenkins-ci.plugins
       artifactId: mailer
       version: '1.23'
@@ -92,34 +92,34 @@ spec:
       version: '1.29'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
-      version: '2.34'
+      version: '2.35'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-basic-steps
-      version: '2.16'
+      version: '2.18'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.68'
+      version: '2.72'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.13'
+      version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.30'
-    - groupId: org.jenkins-ci.plugins.workflow
-      artifactId: workflow-job
       version: '2.32'
     - groupId: org.jenkins-ci.plugins.workflow
+      artifactId: workflow-job
+      version: '2.33'
+    - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-scm-step
-      version: '2.7'
+      version: '2.9'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-step-api
-      version: '2.19'
+      version: '2.20'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
       version: '3.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-utility-steps
-      version: 2.2.0
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-graph-analysis
       version: '1.9'
@@ -131,7 +131,7 @@ spec:
       version: 4.0.2.3-rc229.d9b0eb3c576d
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
-      version: '1.2'
+      version: '1.3'
     - groupId: org.jenkins-ci.plugins
       artifactId: authentication-tokens
       version: '1.3'
@@ -143,7 +143,7 @@ spec:
       version: 0.1.55
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.59'
+      version: '1.61'
     - groupId: org.jenkins-ci.plugins
       artifactId: structs
       version: '1.19'
@@ -152,10 +152,10 @@ spec:
       version: '1.15'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
-      version: '2.7'
+      version: '2.8'
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.7
+      version: 3.0.8
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
       version: '1.1'
@@ -167,7 +167,7 @@ spec:
       version: 1.1.1
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-definition
-      version: 1.3.8
+      version: 1.3.9
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.5'
@@ -204,7 +204,7 @@ spec:
           version: 1.1.6-rc873.9fdb4e76a001
 status:
   core:
-    version: '2.176'
+    version: '2.187'
   plugins:
     - groupId: org.jenkins-ci.ui
       artifactId: ace-editor
@@ -217,94 +217,94 @@ status:
       version: '1.3'
     - groupId: io.jenkins.blueocean
       artifactId: blueocean
-      version: 1.16.0
+      version: 1.17.0
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-autofavorite
       version: 1.2.3
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-bitbucket-pipeline
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-commons
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-config
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-core-js
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-dashboard
-      version: 1.16.0
+      version: 1.17.0
     - groupId: org.jenkins-ci.plugins
       artifactId: blueocean-display-url
       version: 2.2.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-events
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-git-pipeline
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-github-pipeline
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-i18n
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jira
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-jwt
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-personalization
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-api-impl
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-editor
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-pipeline-scm-api
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-rest-impl
-      version: 1.16.0
+      version: 1.17.0
     - groupId: io.jenkins.blueocean
       artifactId: blueocean-web
-      version: 1.16.0
+      version: 1.17.0
     - groupId: org.jenkins-ci.plugins
       artifactId: bouncycastle-api
       version: '2.17'
     - groupId: org.jenkins-ci.plugins
       artifactId: branch-api
-      version: 2.5.2
+      version: 2.5.3
     - groupId: org.jenkins-ci.plugins
       artifactId: buildtriggerbadge
       version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-bitbucket-branch-source
-      version: 2.4.4
+      version: 2.4.5
     - groupId: org.jenkins-ci.plugins
       artifactId: cloudbees-folder
-      version: '6.8'
+      version: '6.9'
     - groupId: org.jenkins-ci.plugins
       artifactId: config-file-provider
-      version: '3.5'
+      version: 3.6.2
     - groupId: io.jenkins
       artifactId: configuration-as-code
-      version: '1.17'
+      version: '1.23'
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials
-      version: 2.1.19
+      version: 2.2.0
     - groupId: org.jenkins-ci.plugins
       artifactId: credentials-binding
-      version: '1.18'
+      version: '1.19'
     - groupId: org.jenkins-ci.plugins
       artifactId: display-url-api
       version: 2.3.0
@@ -358,16 +358,16 @@ status:
       version: 2.0.3
     - groupId: org.jenkins-ci.plugins
       artifactId: jackson2-api
-      version: 2.9.8
+      version: 2.9.9.1
     - groupId: org.jenkins-ci.plugins
       artifactId: jdk-tool
-      version: '1.2'
+      version: '1.3'
     - groupId: io.jenkins.blueocean
       artifactId: jenkins-design-language
-      version: 1.16.0
+      version: 1.17.0
     - groupId: org.jenkins-ci.plugins
       artifactId: jira
-      version: 3.0.7
+      version: 3.0.8
     - groupId: org.jenkins-ci.ui
       artifactId: jquery-detached
       version: 1.2.1
@@ -400,7 +400,7 @@ status:
       version: '2.7'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-graph-analysis
-      version: '1.9'
+      version: '1.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-input-step
       version: '2.10'
@@ -409,16 +409,16 @@ status:
       version: 1.3.1
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-api
-      version: 1.3.8
+      version: 1.3.9
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-declarative-agent
       version: 1.1.1
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-definition
-      version: 1.3.8
+      version: 1.3.9
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-model-extensions
-      version: 1.3.8
+      version: 1.3.9
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-rest-api
       version: '2.10'
@@ -427,13 +427,13 @@ status:
       version: '2.3'
     - groupId: org.jenkinsci.plugins
       artifactId: pipeline-stage-tags-metadata
-      version: 1.3.8
+      version: 1.3.9
     - groupId: org.jenkins-ci.plugins.pipeline-stage-view
       artifactId: pipeline-stage-view
       version: '2.10'
     - groupId: org.jenkins-ci.plugins
       artifactId: pipeline-utility-steps
-      version: 2.2.0
+      version: 2.3.0
     - groupId: org.jenkins-ci.plugins
       artifactId: plain-credentials
       version: '1.5'
@@ -442,13 +442,13 @@ status:
       version: '1.12'
     - groupId: org.jenkins-ci.plugins
       artifactId: scm-api
-      version: 2.4.1
+      version: 2.6.3
     - groupId: org.jenkins-ci.plugins
       artifactId: script-security
-      version: '1.59'
+      version: '1.61'
     - groupId: org.jenkins-ci.plugins
       artifactId: sse-gateway
-      version: '1.17'
+      version: '1.18'
     - groupId: org.jenkins-ci.plugins
       artifactId: ssh-agent
       version: '1.17'
@@ -460,7 +460,7 @@ status:
       version: '1.19'
     - groupId: org.jenkins-ci.plugins
       artifactId: token-macro
-      version: '2.7'
+      version: '2.8'
     - groupId: org.jenkins-ci.plugins
       artifactId: variant
       version: '1.1'
@@ -469,31 +469,31 @@ status:
       version: '2.6'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-api
-      version: '2.34'
+      version: '2.35'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-basic-steps
-      version: '2.16'
+      version: '2.18'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps
-      version: '2.68'
+      version: '2.72'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-cps-global-lib
-      version: '2.13'
+      version: '2.14'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-durable-task-step
-      version: '2.30'
+      version: '2.32'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-job
-      version: '2.32'
+      version: '2.33'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-multibranch
       version: '2.20'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-scm-step
-      version: '2.7'
+      version: '2.9'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-step-api
-      version: '2.19'
+      version: '2.20'
     - groupId: org.jenkins-ci.plugins.workflow
       artifactId: workflow-support
       version: '3.3'
