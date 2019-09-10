@@ -65,6 +65,7 @@
               " --restart=always",
               " -v jenkins-evergreen-data:/evergreen/data",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
+              " -e REGION=", {"Ref":"AWS::Region"},
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
               " -e AGENT_SECURITY_GROUP=", {"Ref":"EvergreenAgentSecurityGroup"},
               " $DOCKER_IMAGE\n"
