@@ -172,6 +172,18 @@
         }
       }
     },
+    "EC2EvergreenInstanceEIP": {
+        "DependsOn": [
+          "EvergreenVPC"
+        ],
+       "Type": "AWS::EC2::EIP",
+       "Properties": {
+       "Domain": "vpc",
+       "InstanceId" : {
+         "Ref" : "EC2EvergreenInstance"
+       }
+      }
+    },
     "EvergreenMasterSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
@@ -266,6 +278,17 @@
       },
       "S3BucketForArtifactManager": {
         "Type": "AWS::S3::Bucket"
+      }
+  },
+  "Outputs": {
+      "EC2EvergreenInstanceIP": {
+        "Description": "Public IP address of the Evergreen EC2 instance",
+        "Value": {
+          "Fn::GetAtt": [
+            "EC2EvergreenInstance",
+            "PublicIp"
+          ]
+        }
       }
   }
 }
