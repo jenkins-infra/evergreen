@@ -166,6 +166,21 @@
       },
       "S3BucketForArtifactManager": {
         "Type": "AWS::S3::Bucket"
+      },
+      "EC2EvergreenInstanceAlarm": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmDescription": "Trigger a recovery when instance status check fails for 5 consecutive minutes.",
+          "Namespace": "AWS/EC2",
+          "MetricName": "StatusCheckFailed_System",
+          "Statistic": "Minimum",
+          "Period": 60,
+          "EvaluationPeriods": 5,
+          "ComparisonOperator": "GreaterThanThreshold",
+          "Threshold": 0,
+          "AlarmActions": [ {"Fn::Join" : ["", ["arn:aws:automate:", { "Ref" : "AWS::Region" }, ":ec2:recover" ]]} ],
+          "Dimensions": [{"Name": "InstanceId","Value": {"Ref": "EC2EvergreenInstance"}}]
+        }
       }
   }
 }
