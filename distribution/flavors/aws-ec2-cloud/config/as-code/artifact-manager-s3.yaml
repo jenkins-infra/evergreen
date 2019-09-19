@@ -6,8 +6,7 @@ unclassified:
           provider: s3
 aws:
   awsCredentials:
-    # FIXME: not a sensible default for everyone
-    region: "us-east-1"
+    region: "${REGION}"
   s3:
     # TODO: create through CloudFormation
     container: "${ARTIFACT_MANAGER_S3_BUCKET_NAME}"
