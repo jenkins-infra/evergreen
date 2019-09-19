@@ -54,70 +54,8 @@ This will display a json output like the following:
 After a few minutes, the Jenkins master will have been created as an EC2 instance. To retrieve its IP, use the following command:
 
 [source,shell]
-aws cloudformation list-stack-resources --region us-east-1 --stack-name $STACK_NAME
-
-This should display something like the following:
-
-[source,json]
-{
-    "StackResourceSummaries": [
-        {
-            "LogicalResourceId": "EC2EvergreenInstance",
-            "PhysicalResourceId": "i-09acbba4df83bcc59",
-            "ResourceType": "AWS::EC2::Instance",
-            "LastUpdatedTimestamp": "2018-07-16T05:23:36.996Z",
-            "ResourceStatus": "CREATE_IN_PROGRESS",
-            "ResourceStatusReason": "Resource creation Initiated"
-        },
-        {
-            "LogicalResourceId": "EvergreenAgentSecurityGroup",
-            "PhysicalResourceId": "evergreen-test17793-EvergreenAgentSecurityGroup-2538QM8PAIPN",
-            "ResourceType": "AWS::EC2::SecurityGroup",
-            "LastUpdatedTimestamp": "2018-07-16T05:21:20.708Z",
-            "ResourceStatus": "CREATE_COMPLETE"
-        },
-        {
-            "LogicalResourceId": "EvergreenMasterRole",
-            "PhysicalResourceId": "evergreen-test17793-EvergreenMasterRole-120MK7UAUWEYO",
-            "ResourceType": "AWS::IAM::Role",
-            "LastUpdatedTimestamp": "2018-07-16T05:21:29.926Z",
-            "ResourceStatus": "CREATE_COMPLETE"
-        },
-        {
-            "LogicalResourceId": "EvergreenMasterSecurityGroup",
-            "PhysicalResourceId": "evergreen-test17793-EvergreenMasterSecurityGroup-L2O7JE3F1LLR",
-            "ResourceType": "AWS::EC2::SecurityGroup",
-            "LastUpdatedTimestamp": "2018-07-16T05:21:21.057Z",
-            "ResourceStatus": "CREATE_COMPLETE"
-        },
-        {
-            "LogicalResourceId": "MasterInstanceProfile",
-            "PhysicalResourceId": "evergreen-test17793-MasterInstanceProfile-9ZP9RP2YFF8",
-            "ResourceType": "AWS::IAM::InstanceProfile",
-            "LastUpdatedTimestamp": "2018-07-16T05:23:32.794Z",
-            "ResourceStatus": "CREATE_COMPLETE"
-        },
-        {
-            "LogicalResourceId": "S3BucketForArtifactManager",
-            "PhysicalResourceId": "evergreen-test17793-s3bucketforartifactmanager-hwdtoaezhx1c",
-            "ResourceType": "AWS::S3::Bucket",
-            "LastUpdatedTimestamp": "2018-07-16T05:21:40.019Z",
-            "ResourceStatus": "CREATE_COMPLETE"
-        }
-    ]
-}
-
-For the `EC2EvergreenInstance`, if the creation is complete enough, there will be also a `PhysicalResourceId`, here `i-09acbba4df83bcc59` in the example above.
-
-Use this to retrieve the instance IP address:
-
-[source,shell]
-aws ec2 describe-instances --region=us-east-1 --instance-ids <i-09acbba4df83bcc59> | \
-jq -r '.Reservations[0].Instances[].PublicIpAddress'
+aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='EC2EvergreenInstanceIP'].OutputValue" --output text
 1.2.3.4
-
-TIP: `jq` is a nice tool to process JSON.
-If you do not have it installed, either install it, or just look for `PublicIpAddress` field in the json returned from the `aws ec2 describe-instances` command.
 
 Once you have the public IP, after a few minutes
 footnote:[The master EC2 instance is being configured to run the Jenkins master. That is why even if the IP is already assigned, it could still take some more time to do additional things like installing Docker, pulling the evergreen image and have it started], open a browser on the http://1.2.3.4:8080 URL.
