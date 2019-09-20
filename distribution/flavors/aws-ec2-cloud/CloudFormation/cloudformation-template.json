@@ -3,8 +3,8 @@
   "Parameters" : {
     "InstanceTypeParameter" : {
       "Type" : "String",
-      "Default" : "t2.large",
-      "AllowedValues" : ["t2.micro", "m1.small", "m1.large", "t2.large"],
+      "Default" : "t3.large",
+      "AllowedValues" : ["t2.micro", "t3.micro", "m1.small", "m5.small", "m1.large", "m5.large", "t2.large", "t3.large"],
       "Description" : "Type of EC2 instance you want to run your master in."
     },
     "KeyNameParameter": {
