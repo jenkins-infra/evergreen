@@ -3,8 +3,8 @@
   "Parameters" : {
     "InstanceTypeParameter" : {
       "Type" : "String",
-      "Default" : "t2.large",
-      "AllowedValues" : ["t2.micro", "m1.small", "m1.large", "t2.large"],
+      "Default" : "t3.large",
+      "AllowedValues" : ["t2.micro", "t3.micro", "m1.small", "m5.small", "m1.large", "m5.large", "t2.large", "t3.large"],
       "Description" : "Type of EC2 instance you want to run your master in."
     },
     "KeyNameParameter": {
@@ -31,6 +31,11 @@
       "Default": "10.0.0.0/16",
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form `x.x.x.x/x`."
+    },
+    "EvergreenImageId": {
+      "Description": "AMI to use for the EC2 Evergreen instance",
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
     }
   },
   "Resources": {
@@ -124,7 +129,7 @@
     "EC2EvergreenInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "ImageId": "ami-cfe4b2b0",
+        "ImageId": {"Ref": "EvergreenImageId"},
         "InstanceType": {"Ref": "InstanceTypeParameter"},
         "IamInstanceProfile": {"Ref": "MasterInstanceProfile"},
         "BlockDeviceMappings": [
