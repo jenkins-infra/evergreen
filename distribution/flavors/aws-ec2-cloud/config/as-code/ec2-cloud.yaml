@@ -8,9 +8,10 @@ jenkins:
         # already be used but let's be explicit to avoid issues.
         useInstanceProfileForCredentials: true
         privateKey: "${PRIVATE_KEY}"
+        region: "${REGION}"
         templates:
           - description: "EC2 Agent"
-            ami: "ami-cfe4b2b0"
+            ami: "${AGENT_AMI}"
             labelString: "agent"
             type: "T2Xlarge"
             securityGroups: "${AGENT_SECURITY_GROUP}"

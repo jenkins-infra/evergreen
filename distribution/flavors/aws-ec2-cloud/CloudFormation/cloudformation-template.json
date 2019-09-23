@@ -36,6 +36,11 @@
       "Description": "AMI to use for the EC2 Evergreen instance",
       "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+    },
+    "AgentImageId": {
+      "Description": "AMI to use for the EC2 agent instances",
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
     }
   },
   "Resources": {
@@ -168,6 +173,7 @@
               " -v jenkins-evergreen-data:/evergreen/data",
               " -v $PWD/ssh-agents-private-key:/run/secrets/PRIVATE_KEY:ro",
               " -e REGION=", {"Ref":"AWS::Region"},
+              " -e AGENT_AMI=", {"Ref":"AgentImageId"},
               " -e ARTIFACT_MANAGER_S3_BUCKET_NAME=", {"Ref":"S3BucketForArtifactManager"},
               " -e AGENT_SECURITY_GROUP=", {"Ref":"EvergreenAgentSecurityGroup"},
               " -e AGENT_SUBNET=", {"Ref":"EvergreenSubnet"},
